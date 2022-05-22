@@ -1,0 +1,12 @@
+{
+  "name": "frontendweb-cursus",
+  "version": "1.0.0",
+  "main": "index.html",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "docsify serve ."
+  },
+  "dependencies": {
+    "docsify-cli": "^4.4.4"
+  }
+}
