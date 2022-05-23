@@ -167,6 +167,7 @@ Hier heb je een simpel JavaScript-bestand, maar waar je normaal ingewikkelde `Re
 Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waar je moet op letten:
 
 * `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS class mee te geven aan een element, het wordt vervangen door `className`
+* `for` is ook een reserved keyword in JavaScript, het wordt vervangen door `htmlFor`
 * Als je JavaScript code wilt mixen met een stuk 'HTML', dien je het tussen `{ }` te zetten, bijvoorbeeld `<h1>{title}</h1>`.
 
 Wanneer we het stuk code van het `GreetingElement` omzetten naar JSX, krijgen we het volgende resultaat:
