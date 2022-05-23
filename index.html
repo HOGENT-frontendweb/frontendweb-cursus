@@ -6,34 +6,43 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Cursus voor het vak Front-end Web Development">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
-  <link
-    rel="stylesheet"
-    href="//cdn.jsdelivr.net/npm/docsify-demo@latest/dist/index.min.css"
-  />
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="line-numbers">
+
+<body>
   <div id="app">
     Cursus wordt geladen...
   </div>
+
   <script>
     window.$docsify = {
       auto2top: true,
       name: 'Front-end Web Development',
       maxLevel: 2,
-      homepage: 'chapters/chapter1.md',
+      homepage: 'chapter1/index.md',
       copyCode: {
         buttonText : 'Kopieer',
         errorText  : 'Oeps, er ging iets mis...',
         successText: 'Gekopieerd!'
       },
+      tabs: {
+        persist: false,
+        sync: false,
+      }
     }
   </script>
+
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <!-- Add "Click to copy" to each code block -->
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
-  <!-- Code demo for simple HTML (expects LIT elements) -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-demo@latest/dist/index.min.js"></script>
+  <!-- Add support for tabs -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
+  <!-- Support for JSON highlighting -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <!-- Support for JSX highlighting -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-jsx.min.js"></script>
+  <!-- Support for PlantUML -->
+  <script src="//unpkg.com/docsify-plantuml/dist/docsify-plantuml.min.js"></script>
 </body>
 </html>

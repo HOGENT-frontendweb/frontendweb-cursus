@@ -1,0 +1,7 @@
+@import "//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css";
+@import "//cdn.jsdelivr.net/npm/docsify-demo@latest/dist/index.min.css";
+
+img {
+  display: block;
+  margin: 0 auto;
+}
