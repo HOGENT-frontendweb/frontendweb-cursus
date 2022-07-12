@@ -4,7 +4,7 @@
   "main": "index.html",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "docsify serve chapters"
+    "start": "docsify serve ."
   },
   "dependencies": {
     "docsify-cli": "^4.4.4"
