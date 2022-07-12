@@ -2,5 +2,6 @@
 
 # Front-end Web Development
 
-[Naar cursus](/README)
+[Naar cursus](1-react_basics/index.md)
+[Algemene info](0-intro/software.md)
 [Software](0-intro/software.md)

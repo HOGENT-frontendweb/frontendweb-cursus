@@ -1,4 +1,4 @@
-- [Algemene info](./0-intro/situering.md)
-- [Software](./0-intro/software.md)
-- [Webpack your bags, time to React](./1-react_basics/index.md)
-- [React Router](./5-react_router/index.md)
+- [0. Algemene info](./0-intro/situering.md)
+- [0. Software](./0-intro/software.md)
+- [1. Webpack your bags, time to React](./1-react_basics/index.md)
+- [5. React Router](./5-react_router/index.md)
