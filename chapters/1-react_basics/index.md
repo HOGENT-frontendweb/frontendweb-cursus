@@ -6,25 +6,25 @@
 
 Neem volgende HTML-code als voorbeeld:
 
-[example1.html](chapter1/examples/example1.html ':include :type=code')
+[example1.html](1-react_basics/examples/example1.html ':include :type=code')
 
 Wanneer een browser een HTML-pagina rendert, zal hij o.a. een [Document Object Model (DOM)](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model) genereren. Hierbij wordt een `div` bijvoorbeeld een `HTMLDivElement` en een `p` een `HTMLParagraphElement`.
 
 Met JavaScript is het mogelijk om de DOM te manipuleren, zoals bijvoorbeeld:
 
-[example2.html](chapter1/examples/example2.html ':include :type=code')
+[example2.html](1-react_basics/examples/example2.html ':include :type=code')
 
 Wat als resultaat heeft:
 
-[example2.html](chapter1/examples/example2.html ':include height=100px')
+[example2.html](1-react_basics/examples/example2.html ':include height=100px')
 
 Hiermee kan je ook eenvoudig een pagina interactief maken zonder de pagina volledig opnieuw te moeten renderen:
 
-[example3.html](chapter1/examples/example3.html ':include :type=code')
+[example3.html](1-react_basics/examples/example3.html ':include :type=code')
 
 Wat als resultaat heeft:
 
-[example3.html](chapter1/examples/example3.html ':include height=100px')
+[example3.html](1-react_basics/examples/example3.html ':include height=100px')
 
 ## React
 
@@ -65,11 +65,11 @@ Dit geeft volgend resultaat:
 
 ### **Voorbeeld**
 
-[example4.html](chapter1/examples/example4.html ':include height=100px')
+[example4.html](1-react_basics/examples/example4.html ':include height=100px')
 
 ### **Code**
 
-[example4.html](chapter1/examples/example4.html ':include :type=code')
+[example4.html](1-react_basics/examples/example4.html ':include :type=code')
 
 <!-- tabs:end -->
 
@@ -98,11 +98,11 @@ Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
 
 ### **Voorbeeld**
 
-[example5.html](chapter1/examples/example5.html ':include height=100px')
+[example5.html](1-react_basics/examples/example5.html ':include height=100px')
 
 ### **Code**
 
-[example5.html](chapter1/examples/example5.html ':include :type=code')
+[example5.html](1-react_basics/examples/example5.html ':include :type=code')
 
 <!-- tabs:end -->
 
@@ -130,11 +130,11 @@ Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
 
 ### **Voorbeeld**
 
-[example6.html](chapter1/examples/example6.html ':include height=100px')
+[example6.html](1-react_basics/examples/example6.html ':include height=100px')
 
 ### **Code**
 
-[example6.html](chapter1/examples/example6.html ':include :type=code')
+[example6.html](1-react_basics/examples/example6.html ':include :type=code')
 
 <!-- tabs:end -->
 
@@ -146,11 +146,11 @@ Inspecteer de werking hiervan a.d.h.v. het volgend voorbeeld.
 
 ### **Voorbeeld**
 
-[example7.html](chapter1/examples/example7.html ':include height=100px')
+[example7.html](1-react_basics/examples/example7.html ':include height=100px')
 
 ### **Code**
 
-[example7.html](chapter1/examples/example7.html ':include :type=code')
+[example7.html](1-react_basics/examples/example7.html ':include :type=code')
 
 <!-- tabs:end -->
 
@@ -160,7 +160,7 @@ Je vraagt je nu waarschijnlijk af: "Is dit echt beter dan vanilla JavaScript?". 
 
 Als we enkel React zouden kunnen schrijven door immens, nauwelijks leesbare, boomstructuren van `createElement` te creëren hadden we waarschijnlijk nooit van React gehoord. Samen met React heeft Facebook ook JSX geïntroduceerd (een samentrekking van JavaScipt en XML). Hiermee is het mogelijk om veel efficiënter (en leesbaarder) zulke componenten uit te schrijven.
 
-![](chapter1/images/jsx.png)
+![](1-react_basics/images/jsx.png)
 
 Hier heb je een simpel JavaScript-bestand, maar waar je normaal ingewikkelde `React.createElement` structuren hebt om HTML te manipuleren, schrijf je gewoon iets wat erg op HTML lijkt om dat te doen.
 
@@ -192,11 +192,11 @@ Dit geeft het volgende resultaat:
 
 ### **Voorbeeld**
 
-[example8.html](chapter1/examples/example8.html ':include height=100px')
+[example8.html](1-react_basics/examples/example8.html ':include height=100px')
 
 ### **Code**
 
-[example8.html](chapter1/examples/example8.html ':include :type=code')
+[example8.html](1-react_basics/examples/example8.html ':include :type=code')
 
 <!-- tabs:end -->
 
@@ -240,7 +240,7 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 De [package.json](https://docs.npmjs.com/cli/v8/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Een voorbeeld van een `package.json` is:
 
-[example8.html](chapter1/examples/package.json ':include :type=code')
+[example8.html](1-react_basics/examples/package.json ':include :type=code')
 
 De `package.json` bevat enkele properties:
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
@@ -283,7 +283,7 @@ TODO: het voorbeeld op een betere manier overbrengen: niet in slides, ook niet i
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
-![To do app](chapter1/images/todo-app-screenshot.png ':size=50%')
+![To do app](/1-react_basics/images/todo-app-screenshot.png ':size=50%')
 
 Een `TodoItem` heeft volgende props:
 

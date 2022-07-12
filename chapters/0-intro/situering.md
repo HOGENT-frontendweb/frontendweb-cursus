@@ -1,0 +1,83 @@
+# Algemene info
+
+## Situering
+
+Waarschijnlijk weet je wel tot welk keuzepakket dit vak behoort, maar we bevinden ons voor de duidelijkheid binnen het keuzepakket `Development`:
+
+![Keuzepakketen](0-intro/images/MT_development.png ':size=70%')
+
+En meer bepaald hier:
+
+![Dit vak in de keuzepakketen](0-intro/images/MT_olods.png ':size=70%')
+
+## Wat gaan we doen?
+
+Concreet gaan we een Single Page Application (SPA) maken, met JavaScript. Er komen bijna dagelijks nieuws JavaScript-frameworks en -libraries voor SPA's bij, wij hebben gekozen voor React. Waarom? Het wordt [veel gebruikt](https://2021.stateofjs.com/en-US/libraries/front-end-frameworks), het is van Facebook... maar eigenlijk doen alle frameworks en libraries allemaal min of meer hetzelfde. Gelijkaardige frameworks zijn Angular, VueJS...
+
+## Wat gaan jullie doen?
+
+Programmeren leer je enkel door het te doen, niet door onze slides of cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
+
+Voor dit vak is er een examen-opdracht: TODO: link naar de opdracht van 22-23. Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
+
+Het examen van dit vak is mondeling. Je doet een demo van je applicatie, geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
+
+De Chamilo-cursus vind je hier: TODO: link naar de Chamilo-cursus. Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+
+### Deadline
+
+Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maar hier gebruik van!
+
+### Voorbeelden
+
+- Auto-verhuur
+- Stockbeheer voor het IT-lab
+- Chat-applicatie (met WebSockets)
+- Beheer van verzamelingen (zeldzame strips, antiek...)
+- Websites om te zoeken/luisteren naar podcasts
+- Website voor een vereniging of het bedrijf van een vriend(in), familielid...
+
+## Slides?
+
+Het cursusmateriaal wordt op GitHub gehost: https://hogent-web.github.io/frontendweb-cursus.
+
+Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): https://github.com/hogent-web/frontendweb-budget
+
+De bijhorende backend is te vinden op: https://github.com/hogent-web/webservices-budget
+
+Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt dus nog aan gesleuteld. Hier en daar worden de slides van vorig jaar hergebruikt in afwachting van een hoofdstuk in deze documentatie.
+
+## Planning
+
+TODO: planning updaten
+
+| Week    | Inhoud                                        |
+| ------- | --------------------------------------------- |
+| week 1  | Inleiding, React Basics                       |
+| week 2  | useState, useContext                          |
+| week 3  | useEffect                                     |
+| week 4  | Data ophalen van een backend                  |
+| week 5  | React Router                                  |
+| week 6  | Testen en linting                             |
+| week 7  | (geen nieuwe theorie, aan de opdracht werken) |
+| week 8  | useReducer / state management / redux         |
+| week 9  | useReducer / state management / redux         |
+| week 10 | authenticatie / authorisatie                  |
+| week 11 | CI/CD, online zetten                          |
+| week 12 | gastles (?)                                   |
+
+## Help, ik zit vast?!
+
+Lees de foutboodschappen, copy paste ze in Google. Vaak 'helpen' we studenten door de fout te copy-pasten en de eerste link in Google te kopiëren.
+
+Het werkt niet maar geen error te zien?
+- eerst en vooral stappen vinden die het probleem reproduceren
+- dan het probleem proberen te isoleren (databank? backend? frontend?)
+- gebruik een debugger, log statements; denk even na
+- nog geen idee? Stel je vraag op StackOverflow!
+
+Nog altijd vast?
+- mail je link naar de StackOverflow-vraag naar ons
+- als je met je vraag niet op StackOverflow terecht kan, maak een GitHub-branch waar het probleem goed uitgelegd staat in de README
+- mail je NAAM, KLAS en de link naar je repository, eventueel een gif die het probleem toont als je het niet direct kan uitleggen
+- mails zonder naam, klas en link worden weggefilterd, dus ALTIJD toevoegen als je ons mailt
