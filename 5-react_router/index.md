@@ -1,7 +1,5 @@
 # React Router
 
-https://hogent-web.github.io/frontendweb-slides/5-react_router.html?presentation=false
-
 ## Probleem
 
 Zoals je al weet, maken we met React een zogenaamde Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door webpack gegenereerde scripts en stylesheets geïnjecteerd.
