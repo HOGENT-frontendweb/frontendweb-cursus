@@ -1,7 +1,5 @@
 # React Router
 
-## Probleem
-
 Zoals je al weet, maken we met React een zogenaamde Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door webpack gegenereerde scripts en stylesheets geïnjecteerd.
 
 Wanneer een client een React-applicatie opent (a.k.a. naar de URL ervan surft), wordt die ene `index.html` gedownload en gebeuren alle andere acties client-side. Het probleem is dat deze `index.html` enkel gedownload indien we naar de `/` navigeren. Er zijn verder geen statische of server-side gegenereerde pagina's. Bijgevolg kunnen we enkel naar `/` navigeren, de browser download dan `index.html` by default.
