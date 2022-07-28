@@ -1,6 +1,7 @@
 /* @import "//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"; */
 @import "//cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple.css";
 @import "//cdn.jsdelivr.net/npm/docsify-demo@latest/dist/index.min.css";
+@import "./accordion.css";
 
 @font-face {
   font-family: 'Montserrat';
