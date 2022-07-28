@@ -12,23 +12,29 @@ En meer bepaald hier:
 
 ## Wat gaan we doen?
 
-Concreet gaan we een Single Page Application (SPA) maken, met JavaScript. Er komen bijna dagelijks nieuws JavaScript-frameworks en -libraries voor SPA's bij, wij hebben gekozen voor React. Waarom? Het wordt [veel gebruikt](https://2021.stateofjs.com/en-US/libraries/front-end-frameworks), het is van Facebook... maar eigenlijk doen alle frameworks en libraries allemaal min of meer hetzelfde. Gelijkaardige frameworks zijn Angular, VueJS...
+Concreet gaan we een Single Page Application (SPA) maken, met JavaScript. Zoals je misschien al weet komen er bijna dagelijks nieuwe JavaScript-frameworks en -libraries voor SPA's bij.
+
+Wij hebben gekozen voor React. Waarom? Het wordt [veel gebruikt](https://2021.stateofjs.com/en-US/libraries/front-end-frameworks), het is van Facebook... maar eigenlijk doen alle frameworks en libraries min of meer hetzelfde. Gelijkaardige frameworks zijn bijvoorbeeld [Angular](https://angular.io/), [VueJS](https://vuejs.org/) en [Svelte](https://svelte.dev/).
 
 ## Wat gaan jullie doen?
 
 Programmeren leer je enkel door het te doen, niet door onze slides of cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-Voor dit vak is er een examen-opdracht: TODO: link naar de opdracht van 22-23. Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
+Voor dit vak is er een examen-opdracht: <mark>TODO: link naar de opdracht van 22-23</mark>. Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
 
-Het examen van dit vak is mondeling. Je doet een demo van je applicatie, geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
+Het examen van dit vak is mondeling. Je doet een demo van je applicatie. Dit is geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
 
-De Chamilo-cursus vind je hier: TODO: link naar de Chamilo-cursus. Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+De Chamilo-cursus vind je hier: <mark>TODO: link naar de Chamilo-cursus</mark>. Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
-Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maar hier gebruik van!
+> Week 13
+
+Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
 ### Voorbeelden
+
+Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers. Impressioneer ons en mogelijks komt jouw idee hier te staan:
 
 - Auto-verhuur
 - Stockbeheer voor het IT-lab
@@ -45,11 +51,11 @@ Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): htt
 
 De bijhorende backend is te vinden op: https://github.com/hogent-web/webservices-budget
 
-Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt dus nog aan gesleuteld. Hier en daar worden de slides van vorig jaar hergebruikt in afwachting van een hoofdstuk in deze documentatie.
+Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt dus nog aan gesleuteld. Grotendeels worden de slides van vorig jaar hergebruikt in afwachting van een hoofdstuk in deze documentatie.
 
 ## Planning
 
-TODO: planning updaten
+<mark>TODO: planning updaten</mark>
 
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
@@ -70,14 +76,19 @@ TODO: planning updaten
 
 Lees de foutboodschappen, copy paste ze in Google. Vaak 'helpen' we studenten door de fout te copy-pasten en de eerste link in Google te kopiëren.
 
-Het werkt niet maar geen error te zien?
+### Het werkt niet maar geen error te zien?
+
 - eerst en vooral stappen vinden die het probleem reproduceren
 - dan het probleem proberen te isoleren (databank? backend? frontend?)
 - gebruik een debugger, log statements; denk even na
 - nog geen idee? Stel je vraag op StackOverflow!
 
-Nog altijd vast?
+### Nog altijd vast?
+
 - mail je link naar de StackOverflow-vraag naar ons
-- als je met je vraag niet op StackOverflow terecht kan, maak een GitHub-branch waar het probleem goed uitgelegd staat in de README
-- mail je NAAM, KLAS en de link naar je repository, eventueel een gif die het probleem toont als je het niet direct kan uitleggen
-- mails zonder naam, klas en link worden weggefilterd, dus ALTIJD toevoegen als je ons mailt
+- als je met je vraag niet op StackOverflow terecht kan:
+    - maak een GitHub-issue waar het probleem goed uitgelegd staat
+    - vermeld NAAM, KLAS en eventueel een gif die het probleem demonstreert
+    - hang jouw lector aan dit issue (als assignee en/of getagd)
+    - je krijgt van ons een reactie op dit issue
+- debuggen via mail wordt niet gedaan
