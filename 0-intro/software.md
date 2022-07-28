@@ -2,12 +2,13 @@
 
 Voor dit vak gaan we ervan uit dat je volgende **software installeert en configureert voor de eerste les**:
 
-- [NodeJS](#nodejs)
-- [Yarn](#yarn)
-- [Visual Studio Code](#visual-studio-code)
-  - [Visual Studio Code: plugins](#visual-studio-code-plugins)
-  - [Fira Code lettertype](#fira-code-lettertype)
-  - [Configuratie VS Code](#configuratie-vs-code)
+- [Software](#software)
+  - [NodeJS](#nodejs)
+  - [Yarn](#yarn)
+  - [Visual Studio Code](#visual-studio-code)
+    - [Visual Studio Code: plugins](#visual-studio-code-plugins)
+    - [Configuratie VS Code](#configuratie-vs-code)
+    - [Fira Code lettertype](#fira-code-lettertype)
 
 ## NodeJS
 
@@ -105,3 +106,14 @@ Installeer het lettertype via een package manager:
 - macOS: `brew install firacode`
 
 Of volg de instructies op de [GitHub van Fira Code](https://github.com/tonsky/FiraCode/wiki/Installing).
+
+Voeg nadien volgende JSON-configuratie toe aan de settings van VS Code (zie hierboven hoe je daar komt):
+
+```json
+{
+  "editor.fontFamily": "'Fira Code', Menlo, Monaco, 'Courier New', monospace",
+  "editor.fontSize": 16,
+  "editor.fontLigatures": true,
+  "editor.tabSize": 2
+}
+```
