@@ -311,3 +311,8 @@ end note
 Een voorbeeldoplossing is te vinden op https://github.com/HOGENT-Web/frontendweb-ch1-solution.
 
 > Uiteraard zijn heel veel oplossingen mogelijk.
+
+## Must read
+
+- [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
+
