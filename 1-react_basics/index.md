@@ -277,7 +277,205 @@ Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de brower automa
 
 > **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
-TODO: het voorbeeld op een betere manier overbrengen: niet in slides, ook niet in deze docs
+## Transaction
+In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van 1 transactie.
+
+Maak een folder `components` en daarin een folder `transactions` en daarin een nieuwe file `Transaction.jsx`.
+
+```jsx
+export default function Transaction() {
+	return <div>Benjamin gaf €200 uit bij Dranken Geers.</div>;
+}
+```
+
+Components zijn niets meer dan functies die html terug geven, die moet getoond worden voor deze component. 
+Hier voegen we hard code tekst toe (weten of een lege component correct gerendered wordt is nogal lastig).
+
+Om deze component nu te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in `index.js`.
+
+```jsx
+ReactDOM.render(
+	<React.StrictMode>
+		<App />
+	</React.StrictMode>,
+	document.getElementById('root')
+);
+```
+
+Standaard rendert deze de `App` component. De `index` file ga je zelden zelf aanpassen. Je past normaal de `App` component aan. 
+
+[StrictMode](https://reactjs.org/docs/strict-mode.html) doet een aantal checks op alle (onderliggende) componenten. Zeker voor een onervaren React programmeur een goed idee om altijd `StrictMode` aan te zetten.
+### App.js
+```jsx
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+	return (
+	<div className="App">
+		<header className="App-header">
+			<img src={logo} className="App-logo" alt="logo" />
+			<p>
+				Edit <code>src/App.js</code> and save to reload.
+			</p>
+			<a
+				className="App-link"
+				href="https://reactjs.org"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Learn React
+			</a>
+		</header>
+	</div>
+	);
+}
+
+export default App;
+```
+
+In `App.js` staat de code voor de standaard start pagina: logo, link naar de documentatie enz.
+Verwijder alle code die er staat en vervang door de `Transaction` component
+```jsx
+import './App.css';
+import Transaction from './components/transactions/Transaction'; 
+
+function App() {
+	return (
+	<div className="App">
+		<Transaction />
+	</div>
+	);
+}
+
+export default App;
+```
+
+Als we nu naar [onze site](http://localhost:3000/) gaan kijken zouden we de hardcoded string moeten gerenderd zien.
+
+### JSON
+Een hardcoded string als component tonen is niet erg nuttig, daar is React complete overkill voor, dan schrijf je beter een html pagina met wat css zoals je het in Webapplications 1 geleerd hebt.
+
+Dit soort frameworks wordt pas de moeite als we componenten gaan schrijven die data op een bepaalde manier tonen, en manipuleerbaar maken. Als componenten dus kunnen herbruikt worden.
+
+Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in json formaat (JavaScript Object Notation).
+Heel kort gezegd is dit de voorstelling van een JavaScript object. (of alleszins, lijkt het er heel sterk op)
+
+```jsx						
+{
+	"key" : "some string",
+	"otherKey": 15,
+	"key3": true,
+	"listOfData": ["a", 15],
+	"otherObject": 
+	{ 
+		"innerkey" : 42
+	}
+}
+```
+	
+Dus comma-separated key-value lijst, keys zijn altijd strings, values zijn strings / numbers / booleans, arrays of weer objecten.
+(Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: Working with json )
+
+De data zal meestal ergens in een databank leven, en via één of andere API kunnen we deze aanspreken (en wijzigen), dat leer je allemaal uitgebreid in het vak Webservices.
+
+Maar we kunnen niet alles tegelijk maken natuurlijk, dus nu gaan we eerst even met een 'mock object' werken. We steken wat json data hardcoded in een file, en importen en gebruiken die data dan om onze componenten op te bouwen.
+
+Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data beginnen ophalen en tonen, en dienen we enkel die import te vervangen door een echte API call, en hoeven we niet onze volledige component te herschrijven.
+
+### Mock data
+we creëeren een `mock-data.js` file. Maak een folder `api` met een bestand `mock-data.js` aan. Later vervangen we de mock data door api calls.
+
+```jsx
+const TRANSACTION_DATA = [
+		{
+			user: 'Benjamin',
+			amount: -200,
+			date: '2021-07-01T12:32:04.534Z',
+			place: 'Dranken Geers',
+		},
+		{
+			user: 'Benjamin',
+			amount: 1500,
+			date: '2021-06-30T10:09:22.534Z',
+			place: 'Loon',
+		},
+	];
+	
+	export default TRANSACTION_DATA;
+```
+
+`TRANSACTION_DATA` is een array met twee objecten met transactie info. Zorg  dat dit object kan geïmport worden
+
+### React props
+We gaan de transaction component aanpassen, zodat hij data van verschillende transacties kan weergeven. Verwijder alle hardcoded info en vervang het door de variabelen
+
+```jsx
+export default function Transaction() {
+	const user = "Benjamin"; //👈
+	const amount = 200; //👈
+	const place = "Dranken Geers"; //👈
+	return <div>
+          {user} gaf €{amount} uit bij {place} //👈
+        </div>;
+}
+```
+
+Ter herinnering: als je JavaScript code wilt uitvoeren binnen een `jsx` stuk: tussen `{}` plaatsen.
+
+De data gaat natuurlijk van een andere component moeten komen, nu zijn we nog altijd hardcoded. Verwijder de constanten met de hardcoded data.
+
+```jsx
+export default function Transaction(props) { //👈
+	const { user, amount, place} = props; //👈
+	return <div>{user} gaf €{amount} uit bij {place}</div>;
+}
+```
+
+We gaan de data doorgeven via de `props` parameter, de `properties`. Op die manier kunnen we informatie doorgeven van de ene component aan de andere. Om niet telkens `props.user`, `props.amount`, ... te moeten typen **destructuren** we eerst. 
+
+Hoe krijg je nu de juiste data in een component zijn `props`?
+
+```jsx
+import './App.css';
+import Transaction from './components/Transaction';
+
+function App() {
+	const user = "Benjamin"; //👈1
+	const amount = 200; //👈1
+	const place = "Dranken Geers"; //👈1
+	return (
+		<div className="App">
+			<Transaction user={user} place={place} amount={amount}/> //👈2
+		</div>
+	);
+}
+export default App;
+```
+In `App.js` willen we 
+1. `user`, `amount`, `place`
+2. aan de `Transaction` doorgeven.  
+Dit doet je op dezelfde manier als bij html, je zet gewoon `attributes` op een `tag`.
+
+We willen natuurlijk dat hier de data van ons `mock object` komt. 
+
+```jsx
+import './App.css';
+import Transaction from './components/transactions/Transaction';
+import TRANSACTION_DATA from './mock-data'; //👈1
+
+function App() {
+	const trans = TRANSACTION_DATA[0]; //👈2
+	return (
+		<div className="App">
+			<Transaction user={trans.user} place={trans.place} amount={trans.amount}/> //👈2
+		</div>
+	);
+}
+export default App;
+```
+1. Importeer de constante TRANSACTION__DATA
+2. Laat ons beginnen met gewoon het [eerste element van de array](http:\\localhost:3000) eens te tonen.
 
 ## Oefening
 
