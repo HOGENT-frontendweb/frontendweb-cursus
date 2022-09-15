@@ -1,6 +1,7 @@
 - [0. Algemene info](./0-intro/situering.md)
 - [0. Software](./0-intro/software.md)
 - [1. Webpack your bags, time to React](./1-react_basics/index.md)
+- [2. It's a kind of state management](./2-react_state/index.md)
 - [2. It's a kind of state management](https://hogent-web.github.io/frontendweb-slides/2-react_state.html?presentation=false)
 - [3. Get your hooks into React](https://hogent-web.github.io/frontendweb-slides/3-react_hooks.html?presentation=false)
 - [4. You can call me API](https://hogent-web.github.io/frontendweb-slides/4-react_incorporating_data.html?presentation=false)
