@@ -335,9 +335,11 @@ export default App;
 ```
 
 In `App.js` staat de code voor de standaard start pagina: logo, link naar de documentatie enz.
-Verwijder alle code die er staat en vervang door de `Transaction` component
+`App.js` maakt gebruik van css gedefinieerd in `app.css`. Je kan aan HTML elementen `class` (in React gebruik je `className`) attributen toevoegen die je definieert in aparte css bestanden. Zo kan je stijlen definiëren per component. Globale stijlen definieer je in `index.css`.
+
+
+Verwijder alle code die er staat en vervang door de `Transaction` component. We maken ook geen gebuik meer van de css file. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
 ```jsx
-import './App.css';
 import Transaction from './components/transactions/Transaction'; 
 
 function App() {
@@ -531,10 +533,10 @@ In ons eenvoudig voorbeeld hebben we nog geen unieke id's, dus kunnen we voorlop
 Als je niets meegeeft, gebruikt React onderliggend sowieso een index als key, dus functioneel maakt het geen verschil of we het expliciet maken of niet.
 We komen hier later zeker op terug.
 
-## CSS
-Om de pagina op te maken maken we gebruik van [Bootstrap](https://getbootstrap.com/), een populair JavaScript- en CSS-frameworks. Bootstrap kan op verschillende manieren worden toegevoegd aan React. Laten we gebruik maken van Bootstrap CDN, de eenvoudigste manier om Bootstrap toe te voegen aan de React. Geen extra installatie of download is vereist.
+## CSS in React
+In dit project maken we gebruik van [Bootstrap](https://getbootstrap.com/), een populair JavaScript- en CSS-frameworks. Bootstrap kan op verschillende manieren worden toegevoegd aan React. Laten we gebruik maken van Bootstrap CDN, de eenvoudigste manier om Bootstrap toe te voegen aan de React. Geen extra installatie of download is vereist.
 
-Je dient een link toe te voegen naar de CDN in de `head`section van de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-react-app` is dit de `public/index.html` file.
+Je dient een link toe te voegen naar de CDN in de `head` section van de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-react-app` is dit de `public/index.html` file.
 
 ```html
 <!DOCTYPE html>
@@ -590,7 +592,15 @@ Je dient een link toe te voegen naar de CDN in de `head`section van de entry fil
 Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/)
 3. Pas ook de title van de app aan
 
-Oefening: 
+Pas de `Transaction`component aan en maak gebruik van de Bootstrap class `text_bg_dark` voor de div tag. 
+
+Ook het `style` attribuut kan je binnen een `jsx` file gebruiken. Hiervoor gebruik je een `inline Javascript object`. Vandaar de `{{}}`
+```jsx
+export default function Transaction(props) { 
+  const { user, amount, place} = props; 
+  return <div className="text-bg-dark" style={{width:'50%'}}>{user} gaf €{amount} uit bij {place}</div>; //👈
+}
+```
 
 ## Oefening
 
