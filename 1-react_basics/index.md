@@ -280,7 +280,7 @@ Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de brower automa
 ## Transaction
 In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van 1 transactie.
 
-Maak een folder `components` en daarin een folder `transactions` en daarin een nieuwe file `Transaction.jsx`.
+Maak in de `src` folder een folder `components` aan. Daarin een folder `transactions` en daarin een nieuwe file `Transaction.jsx`.
 
 ```jsx
 export default function Transaction() {
@@ -361,7 +361,7 @@ Dit soort frameworks wordt pas de moeite als we componenten gaan schrijven die d
 Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in json formaat (JavaScript Object Notation).
 Heel kort gezegd is dit de voorstelling van een JavaScript object. (of alleszins, lijkt het er heel sterk op)
 
-```jsx						
+```js						
 {
 	"key" : "some string",
 	"otherKey": 15,
@@ -384,9 +384,9 @@ Maar we kunnen niet alles tegelijk maken natuurlijk, dus nu gaan we eerst even m
 Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data beginnen ophalen en tonen, en dienen we enkel die import te vervangen door een echte API call, en hoeven we niet onze volledige component te herschrijven.
 
 ### Mock data
-we creëeren een `mock-data.js` file. Maak een folder `api` met een bestand `mock-data.js` aan. Later vervangen we de mock data door api calls.
+We creëeren een `mock-data.js` file. Maak een folder `api` met een bestand `mock-data.js` aan in de `src` folder. Later vervangen we de mock data door api calls.
 
-```jsx
+```js
 const TRANSACTION_DATA = [
 		{
 			user: 'Benjamin',
@@ -408,37 +408,42 @@ const TRANSACTION_DATA = [
 `TRANSACTION_DATA` is een array met twee objecten met transactie info. Zorg  dat dit object kan geïmport worden
 
 ### React props
-We gaan de transaction component aanpassen, zodat hij data van verschillende transacties kan weergeven. Verwijder alle hardcoded info en vervang het door de variabelen
+We gaan de transaction component aanpassen, zodat hij data van verschillende transacties kan weergeven. 
 
 ```jsx
 export default function Transaction() {
-	const user = "Benjamin"; //👈
-	const amount = 200; //👈
-	const place = "Dranken Geers"; //👈
-	return <div>
-          {user} gaf €{amount} uit bij {place} //👈
-        </div>;
+	const user = "Benjamin"; //👈1
+	const amount = 200; //👈1
+	const place = "Dranken Geers"; //👈1
+	return <div>{user} gaf €{amount} uit bij {place}</div>;//👈2        
 }
 ```
 
+1. Definieer een variabele voor user, amount en place
+2. Vervang de hardcoded info door de variabelen.  
 Ter herinnering: als je JavaScript code wilt uitvoeren binnen een `jsx` stuk: tussen `{}` plaatsen.
 
-De data gaat natuurlijk van een andere component moeten komen, nu zijn we nog altijd hardcoded. Verwijder de constanten met de hardcoded data.
+
+De data gaat natuurlijk van een andere component moeten komen, nu zijn we nog altijd hardcoded. 
 
 ```jsx
-export default function Transaction(props) { //👈
-	const { user, amount, place} = props; //👈
+export default function Transaction(props) { //👈2
+	// const user = "Benjamin"; 👈1
+	// const amount = 200; 👈1
+	// const place = "Dranken Geers"; 👈1
+	const { user, amount, place} = props; //👈3
 	return <div>{user} gaf €{amount} uit bij {place}</div>;
 }
 ```
+1. Verwijder de constanten met de hardcoded data.
+2. We geven de data door via de `props` parameter, de `properties`. Op die manier kunnen we informatie doorgeven van de ene component aan de andere. 
+3. Om niet telkens `props.user`, `props.amount`, ... te moeten typen **destructuren** we eerst. 
 
-We gaan de data doorgeven via de `props` parameter, de `properties`. Op die manier kunnen we informatie doorgeven van de ene component aan de andere. Om niet telkens `props.user`, `props.amount`, ... te moeten typen **destructuren** we eerst. 
 
 Hoe krijg je nu de juiste data in een component zijn `props`?
 
 ```jsx
-import './App.css';
-import Transaction from './components/Transaction';
+import Transaction from './components/transactions/Transaction';
 
 function App() {
 	const user = "Benjamin"; //👈1
@@ -446,7 +451,7 @@ function App() {
 	const place = "Dranken Geers"; //👈1
 	return (
 		<div className="App">
-			<Transaction user={user} place={place} amount={amount}/> //👈2
+			<Transaction user={user} place={place} amount={amount}/> { /*👈2*/}
 		</div>
 	);
 }
@@ -460,7 +465,6 @@ Dit doet je op dezelfde manier als bij html, je zet gewoon `attributes` op een `
 We willen natuurlijk dat hier de data van ons `mock object` komt. 
 
 ```jsx
-import './App.css';
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './mock-data'; //👈1
 
@@ -468,7 +472,7 @@ function App() {
 	const trans = TRANSACTION_DATA[0]; //👈2
 	return (
 		<div className="App">
-			<Transaction user={trans.user} place={trans.place} amount={trans.amount}/> //👈2
+			<Transaction user={trans.user} place={trans.place} amount={trans.amount}/> { /*👈2*/}
 		</div>
 	);
 }
@@ -476,6 +480,117 @@ export default App;
 ```
 1. Importeer de constante TRANSACTION__DATA
 2. Laat ons beginnen met gewoon het [eerste element van de array](http:\\localhost:3000) eens te tonen.
+
+Eigenlijk willen we voor elk van de elementen in de array TRANSACTION_DATA een `Transaction` component tonen.
+
+```jsx
+import Transaction from './components/transactions/Transaction';
+import TRANSACTION_DATA from './api/mock-data'; 
+
+function App() {
+	//const trans = TRANSACTION_DATA[0]; 👈1
+	return (
+		<div className="App">
+		{TRANSACTION_DATA.map(trans => 
+			<Transaction user={trans.user} place={trans.place} amount={trans.amount}/> )}{ /*👈2*/}
+		</div>
+	);
+}
+export default App;
+```
+1. Verwijder deze lijn 
+2. Dus kunnen we hier ook onze array **map-en**, elk element omzetten naar een `Transaction` component
+
+```jsx
+import Transaction from './components/transactions/Transaction';
+import TRANSACTION_DATA from './api/mock-data'; 
+
+function App() {
+	return (
+		<div className="App">
+		{TRANSACTION_DATA.map(trans => 
+			<Transaction {...trans}/>)}{ /*👈*/}
+		</div>
+	);
+}
+export default App;
+```
+Je kan een object ook destructuren om attributes te genereren. Elke key wordt dan een attribute met de value, niet altijd een goed idee maar bespaart soms wel wat typwerk. [Demo](http://localhost:3000/)
+
+### Property 'key'
+Alles lijkt te werken, maar als je de console opent zal je zien dat er een error staat:
+"Each child in a list should have a unique "key" prop."
+
+Als je een lijst van elementen maakt moet je altijd een key property voorzien (van het type string). Op basis van deze keys kan React weten welke elementen gewijzigd / toegevoegd / verwijderd zijn.
+Key's moeten uniek zijn binnen de array waarin de componenten gecreëerd worden (dus enkel t.o.v. de broer en zus elementen, niet over de hele pagina)
+
+Hoewel je altijd de index van een array kan gebruiken, is dat zelden een goed idee. De key is het enige dat React gebruikt om DOM elementen te identificeren. Dus stel dat je een element toevoegt op het einde van de lijst, en halfweg een element verwijdert, dan zou bij een index-key React denken dat alle tussenliggende elementen dezelfde zijn!
+
+Als je met 'echte' data werkt, die via een backend komt, heeft elk element heel vaak een unieke id (uit de databank, die id gebruik je dan ook om het element te identificeren in API calls), die vormt dan direct een uitstekende key voor React lijsten ook.
+In ons eenvoudig voorbeeld hebben we nog geen unieke id's, dus kunnen we voorlopig niet anders dan de index expliciet toevoegen als key om de error te zien verdwijnen.
+Als je niets meegeeft, gebruikt React onderliggend sowieso een index als key, dus functioneel maakt het geen verschil of we het expliciet maken of niet.
+We komen hier later zeker op terug.
+
+## CSS
+Om de pagina op te maken maken we gebruik van [Bootstrap](https://getbootstrap.com/), een populair JavaScript- en CSS-frameworks. Bootstrap kan op verschillende manieren worden toegevoegd aan React. Laten we gebruik maken van Bootstrap CDN, de eenvoudigste manier om Bootstrap toe te voegen aan de React. Geen extra installatie of download is vereist.
+
+Je dient een link toe te voegen naar de CDN in de `head`section van de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-react-app` is dit de `public/index.html` file.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"><!--👈1-->
+  <title>BudgetApp</title><!--👈3-->
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script><!--👈2-->
+</body>
+
+</html>
+```
+
+1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS
+2. Als je project ook gebruikt maakt van de JavaScript-componenten uit Bootstrap, zoals een modaal venster, vervolgkeuzemenu of navigatiebalk moeten we het bestand `bootstrap.bundle.min.js` koppelen, dat vooraf is gecompileerd met `Popper.js`. Voorzie hiervoor een script-tag die linkt naar de gebundelde Javascript CDN's vlak voor het sluiten van de body-tag.  
+Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/)
+3. Pas ook de title van de app aan
+
+Oefening: 
 
 ## Oefening
 
