@@ -288,8 +288,8 @@ export default function Transaction() {
 }
 ```
 
-Components zijn niets meer dan functies die html terug geven, die moet getoond worden voor deze component. 
-Hier voegen we hard code tekst toe (weten of een lege component correct gerendered wordt is nogal lastig).
+Components zijn niets meer dan functies die html, die moet getoond worden voor deze component, teruggeven 
+Hier voegen we hardcoded tekst toe (weten of een lege component correct gerendered wordt is nogal lastig).
 
 Om deze component nu te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in `index.js`.
 
@@ -308,11 +308,11 @@ Standaard rendert deze de `App` component. De `index` file ga je zelden zelf aan
 ### App.js
 ```jsx
 import logo from './logo.svg';
-import './App.css';
+import './App.css';//👈1
 
 function App() {
 	return (
-	<div className="App">
+	<div className="App">{/*👈2*/}
 		<header className="App-header">
 			<img src={logo} className="App-logo" alt="logo" />
 			<p>
@@ -335,8 +335,10 @@ export default App;
 ```
 
 In `App.js` staat de code voor de standaard start pagina: logo, link naar de documentatie enz.
-`App.js` maakt gebruik van css gedefinieerd in `app.css`. Je kan aan HTML elementen `class` (in React gebruik je `className`) attributen toevoegen die je definieert in aparte css bestanden. Zo kan je stijlen definiëren per component. Globale stijlen definieer je in `index.css`.
+1. `App.js` maakt gebruik van css gedefinieerd in `app.css`. 
+2. Je kan aan HTML elementen `class` (in React gebruik je `className`) attributen toevoegen die je definieert in aparte css bestanden. Zo kan je stijlen definiëren per component.   Globale stijlen definieer je in `index.css`.
 
+JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Uw component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.  
 
 Verwijder alle code die er staat en vervang door de `Transaction` component. We maken ook geen gebuik meer van de css file. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
 ```jsx
@@ -353,15 +355,15 @@ function App() {
 export default App;
 ```
 
-Als we nu naar [onze site](http://localhost:3000/) gaan kijken zouden we de hardcoded string moeten gerenderd zien.
+Bekijk [de site](http://localhost:3000/). De hardcoded string wordt gerenderd.
 
 ### JSON
-Een hardcoded string als component tonen is niet erg nuttig, daar is React complete overkill voor, dan schrijf je beter een html pagina met wat css zoals je het in Webapplications 1 geleerd hebt.
+Een hardcoded string als component tonen is niet erg nuttig, daar is React complete overkill voor. Dan schrijf je beter een html pagina met wat css zoals je het in Webapplications 1 geleerd hebt.
 
 Dit soort frameworks wordt pas de moeite als we componenten gaan schrijven die data op een bepaalde manier tonen, en manipuleerbaar maken. Als componenten dus kunnen herbruikt worden.
 
 Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in json formaat (JavaScript Object Notation).
-Heel kort gezegd is dit de voorstelling van een JavaScript object. (of alleszins, lijkt het er heel sterk op)
+Heel kort gezegd is dit de voorstelling van een JavaScript object(of alleszins, lijkt het er heel sterk op)
 
 ```js						
 {
@@ -377,7 +379,7 @@ Heel kort gezegd is dit de voorstelling van een JavaScript object. (of alleszins
 ```
 	
 Dus comma-separated key-value lijst, keys zijn altijd strings, values zijn strings / numbers / booleans, arrays of weer objecten.
-(Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: Working with json )
+(Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: [Working with json](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON) )
 
 De data zal meestal ergens in een databank leven, en via één of andere API kunnen we deze aanspreken (en wijzigen), dat leer je allemaal uitgebreid in het vak Webservices.
 
@@ -386,7 +388,7 @@ Maar we kunnen niet alles tegelijk maken natuurlijk, dus nu gaan we eerst even m
 Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data beginnen ophalen en tonen, en dienen we enkel die import te vervangen door een echte API call, en hoeven we niet onze volledige component te herschrijven.
 
 ### Mock data
-We creëeren een `mock-data.js` file. Maak een folder `api` met een bestand `mock-data.js` aan in de `src` folder. Later vervangen we de mock data door api calls.
+We creëren een `mock-data.js` file. Maak een folder `api` met een bestand `mock-data.js` aan in de `src` folder. Later vervangen we de mock data door api calls.
 
 ```js
 const TRANSACTION_DATA = [
@@ -410,7 +412,7 @@ const TRANSACTION_DATA = [
 `TRANSACTION_DATA` is een array met twee objecten met transactie info. Zorg  dat dit object kan geïmport worden
 
 ### React props
-We gaan de transaction component aanpassen, zodat hij data van verschillende transacties kan weergeven. 
+We passen de `Transaction` component aan zodat hij data van verschillende transacties kan weergeven. 
 
 ```jsx
 export default function Transaction() {
@@ -421,7 +423,7 @@ export default function Transaction() {
 }
 ```
 
-1. Definieer een variabele voor user, amount en place
+1. Definieer een variabele voor `user`, `amount` en `place`
 2. Vervang de hardcoded info door de variabelen.  
 Ter herinnering: als je JavaScript code wilt uitvoeren binnen een `jsx` stuk: tussen `{}` plaatsen.
 
@@ -460,8 +462,8 @@ function App() {
 export default App;
 ```
 In `App.js` willen we 
-1. `user`, `amount`, `place`
-2. aan de `Transaction` doorgeven.  
+1. `user`, `amount`, `place` definiëren
+2. en aan de `Transaction` doorgeven.  
 Dit doet je op dezelfde manier als bij html, je zet gewoon `attributes` op een `tag`.
 
 We willen natuurlijk dat hier de data van ons `mock object` komt. 
