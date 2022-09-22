@@ -264,8 +264,8 @@ Telkens als we een letter ingeven in het 'search' veld, worden alle componenten 
 Een `pure component` is een component die gegeven dezelfde props dezelfde output genereert. Transaction is een pure component. Gegeven dezelfde props, wordt dezelfde output gegenereerd. We willen een pure component niet opnieuw renderen als de properties niet gewijzigd zijn. De `memo` functie wordt gebruikt om een component te creëren die enkel zal rerenderen als de props wijzigen.   
 
 ```jsx
-import React from 'react';  //👈
-export default React.memo(function Transaction(props) { //👈
+import {memo} from 'react';  //👈
+export default memo(function Transaction(props) { //👈
   const { user, amount, place} = props; 
   console.log('Rendering transaction...');
   return <div className="text-bg-dark" style={{width:'50%'}}>{user} gaf €{amount} uit bij {place}</div>; 
@@ -297,6 +297,8 @@ const createTransaction = useCallback((user, place, amount, date) => {//👈
 
 [Run](http://localhost:3000/) opnieuw. De TransactionForm component wordt niet opnieuw gererenderd bij ingave van een karakter.
 
+oefening : pas memoization toe op de Places
+
 ## useContext hook
 Voorziet in een manier om data door te geven in de component tree zonder te moeten werken met props. Het wordt gebruikt voor data die gebruikt worden binnen niet gerelateerde takken van de boom (zie volgend hoofdstuk)
 
@@ -313,7 +315,7 @@ yarn add react-hook-form
 
 We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook uit de `react-hook-form` package.
 ```jsx
-import React from 'react';
+import {memo} from 'react';
 import { PLACE_DATA } from '../../api/mock-data';
 import { useForm } from 'react-hook-form';//👈1
 
@@ -331,7 +333,7 @@ const toDateInputString = (date) => {
     return asString.substring(0, asString.indexOf('T'));
 };
 
-export default React.memo(function TransactionForm({ onSaveTransaction }) {
+export default memo(function TransactionForm({ onSaveTransaction }) {
     // const [user, setUser] = useState(''); //👈4
     // const [date, setDate] = useState(new Date()); //👈4
     // const [place, setPlace] = useState('home'); //👈4

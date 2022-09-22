@@ -398,10 +398,10 @@ We starten met het bijhouden van de state in de `StarRating` component. Later ve
 import { useState } from 'react';//👈1
 import { IoStarSharp } from 'react-icons/io5'; 
 
-const Star = ({selected=false,  onRate = f=>f})=> {//👈5
+const Star = ({index, selected=false,  onSelect = (f)=>f})=> {//👈5 en 6
 
-  const handleClick = (e)=> {
-    onRate(); //👈6
+  const handleClick = ()=> {
+    onSelect(index + 1); //👈6
   }
 
   return (
@@ -414,8 +414,8 @@ export default function StarRating({ totalStars=5, selectedStars=0}) {
 
     return (
       <> 
-        {[...new Array(totalStars)].map((_, i )=><Star key={i} selected={rating > i} 
-         onRate={()=> setRating(i+1)}/>)} {/*👈3 en 4*/}
+        {[...new Array(totalStars)].map((_, i )=><Star key={i} index={i} selected={rating > i} 
+         onSelect={setRating}/>)} {/*👈3 en 4 en 6*/}
         <p>
           {selectedStars} of {totalStars} stars
         </p>
@@ -431,17 +431,10 @@ export default function StarRating({ totalStars=5, selectedStars=0}) {
   - het `tweede element` is de `functie om de waarde van de state-variabele bij te werken`, waardoor de component opnieuw gerenderd zal worden.   
   Door gebruik te maken van 'array destructuring' kunnen we zelf de naam van de variabele en de set functie instellen.
 3. Via de selected prop geven we door of de ster al dan niet geselecteerd is.
-4. Als de gebruiker een ster selecteert dient de methode `setRating` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een kind component dienen de state in een parent aan te passen. We moeten de functie uit de parent `setRating` doorgeven aan de child component. Hiervoor voegen we een prop `onRate` toe
-5. Props worden doorgegeven van de parent aan de child component. We voegen een `onRate` prop toe aan de `Star` component. Di een functie met default value 'f=>f'. Di een fake functie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
-6. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt.
+4. Als de gebruiker een ster selecteert dient de methode `setRating` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een kind component dienen de state in een parent aan te passen. We moeten de functie uit de parent `setRating` doorgeven aan de child component. Hiervoor voegen we een prop `onSelect` toe
+5. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Di een functie met default value 'f=>f'. Di een fake functie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
+6. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt en de index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
 [Bekijk het resultaat](http://localhost:3000) en klik op de sterren.
-
-De code van de Star kunnen we refactoren
-```jsx
-
-const Star = ({selected=false,  onRate = f=>f})=> 
-    <IoStarSharp color={selected?'yellow':'grey'} onClick={onRate}/> //👈
-```
 
 ### Render en commit
 Alvorens de componenten getoond worden op het scherm, moeten ze gerenderd worden door React. Elke screen update in React gebeurt in 3 stappen
@@ -467,7 +460,7 @@ const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA);
 
   //👇1
-  const ratePlace = (id, rating) => {
+  const handleRatePlace = (id, rating) => {
     const newPlaces = places.map((p) => (p.id === id ? { ...p, rating } : p));
     setPlaces(newPlaces);
   };
@@ -483,7 +476,7 @@ const PlacesList = () => {
           )
           .map((p) => (
             <div className="col" key={p.id}>
-              <Place {...p} onRate={ratePlace} /> {/*👈2/*}
+              <Place {...p} onRate={handleRatePlace} /> {/*👈2*/}
             </div>
           ))}
       </div>
@@ -505,8 +498,8 @@ import StarRating from './StarRating';
 const Place = ({ id, name, rating, onRate }) => { //👈1
 
   //👇2
-   const handleRate = (newRate) => {
-    onRate(id, newRate);
+   const handleRate = (newRating) => {
+    onRate(id, newRating);
    }
 
   	return (
@@ -526,27 +519,37 @@ export default Place;
 ```
 1. Place bevat nu ook een prop `onRate` 
 2. `handleRate` zal het instellen van een nieuwe rate afhandelen. De nieuwe rating is hier al gekend. We geven ook de id van de plaats mee.
-3. Het klikken op een ster worden lager in de boom afgehandeld. Dus moeten we deze methode doorgeven via een event handler prop `onRate`
+3. Het klikken op een ster worden lager in de boom afgehandeld. Dus moeten we deze methode doorgeven via een event handler prop `onSelect`
 
 De `StarRating`component wordt
 ```jsx
 import { IoStarSharp } from 'react-icons/io5'; 
 
-const Star = ({selected=false, onRate = (f)=>f})=> 
-    <IoStarSharp color={selected?'yellow':'grey'} onClick={onRate}/> 
+const Star = ({index, selected=false, onSelect = (f)=>f})=> {
+  const handleSelect = () => {
+    onSelect(index + 1);
+  };  
+
+  return (
+    <IoStarSharp
+      color={selected ? 'yellow' : 'grey'}
+      onClick={handleSelect}
+    />
+  );
+};
 
 export default function StarRating({ totalStars=5, selectedStars=0, onRate}) { //👈3
     //const [rating, setRating] = useState(selectedStars);//👈1
 
-    return (
-      <> 
-        {[...new Array(totalStars)].map((_, i )=><Star key={i} selected={ selectedStars > i} 
-         onRate={()=> onRate(i+1)}/>)} {/*👈2 en 4*/}
-        <p>
-          {selectedStars} of {totalStars} stars
-        </p>
-      </> 
-    );
+  return (
+    <>
+      {[...new Array(totalStars)].map((_, i) => <Star key={i} index={i} selected={selectedStars > i}
+        onSelect={onRate} />)} {/*👈2 en 4*/}
+      <p>
+        {selectedStars} of {totalStars} stars
+      </p>
+    </>
+  );
 }
 ```
 
