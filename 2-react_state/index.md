@@ -725,9 +725,9 @@ export default function TransactionForm({onSaveTransaction}){//👈5
 						className="form-select"
 						required
 					>{/*👈2 en 4*/}
-						<option defaultChecked>-- Select a place --</option>
+						<option defaultChecked value="">-- Select a place --</option>
 						{PLACE_DATA.map(({ id, name }) => (
-							<option key={id} value={id}>{name}</option>
+							<option key={id} value={name}>{name}</option>
 						))}
 					</select>
 				</div>
