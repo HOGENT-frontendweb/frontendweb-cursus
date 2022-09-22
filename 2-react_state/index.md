@@ -575,12 +575,12 @@ In HTML behouden formulier elementen zoals `input`, `textarea` en `select` doorg
 
 In React wordt de veranderlijke status bewaard in de `state variabele` van componenten en alleen bijgewerkt met bijhorende `set`-functie. We moeten dus de state van het formulier bijhouden en bijwerken wanneer een veld in het formulier wordt gewijzigd. Dit noemt men [`controlled components`](https://reactjs.org/docs/forms.html#controlled-components).
 
-We maken een component voor het toevoegen van transacties. Maak een file `AddTransactionForm.jsx` aan in de folder `src\components\transactions`. Dit bevat een formulier met 3 input velden en 1 select lijst
+We maken een component voor het toevoegen van transacties. Maak een file `TransactionForm.jsx` aan in de folder `src\components\transactions`. Dit bevat een formulier met 3 input velden en 1 select lijst
 
 ```jsx
 import {PLACE_DATA} from '../../api/mock-data';
 
-export default function AddTransactionForm(){
+export default function TransactionForm(){
   return (
 		<>
 			<h2>
@@ -669,7 +669,7 @@ const toDateInputString = (date) => {
 	return asString.substring(0, asString.indexOf('T'));
 };
 
-export default function AddTransactionForm({onSaveTransaction}){//👈5
+export default function TransactionForm({onSaveTransaction}){//👈5
   const [user, setUser] = useState('');//👈1
   const [date, setDate] = useState(new Date());//👈1
   const [place, setPlace] = useState('home');//👈1
@@ -808,7 +808,7 @@ Nu voegen we state toe opdat de lijst van transacties kan wijzigen.
 ```jsx
 import {useState} from 'react';//👈1
 import Transaction from './Transaction';
-import AddTransactionForm from './AddTransactionForm';//👈3
+import TransactionForm from './TransactionForm';//👈3
 import {TRANSACTION_DATA} from '../../api/mock-data'; 
 
 export default function TransactionList() {
@@ -832,7 +832,7 @@ const createTransaction = (user, place, amount, date) => {
 return (
   <>
     <h1>Transactions</h1>
-    <AddTransactionForm onSaveTransaction={createTransaction} />//👈'1'
+    <TransactionForm onSaveTransaction={createTransaction} />//👈'1'
     {transactions.map((trans, index) => //👈1
       <Transaction {...trans} key={index} /> )}
   </>);
@@ -841,7 +841,7 @@ return (
 
 1. we voegen state toe om de transacties te beheren. We overlopen `transactions` ipv `TRANSACTION_DATA`
 2. De functie om een nieuwe transactie vooraan toe te voegen aan de lijst. 
-3. Voeg de component `AddTRansactionForm` toe.De methode om een transactie toe te voegen wordt als `prop` doorgegeven. Zo zal bij wijziging van de `state` de component opnieuw gerenderd worden.
+3. Voeg de component `TransactionForm` toe.De methode om een transactie toe te voegen wordt als `prop` doorgegeven. Zo zal bij wijziging van de `state` de component opnieuw gerenderd worden.
 4. Run de app en bekijk de console: `transactions` toont de nieuwe transactie niet:(. `newTransactions` toont de nieuwe transactie wel:). Meer uitleg op [State as a snapshot](https://beta.reactjs.org/learn/state-as-a-snapshot). `setState` is een asynchrone functie. We moeten dus gebruik maken van een constante `newTransaction`!!
  Willen we gebruik maken van de gewijzigde state dan moeten we gebruik maken van `useEffect`. Dit zien we in een later hoofdstuk.
 
