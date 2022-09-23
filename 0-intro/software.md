@@ -15,10 +15,11 @@ Voor dit vak gaan we ervan uit dat je volgende **software installeert en configu
 > Dit academiejaar kiezen we voor NodeJS v18.x.x, op 25/10/2022 wordt dit de [volgende LTS-versie](https://nodejs.org/en/about/releases/).
 
 Installeer NodeJS via een package manager:
+
 - Windows: `choco install nodejs`
 - macOS: `brew install node`
 
-Of kies voor een manuele installatie door v18 te downloaden vanaf de website: https://nodejs.org/en/.
+Of kies voor een manuele installatie door v18 te downloaden vanaf de website: <https://nodejs.org/en/>.
 
 Check na de installatie of NodeJS correct geïnstalleerd is door volgend commando uit te voeren:
 
@@ -37,11 +38,11 @@ npm install -g yarn
 ## Visual Studio Code
 
 Installeer Visual Studio Code via een package manager:
+
 - Windows: `choco install vscode`
 - macOS: `brew install --cask visual-studio-code`
 
-Of kies voor een manuele installatie door de laatste versie te downloaden vanaf de website: https://code.visualstudio.com/download.
-
+Of kies voor een manuele installatie door de laatste versie te downloaden vanaf de website: <https://code.visualstudio.com/download>.
 
 ### Visual Studio Code: plugins
 
@@ -51,7 +52,6 @@ Een aantal **verplichte** plugins voor VS Code:
 - [Error Lens](https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens)
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [Path Intellisense](https://marketplace.visualstudio.com/items?itemName=christian-kohler.path-intellisense)
-
 
 Een aantal optionele, maar toch handige plugins:
 
@@ -102,6 +102,7 @@ Een thema kan je uiteraard zelf kiezen, maar [One Dark Pro](https://marketplace.
 Fira Code is een gratis monospace lettertype met speciale karakters voor developers. Uiteraard is de keuze aan jou om dit te installeren.
 
 Installeer het lettertype via een package manager:
+
 - Windows: `choco install firacode`
 - macOS: `brew install firacode`
 

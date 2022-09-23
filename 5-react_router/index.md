@@ -13,6 +13,7 @@ Daarnaast is React een library en geen framework, zoals Angular dat wel is. Dit 
 React Router wordt aangeboden via de npm repository en biedt een declaratieve routing voor React, dit wil zeggen routing o.b.v. componenten in JSX.
 
 We hebben volgende dependencies nodig om met React Router aan de slag te kunnen (in React):
+
 - [react-router](https://www.npmjs.com/package/react-router): de core van React Router (gedeeld met React Native)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom): implementaties specifiek voor routing in webapplicaties
 
@@ -235,6 +236,7 @@ export const NotFound = () => {
 ```
 
 Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
+
 - [useLocation](https://reactrouter.com/docs/en/v6/hooks/use-location)
 - [Location interface van history package](https://github.com/remix-run/history/blob/main/docs/api-reference.md#location)
 
@@ -278,6 +280,7 @@ Daarna passen we de definitie van `/over` aan (vergeet de nodige imports niet):
 ```
 
 Merk volgende wijzigingen op:
+
 - er is geen `element` meer op de `Route`-component voor `/over`
 - er is een nieuwe index-route (waarvan de component enkel getoond wordt op `/over`)
 - er zijn drie nieuwe routes die allemaal onder `/over` vallen, React Router zal telkens voor elk van deze paden `/over` verwachten
@@ -312,6 +315,7 @@ const Location = () => (
 
 Stel we willen de subroutes `/over/services`, `/over/history` en `/over/location` tonen op de `About` component. Met andere woorden `About` moet altijd getoond worden met `Services`, `History` of `Location` eronder. Hiervoor bestaat de `Outlet` component van React Router. **Probeer deze component eerst zelf uit o.b.v. [de documentatie](https://reactrouter.com/docs/en/v6/components/outlet).**
 
+<!-- markdownlint-disable-next-line -->
 + Oplossing +
 
   Pas de definitie van `/over` aan:
@@ -427,7 +431,6 @@ Wanneer we navigeren naar `/products/263`, dan zal de `Product` component getoon
 ```
 
 Wanneer we navigeren naar `/posts/2021/1`, dan zal de `Posts` component getoond worden. Zijn `useParams` zal volgend object retourneren:
-
 
 ```js
 {
@@ -568,6 +571,7 @@ Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React 
 ## Oefening: basis routing
 
 Voorzie routing in de budget-applicatie (of in je eigen app?):
+
 - `/`: doorsturen naar `/transactions`
 - `/transactions`: een lijst van transacties (`TransactionList` component)
 - `/places`: een lijst van places (`PlacesList` component)
@@ -576,6 +580,7 @@ Voorzie routing in de budget-applicatie (of in je eigen app?):
 ## Oefening: URL parameters
 
 Voorzie volgende bijkomende routes in de budget-applicatie (of in je eigen app?):
+
 - `/transactions/edit/:id`: een transactie bewerken (`TransactionForm` component)
 - `/transactions/:id`: details van één transactie (nieuwe component nodig)
 - `/places/:id`: details van één place (nieuwe component nodig)

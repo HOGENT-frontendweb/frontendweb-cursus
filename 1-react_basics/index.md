@@ -30,8 +30,8 @@ Wat als resultaat heeft:
 
 [React](https://reactjs.org/) is in principe niet meer dan een library om hetzelfde te bereiken, maar dan handiger in gebruik. Om React te gebruiken, hebben we twee libraries nodig
 
-* `React`: laat toe om "views" aan te maken.
-* `ReactDOM`: rendert deze "views" in de DOM, m.a.w. dit is React voor de browser. Er is bijvoorbeeld ook nog [React Native](https://reactnative.dev/) voor mobile applicaties.
+- `React`: laat toe om "views" aan te maken.
+- `ReactDOM`: rendert deze "views" in de DOM, m.a.w. dit is React voor de browser. Er is bijvoorbeeld ook nog [React Native](https://reactnative.dev/) voor mobile applicaties.
 
 Deze libraries importeer je simpelweg in de HTML:
 
@@ -63,11 +63,11 @@ Dit geeft volgend resultaat:
 
 <!-- tabs:start -->
 
-### **Voorbeeld**
+### Voorbeeld
 
 [example4.html](./examples/example4.html ':include height=100px')
 
-### **Code**
+### Code
 
 [example4.html](./examples/example4.html ':include :type=code')
 
@@ -96,11 +96,11 @@ Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
 
 <!-- tabs:start -->
 
-### **Voorbeeld**
+### Voorbeeld
 
 [example5.html](./examples/example5.html ':include height=100px')
 
-### **Code**
+### Code
 
 [example5.html](./examples/example5.html ':include :type=code')
 
@@ -130,11 +130,11 @@ Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
 
 <!-- tabs:start -->
 
-### **Voorbeeld**
+### Voorbeeld
 
 [example6.html](./examples/example6.html ':include height=100px')
 
-### **Code**
+### Code
 
 [example6.html](./examples/example6.html ':include :type=code')
 
@@ -146,11 +146,11 @@ Inspecteer de werking hiervan a.d.h.v. het volgend voorbeeld.
 
 <!-- tabs:start -->
 
-### **Voorbeeld**
+### Voorbeeld
 
 [example7.html](./examples/example7.html ':include height=100px')
 
-### **Code**
+### Code
 
 [example7.html](./examples/example7.html ':include :type=code')
 
@@ -162,15 +162,15 @@ Je vraagt je nu waarschijnlijk af: "Is dit echt beter dan vanilla JavaScript?". 
 
 Als we enkel React zouden kunnen schrijven door immens, nauwelijks leesbare, boomstructuren van `createElement` te creëren hadden we waarschijnlijk nooit van React gehoord. Samen met React heeft Facebook ook JSX geïntroduceerd (een samentrekking van JavaScipt en XML). Hiermee is het mogelijk om veel efficiënter (en leesbaarder) zulke componenten uit te schrijven.
 
-![](./images/jsx.png)
+![JSX example](./images/jsx.png)
 
 Hier heb je een simpel JavaScript-bestand, maar waar je normaal ingewikkelde `React.createElement` structuren hebt om HTML te manipuleren, schrijf je gewoon iets wat erg op HTML lijkt om dat te doen.
 
 Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waar je moet op letten:
 
-* `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS class mee te geven aan een element, het wordt vervangen door `className`
-* `for` is ook een reserved keyword in JavaScript, het wordt vervangen door `htmlFor`
-* Als je JavaScript code wilt mixen met een stuk 'HTML', dien je het tussen `{ }` te zetten, bijvoorbeeld `<h1>{title}</h1>`.
+- `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS class mee te geven aan een element, het wordt vervangen door `className`
+- `for` is ook een reserved keyword in JavaScript, het wordt vervangen door `htmlFor`
+- Als je JavaScript code wilt mixen met een stuk 'HTML', dien je het tussen `{ }` te zetten, bijvoorbeeld `<h1>{title}</h1>`.
 
 Wanneer we het stuk code van het `GreetingElement` omzetten naar JSX, krijgen we het volgende resultaat:
 
@@ -194,11 +194,11 @@ Dit geeft het volgende resultaat:
 
 <!-- tabs:start -->
 
-### **Voorbeeld**
+### Voorbeeld
 
 [example8.html](./examples/example8.html ':include height=100px')
 
-### **Code**
+### Code
 
 [example8.html](./examples/example8.html ':include :type=code')
 
@@ -249,6 +249,7 @@ De [package.json](https://docs.npmjs.com/cli/v8/configuring-npm/package-json) be
 [example8.html](./examples/package.json ':include :type=code')
 
 De `package.json` bevat enkele properties:
+
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
 - `devDependencies`: packages enkel nodig in development (en dus niet in productie)
 - `scripts`: laten toe om een soort van shortcuts te maken voor scripts (bv. de applicatie starten, testen, builden voor productie, etc.)
@@ -259,21 +260,21 @@ Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze
 
 Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees gerust eens door de specificatie). Kort gezegd houdt dit in dat elk versienummer bestaat uit drie delen: `MAJOR.MINOR.PATCH`, elke deel wordt met één verhoogd in volgende gevallen:
 
-* `MAJOR`: wijzigingen die ***niet*** compatibel zijn met oudere versies
-* `MINOR`: wijzigen die ***wel*** compatibel zijn met oudere versies
-* `PATCH`: kleine bugfixes (compatibel met oudere versies)
+- `MAJOR`: wijzigingen die ***niet*** compatibel zijn met oudere versies
+- `MINOR`: wijzigen die ***wel*** compatibel zijn met oudere versies
+- `PATCH`: kleine bugfixes (compatibel met oudere versies)
 
 In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~) of hoedje (^) als prefix, dit heeft volgende betekenis:
 
-* geen prefix: exact deze versie
-* tilde (~): ongeveer deze versie (zie https://docs.npmjs.com/cli/v6/using-npm/semver#tilde-ranges-123-12-1)
-* hoedje (^): compatibel met deze versie (https://docs.npmjs.com/cli/v6/using-npm/semver#caret-ranges-123-025-004)
+- geen prefix: exact deze versie
+- tilde (~): ongeveer deze versie (zie <https://docs.npmjs.com/cli/v6/using-npm/semver#tilde-ranges-123-12-1>)
+- hoedje (^): compatibel met deze versie (<https://docs.npmjs.com/cli/v6/using-npm/semver#caret-ranges-123-025-004>)
 
 Kortom, een tilde is strenger dan een hoedje.
 
 Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
 
-Bij een `create-react-app` wordt er steeds automatisch een `yarn install` uitgevoerd, dus die hoeven we niet meer te doen. Met een `yarn start` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 3000 gestart: http://localhost:3000.
+Bij een `create-react-app` wordt er steeds automatisch een `yarn install` uitgevoerd, dus die hoeven we niet meer te doen. Met een `yarn start` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 3000 gestart: <http://localhost:3000>.
 
 ### src
 
@@ -284,6 +285,7 @@ Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de brower automa
 > **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
 ## Transaction
+
 In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van één transactie.
 
 Maak in de map `src` een map `components` aan met daarin een map `transactions`. In deze map maken we een nieuw bestand `Transaction.jsx` met volgende inhoud:
@@ -291,11 +293,11 @@ Maak in de map `src` een map `components` aan met daarin een map `transactions`.
 ```jsx
 // src/components/transactions/Transaction.jsx
 export default function Transaction() {
-	return <div>Benjamin gaf €200 uit bij Dranken Geers.</div>;
+ return <div>Benjamin gaf €200 uit bij Dranken Geers.</div>;
 }
 ```
 
-Components zijn niets meer dan functies die html terug geven, die moet getoond worden voor deze component. 
+Components zijn niets meer dan functies die html terug geven, die moet getoond worden voor deze component.
 Hier voegen we hard gecodeerde tekst toe want weten of een lege component correct gerenderd wordt is nogal lastig.
 
 Om deze component te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in de `index.js`:
@@ -303,14 +305,14 @@ Om deze component te kunnen zien moet hij ergens in de `ReactDOM` gerenderd word
 ```jsx
 // src/index.js
 ReactDOM.render(
-	<React.StrictMode>
-		<App />
-	</React.StrictMode>,
-	document.getElementById('root')
+ <React.StrictMode>
+  <App />
+ </React.StrictMode>,
+ document.getElementById('root')
 );
 ```
 
-Standaard rendert deze de `App` component. Het `index.js` bestand ga je zelden zelf aanpassen. Je past normaal de `App` component aan. 
+Standaard rendert deze de `App` component. Het `index.js` bestand ga je zelden zelf aanpassen. Je past normaal de `App` component aan.
 
 [StrictMode](https://reactjs.org/docs/strict-mode.html) doet een aantal checks op alle (onderliggende) componenten. Zeker voor een onervaren React programmeur het een goed idee om altijd `StrictMode` aan te zetten.
 
@@ -322,24 +324,24 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
-	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo" />
-				<p>
-					Edit <code>src/App.js</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
-		</div>
-	);
+ return (
+  <div className="App">
+   <header className="App-header">
+    <img src={logo} className="App-logo" alt="logo" />
+    <p>
+     Edit <code>src/App.js</code> and save to reload.
+    </p>
+    <a
+     className="App-link"
+     href="https://reactjs.org"
+     target="_blank"
+     rel="noopener noreferrer"
+    >
+     Learn React
+    </a>
+   </header>
+  </div>
+ );
 }
 
 export default App;
@@ -347,7 +349,7 @@ export default App;
 
 In `App.js` staat de code voor de standaard startpagina: het React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`, deze is enkel voor deze component. Globale stijlen definieer je in het bestand `index.css`.
 
-JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Uw component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper. 
+JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Uw component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
 Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
 
@@ -356,11 +358,11 @@ Verwijder alle code uit deze component en vervang dit door de `Transaction` comp
 import Transaction from './components/transactions/Transaction'; 
 
 function App() {
-	return (
-		<div className="App">
-			<Transaction />
-		</div>
-	);
+ return (
+  <div className="App">
+   <Transaction />
+  </div>
+ );
 }
 
 export default App;
@@ -378,13 +380,13 @@ Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in 
 
 ```js
 {
-	"key": "some string",
-	"otherKey": 15,
-	"key3": true,
-	"listOfData": ["a", 15],
-	"otherObject": {
-		"innerkey" : 42
-	}
+ "key": "some string",
+ "otherKey": 15,
+ "key3": true,
+ "listOfData": ["a", 15],
+ "otherObject": {
+  "innerkey" : 42
+ }
 }
 ```
 
@@ -405,18 +407,18 @@ Maak een map `api` met een bestand `mock-data.js` aan in de `src` map. Later ver
 ```js
 // src/api/mock-data.js
 const TRANSACTION_DATA = [{
-	user: 'Benjamin',
-	amount: -200,
-	date: '2021-07-01T12:32:04.534Z',
-	place: 'Dranken Geers',
+ user: 'Benjamin',
+ amount: -200,
+ date: '2021-07-01T12:32:04.534Z',
+ place: 'Dranken Geers',
 },
 {
-	user: 'Benjamin',
-	amount: 1500,
-	date: '2021-06-30T10:09:22.534Z',
-	place: 'Loon',
+ user: 'Benjamin',
+ amount: 1500,
+ date: '2021-06-30T10:09:22.534Z',
+ place: 'Loon',
 }];
-	
+ 
 export default TRANSACTION_DATA;
 ```
 
@@ -434,10 +436,10 @@ We gaan de `Transaction` component aanpassen zodat hij data van verschillende tr
 ```jsx
 // src/components/transaction/Transaction.jsx
 export default function Transaction() {
-	const user = "Benjamin"; // 👈 1
-	const amount = 200; // 👈 1
-	const place = "Dranken Geers"; // 👈 1
-	return <div>{user} gaf €{amount} uit bij {place}</div>; // 👈 2
+ const user = "Benjamin"; // 👈 1
+ const amount = 200; // 👈 1
+ const place = "Dranken Geers"; // 👈 1
+ return <div>{user} gaf €{amount} uit bij {place}</div>; // 👈 2
 }
 ```
 
@@ -450,13 +452,14 @@ De data zal natuurlijk van een andere component moeten komen, nu hebben we nog s
 ```jsx
 // src/components/transaction/Transaction.jsx
 export default function Transaction(props) { // 👈 2
-	// const user = "Benjamin"; 👈 1
-	// const amount = 200; 👈 1
-	// const place = "Dranken Geers"; 👈 1
-	const { user, amount, place} = props; // 👈 3
-	return <div>{user} gaf €{amount} uit bij {place}</div>;
+ // const user = "Benjamin"; 👈 1
+ // const amount = 200; 👈 1
+ // const place = "Dranken Geers"; 👈 1
+ const { user, amount, place} = props; // 👈 3
+ return <div>{user} gaf €{amount} uit bij {place}</div>;
 }
 ```
+
 1. Verwijder de constanten met de hard gecodeerde data.
 2. We geven de data door via de `props` parameter, de React properties. Op die manier kunnen we informatie doorgeven van de ene component aan de andere.
 3. Om niet telkens `props.user`, `props.amount`... te moeten schrijven, maken we gebruik van **object destructuring**.
@@ -471,14 +474,14 @@ Hoe krijg je nu de juiste data in de `props` van een component? In `App.js` will
 import Transaction from './components/transactions/Transaction';
 
 function App() {
-	const user = "Benjamin"; // 👈 1
-	const amount = 200; // 👈 1
-	const place = "Dranken Geers"; // 👈 1
-	return (
-		<div className="App">
-			<Transaction user={user} place={place} amount={amount}/> { /* 👈 2 */}
-		</div>
-	);
+ const user = "Benjamin"; // 👈 1
+ const amount = 200; // 👈 1
+ const place = "Dranken Geers"; // 👈 1
+ return (
+  <div className="App">
+   <Transaction user={user} place={place} amount={amount}/> { /* 👈 2 */}
+  </div>
+ );
 }
 
 export default App;
@@ -495,12 +498,12 @@ import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './mock-data'; // 👈 1
 
 function App() {
-	const trans = TRANSACTION_DATA[0]; // 👈 2
-	return (
-		<div className="App">
-			<Transaction user={trans.user} place={trans.place} amount={trans.amount}/> { /* 👈 2 */}
-		</div>
-	);
+ const trans = TRANSACTION_DATA[0]; // 👈 2
+ return (
+  <div className="App">
+   <Transaction user={trans.user} place={trans.place} amount={trans.amount}/> { /* 👈 2 */}
+  </div>
+ );
 }
 
 export default App;
@@ -517,13 +520,13 @@ import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock-data'; 
 
 function App() {
-	//c onst trans = TRANSACTION_DATA[0]; 👈 1
-	return (
-		<div className="App">
-		{TRANSACTION_DATA.map(trans => 
-			<Transaction user={trans.user} place={trans.place} amount={trans.amount}/> )}{ /* 👈 2 */}
-		</div>
-	);
+ //c onst trans = TRANSACTION_DATA[0]; 👈 1
+ return (
+  <div className="App">
+  {TRANSACTION_DATA.map(trans => 
+   <Transaction user={trans.user} place={trans.place} amount={trans.amount}/> )}{ /* 👈 2 */}
+  </div>
+ );
 }
 
 export default App;
@@ -536,12 +539,12 @@ import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock-data'; 
 
 function App() {
-	return (
-		<div className="App">
-		{TRANSACTION_DATA.map(trans => 
-			<Transaction {...trans}/>)}{ /* 👈 */}
-		</div>
-	);
+ return (
+  <div className="App">
+  {TRANSACTION_DATA.map(trans => 
+   <Transaction {...trans}/>)}{ /* 👈 */}
+  </div>
+ );
 }
 
 export default App;
@@ -594,10 +597,10 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
   <link
-		href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
-		rel="stylesheet"
-		integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
-		crossorigin="anonymous"> <!-- 👈 1 -->
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+  crossorigin="anonymous"> <!-- 👈 1 -->
   <title>BudgetApp</title><!-- 👈 3 -->
 </head>
 
@@ -615,9 +618,9 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script
-			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-			integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-			crossorigin="anonymous"></script> <!-- 👈 2 -->
+   src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+   integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+   crossorigin="anonymous"></script> <!-- 👈 2 -->
 </body>
 
 </html>
@@ -662,7 +665,7 @@ end note
 
 ## Oplossing
 
-Een voorbeeldoplossing is te vinden op https://github.com/HOGENT-Web/frontendweb-ch1-solution.
+Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
 
 > Uiteraard zijn heel veel oplossingen mogelijk.
 
@@ -673,4 +676,3 @@ Een voorbeeldoplossing is te vinden op https://github.com/HOGENT-Web/frontendweb
 ## Must read
 
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
-
