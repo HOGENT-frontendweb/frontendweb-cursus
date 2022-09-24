@@ -63,11 +63,11 @@ Dit geeft volgend resultaat:
 
 <!-- tabs:start -->
 
-### Voorbeeld
+### **Voorbeeld**
 
 [example4.html](./examples/example4.html ':include height=100px')
 
-### Code
+### **Code**
 
 [example4.html](./examples/example4.html ':include :type=code')
 
@@ -96,11 +96,11 @@ Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
 
 <!-- tabs:start -->
 
-### Voorbeeld
+### **Voorbeeld**
 
 [example5.html](./examples/example5.html ':include height=100px')
 
-### Code
+### **Code**
 
 [example5.html](./examples/example5.html ':include :type=code')
 
@@ -130,11 +130,11 @@ Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
 
 <!-- tabs:start -->
 
-### Voorbeeld
+### **Voorbeeld**
 
 [example6.html](./examples/example6.html ':include height=100px')
 
-### Code
+### **Code**
 
 [example6.html](./examples/example6.html ':include :type=code')
 
@@ -146,11 +146,11 @@ Inspecteer de werking hiervan a.d.h.v. het volgend voorbeeld.
 
 <!-- tabs:start -->
 
-### Voorbeeld
+### **Voorbeeld**
 
 [example7.html](./examples/example7.html ':include height=100px')
 
-### Code
+### **Code**
 
 [example7.html](./examples/example7.html ':include :type=code')
 
@@ -194,11 +194,11 @@ Dit geeft het volgende resultaat:
 
 <!-- tabs:start -->
 
-### Voorbeeld
+### **Voorbeeld**
 
 [example8.html](./examples/example8.html ':include height=100px')
 
-### Code
+### **Code**
 
 [example8.html](./examples/example8.html ':include :type=code')
 
@@ -663,9 +663,9 @@ end note
 @enduml
 ```
 
-## Oplossing
+### Oplossing
 
-Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
+Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
 
 > Uiteraard zijn heel veel oplossingen mogelijk.
 
