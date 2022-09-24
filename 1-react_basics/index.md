@@ -206,11 +206,11 @@ Dit geeft het volgende resultaat:
 
 ## webpack
 
-Onze React-applicaties gaan natuurlijk liefst niet bestaan uit een paar grote HTML-bestanden doorspekt met `script` blokken met daarin JSX. Aangezien er toch een compilatiestap is, om de JSX om te zetten naar HTML + JavaScript, kunnen we even goed gebruik maken van deze stap om ook 'andere dingen' te doen. Deze 'andere dingen' zijn bijvoorbeeld files samen nemen, afbeeldingen en CSS optimaliseren, dependencies beheren, etc.
+Onze React-applicaties gaan natuurlijk liefst niet bestaan uit een paar grote HTML-bestanden doorspekt met `script` blokken met daarin JSX. Aangezien er toch een compilatiestap is, om de JSX om te zetten naar HTML + JavaScript, kunnen we even goed gebruik maken van deze stap om ook 'andere dingen' te doen. Deze 'andere dingen' zijn bijvoorbeeld bestanden samen nemen, afbeeldingen en CSS optimaliseren, dependencies beheren, etc.
 
 Er bestaan tegenwoordig heel wat tools die deze taken op zich nemen, één van de populairdere is [webpack](https://webpack.js.org/). Door `webpack` te gebruiken kunnen we code in verschillende bestanden en mappen structureren, dependencies beheren, minification toepassen, verschillende debug en production builds maken, etc. Allemaal op een manier zoals je gewoon bent als je Java code schrijft.
 
-Net zoals we React zelf opgezet hebben kan je voor `webpack` alles downloaden en de juiste configuratiefiles aanmaken en zo alles weer manueel opzetten en werkend krijgen. Maar `webpack` heeft ontzettend véél [configuratie](https://webpack.js.org/configuration/) opties (en wordt trouwens ook voor veel andere libraries en frameworks gebruikt). Het volledig leren gebruiken is waarschijnlijk een cursus op zich.
+Net zoals we React zelf opgezet hebben kan je voor `webpack` alles downloaden en de juiste configuratiebestanden aanmaken en zo alles weer manueel opzetten en werkend krijgen. Maar `webpack` heeft ontzettend véél [configuratie](https://webpack.js.org/configuration/) opties (en wordt trouwens ook voor veel andere libraries en frameworks gebruikt). Het volledig leren gebruiken is waarschijnlijk een cursus op zich.
 
 Gelukkig bestaat er een handige CLI tool die dit allemaal voor ons doet en degelijke defaults configureert voor React: [create-react-app (CRA)](https://reactjs.org/docs/create-a-new-react-app.html).
 
