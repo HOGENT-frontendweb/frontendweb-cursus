@@ -631,7 +631,77 @@ export default function StarRating({ totalStars = 5, selectedStars = 0, onRate }
 
 Voeg een verwijderknop toe om een plaats te verwijderen.
 
-<mark>TODO: oplossing!</mark>
+<!-- markdownlint-disable-next-line -->
++ Oplossing +
+
+  Voeg eerst een knop met bijbehorende event handler toe aan de `Place` component. In deze event handler roepen we de event handler prop `onDelete` aan want enkel onze parent kan de plaats verwijderen.
+
+  ```jsx
+  // imports
+
+  const Place = memo(({ id, name, rating, onRate, onDelete }) => {
+    // handleRate
+
+    // 👇 1
+    const handleDelete = () => {
+      onDelete(id);
+    };
+
+    return (
+      <div className="card bg-light border-dark mb-4">
+        <div className="card-body">
+          <h5 className="card-title">{name}</h5>
+          <StarRating
+            selectedStars={rating}
+            onRate={handleRate}
+          />
+          {/* 👇 2 */}
+          <button class="btn btn-primary" onClick={handleDelete}>
+            Verwijder
+          </button>
+        </div>
+      </div>
+    );
+  });
+
+  export default Place;
+  ```
+
+  Voeg dan de implementatie van het verwijderen toe aan de parent en geef deze functie door aan elke `Place`.
+
+  ```jsx
+  // imports
+
+  const PlacesList = () => {
+    // state en handleRatePlace
+
+    // 👇 1
+    const handleDeletePLace = (id) => {
+      setPlaces((places) => places.filter((p) => p.id !== id));
+    };
+
+    return (
+      <>
+        <h1>Places</h1>
+        <div className="grid mt-3">
+          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+            {places
+              .sort((a, b) =>
+                a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+              )
+              .map((p) => (
+                <div className="col" key={p.id}>
+                  <Place {...p} onRate={handleRatePlace} onDelete={handleDeletePLace} /> // 👈 2
+                </div>
+              ))}
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  export default PlacesList;
+  ```
 
 ## React DevTools
 
