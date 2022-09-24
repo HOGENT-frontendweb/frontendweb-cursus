@@ -275,8 +275,6 @@ Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de brower automa
 
 > **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
-TODO: het voorbeeld op een betere manier overbrengen: niet in slides, ook niet in deze docs
-
 ## Oefening
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
