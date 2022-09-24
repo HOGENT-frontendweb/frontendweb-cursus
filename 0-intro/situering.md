@@ -24,7 +24,7 @@ Voor dit vak is er een examen-opdracht: <mark>TODO: link naar de opdracht van 22
 
 Het examen van dit vak is mondeling. Je doet een demo van je applicatie. Dit is geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
 
-De Chamilo-cursus vind je hier: <mark>TODO: link naar de Chamilo-cursus</mark>. Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?application=Chamilo%5CApplication%5CWeblcms&go=CourseViewer&course=53293). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
