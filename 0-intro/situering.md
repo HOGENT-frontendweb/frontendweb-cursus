@@ -55,21 +55,19 @@ Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt 
 
 ## Planning
 
-<mark>TODO: planning updaten</mark>
-
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
 | week 2  | useState, useContext                          |
-| week 3  | useEffect                                     |
-| week 4  | Data ophalen van een backend                  |
-| week 5  | React Router                                  |
-| week 6  | Testen en linting                             |
-| week 7  | (geen nieuwe theorie, aan de opdracht werken) |
-| week 8  | useReducer / state management / redux         |
-| week 9  | useReducer / state management / redux         |
-| week 10 | authenticatie / authorisatie                  |
-| week 11 | CI/CD, online zetten                          |
+| week 3  | useState, useContext, useEffect               |
+| week 4  | useEffect                                     |
+| week 5  | Data ophalen van een backend                  |
+| week 6  | React Router                                  |
+| week 7  | Testen en linting                             |
+| week 8  | (geen nieuwe theorie, aan de opdracht werken) |
+| week 9  | authenticatie / authorisatie met Auth0        |
+| week 10 | CI/CD, online zetten                          |
+| week 11 | (geen nieuwe theorie, aan de opdracht werken) |
 | week 12 | gastles (?)                                   |
 
 ## Help, ik zit vast?!
