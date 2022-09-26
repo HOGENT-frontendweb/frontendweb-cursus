@@ -1,7 +1,5 @@
 # Webpack your bags, time to React
 
-> "The first step of any project is to grossly underestimate its complexity and difficulty." - Nicoll Hunt
-
 ## Inleiding
 
 Neem volgende HTML-code als voorbeeld:

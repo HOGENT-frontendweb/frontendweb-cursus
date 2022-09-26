@@ -20,15 +20,15 @@ Wij hebben gekozen voor React. Waarom? Het wordt [veel gebruikt](https://2021.st
 
 Programmeren leer je enkel door het te doen, niet door onze slides of cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-Voor dit vak is er een examen-opdracht: <mark>TODO: link naar de opdracht van 22-23</mark>. Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
+Voor dit vak is er een examen-opdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=53293&tool=Document&browser=Table&tool_action=Viewer&publication=2046257). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
 
 Het examen van dit vak is mondeling. Je doet een demo van je applicatie. Dit is geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
 
-De Chamilo-cursus vind je hier: <mark>TODO: link naar de Chamilo-cursus</mark>. Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?application=Chamilo%5CApplication%5CWeblcms&go=CourseViewer&course=53293). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examen-opdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
-> Week 13
+> Week 13: vrijdag 23 december om 23u59
 
 Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
@@ -55,21 +55,19 @@ Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt 
 
 ## Planning
 
-<mark>TODO: planning updaten</mark>
-
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
 | week 2  | useState, useContext                          |
-| week 3  | useEffect                                     |
-| week 4  | Data ophalen van een backend                  |
-| week 5  | React Router                                  |
-| week 6  | Testen en linting                             |
-| week 7  | (geen nieuwe theorie, aan de opdracht werken) |
-| week 8  | useReducer / state management / redux         |
-| week 9  | useReducer / state management / redux         |
-| week 10 | authenticatie / authorisatie                  |
-| week 11 | CI/CD, online zetten                          |
+| week 3  | useState, useContext, useEffect               |
+| week 4  | useEffect                                     |
+| week 5  | Data ophalen van een backend                  |
+| week 6  | React Router                                  |
+| week 7  | Testen en linting                             |
+| week 8  | (geen nieuwe theorie, aan de opdracht werken) |
+| week 9  | authenticatie / authorisatie met Auth0        |
+| week 10 | CI/CD, online zetten                          |
+| week 11 | (geen nieuwe theorie, aan de opdracht werken) |
 | week 12 | gastles (?)                                   |
 
 ## Help, ik zit vast?
@@ -87,7 +85,7 @@ Lees de foutboodschappen, copy paste ze in Google. Vaak 'helpen' we studenten do
 
 - mail je link naar de StackOverflow-vraag naar ons
 - als je met je vraag niet op StackOverflow terecht kan:
-  - maak een GitHub-issue waar het probleem goed uitgelegd staat
+  - maak een **GitHub-issue** waar het probleem goed uitgelegd staat
   - vermeld NAAM, KLAS en eventueel een gif die het probleem demonstreert
   - hang jouw lector aan dit issue (als assignee en/of getagd)
   - je krijgt van ons een reactie op dit issue

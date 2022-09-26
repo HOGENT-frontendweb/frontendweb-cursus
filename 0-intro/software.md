@@ -18,6 +18,7 @@ Installeer NodeJS via een package manager:
 
 - Windows: `choco install nodejs`
 - macOS: `brew install node`
+- Linux: [distro afhankelijk](https://nodejs.org/en/download/package-manager)
 
 Of kies voor een manuele installatie door v18 te downloaden vanaf de website: <https://nodejs.org/en/>.
 
@@ -41,6 +42,7 @@ Installeer Visual Studio Code via een package manager:
 
 - Windows: `choco install vscode`
 - macOS: `brew install --cask visual-studio-code`
+- Linux: [distro afhankelijk](https://code.visualstudio.com/docs/setup/linux)
 
 Of kies voor een manuele installatie door de laatste versie te downloaden vanaf de website: <https://code.visualstudio.com/download>.
 
@@ -105,6 +107,7 @@ Installeer het lettertype via een package manager:
 
 - Windows: `choco install firacode`
 - macOS: `brew install firacode`
+- Linux: [distro afhankelijk](https://github.com/tonsky/FiraCode/wiki/Linux-instructions#installing-with-a-package-manager)
 
 Of volg de instructies op de [GitHub van Fira Code](https://github.com/tonsky/FiraCode/wiki/Installing).
 
