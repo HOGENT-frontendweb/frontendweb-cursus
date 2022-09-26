@@ -476,4 +476,5 @@ Als we surfen naar https://api.thecatapi.com/v1/breeds dan krijgen we json met a
 - Maak gebruik van bootstrap
 ![](./images/cats.PNG)
 
-
+## Oplossing
+[github](https://github.com/HOGENT-Web/frontend-ch3-exercise-solution)
