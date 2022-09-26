@@ -20,7 +20,7 @@ Wij hebben gekozen voor React. Waarom? Het wordt [veel gebruikt](https://2021.st
 
 Programmeren leer je enkel door het te doen, niet door onze slides of cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-Voor dit vak is er een examen-opdracht: <mark>TODO: link naar de opdracht van 22-23</mark>. Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
+Voor dit vak is er een examen-opdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=53293&tool=Document&browser=Table&tool_action=Viewer&publication=2046257). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staat duidelijk in de opdracht. De bijbehorende backend maak je in het vak Web Services.
 
 Het examen van dit vak is mondeling. Je doet een demo van je applicatie. Dit is geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
 
