@@ -28,7 +28,7 @@ De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?application
 
 ### Deadline
 
-> Week 13
+> Week 13: vrijdag 23 december om 23u59
 
 Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
