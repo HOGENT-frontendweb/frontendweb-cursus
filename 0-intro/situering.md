@@ -45,11 +45,11 @@ Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers.
 
 ## Slides?
 
-Het cursusmateriaal wordt op GitHub gehost: https://hogent-web.github.io/frontendweb-cursus.
+Het cursusmateriaal wordt op GitHub gehost: <https://hogent-web.github.io/frontendweb-cursus>.
 
-Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): https://github.com/hogent-web/frontendweb-budget
+Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/hogent-web/frontendweb-budget>
 
-De bijhorende backend is te vinden op: https://github.com/hogent-web/webservices-budget
+De bijhorende backend is te vinden op: <https://github.com/hogent-web/webservices-budget>
 
 Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt dus nog aan gesleuteld. Grotendeels worden de slides van vorig jaar hergebruikt in afwachting van een hoofdstuk in deze documentatie.
 
@@ -70,7 +70,7 @@ Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt 
 | week 11 | (geen nieuwe theorie, aan de opdracht werken) |
 | week 12 | gastles (?)                                   |
 
-## Help, ik zit vast?!
+## Help, ik zit vast?
 
 Lees de foutboodschappen, copy paste ze in Google. Vaak 'helpen' we studenten door de fout te copy-pasten en de eerste link in Google te kopiëren.
 
@@ -85,8 +85,8 @@ Lees de foutboodschappen, copy paste ze in Google. Vaak 'helpen' we studenten do
 
 - mail je link naar de StackOverflow-vraag naar ons
 - als je met je vraag niet op StackOverflow terecht kan:
-    - maak een **GitHub-issue** waar het probleem goed uitgelegd staat
-    - vermeld NAAM, KLAS en eventueel een gif die het probleem demonstreert
-    - hang jouw lector aan dit issue (als assignee en/of getagd)
-    - je krijgt van ons een reactie op dit issue
+  - maak een **GitHub-issue** waar het probleem goed uitgelegd staat
+  - vermeld NAAM, KLAS en eventueel een gif die het probleem demonstreert
+  - hang jouw lector aan dit issue (als assignee en/of getagd)
+  - je krijgt van ons een reactie op dit issue
 - debuggen via mail wordt niet gedaan
