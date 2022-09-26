@@ -85,7 +85,7 @@ Lees de foutboodschappen, copy paste ze in Google. Vaak 'helpen' we studenten do
 
 - mail je link naar de StackOverflow-vraag naar ons
 - als je met je vraag niet op StackOverflow terecht kan:
-    - maak een GitHub-issue waar het probleem goed uitgelegd staat
+    - maak een **GitHub-issue** waar het probleem goed uitgelegd staat
     - vermeld NAAM, KLAS en eventueel een gif die het probleem demonstreert
     - hang jouw lector aan dit issue (als assignee en/of getagd)
     - je krijgt van ons een reactie op dit issue
