@@ -66,7 +66,7 @@ Een aantal optionele, maar toch handige plugins:
 Voeg onderstaande configuratie toe aan de instellingen van Visual Studio Code. De eenvoudigste manier is om dit via de JSON-interface te doen:
 
 1. Open de zoekfunctie via de toets `F1`
-2. Zoek op "settings" en kies voor `Preferences: Open Settings (JSON)`
+2. Zoek op "settings" en kies voor `Preferences: Open User Settings (JSON)`
 3. Kopieer onderstaande JSON-code en voeg toe aan het JSON-bestand dat geopend werd. Zorg ervoor dat je een geldig JSON-object maakt!
 
 ```json
