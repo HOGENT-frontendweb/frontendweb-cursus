@@ -443,7 +443,6 @@ export default function Transaction() {
 
 1. Definieer een variabele voor `user`, `amount` en `place`
 2. Vervang de hardcoded info door de variabelen.  
-Ter herinnering: als je JavaScript code wilt uitvoeren binnen een `jsx` stuk: tussen `{}` plaatsen.
 
 De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
 
@@ -510,7 +509,7 @@ export default App;
 Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een `Transaction` component tonen.
 
 1. Verwijder de lijn die de eerste transactie ophaalt.
-2. We hier kunnen in de JSX-code ook onze array **mapppen** waarbij we elk element omzetten naar een `Transaction` component.
+2. We hier kunnen in de JSX-code ook onze array **mappen** waarbij we elk element omzetten naar een `Transaction` component.
 
 ```jsx
 // src/App.js
