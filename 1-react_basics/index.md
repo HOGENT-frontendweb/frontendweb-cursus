@@ -638,7 +638,7 @@ export default function Transaction(props) {
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
-![To do app](/./images/todo-app-screenshot.png ':size=50%')
+![To do app](/./images/todo-app-screenshot.png ':size=80%')
 
 Een `TodoItem` heeft volgende props:
 
