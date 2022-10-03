@@ -548,15 +548,23 @@ Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfd
 
 Als we surfen naar <https://api.thecatapi.com/v1/breeds> dan krijgen we JSON met alle kattenrassen. Maak een pagina waar de gebruiker een ras kan selecteren, en waar de details van het ras getoond worden.
 
-- Maak voor het ophalen van de JSON data gebruik van `useEffect` en de `fetch` functie.
-- Haal alle breeds in één keer op en hou een breeds state variabele bij.
+- Gebruik dit bestand met mock data: [mock_data.js](https://raw.githubusercontent.com/HOGENT-Web/frontend-ch3-exercise-solution/main/src/api/mock_data.js).
+- Hou alle breeds bij in een state variabele bij.
 - Hou de geselecteerde breed ook bij in state.
-- Maak een formulier om een nieuwe breed toe te voegen. Voeg deze toe aan de gecachte breeds. Alle velden met uitzondering van de `imageUrl` zijn verplicht in te vullen.
+- Maak een formulier om een nieuwe breed toe te voegen. Voeg deze toe aan de bijgehouden breeds. Alle velden met uitzondering van de `description` en `imageUrl` zijn verplicht in te vullen.
 - Maak gebruik van [bootstrap](https://getbootstrap.com/docs/).
 
 ![Voorbeeld van de kattenrassen-applicatie](./images/cats.PNG)
 
-> <mark>TODO:</mark> dit is te vroeg
+<!-- markdownlint-disable-next-line -->
++ Oplossing +
+
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `6dddade`
+
+  ```bash
+  git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  git checkout -b oplossing 6dddade
+  ```
 
 ## Context API
 
@@ -769,7 +777,7 @@ De context provider kan data in de context plaatsen, maar het kan de data in de 
 
 ### ThemeContext en Provider
 
-%aak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.context.jsx`:
+Maak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.context.jsx`:
 
 ```jsx
 import { createContext} from 'react'; // 👈 1
@@ -921,9 +929,7 @@ function App() {
   return (
     <div className={`container-xl bg-${theme} text-${oppositeTheme}`}>{/* 👈 3 */}
       <button type="button" onClick={toggleTheme}>{/* 👈 4 */}
-        {theme===themes.dark?
-        <IoMoonSharp /> :
-        <IoSunny />}
+        {theme === themes.dark ? <IoMoonSharp /> : <IoSunny />}
       </button>
       <TransactionList />
       <PlacesList />
@@ -1137,6 +1143,16 @@ Maak een component `PlacesSelect` aan. Deze functie heeft geen argumenten.
 ## Oefening
 
 Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan worden. Refactor eventuele anti-patterns in de applicatie.
+
+<!-- markdownlint-disable-next-line -->
++ Oplossing +
+
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `9181134`
+
+  ```bash
+  git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  git checkout -b oplossing 9181134
+  ```
 
 ## Must reads
 
