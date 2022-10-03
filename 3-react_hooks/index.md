@@ -498,13 +498,13 @@ export default memo(function TransactionForm({ onSaveTransaction }) {
 });
 ```
 
-1. `useForm` is een **custom hook** om forms te beheren, het geeft allerlei nuttige functies en andere info terug. Neem maar een kijkje in de **documentatie**.
+1. `useForm` is een **custom hook** om forms te beheren, het geeft allerlei nuttige functies en andere info terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/api/useform/).
 2. [register](https://react-hook-form.com/api/useform/register) methode: registreren van de velden in het formulier. De waarden van de velden kunnen zo gebruikt worden voor zowel formuliervalidatie als het verzenden van het formulier.
 3. Registreer de formuliervelden in de `useForm` hook.
 4. We hoeven zelf geen state meer bij te houden.
 5. Je kan ook een standaardwaarde opgeven.
 6. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het submitten van het formulier. Je geeft aan deze functie een functie mee die opgeroepen moet worden als het formulier verzonden wordt.
-7. De `onSubmit` methode logt de verstuurde waarden naar de console. `data` bevat de ingevulde waarden per formulierveld: `register('user')` wordt gesubmit als `{ user:'value' }`.
+7. De `onSubmit` methode logt de verstuurde waarden naar de console. `data` bevat de ingevulde waarden per formulierveld: `register('user')` wordt doorgegeven als `{ user:'value' }`.
 8. [reset](https://react-hook-form.com/api/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
 
 ### Validatie
@@ -556,26 +556,34 @@ Als we surfen naar <https://api.thecatapi.com/v1/breeds> dan krijgen we JSON met
 
 ![Voorbeeld van de kattenrassen-applicatie](./images/cats.PNG)
 
-## Context API
-We creëren nested component trees om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
+> <mark>TODO:</mark> dit is te vroeg
 
-`Context API` laat toe om data door te geven aan child componenten, zonder dat we via props de data tot in de bladeren moeten doorgeven. Dus `Context API` is een alternatief voor het doorgeven van props. 
+## Context API
+
+We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
+
+De **Context API** laat toe om data globaal bij te houden en door te geven aan child components, zonder dat we via props de data tot in deze kinderen moeten doorgeven. Dus Context API is een alternatief voor het doorgeven van props.
+
+**Let op**, de Context API wordt vaak ten onrechte gebruikt als oplossing. Gebruik het echt alleen als de state echt globaal moet zijn en gebruik de context zo laag mogelijk in de component tree.
 
 Een aantal use cases voor context zijn o.a. theming, taalkeuze, huidige gebruiker,...
 
-De `Context API` bestaat uit drie bouwstenen:
-1. Een `Context Object`, aangemaakt door de factory method `createContext`
-2. Een `Context Provider`: voorziet de componenten van data
-3. Meerdere `Context Consumers` : ontvangen de data van de context.
+De Context API bestaat uit drie bouwstenen:
 
-Om de werking van de React Context API te demonstreren kan de gebruiker het theme van de site kiezen: `light/dark mode`.
-Het aanmaken van een Context gebeurt in 3 stappen
+1. Een **Context Object**, aangemaakt door de factory functie `createContext`
+2. Een **Context Provider**: voorziet de onderliggende componenten van data
+3. Meerdere **Context Consumers** : ontvangen de data van de context
 
-1. Creëer een context. 
-2. Provide de context.
-3. Consume de context. 
+Om de werking van de React Context API te demonstreren kan de gebruiker van onze budgetapplicatie een licht of donker thema kiezen. We gaan hiervoor een context gebruiken aangezien het thema van de website door alle componenten gekend moet zijn om bv. de kleuren aan te passen.
+
+Het aanmaken van een context gebeurt typisch in 3 stappen:
+
+1. Creëer een context.
+2. Bied de context aan via een provider.
+3. Neem data uit de context via een consumer (of dus in een child component).
 
 ### Refactor TransactionList
+
 We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft.
 
 ```jsx
@@ -641,40 +649,52 @@ export default function TransactionList() {
       <h1>Transactions</h1>
       <TransactionForm onSaveTransaction={createTransaction} />
       <div className="input-group mb-3 w-50">
-        <input type="search" id="search" className="form-control rounded" placeholder="Search" value={text} onChange={(e) => setText(e.target.value)} />
+        <input
+          type="search"
+          id="search"
+          className="form-control rounded"
+          placeholder="Search"
+          value={text}
+          onChange={(e) => setText(e.target.value)} />
         <button type="button" className="btn btn-outline-primary" onClick={() => setSearch(text)}>Search</button>
       </div>
       <div className="mt-4">
         <TransactionTable transactions={filteredTransactions} />
       </div>
-    </>);
+    </>
+  );
 }
 ```
 
-### Stap 1 : creëer de context
-Voorzie voorlopig in `App.js` een knop om het 'theme' te kiezen. In het  hoofdstuk 'routing' wordt dit een onderdeel van de navigatiebar.
+### Stap 1: Creëer de context
+
+Voorzie voorlopig in `App.js` een knop om het thema te kiezen. In het hoofdstuk [routing](./../5-react_router/index.md) wordt dit een onderdeel van de navigatiebalk. We maken buiten de `App` component een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
+import { createContext } from 'react'; // 👈
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
-import {createContext} from 'react';//👈
 
-export const ThemeContext = createContext();//👈
+export const ThemeContext = createContext(); // 👈
 
 function App() {
-    return (
-        <div>
-            <TransactionList />
-            <PlacesList />
-        </div>
-    );
+  return (
+    <div>
+      <TransactionList />
+      <PlacesList />
+    </div>
+  );
 }
+
 export default App;
 ```
-`createContext` : creatie van een instantie van React Context. De factory functie heeft 1 optioneel argument, de default waarde. Exporteer `TransactionContext` daar de consumers dit gebruiken.
 
-### Stap 2: Provide de context
-Eveneens in `App.js`
+`createContext` : creatie van een instantie van React Context.
+
+### Stap 2: Bied de context aan
+
+Voeg toe in `App.js`:
+
 ```jsx
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
@@ -682,31 +702,36 @@ import {createContext} from 'react';
 
 export const ThemeContext = createContext();
 function App() {
-	return (
-	 <ThemeContext.Provider value={{theme:'dark'}}> {/*👈*/}
-		  <div>
-          <TransactionList />
-          <PlacesList />
+  return (
+    <ThemeContext.Provider value={{theme:'dark'}}> {/* 👈 */}
+      <div>
+        <TransactionList />
+        <PlacesList />
       </div>
-	</ThemeContext.Provider>
-)}
+    </ThemeContext.Provider>
+  );
+}
 export default App;
 ```
-Elk `Context Object` wordt geleverd met een `Context Provider` component waarin de data geplaatst wordt.
-Een `Context Provider` plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de `Context Consumers`) binnen de `Context Provider` hebben toegang tot de data en kunnen zich abonneren op wijzigingen.
-De `value` property bevat de `data` die in de context geplaatst wordt. Geef een object door (vandaar {{}}). Alle kinderen die afstammen van de provider zullen opnieuw renderen wanneer de waarde van de Provider verandert.
+
+Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. Geef een object door (vandaar `{{}}`). Alle kinderen die afstammen van de provider zullen opnieuw renderen wanneer de waarde van de Provider verandert.
+
+> Het is niet verplicht om een context steeds in de App component te zetten, je zet hem zo laag mogelijk zodat de nodige child componenten aan de data kunnen.
 
 ### Stap 3: Consume de context
-De data hoeft niet langer doorgegeven te worden via props. Bvb de `TransactionTable` component
+
+De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. het thema in de `TransactionTable` component. De `TransactionsTable` component zal de data consumeren, en is een context Consumer.
+
 ```jsx
-import { useState, useMemo, useCallback, useContext } from 'react';//👈1
+import { useState, useMemo, useCallback, useContext } from 'react'; // 👈 1
 import { ThemeContext } from '../../App';
 //...
 
 function TransactionTable({
   transactions
 }) {
-  const {theme} = useContext(ThemeContext);//👈1
+  const { theme } = useContext(ThemeContext); // 👈 1
+
   if (transactions.length === 0) {
     return (
       <div className="alert alert-info">
@@ -717,7 +742,7 @@ function TransactionTable({
 
   return (
     <div>
-      <table className={`table table-hover table-responsive table-${theme}`}>{/*👈*/}
+      <table className={`table table-hover table-responsive table-${theme}`}>{/* 👈 */}
         <thead>
           <tr>
             <th>Date</th>
@@ -738,37 +763,36 @@ function TransactionTable({
 }
 ```
 
-De TransactionsTable component zal de data consumeren, en is een `Context Consumer`.  
-1. `useContext` hook wordt gebruikt om met de context te connecteren en heeft als parameter een context object `ThemeContext`. Het retourneert de `value` van de huidige context.(zie value property van `Context Provider`)
+1. De `useContext` hook wordt gebruikt om met de context te connecteren en heeft als parameter een context object `ThemeContext`. Het retourneert de `value` van de huidige context (zie value property van de context provider).
 
-De `Context Provider` kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om om te schakelen van dark naar light mode of omgekeerd, dienen we een aparte component aan te maken.
+De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om om te schakelen van dark naar light mode of omgekeerd, dienen we een aparte component aan te maken.
 
 ### ThemeContext en Provider
 
-In de `src` folder, maak een `contexts` folder aan, met daarbinnen de file `Theme.context.jsx`.
+%aak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.context.jsx`:
+
 ```jsx
-import { createContext} from 'react';//👈1
+import { createContext} from 'react'; // 👈 1
 
-export const ThemeContext = createContext();//👈1
+export const ThemeContext = createContext(); // 👈 1
 
-export const ThemeProvider = ({//👈2
+export const ThemeProvider = ({ // 👈 2
   children
 }) => {
- 
-  return (//👈2
-      <ThemeContext.Provider>
-          {children}
-      </ThemeContext.Provider>
+
+  return ( // 👈 2
+    <ThemeContext.Provider>
+        {children}
+    </ThemeContext.Provider>
   );
 };
 ```
-1. Importeer `createContext` en maak de context aan
-2. Maak een stateful component, `ThemeProvider`, die de `children` als prop ontvangt. De children is de component tree waarrond de Provider geplaatst wordt. `ThemeProvider` beheert de data en stelt het ter beschikking van de children. 
-3. `ThemeProvider` rendert de 'Context Provider', die de 'Consumers' omsluit
 
-De `ThemeProvider` beheert de state en functies en stelt deze ter beschikking aan de children. Hou hier 
-- als state het theme bij 
-- en een methode om te switchen van theme
+1. Importeer `createContext` en maak de context aan
+2. Maak een stateful component genaamd `ThemeProvider` die de `children` als prop ontvangt. `children` bevat de component tree waarrond de Provider geplaatst wordt. `ThemeProvider` beheert de data en stelt het ter beschikking van deze children.
+3. De component `ThemeProvider` rendert de context provider die de consumers als children zal hebben.
+
+De `ThemeProvider` beheert de state en functies en stelt deze ter beschikking aan de children. Hou hier als state het thema bij en een functie om te wisselen van thema.
 
 ```jsx
 import {
@@ -778,9 +802,9 @@ import {
   useMemo
 } from 'react';
 
-export const themes = {//👈1
-  dark:"dark",
-  light:"light"
+export const themes = { // 👈 1
+  dark: "dark",
+  light: "light"
 }
 
 export const ThemeContext = createContext();
@@ -788,32 +812,34 @@ export const ThemeContext = createContext();
 export const ThemeProvider = ({
   children
 }) => {
-
-  const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark);//👈2
+  const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark); // 👈 2
   
-  const toggleTheme = useCallback(() => {//👈3
-      const newThemeValue = theme===themes.dark ? themes.light : themes.dark;
-      setTheme(newThemeValue);
-      sessionStorage.setItem('themeMode', newThemeValue);
+  const toggleTheme = useCallback(() => { // 👈 3
+    const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
+    setTheme(newThemeValue);
+    sessionStorage.setItem('themeMode', newThemeValue);
   }, [theme, setTheme]);
 
-  const value = useMemo (()=> ({ theme, toggleTheme}), [theme, toggleTheme]);//👈4
+  const value = useMemo (()=> ({ theme, toggleTheme}), [theme, toggleTheme]); // 👈 4
 
   return (
-      <ThemeContext.Provider value={value}>{/*👈5*/}
-          {children}
-      </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{/* 👈 5 */}
+      {children}
+    </ThemeContext.Provider>
   );
 };
 ```
-1. We definiëren eerst een constante `themes` met de mogelijke waarden
-2. De `ThemeProvider`houdt de state bij, hier het geselecteerde theme
-3. De `ThemeProvider`voorziet ook in een methode om het `theme` aan te passen.
-4. De `ThemeProvider`bepaalt wat er gedeeld wordt met de children. Maak hiervoor de constant `value` aan. Vermits het hier om een waarde gaat gebruiken we `useMemo`
-5. De `ThemeProvider`stelt de `value` ter beschikking van de children
 
-### kleur van de tekst
-Het theme zal gebruikt worden om de background-color in te stellen, maar soms dient ook de kleur van de tekst of van een rand te worden ingesteld (het tegengestelde kleur). Dus we voorzien een extra berekende waarde en stellen de waarde ter beschikking
+1. We definiëren eerst een constante `themes` met de mogelijke waarden.
+2. De `ThemeProvider` houdt de state bij, hier het geselecteerde thema. Eventueel halen we een vorige waarde uit `sessionStorage` op.
+3. De `ThemeProvider` voorziet ook in een functie om het thema aan te passen.
+4. De `ThemeProvider` bepaalt wat er gedeeld wordt met de children. Maak hiervoor de constante `value` aan. Vermits het hier om een waarde (en geen functie) gaat, gebruiken we `useMemo`.
+5. De `ThemeProvider` stelt de `value` ter beschikking van de children.
+
+### Kleur van de tekst
+
+Het theme zal gebruikt worden om de achtergrondkleur in te stellen, maar soms dient ook de kleur van de tekst of van een rand te worden ingesteld (de tegengestelde kleur). Dus we voorzien een extra berekende waarde en maken ook deze waarde beschikbaar.
+
 ```jsx
 import {
   createContext,
@@ -832,266 +858,286 @@ export const ThemeContext = createContext();
 export const ThemeProvider = ({
   children
 }) => {
+  const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark);
 
-  const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark);//
-  
   const toggleTheme = useCallback(() => {
-      const newThemeValue = theme===themes.dark ? themes.light : themes.dark;
-      setTheme(newThemeValue);
-      sessionStorage.setItem('themeMode', newThemeValue);
+    const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
+    setTheme(newThemeValue);
+    sessionStorage.setItem('themeMode', newThemeValue);
   }, [theme, setTheme]);
 
-  const oppositeTheme = useMemo(()=>theme===themes.dark ? themes.light : themes.dark,[theme]);//👈1
+  const oppositeTheme = useMemo(() => theme === themes.dark ? themes.light : themes.dark, [theme]); // 👈 1
 
-  const value = useMemo (()=> ({ theme, oppositeTheme, toggleTheme}), [theme, oppositeTheme, toggleTheme]);//👈2
+  const value = useMemo(()=> ({ theme, oppositeTheme, toggleTheme }), [theme, oppositeTheme, toggleTheme]); // 👈 2
 
   return (
-      <ThemeContext.Provider value={value}>
-          {children}
-      </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>
+      {children}
+    </ThemeContext.Provider>
   );
 };
 ```
 
-1. Voeg de berekende waarde`oppositeTheme` toe
-2. Stel `oppositeTheme` beschikbaar voor de kinderen
+1. Voeg de berekende waarde`oppositeTheme` toe.
+2. Maak `oppositeTheme` beschikbaar voor de children. Merk op: je kan ook meteen `oppositeTheme` berekenen in de `useMemo` die `value` bepaald.
 
 ### Providing ThemeContext
-Stel in `index.js` de `ThemeProvider` ter beschikking aan alle children. 
+
+Stel in `index.js` de `ThemeProvider` ter beschikking aan alle children.
+
 ```jsx
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import App from './App';
 import './index.css';
-import { ThemeProvider} from './contexts/Theme.context';
+import { ThemeProvider } from './contexts/Theme.context'; // 👈
 
 const root = createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ThemeProvider>{/*👈*/}
+    <ThemeProvider>{/* 👈 */}
       <App />
-    </ThemeProvider>{/*👈*/}
+    </ThemeProvider>{/* 👈 */}
   </React.StrictMode>
 );
 reportWebVitals();
 ```
 
-### Consuming ThemeContext en voorzien van een knop om van thema te wisselen
+### Consuming ThemeContext
 
-`App.js`:
+Voeg in `App.js` een knop toe om van thema te wisselen:
 
 ```jsx
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
-import {ThemeContext, themes} from './contexts/Theme.context';//👈1
-import { IoMoonSharp, IoSunny } from 'react-icons/io5';//👈1
-import {useContext} from 'react';//👈1
+import { ThemeContext, themes } from './contexts/Theme.context'; // 👈 1
+import { IoMoonSharp, IoSunny } from 'react-icons/io5'; // 👈 1
+import { useContext } from 'react'; // 👈 1
 
 function App() {
-  	const { theme, oppositeTheme, toggleTheme } = useContext(ThemeContext);//👈2
+  const { theme, oppositeTheme, toggleTheme } = useContext(ThemeContext); // 👈 2
 
-    return (
-        <div className={`container-xl bg-${theme} text-${oppositeTheme}`}>{/*👈3*/}
-          <button type="button" onClick={toggleTheme}>{/*👈4*/}
-            {theme===themes.dark?
-            <IoMoonSharp /> :
-            <IoSunny />}
-          </button>
-          <TransactionList />
-          <PlacesList />
-        </div>
-    );
+  return (
+    <div className={`container-xl bg-${theme} text-${oppositeTheme}`}>{/* 👈 3 */}
+      <button type="button" onClick={toggleTheme}>{/* 👈 4 */}
+        {theme===themes.dark?
+        <IoMoonSharp /> :
+        <IoSunny />}
+      </button>
+      <TransactionList />
+      <PlacesList />
+    </div>
+  );
 }
 export default App;
 ```
-1. Importeer de nodige componenten
-2. Roep de `useContext`hook aan en gebruik destructuring om de properties die de component nodig heeft eruit te halen
-3. Voeg de bootstrap klassen toe voor de achtergrondskleur en de kleur van de tekst
-4. Voorzie de knop om het theme te kiezen.
 
-De `TransactionTable` component blijft behouden. De ThemeContext komt nu wel niet uit App.jsx maar Theme.context.jsx.
+1. Importeer de nodige componenten.
+2. Roep de `useContext` hook aan en gebruik destructuring om de properties, die de component nodig heeft, eruit te halen.
+3. Voeg de bootstrap klassen toe voor de achtergrondskleur en de kleur van de tekst.
+4. Voorzie de knop om het thema te kiezen.
+
+De `TransactionTable` component blijft behouden. De ThemeContext komt nu wel niet uit `App.jsx` maar `Theme.context.jsx`:
+
 ```jsx
 import { ThemeContext } from '../../contexts/Theme.context';
 ```
-## Oefening 
+
+## Oefening
+
 Pas de andere componenten aan
 
 ## Form revisited - code refactoring
 
-Anti-patterns
-- Gebruik geen constante object literals/arrays in de component, plaats deze buiten de component, bvb de validation rules
-- Definieer geen pure functies in de component (geen afhankelijkheden van variabelen), plaats deze buiten de component: bvb toDateInputString
-- Definieer geen componenten inline in een andere component, plaats deze buiten de component, bvb LabelInput.
-- Gebruik een id als key-waarde in lijsten, gebruik geen index
+Er zitten een paar anti-patterns in ons formulier:
 
-### Gebruik geen constante object literals/arrays in de component, plaats deze buiten de component
+1. Gebruik geen constante object literals/arrays in de component, bv. validatieregels. Plaats deze buiten de component.
+2. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen), bv. `toDateInputString`. Plaats deze buiten de component.
+3. Definieer geen componenten inline in een andere component, bv. `LabelInput`. Plaats deze buiten de component.
+4. Gebruik een id als key-waarde in lijsten, gebruik geen index.
+
+### Anti-pattern 1 - constante objecten/arrays
+
 ```jsx
 //...
 
-const validationRules = {//👈1
-	user: {
-		required: 'this is required',
-		minLength: { value: 2, message: 'Min length is 2' },
-	},
-	date: { required: 'this is required' },
-	place: { required: 'this is required' },
-	amount: {
-		valueAsNumber: true,
-		required: 'this is required',
-		min: { value: 1, message: 'min 1' },
-		max: { value: 5000, message: 'max 5000' },
-	}
+const validationRules = { // 👈 1
+  user: {
+    required: 'this is required',
+    minLength: { value: 2, message: 'Min length is 2' },
+  },
+  date: { required: 'this is required' },
+  place: { required: 'this is required' },
+  amount: {
+    valueAsNumber: true,
+    required: 'this is required',
+    min: { value: 1, message: 'min 1' },
+    max: { value: 5000, message: 'max 5000' },
+  }
 };
 
 //...
 
 export default memo(function TransactionForm({ onSaveTransaction }) {
-//...
+  //...
 
-    return (
-        <>
-            <h2>
-                Add transaction
-            </h2>
-            <form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3">
-                <div className="mb-3">
-                    <label htmlFor="date" className="form-label">Who</label>
-                    <input
-                        {...register('user', validationRules.user)}//👈2
-                        defaultValue=''
-                        id="user"
-                        type="text"
-                        className="form-control"
-                        placeholder="user" required
-                    />
-                    {errors.user && <p className="form-text text-danger">{errors.user.message}</p>}
-                </div>
-{/*... Pas zelf de andere validatieregels aan*/}
-            </form>
-        </>
-    );
+  return (
+    <>
+      <h2>
+        Add transaction
+      </h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3">
+        <div className="mb-3">
+          <label htmlFor="date" className="form-label">Who</label>
+          <input
+            {...register('user', validationRules.user)}//👈2
+            defaultValue=''
+            id="user"
+            type="text"
+            className="form-control"
+            placeholder="user" required
+          />
+          {errors.user && <p className="form-text text-danger">{errors.user.message}</p>}
+        </div>
+
+        {/*... Pas zelf de andere validatieregels aan*/}
+      </form>
+    </>
+  );
 })
 
 ```
-1. `validationRules` bevat per input field de validatieregels. We definiëren dit buiten de component, anders wordt dit bij elke rerender opnieuw aangemaakt.
-2. Het `input` field maakt hiervan gebruik voor de validation. Voordeel: Er wordt geen nieuw object aangemaakt bij elke rerender. 
+
+1. `validationRules` bevat per formulierveld de validatieregels. We definiëren dit buiten de component, anders wordt dit bij elke render opnieuw aangemaakt.
+2. Het `input` field maakt hiervan gebruik voor de validatie. Voordeel: er wordt geen nieuw object aangemaakt bij elke render.
 
 ### Duplicate code
-De combinatie `Label` en `Input` tag komen vaak voor. Kunnen we hier aparte component van maken?
-Componenten mag je niet definiëren binnen een andere component.
 
-Maak een functiecomponent `LabelInput`. Plaats de code van de user label en input er in
+De combinatie `Label` en `Input` tag komen vaak voor. Kunnen we hier aparte component van maken?
+
+Componenten mag je niet definiëren binnen een andere component. Maak een functiecomponent `LabelInput` in het bestand van het formulier. Plaats de code van het invoerveld van de gebruiker hierin:
+
 ```jsx
 function LabelInput() {
-    return (
-        <div className="mb-3">
-            <label htmlFor="user" className="form-label">Who</label>
-            <input
-                {...register('user', validationRules.user)}
-                defaultValue=''
-                id="user"
-                type="text"
-                className="form-control"
-                placeholder="user" required
-            />
-            {errors.user && <p className="form-text text-danger">{errors.user.message}</p>}
-        </div>)
+  return (
+    <div className="mb-3">
+      <label htmlFor="user" className="form-label">Who</label>
+      <input
+        {...register('user', validationRules.user)}
+        defaultValue=''
+        id="user"
+        type="text"
+        className="form-control"
+        placeholder="user" required
+      />
+      {errors.user && <p className="form-text text-danger">{errors.user.message}</p>}
+    </div>
+  );
 }
 ```
 
-Definieer de parameters
+Definieer de props van deze component:
+
 ```jsx
 function LabelInput({ label, name, type, ...rest }) {
+  const hasError = name in errors;
+
+  return (
+    <div className="mb-3">
+      <label htmlFor={name} className="form-label">
+        {label}
+      </label>
+      <input
+        {...register(name, validationRules[name])}
+        id={name}
+        type={type}
+        className="form-control"
+        {...rest}
+      />
+      {hasError ? (
+        <div className="form-text text-danger">
+            {errors[name].message}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+```
+
+We krijgen nog fouten: `register en errors not defined`. Oplossing: `useFormContext` en `FormProvider`. Definitie van `useFormContext` uit de documentatie:
+
+> This custom hook allows you to access the FormContext. useFormContext is intended to be used in deeply nested structures, where it would become inconvenient to pass the context as a prop.
+
+Met `FormProvider` creëren we een nieuwe context provider voor een formulier. Met `useFormContext` halen we hieruit de waarde op en gebruiken dit in een (diep) geneste component tree.
+
+In de documentatie lezen we ook het volgende over de `FormProvider`:
+
+> React Hook Form's FormProvider is built upon React's Context API. It solves the problem where data is passed through the component tree without having to pass props down manually at every level. This also causes the component tree to trigger a re-render when React Hook Form triggers a state update.
+
+```jsx
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'; // 👈 1 en 2
+// ...
+
+function LabelInput({ label, name, type, ...rest }) {
+  const {
+    register,
+    errors,
+  } = useFormContext(); // 👈 2
 
   const hasError = name in errors;
 
-    return (
-        <div className="mb-3">
-            <label htmlFor={name} className="form-label">
-                {label}
-            </label>
-            <input
-                {...register(name, validationRules[name])}
-                id={name}
-                type={type}
-                className="form-control"
-                {...rest}
-            />
-            {hasError ? (
-                <div className="form-text text-danger">
-                    {errors[name].message}
-                </div>
-            ) : null}
+  return (
+    <div className="mb-3">
+      <label htmlFor={name} className="form-label">
+        {label}
+      </label>
+      <input
+        {...register(name, validationRules[name])}
+        id={name}
+        type={type}
+        className="form-control"
+        {...rest}
+      />{/* 👈 3 */}
+      {hasError ? (
+        <div className="form-text text-danger">
+            {errors[name].message}
         </div>
-    );
-}
-```
-
-We krijgen nog fouten: 'register en errors not defined'. 
-Oplossing: `useFormContext` en `useFormProvider`. "This custom hook allows you to access the FormContext. useFormContext is intended to be used in deeply nested structures, where it would become inconvenient to pass the context as a prop". 
-
-```jsx
-import { FormProvider, useForm, useFormContext } from 'react-hook-form';//👈1 en 2
-// ...
-function LabelInput({ label, name, type, ...rest }) {
-    const {
-        register,
-        errors,
-    } = useFormContext();//👈2
-
-    const hasError = name in errors;
-
-    return (
-        <div className="mb-3">
-            <label htmlFor={name} className="form-label">
-                {label}
-            </label>
-            <input
-                {...register(name, validationRules[name])}
-                id={name}
-                type={type}
-                className="form-control"
-                {...rest}
-            />{/*👈3*/}
-            {hasError ? (
-                <div className="form-text text-danger">
-                    {errors[name].message}
-                </div>
-            ) : null}
-        </div>
-    );
+      ) : null}
+    </div>
+  );
 }
 
 export default function TransactionForm() {
-	// ...
-	
-	// ...
-	return (
-		<FormProvider handleSubmit={handleSubmit} errors={errors} register={register}> {/*👈1*/}
-			<form onSubmit={handleSubmit(onSubmit)} className="m-5">
-				<LabelInput
-						label="User"
-						name="user"
-						type="user" /> {/*👈3*/}
-        {/* Herhaal dit voor de overige input fields */}
-			</form>
-		</FormProvider>
-	);
+  // ...
+
+  return (
+    <FormProvider handleSubmit={handleSubmit} errors={errors} register={register}> {/* 👈 1 */}
+      <form onSubmit={handleSubmit(onSubmit)} className="m-5">
+        <LabelInput
+          label="User"
+          name="user"
+          type="user" /> {/* 👈 3 */}
+
+          {/* Herhaal dit voor de overige input fields */}
+      </form>
+    </FormProvider>
+  );
 }
 ```
-1. Importeer de `FormProvider` en plaats de `FormProvider` rond het formulier, om de useFormContext correct te laten werken. "React Hook Form's FormProvider is built upon React's Context API. It solves the problem where data is passed through the component tree without having to pass props down manually at every level. This also causes the component tree to trigger a re-render when React Hook Form triggers a state update"
-2. Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik van register en errors
-3. Maak gebruik van de component LabelInput
+
+1. Importeer de `FormProvider` en plaats de `FormProvider` rond het formulier om de `useFormContext` correct te laten werken.
+2. Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik van `register` en `errors`.
+3. Maak gebruik van de component `LabelInput`.
 
 ### Oefening
-Maak een component 'PlacesSelect' aan. De functie bevat geen argumenten
+
+Maak een component `PlacesSelect` aan. Deze functie heeft geen argumenten.
 
 ## Oefening
 
-Pas de cat applicatie aan zodat ook hier met de 2 thema's gewerkt kan worden.  
-Implementeer de anti-patterns
+Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan worden. Refactor eventuele anti-patterns in de applicatie.
 
-## Must read
+## Must reads
+
 - [Are You Making This React State Mistake?](https://www.youtube.com/watch?v=NZqMVUEiDIw)
-
