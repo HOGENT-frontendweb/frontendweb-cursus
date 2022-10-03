@@ -656,7 +656,7 @@ Voeg een verwijderknop toe om een plaats te verwijderen.
             onRate={handleRate}
           />
           {/* 👇 2 */}
-          <button class="btn btn-primary" onClick={handleDelete}>
+          <button className="btn btn-primary" onClick={handleDelete}>
             Verwijder
           </button>
         </div>
