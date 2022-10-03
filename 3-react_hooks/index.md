@@ -1092,3 +1092,6 @@ Maak een component 'PlacesSelect' aan. De functie bevat geen argumenten
 Pas de cat applicatie aan zodat ook hier met de 2 thema's gewerkt kan worden.  
 Implementeer de anti-patterns
 
+## Must read
+- [Are You Making This React State Mistake?](https://www.youtube.com/watch?v=NZqMVUEiDIw)
+
