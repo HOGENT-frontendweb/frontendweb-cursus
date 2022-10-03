@@ -319,7 +319,7 @@ export default function StarRating({ totalStars = 5 }) {
 }
 ```
 
-### Rating funcionaliteit afwerken
+### Rating functionaliteit afwerken
 
 De `Place` component krijgt via een prop de `rating` door van de parent en zal die informatie moeten doorgeven aan de `StarRating` component.
 
@@ -713,7 +713,7 @@ Een rerender wordt veroorzaakt door
 
 [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) is een browserextensie die ons helpt bij het debuggen, profileren en monitoren van de uitvoering van onze React-app).
 
-Installeer de extenstie en open de Console. Ga naar het tabblad `components`. Daar kan je de componenten en bijhorende props inspecteren.
+Installeer de extensie en open de Console. Ga naar het tabblad `components`. Daar kan je de componenten en bijhorende props inspecteren.
 
 Klik op settings (naast de zoekbalk) en vink `highlight updates when components render` aan. Voeg een nieuwe transactie toe. ReactDev duidt de opnieuw gerenderde componenten met een kleur aan. Het kleur is afhankelijk van de frequentie van de update van de componenten:
 
@@ -1032,3 +1032,9 @@ Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vind
 - [Elf](https://github.com/ngneat/elf)
 - [The new wave of React state management](https://frontendmastery.com/posts/the-new-wave-of-react-state-management/)
 - Een alternatief state management framework...
+
+## Must read
+- [Reacting to Input with State](https://beta.reactjs.org/learn/reacting-to-input-with-state)
+- [Choosing the State Structure](https://beta.reactjs.org/learn/choosing-the-state-structure)
+- [Preserving and Resetting State](https://beta.reactjs.org/learn/preserving-and-resetting-state)
+- [Extracting State Logic into a Reducer](https://beta.reactjs.org/learn/extracting-state-logic-into-a-reducer)
