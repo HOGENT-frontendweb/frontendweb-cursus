@@ -894,10 +894,6 @@ Meer op https://create-react-app.dev/docs/adding-custom-environment-variables/
 ## Oefening
 Pas nu ook Places aan zodat dit werkt met de backend API.
 
-
-## custom hooks - TODO
-
-
 ## Must read
 [SOLID principles in React](https://konstantinlebedev.com/solid-in-react/)
 [Good advice on JSX conditionals](https://blog.thoughtspile.tech/2022/01/17/jsx-conditionals/)

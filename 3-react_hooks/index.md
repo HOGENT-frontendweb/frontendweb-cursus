@@ -549,7 +549,7 @@ Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfd
 Als we surfen naar <https://api.thecatapi.com/v1/breeds> dan krijgen we JSON met alle kattenrassen. Maak een pagina waar de gebruiker een ras kan selecteren, en waar de details van het ras getoond worden.
 
 - Gebruik dit bestand met mock data: [mock_data.js](https://raw.githubusercontent.com/HOGENT-Web/frontend-ch3-exercise-solution/main/src/api/mock_data.js).
-- Hou alle breeds bij in een state variabele bij.
+- Hou alle breeds bij in een state variabele.
 - Hou de geselecteerde breed ook bij in state.
 - Maak een formulier om een nieuwe breed toe te voegen. Voeg deze toe aan de bijgehouden breeds. Alle velden met uitzondering van de `description` en `imageUrl` zijn verplicht in te vullen.
 - Maak gebruik van [bootstrap](https://getbootstrap.com/docs/).
@@ -953,6 +953,77 @@ import { ThemeContext } from '../../contexts/Theme.context';
 ## Oefening
 
 Pas de andere componenten aan
+
+## Custom hooks: delen van logica tussen componenten
+In elke component die gebruik maakt van de Context dienen we volgende code te schrijven
+
+```jsx
+import { ThemeContext } from '../../contexts/Theme.context';
+const { theme,... } = useContext(ThemeContext);
+```
+
+Om duplicate code te vermijden kunnen we gebruik maken van een **custom hook**. Neem [Reusing Logic with Custom Hooks](https://beta.reactjs.org/learn/reusing-logic-with-custom-hooks) door.
+
+Maak een custom hook aan in `Theme.context.jsx`
+```jsx
+import {
+  createContext,
+  useState,
+  useCallback,
+  useMemo,
+  useContext
+} from 'react'; 
+
+export const themes = {
+  dark: "dark",
+  light: "light"
+}
+
+export const ThemeContext = createContext(); 
+
+export const useTheme = () => useContext(ThemeContext);// 👈 1
+
+export const useThemeColors = () => {// 👈 2
+  const { theme, oppositeTheme } = useContext(ThemeContext);
+  return {theme, oppositeTheme};
+};
+//...
+```
+1. Deze hook retourneert de 3 waarden theme, oppositeTheme en toggleTheme. 
+2. Een hook die enkel het theme en oppositeTheme retourneert
+
+Zo kan de code in `App.js` als volgt worden aangepast
+```jsx
+import TransactionList from './components/transactions/TransactionList';
+import PlacesList from './components/places/PlacesList';
+import { useTheme, themes } from './contexts/Theme.context';// 👈 1
+import { IoMoonSharp, IoSunny } from 'react-icons/io5';
+//import { useContext } from 'react';// 👈 1
+
+function App() {
+    const { theme, oppositeTheme, toggleTheme } = useTheme;// 👈3
+    //...
+```
+
+1. Verwijder de import `useContext`, `ThemeContext`. Importeer `useTheme`
+2. Destructure de waarden die in deze component gebruikt worden
+
+
+En `Place.jsx`
+```jsx
+import { memo, useCallback } from 'react';// 👈 1
+import { useThemeColors } from '../../contexts/Theme.context'; // 👈 1
+import StarRating from './StarRating';
+
+const Place = memo(({ id, name, rating, onRate, onDelete }) => {
+
+  const { theme, oppositeTheme } = useThemeColors();// 👈 2
+
+```
+
+1. Verwijder de import `useContext`, `ThemeContext`. Importeer `useThemeColors`
+2. De hook `useThemeColors` retourneert de 2 waarden die we in deze component nodig hebben. 
+
 
 ## Form revisited - code refactoring
 
