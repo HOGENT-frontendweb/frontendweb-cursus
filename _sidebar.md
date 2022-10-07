@@ -7,7 +7,7 @@
 - [1. Webpack your bags, time to React](./1-react_basics/index.md)
 - [2. It's a kind of state management](./2-react_state/index.md)
 - [3. Get your hooks into React](./3-react_hooks/index.md)
-- [4. You can call me API(./4-api/index.md)
+- [4. You can call me API](./4-api/index.md)
 - [5. React Router](./5-react_router/index.md)
 - [6. Strike a pose, test](https://hogent-web.github.io/frontendweb-slides/6-testing.html?presentation=false)
 - [7. Authenticatie & autorisatie (**WIP**)](https://hogent-web.github.io/frontendweb-slides/7-auth.html?presentation=false)
