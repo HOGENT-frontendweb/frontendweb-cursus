@@ -1,4 +1,4 @@
-# React State
+# It's a kind of state management
 
 > In dit hoofdstuk linken we zoveel mogelijk naar de React beta docs. Voor meer informatie en meer voorbeelden kan je daar altijd een kijkje nemen.
 
