@@ -2,8 +2,6 @@
 
 > In dit hoofdstuk linken we zoveel mogelijk naar de React beta docs. Voor meer informatie en meer voorbeelden kan je daar altijd een kijkje nemen.
 
-## Inleiding
-
 [**Props**](https://beta.reactjs.org/learn/passing-props-to-a-component) worden gebruikt om data door te geven binnen de component tree in één richting (top - down). React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Wanneer de props van een component moeten wijzigen (bijvoorbeeld als reactie op een gebruikersinteractie), zal het zijn parent-component moeten "vragen" om de nieuwe waarden van de props door te geven! Met andere woorden, we zullen een nieuw object binnen krijgen in de kind-component.
 
 [**State**](https://beta.reactjs.org/learn/state-a-components-memory) is het dynamische deel van een React-component. Een component kan zo bepaalde informatie bijhouden en wijzigen als reactie op interacties. Wanneer de state wijzigt (door een gebruikersinteractie, API call die data retourneert...), past de UI zich aan (dit is waarom React 'so cool' is). Je kan dit vergelijken met een spreadsheet. Als één cel wijzigt, worden andere cellen aangepast.

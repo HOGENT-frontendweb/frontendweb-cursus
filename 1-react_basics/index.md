@@ -1,7 +1,5 @@
 # Webpack your bags, time to React
 
-## Inleiding
-
 Neem volgende HTML-code als voorbeeld:
 
 [example1.html](./examples/example1.html ':include :type=code')
