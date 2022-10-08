@@ -60,7 +60,7 @@ Het is de eerste keer dat we met een documentatie-stijl cursus werken, er wordt 
 | week 1  | Inleiding, React Basics                       |
 | week 2  | useState, useContext                          |
 | week 3  | useState, useContext, useEffect               |
-| week 4  | useEffect                                     |
+| week 4  | UseContext, useEffect                         |
 | week 5  | Data ophalen van een backend                  |
 | week 6  | React Router                                  |
 | week 7  | Testen en linting                             |
