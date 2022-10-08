@@ -1031,7 +1031,8 @@ Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vind
 - [The new wave of React state management](https://frontendmastery.com/posts/the-new-wave-of-react-state-management/)
 - Een alternatief state management framework...
 
-## Must read
+## Must reads
+
 - [Reacting to Input with State](https://beta.reactjs.org/learn/reacting-to-input-with-state)
 - [Choosing the State Structure](https://beta.reactjs.org/learn/choosing-the-state-structure)
 - [Preserving and Resetting State](https://beta.reactjs.org/learn/preserving-and-resetting-state)
