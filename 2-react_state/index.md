@@ -739,7 +739,7 @@ export default function TransactionForm(){
     </h2>
     <form onSubmit={handleSubmit} className="w-50 mb-3">
       <div className="mb-3">
-        <label htmlFor="date" className="form-label">Who</label>
+        <label htmlFor="user" className="form-label">Who</label>
         <input  
           id="user"
           type="text"
