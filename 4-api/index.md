@@ -1,6 +1,6 @@
 # You can call me API
 
-> Vanaf dit hoofdstuk heb je de bijbehorden backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.
+> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.
 
 In dit hoofdstuk vervangen we de mock data door HTTP-requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
@@ -115,7 +115,13 @@ De `TransactionList` component wordt daardoor:
 ```jsx
 //...
 //import { TRANSACTION_DATA } from '../../api/mock-data'; // 👈 1
-
+function TransactionTable({ transactions}) {
+//...
+        <tbody>
+          {transactions.map((transaction) => (
+            <Transaction key={transaction.id} {...transaction} />
+          ))}{/*👈 5*/}
+        </tbody>
 //...
 
 export default function TransactionList() {
@@ -144,7 +150,7 @@ export default function TransactionList() {
 2. De initiële state is nu een lege array.
 3. Haal de data asynchroon op. Omwille van performantieredenen kan je eventueel het aantal records beperken (server side).
 4. Pas de state aan nadat je de lijst terugkrijgt van de API.
-5. Om te filteren op place gebruiken we nu `place.name` conform de nieuwe structuur van een transactie.
+5. Om te filteren op place gebruiken we nu `place.name` conform de nieuwe structuur van een transactie. Ook in de TransactionTable kan nu de id gebruikt worden als key.
 
 De json die verkregen wordt van de backend bevat een `user` en `place` object. Dus dienen we nu ook `Transaction.jsx` aan te passen:
 
@@ -411,7 +417,7 @@ function TransactionTable({
 }
 ```
 
-1. Ontvangt nu ook een prop `onDelete`.
+1. Ontvangt nu ook een prop `ìd` en `onDelete`.
 2. Geeft deze event handler door aan de `Transaction` component via de `onDelete` prop.
 
 Aan de `Transaction` component voegen we een vuilbakicoon toe met een `onClick` handler. Let op: je wil een functie meegeven die pas de transactie verwijdert als ze aangeroepen wordt. Je mag hier niet rechtstreeks de `onDelete` functie aanroepen, anders wordt je element verwijderd bij een render.
@@ -908,7 +914,7 @@ De omgevingsvariabelen worden toegevoegd aan de code _at build time_. Aangezien 
 Voeg een `.env` file toe in de root folder met de environment settings. Hierin definiëren we de url naar de API:
 
 ```dotenv
-REACT_APP_API_URL=http://localhost:9000/api
+REACT_APP_API_URL='http://localhost:9000/api'
 ```
 
 In de code van `api/transactions.js` vervang je `baseUrl` door

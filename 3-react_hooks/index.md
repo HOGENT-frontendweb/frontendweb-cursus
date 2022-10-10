@@ -973,7 +973,7 @@ import {
   useCallback,
   useMemo,
   useContext
-} from 'react'; 
+} from 'react'; // 👈 1
 
 export const themes = {
   dark: "dark",
@@ -1006,7 +1006,7 @@ import { IoMoonSharp, IoSunny } from 'react-icons/io5';
 //import { useContext } from 'react'; // 👈 1
 
 function App() {
-  const { theme, oppositeTheme, toggleTheme } = useTheme; // 👈3
+  const { theme, oppositeTheme, toggleTheme } = useTheme(); // 👈3
   //...
 ```
 
