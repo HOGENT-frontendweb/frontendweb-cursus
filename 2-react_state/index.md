@@ -737,7 +737,7 @@ export default function TransactionForm(){
     <h2>
       Add transaction
     </h2>
-    <form onSubmit={handleSubmit} className="w-50 mb-3">
+    <form className="w-50 mb-3">
       <div className="mb-3">
         <label htmlFor="user" className="form-label">Who</label>
         <input  
@@ -768,7 +768,7 @@ export default function TransactionForm(){
         >
           <option defaultChecked>-- Select a place --</option>
           {PLACE_DATA.map(({ id, name }) => (
-            <option key={id} value={id}>{name}</option>
+            <option key={id} value={name}>{name}</option>
           ))}
         </select>
       </div>
