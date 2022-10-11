@@ -174,7 +174,7 @@ Hooks zijn niet meer dan JavaScript functies. Echter moet je twee regels volgen 
 
 Daarnaast zijn er nog enkele opmerkingen waarmee je rekening moet houden:
 
-- Gebruik `useEffect` niet voor het aanbrengen van DOM-wijzigingen die zichtbaar zijn voor de gebruiker. Een `useEffect` wordt pas geactiveerd nadat de browser klaar is met de lay-out en het tekenen. Dit is dus te laat als je een visuele wijziging wilde aanbrengen. Voor die gevallen biedt React de hooks `useMutationEffect` en `useLayoutEffect` die op dezelfde manier werken als `useEffect`. Ze verschillen enkel in het moment van 'afvuren'.
+- Gebruik `useEffect` niet voor het aanbrengen van DOM-wijzigingen die zichtbaar zijn voor de gebruiker. Een `useEffect` wordt pas geactiveerd nadat de browser klaar is met de lay-out en het tekenen. Dit is dus te laat als je een visuele wijziging wilde aanbrengen. Voor die gevallen biedt React de hooks `useInsertionEffect` en `useLayoutEffect` die op dezelfde manier werken als `useEffect`. Ze verschillen enkel in het moment van 'afvuren'.
 - Hooks maken gebruik van closures. Let dus op voor stale closures. [Zie hier voor enkele voorbeelden](https://dmitripavlutin.com/react-hooks-stale-closures/)
 - `useEffect` laat NIET toe om het keyword `async` toe te voegen in de callback function, zie een volgend hoofdstuk voor een oplossing
 
