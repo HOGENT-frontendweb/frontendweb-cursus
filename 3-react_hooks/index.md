@@ -329,7 +329,7 @@ Start de app en bekijk de console. Ook `TransactionForm` is een pure component e
 
 Cache de `TransactionForm` component en bekijk de app opnieuw. Als we een letter ingeven wordt de component nog steeds opnieuw gerenderd. Hoe komt dit?
 
-## useCallback hook
+### useCallback hook
 
 `TransactionForm` bevat één prop, nl. de `onSaveTransaction` functie. Deze wordt doorgegeven door de parent component `TransactionList`. `createTransaction` is de event handler functie. Javascript gaat er vanuit dat de functie `createTransaction` bij elke render verschillend is. Echter is dit niet altijd het geval. `useCallback` cacht een functie tussen twee renders en dit totdat de dependency array wijzigt.
 
@@ -671,6 +671,8 @@ export default function TransactionList() {
   );
 }
 ```
+
+Pas zelf de Transaction component aan zodat de transacties als rij in de tabel worden weergegeven.
 
 ### Stap 1: Creëer de context
 
