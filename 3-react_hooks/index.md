@@ -567,11 +567,13 @@ Als we surfen naar <https://api.thecatapi.com/v1/breeds> dan krijgen we JSON met
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `6dddade`
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `9007fce`
 
   ```bash
   git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
-  git checkout -b oplossing 6dddade
+  git checkout -b oplossing 9007fce
+  yarn install
+  yarn start
   ```
 
 ## Context API
@@ -1238,6 +1240,8 @@ Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan 
   ```bash
   git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
   git checkout -b oplossing 9181134
+  yarn install
+  yarn start
   ```
 
 ## Must reads
