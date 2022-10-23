@@ -587,6 +587,8 @@ Voorzie routing in de budget-applicatie (of in je eigen app?):
 - `/places`: een lijst van places (`PlacesList` component)
 - `/transactions/add`: een nieuwe transactie toevoegen (`TransactionForm` component)
 
+Om eenvoudig te testen voeg je best een navbar toe, gebruik hiervoor [bootstrap](https://getbootstrap.com/docs/5.2/components/navbar/).
+
 ## Oefening: URL parameters
 
 Voorzie volgende bijkomende routes in de budget-applicatie (of in je eigen app?):
@@ -595,6 +597,15 @@ Voorzie volgende bijkomende routes in de budget-applicatie (of in je eigen app?)
 - `/transactions/:id`: details van één transactie (nieuwe component nodig)
 - `/places/:id`: details van één place (nieuwe component nodig)
 
+Let op er zijn aanpassingen nodig aan de `TransactionForm` component om de huidige transactie te kunnen ophalen en te tonen in het formulier.
+
 ## Oplossing oefeningen
 
-Zie GitHub: [HOGENT-Web/frontendweb-budget](https://github.com/hogent-web/frontendweb-budget).
+Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in commit `ef61c46`:
+
+```bash
+git clone https://github.com/hogent-web/frontendweb-budget
+git checkout -b oplossing-les5 ef61c46
+yarn install
+yarn start
+```
