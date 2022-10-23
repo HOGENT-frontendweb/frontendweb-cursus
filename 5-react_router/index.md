@@ -580,7 +580,7 @@ Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React 
 
 ## Oefening: basis routing
 
-Voorzie routing in de budget-applicatie (of in je eigen app?):
+Voorzie routing in de budget-applicatie (of in je eigen app?). Check uit op commit `6bc0a43` en maak volgende routes:
 
 - `/`: doorsturen naar `/transactions`
 - `/transactions`: een lijst van transacties (`TransactionList` component)
