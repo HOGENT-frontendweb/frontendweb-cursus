@@ -1247,3 +1247,4 @@ Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan 
 ## Must reads
 
 - [Are You Making This React State Mistake?](https://www.youtube.com/watch?v=NZqMVUEiDIw)
+- [useState: Asynchronous or what?](https://youtu.be/RAJD4KpX8LA)
