@@ -944,3 +944,8 @@ Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API.
 
 - [SOLID principles in React](https://konstantinlebedev.com/solid-in-react/)
 - [Good advice on JSX conditionals](https://blog.thoughtspile.tech/2022/01/17/jsx-conditionals/)
+
+## Mogelijke extra's voor de examenopdracht
+
+- [react-query](https://www.npmjs.com/package/react-query)
+- [swr](https://www.npmjs.com/package/swr)
