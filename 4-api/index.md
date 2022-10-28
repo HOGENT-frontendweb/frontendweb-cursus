@@ -1,7 +1,7 @@
 # You can call me API
 
 !> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.
-!> Als je zonder MySQL-databank wil werken, check uit op commit `f78fad0`. Op de laatste commit is een lokale MySQL-server vereist!
+!> Als je zonder MySQL-databank wil werken, check uit op commit `28c3aaa`. Op de laatste commit is een lokale MySQL-server vereist!
 
 > **Startpunt voorbeeldapplicatie**
 >
