@@ -7,7 +7,6 @@
 > git checkout -b les2 f34391f
 > yarn install
 > yarn start
-> 
 > ```
 
 [**Props**](https://beta.reactjs.org/learn/passing-props-to-a-component) worden gebruikt om data door te geven binnen de component tree in één richting (top - down). React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Wanneer de props van een component moeten wijzigen (bijvoorbeeld als reactie op een gebruikersinteractie), zal het zijn parent-component moeten "vragen" om de nieuwe waarden van de props door te geven! Met andere woorden, we zullen een nieuw object binnen krijgen in de kind-component.

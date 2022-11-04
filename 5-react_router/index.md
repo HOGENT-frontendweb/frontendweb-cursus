@@ -1,13 +1,14 @@
 # React Router
 
-> **Startpunt voorbeeldapplicatie**
+> **Mini-voorbeeldapplicatie voor dit hoofdstuk**
+>
+> Onderstaande repository bevat alle componenten uit dit hoofdstuk, met uitzondering van `Product` en `ScrollToTop`.
+> Het enige wat nog toegevoegd moet worden is routing uiteraard.
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget/
-> git checkout -b les5 b63fbba
+> git clone https://github.com/HOGENT-Web/RoutingDemoStarter.git
 > yarn install
 > yarn start
-> 
 > ```
 
 Zoals je al weet, maken we met React een zogenaamde Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door webpack gegenereerde scripts en stylesheets geïnjecteerd.
@@ -577,6 +578,10 @@ function App() {
 ```
 
 Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React Router terug naar de home-pagina navigeren en de huidige URL hierdoor vervangen.
+
+## Oplossing mini-voorbeeldapplicatie
+
+Te vinden op <https://github.com/HOGENT-Web/RoutingDemo>
 
 ## Oefening: basis routing
 

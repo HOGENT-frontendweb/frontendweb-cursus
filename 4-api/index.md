@@ -9,7 +9,6 @@
 > git checkout -b les4 5d5a53f
 > yarn install
 > yarn start
-> 
 > ```
 
 In dit hoofdstuk vervangen we de mock data door HTTP-requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
