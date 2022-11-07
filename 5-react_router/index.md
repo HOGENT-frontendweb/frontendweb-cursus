@@ -272,7 +272,7 @@ export const About = () => (
         <Link to="/over/history">Geschiedenis</Link> // 👈
       </li>
       <li>
-        <Link to="/over/services">Locatie</Link> // 👈
+        <Link to="/over/location">Locatie</Link> // 👈
       </li>
     </ul>
   </div>
@@ -332,8 +332,7 @@ Stel we willen de subroutes `/over/services`, `/over/history` en `/over/location
   Pas de definitie van `/over` aan:
 
   ```jsx
-  <Route path="over">
-    <Route index element={<About />} />
+  <Route path="over" element={<About />}>
     <Route path="services" element={<Services />} />
     <Route path="history" element={<History />} />
     <Route path="location" element={<Location />} />
