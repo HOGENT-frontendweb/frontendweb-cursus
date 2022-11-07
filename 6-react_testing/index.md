@@ -3,7 +3,7 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget/
+> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les6 ef61c46
 > yarn install
@@ -17,7 +17,7 @@ Standaard komt `create-react-app` met een unit test framework: **Jest**. Op zich
 
 ## Cypress
 
-Cypress draait in een browser (en niet via een webdriver). Dus het draait (zo goed als) onafhankelijk van onze react code, m.a.w. wat je hier vandaag leert kan je op een identieke manier gebruiken als je een ander framework gebruikt. Het leukste aan Cypress is dat je vrij makkelijk testen schrijft en toevoegt. En iedereen weet dat het moeilijkste van testen is om luie developers testen te laten schrijven.
+Cypress draait in een browser (en niet via een webdriver). Dus het draait (zo goed als) onafhankelijk van onze react code, m.a.w. wat je hier vandaag leert kan je op een identieke manier gebruiken als je een ander framework gebruikt. Het leukste aan Cypress is dat je vrij makkelijk testen schrijft en toevoegt. En iedereen weet dat het moeilijkste aan testen is om luie developers testen te laten schrijven.
 
 ```bash
 yarn add cypress --dev
@@ -274,7 +274,7 @@ it("add transaction test", () => {
 	cy.get("[data-cy=transaction_user]").eq(9).contains("Pieter");// 👈4
 	cy.get("[data-cy=transaction_amount]").each((el, idx) => {// 👈5
 		if (idx === 9) {
-			expect(el[0].textContent).to.equal("200 €");
+				expect(Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.'))).to.equal(200);
 		}
 	});
 	cy.get("[data-cy=transaction]").should("have.length", 10);// 👈6
