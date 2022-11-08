@@ -341,14 +341,14 @@ it("remove again", () => {
 Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen(en dan hebben we direct een verwijder test ook).
 
 1. We bezoeken weer de juiste pagina.
-2. We klikken op de verwijder-knop van de net toegevoegde transactie (index 3).
-3. Vervolgens controleren we of er effectief maar 3 transacties meer overblijven.
+2. We klikken op de verwijder-knop van de net toegevoegde transactie (index 9).
+3. Vervolgens controleren we of er effectief maar 9 transacties meer overblijven.
 
 Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen.
 
 ## Oefening: foutboodschappen
 
-We hebben getest pf ons formulier werkt. Er wordt een transactie toegevoegd als alle input fields een geldige waarde krijgen.
+We hebben getest of ons formulier werkt. Er wordt een transactie toegevoegd als alle input fields een geldige waarde krijgen.
 
 Vaak is het echter minstens even interessant (zoniet interessanter) om alle edge cases te gaan testen. Worden de foutboodschappen wel goed getoond als de gebruiker foutieve informatie ingeeft? Het heeft erg veel zin om hiervoor testen te schrijven. Als alles goed gaat komen foutieve situaties niet bijzonder vaak voor. Dus je wilt ze opmerken in je testen en niet (te) laat bij de gebruiker.
 
@@ -379,7 +379,7 @@ describe("transactions test", () => {
     cy.intercept(
       "GET", 
       "http://localhost:9000/api/transactions",
-      '{"items":[{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff87","amount":-97,"date":"2021-11-01","user":{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff80","name":"Pieter"},"place":{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff85","name":"Chinese Restaurant"}}],"count":1}'
+      '{"items":[{"id":1,"amount":-97,"date":"2021-11-01","user":{"id":1,"name":"Pieter"},"place":{"id":4,"name":"Chinese Restaurant"}}],"count":1}'
     ); // 👈 1
 
     cy.visit("http://localhost:3000"); // 👈 2
@@ -406,15 +406,15 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 {
  "items": [
     {
-      "id":"7f28c5f9-d711-4cd6-ac15-d13d71abff87",
+      "id":1,
       "amount":-97,
       "date":"2021-11-01",
       "user": {
-        "id":"7f28c5f9-d711-4cd6-ac15-d13d71abff80",
+        "id":2,
         "name":"Pieter"
       },
       "place": {
-        "id":"7f28c5f9-d711-4cd6-ac15-d13d71abff85",
+        "id":4,
         "name":"Chinese Restaurant"
       }
     }
@@ -477,15 +477,15 @@ it("very slow response", () => {
 
 ## Oefening
 
-We gaan testen schrijven voor de szoekfunctie van onze transacties. Concreet gaan we de volgende situaties testen: correcte invoer, invoer zonder resultaten en fouten in de back-end.
+We gaan testen schrijven voor de zoekfunctie van onze transacties. Concreet gaan we de volgende situaties testen: correcte invoer, invoer zonder resultaten en fouten in de back-end.
 
 ### Correcte invoer
 
 Als naar 'Ir' gezocht wordt, willen we enkel de transacties van Irish Pub zien.
 
 - Voeg `data-cy` toe waar nodig.
-- Check of er twee transacties in de lijst voorkomen.
-- Check dat beide transacties 'Ir' bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://www.chaijs.com/api/bdd/#method_match>)
+- Check of er drie transacties in de lijst voorkomen.
+- Check dat de 3 transacties 'Ir' bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://www.chaijs.com/api/bdd/#method_match>)
 
 ### Invoer zonder resultaten
 
