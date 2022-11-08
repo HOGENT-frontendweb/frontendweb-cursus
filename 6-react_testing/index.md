@@ -27,7 +27,7 @@ Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev depend
 yarn add cypress --dev
 ```
 
-Vervolgens kan je Cypress openen met onderstaand commando:
+Vervolgens kan je Cypress openen met onderstaand commando (je kan hiervoor ook een `test` script maken in de `package.json`):
 
 ```bash
 npx cypress open
@@ -371,7 +371,7 @@ De oplossing hiervoor heet **mocken**. Hierbij stellen we een fake server in die
 
 Neem de documentatie [Network requests](https://docs.cypress.io/guides/guides/network-requests) door tot aan Fixtures.
 
-Laat ons een nieuwe test toevoegen die kijkt of de lijst van transacties wel correct getoond wordt.
+Laat ons een nieuwe test toevoegen die kijkt of de lijst van transacties wel correct getoond wordt. Maak hiervoor een nieuw bestand `cypress/e2e/transactions.cy.js`.
 
 ```js
 describe("transactions test", () => {
