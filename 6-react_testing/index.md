@@ -13,7 +13,7 @@
 > 
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien (commit `28c3aaa`).**
+> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**
 
 Standaard komt `create-react-app` met een unit test framework genaamd [Jest](https://jestjs.io/). Op zich niets mis mee, maar enerzijds leren jullie dit ook al in Web Services en anderzijds zijn unit testen vaak wat geforceerd in een front-end (er is meestal weinig business logica). Daarom gaan we UI testen introduceren m.b.v. [Cypress](https://www.cypress.io/).
 
