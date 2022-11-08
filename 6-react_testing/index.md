@@ -13,9 +13,7 @@
 > 
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**
-
-De rest api dient ook te runnen.
+> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien (commit `28c3aaa`).**
 
 Standaard komt `create-react-app` met een unit test framework genaamd [Jest](https://jestjs.io/). Op zich niets mis mee, maar enerzijds leren jullie dit ook al in Web Services en anderzijds zijn unit testen vaak wat geforceerd in een front-end (er is meestal weinig business logica). Daarom gaan we UI testen introduceren m.b.v. [Cypress](https://www.cypress.io/).
 
@@ -243,7 +241,7 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
 </form>
 ```
 
-1. Bij elke input zetten we een `data-cy` attribuut. De `LabelInput` component geeft alle onbekende props door aan het `input` element (via `{...rest}`).
+1. Bij elke input zetten we een `data-cy` attribuut. De `LabelInput` component geeft alle onbekende props door aan het `input` element (via `{...props}`).
 2. Natuurlijk ook bij de submit button.
 
 Op een gelijkaardige manier passen we `Transaction` aan zodat we nadien kunnen checken of de transactie goed toegevoegd is.
@@ -335,8 +333,8 @@ We moeten zorgen dat onze testen geen blijvende wijzigingen veroorzaken, we kunn
 ```js
 it("remove again", () => {
   cy.visit("http://localhost:3000/transactions/"); // 👈 1
-  cy.get("[data-cy=transaction_remove_btn]").eq(3).click(); // 👈 2
-  cy.get("[data-cy=transaction]").should("have.length", 3); // 👈 3
+  cy.get("[data-cy=transaction_remove_btn]").eq(9).click(); // 👈 2
+  cy.get("[data-cy=transaction]").should("have.length", 9); // 👈 3
 });
 ```
 
@@ -381,7 +379,7 @@ describe("transactions test", () => {
     cy.intercept(
       "GET", 
       "http://localhost:9000/api/transactions",
-      '{"data":[{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff87","amount":-97,"date":"2021-11-01","user":{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff80","name":"Pieter"},"place":{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff85","name":"Chinese Restaurant"}}],"count":1}'
+      '{"items":[{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff87","amount":-97,"date":"2021-11-01","user":{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff80","name":"Pieter"},"place":{"id":"7f28c5f9-d711-4cd6-ac15-d13d71abff85","name":"Chinese Restaurant"}}],"count":1}'
     ); // 👈 1
 
     cy.visit("http://localhost:3000"); // 👈 2
@@ -406,7 +404,7 @@ Creëer een nieuwe file `transactions.json` in de `fixtures` folder van cypress
 
 ```json
 {
- "data": [
+ "items": [
     {
       "id":"7f28c5f9-d711-4cd6-ac15-d13d71abff87",
       "amount":-97,
