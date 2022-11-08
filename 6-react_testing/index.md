@@ -124,7 +124,7 @@ describe("mijn eerste test", () => {
 
 > **Opmerking**
 >
-> Als je een ESlint melding krijgt voor het `cy` object, voeg dan een `.eslintrc.json` file toe aan de `cypress` map met onderstaande inhoud:
+> Als je een ESlint melding krijgt voor het `cy` object, voeg dan een `.eslintrc.json` bestand toe aan de `cypress` map met onderstaande inhoud:
 >
 > ```json
 > {
@@ -278,7 +278,7 @@ export default memo(function Transaction({ id, user, amount, place, date, onDele
 })
 ```
 
-Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuwe file `cypress/e2e/addtransaction.cy.js` toe.
+Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypress/e2e/addtransaction.cy.js` toe.
 
 ```js
 it("add transaction test", () => {
@@ -400,7 +400,7 @@ describe("transactions test", () => {
 
 De data inline plaatsen in een `intercept` is meestal niet zo handig (of leesbaar). Je kan dit oplossen door `fixtures` te gebruiken. Neem de documentatie over [Fixtures](https://docs.cypress.io/guides/guides/network-requests#Fixtures) door.
 
-Creëer een nieuwe file `transactions.json` in de `fixtures` folder van cypress
+Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 
 ```json
 {
