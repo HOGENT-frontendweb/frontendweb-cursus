@@ -12,3 +12,4 @@
 - [6. Testing](./6-react_testing/index.md)
 - [7. Authenticatie & autorisatie](./7-auth0/index.md)
 - [8. CI/CD (enkel les bij Web Services) (**WIP**)](https://hogent-web.github.io/webservices-slides/11-cicd.html?presentation=false#/frontend)
+- [9. FAQ (**WIP**)](./9_faq/index.md)
