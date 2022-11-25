@@ -10,5 +10,5 @@
 - [4. You can call me API](./4-api/index.md)
 - [5. React Router](./5-react_router/index.md)
 - [6. Testing](./6-react_testing/index.md)
-- [7. Authenticatie & autorisatie (**WIP**)](https://hogent-web.github.io/frontendweb-slides/7-auth.html?presentation=false)
+- [7. Authenticatie & autorisatie](./7-auth0/index.md)
 - [8. CI/CD (enkel les bij Web Services) (**WIP**)](https://hogent-web.github.io/webservices-slides/11-cicd.html?presentation=false#/frontend)
