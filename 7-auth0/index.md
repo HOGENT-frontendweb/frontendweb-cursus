@@ -646,4 +646,4 @@ export default App;
 
 ## Oplossing
 
-Zoals altijd vind je een werkend voorbeeld in de [budget applicatie](https://github.com/HOGENT-Web/frontendweb-budget). Dit keer staat dit op de branch `feature/auth0`, je zal een gelijknamige branch vinden in de [backend](https://github.com/HOGENT-Web/webservices-budget). Zo kan je kiezen om wel of niet met authenticatie te werken.
+Zoals altijd vind je een werkend voorbeeld in de [budget applicatie](https://github.com/HOGENT-Web/frontendweb-budget). Dit keer staat dit op de branch `feature/auth0` in commit `50b4dad`. Je zal een gelijknamige branch vinden in de [backend](https://github.com/HOGENT-Web/webservices-budget). Zo kan je kiezen om wel of niet met authenticatie te werken.

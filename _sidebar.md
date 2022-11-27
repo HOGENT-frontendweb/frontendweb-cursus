@@ -11,5 +11,6 @@
 - [5. React Router](./5-react_router/index.md)
 - [6. Testing](./6-react_testing/index.md)
 - [7. Authenticatie & autorisatie](./7-auth0/index.md)
-- [8. CI/CD (enkel les bij Web Services) (**WIP**)](https://hogent-web.github.io/webservices-slides/11-cicd.html?presentation=false#/frontend)
-- [9. FAQ (**WIP**)](./9_faq/index.md)
+- [8. E2E testen met autenticatie](./8-auth_testing/index.md)
+- [9. CI/CD (enkel slides bij Web Services) (**WIP**)](https://hogent-web.github.io/webservices-slides/11-cicd.html?presentation=false#/frontend)
+- [10. FAQ](./10_faq/index.md)
