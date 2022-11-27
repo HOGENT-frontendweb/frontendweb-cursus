@@ -58,6 +58,8 @@ Onderstaande secties doorlopen in principe deze tutorials, maar vormen gaandeweg
 
 *Bron: <https://auth0.com/docs/quickstart/spa/react/01-login#get-your-application-keys>*
 
+Vergeet niet de callback urls en allowed web origins correct in te stellen of inloggen en/of API callen zal niet lukken.
+
 Maak een `.env` bestand aan met volgende inhoud
 
 ```json
@@ -79,8 +81,7 @@ yarn add @auth0/auth0-react
 
 *Bron: <https://auth0.com/docs/quickstart/spa/react/01-login#configure-the-auth0provider-component>*
 
-Maak een bestand `MyAuth0Provider.jsx` in de map `context`:
-
+In `src/contexts` folder, maak de file `MyAuth0Provider` component aan.
 ```jsx
 import { Auth0Provider } from '@auth0/auth0-react';
 function MyAuth0Provider({ children }) {
@@ -90,7 +91,7 @@ function MyAuth0Provider({ children }) {
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      redirectUri={window.location.origin}
+      redirectUri={`${window.location.origin}/transactions`}
       cacheLocation="localStorage" // 👈 extra, niet in tutorial!
     >
       {children}
@@ -103,8 +104,10 @@ export default MyAuth0Provider;
 De Auth0 React SDK gebruikt de React Context om de authenticatiestatus van de gebruikers te beheren. Een manier om Auth0 te integreren met de React app is door de root component te verpakken met een `Auth0Provider` uit de SDK. Stel de properties in
 
 - `domain` en `clientId`: zie instellingen van jouw app in het Auth0 Dashboard
-- `redirectUri`: de URL waarnaar de gebruiker navigeert als hij geauthenticeerd is door Auth0
+- `redirectUri`: de URL waarnaar de gebruiker navigeert als hij geauthenticeerd is door Auth0, deze URL moet toegevoegd zijn aan de `Allowed Callback URLs` in je Auth0 setup.
 - `cacheLocation`: waar de auth tokens en andere info opgeslagen worden
+
+LET OP: deze redirectUri moet de juiste zijn, i.e. de pagina die geladen zal worden nadat je ingelogd bent, indien deze niet correct kan je 'rare' fouten krijgen. (isAuthenticated zal false rapporteren maar je krijgt toch geen login te zien als je op login klikt, dat soort dingen)
 
 Verpak de root component in `index.js` met `MyAuth0Provider`:
 
@@ -277,7 +280,7 @@ Het uiteindelijke doel is dat de server toegang tot bepaalde REST routes gaat af
 
 #### 2. Configureer MyAuth0Provider component
 
-Pas het `.env` bestand aan. Voeg onderstaande variabele toe:
+Pas het `.env` bestand aan. Voeg onderstaande variabele toe, dit moet dezelfde waarde bevatten als de `AUTH_AUDIENCE` in onze backend:
 
 ```json
 REACT_APP_AUTH0_API_AUDIENCE={YOUR_API_AUDIENCE}
@@ -296,10 +299,10 @@ function MyAuth0Provider({ children }) {
   return (
     <Auth0Provider
       domain={domain}
-      audience={audience}{/* 👈 1*/}
+      audience={audience} // 👈 1
       clientId={clientId}
-      redirectUri={window.location.origin}
-      useRefreshTokens {/* 👈 2*/}
+      edirectUri={`${window.location.origin}/transactions`}
+      useRefreshTokens // 👈 2
     >
       {children}
     </Auth0Provider>
@@ -449,10 +452,9 @@ export default function RequireAuth({ children }) { // 👈 1
     return children;
   }
 
-  return <Navigate to="/login" />; // 👈 4
+  return <Navigate to="/login" />;// 👈 4
 }
 ```
-
 1. De component ontvangt React children (= de component(en) die afgeschermd moeten worden).
 2. Zorg ervoor dat het laden van de Auth0 SDK is voltooid voordat je toegang krijgt tot de property `isAuthenticated`. `isLoading` zal `false` zijn zolang Auth0 nog niet klaar is.
 3. A.d.h.v. de property `isAuthenticated` van `useAuth0` hook controleer je of Auth0 de gebruiker geverifiëerd heeft voordat de component wordt weergegeven.
