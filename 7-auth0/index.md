@@ -1,5 +1,19 @@
 # Authenticatie & Autorisatie
 
+> **Startpunt voorbeeldapplicatie**
+> Het volstaat om vanaf de `main` branch een nieuwe branch te maken.
+>
+> ```bash
+> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les7
+> yarn install
+> yarn start
+> 
+> ```
+>
+> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**
+
 ## Inleiding
 
 Authenticatie is bewijzen wie je bent, heel vaak met een gebruikersnaam en wachtwoord, en meer en meer in combinatie met TOTP (time based one time password), SMS en/of security keys als deel van two factor authentication (2FA).
@@ -17,6 +31,7 @@ Daarom wordt er meer en meer gegrepen naar een third party service die deze take
 De tagline van [Auth0](https://auth0.com/) is "makes authentication and authorization easy". In plaats van alles zelf te beginnen implementeren gaan we een integratie met Auth0 maken.
 
 ### Werking
+
 De verschillende stappen:
 
 ![Werking Auth0](./images/auth0.png ':size=80%')
@@ -27,6 +42,7 @@ De verschillende stappen:
 4. De Backend API verifieert de token. Als de Backend API geen bestaande en geldige Management API token heeft, vraagt deze om een nieuwe. Indien de token gevalideerd is en de gebruiker heeft de juiste rechten, dan retourneert de backend de transacties. Indien de token niet correct is, wordt een `403: Forbidden` geretourneerd.
 
 ### JWT
+
 Het zou natuurlijk bijzonder onhandig zijn als je voor elke request opnieuw zou moeten inloggen, zeker bij moderne webapplicaties die vele requests gebruiken om één pagina op te bouwen. We moeten dus ergens kunnen 'onthouden' dat iemand ingelogd is, op een veilige manier.
 
 Hiervoor kan je (o.a.) een [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens) gebruiken, dat is in se een (base64) string die bij elke request meegestuurd wordt in de `Authorization` header. Een JWT bestaat uit drie delen (zie een voorbeeld op https://jwt.io)
@@ -58,13 +74,13 @@ Onderstaande secties doorlopen in principe deze tutorials, maar vormen gaandeweg
 
 *Bron: <https://auth0.com/docs/quickstart/spa/react/01-login#get-your-application-keys>*
 
-Vergeet niet de callback urls en allowed web origins correct in te stellen of inloggen en/of API callen zal niet lukken.
+Vergeet niet de callback urls en allowed web origins correct in te stellen of inloggen en/of API callen zal niet lukken. Dit doe je in de instellingen van jouw applicatie op het Auth0 Dashboard.
 
 Maak een `.env` bestand aan met volgende inhoud
 
 ```json
 REACT_APP_AUTH0_DOMAIN={YOUR_DOMAIN}
-REACT_APP_AUTH0_CLIENT_ID={YOUR_CLIENTID}
+REACT_APP_AUTH0_CLIENT_ID={YOUR_CLIENT_ID}
 ```
 
 De waarden voor domain en Client ID vind je op het Auth0 Dashboard > Applications > Applications > {JOUW APP}
@@ -81,9 +97,11 @@ yarn add @auth0/auth0-react
 
 *Bron: <https://auth0.com/docs/quickstart/spa/react/01-login#configure-the-auth0provider-component>*
 
-In `src/contexts` folder, maak de file `MyAuth0Provider` component aan.
+Maak het bestand `MyAuth0Provider.jsx` aan in de map `src/contexts`:
+
 ```jsx
 import { Auth0Provider } from '@auth0/auth0-react';
+
 function MyAuth0Provider({ children }) {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -92,22 +110,23 @@ function MyAuth0Provider({ children }) {
       domain={domain}
       clientId={clientId}
       redirectUri={`${window.location.origin}/transactions`}
-      cacheLocation="localStorage" // 👈 extra, niet in tutorial!
+      cacheLocation="localstorage" // 👈 extra, niet in tutorial!
     >
       {children}
     </Auth0Provider>
   );
 }
+
 export default MyAuth0Provider;
 ```
 
 De Auth0 React SDK gebruikt de React Context om de authenticatiestatus van de gebruikers te beheren. Een manier om Auth0 te integreren met de React app is door de root component te verpakken met een `Auth0Provider` uit de SDK. Stel de properties in
 
-- `domain` en `clientId`: zie instellingen van jouw app in het Auth0 Dashboard
-- `redirectUri`: de URL waarnaar de gebruiker navigeert als hij geauthenticeerd is door Auth0, deze URL moet toegevoegd zijn aan de `Allowed Callback URLs` in je Auth0 setup.
-- `cacheLocation`: waar de auth tokens en andere info opgeslagen worden
+- `domain` en `clientId`: zie instellingen van jouw app in het Auth0 Dashboard.
+- `redirectUri`: de URL waarnaar de gebruiker navigeert als hij geauthenticeerd is door Auth0. Deze URL moet toegevoegd zijn aan de `Allowed Callback URLs` in de instellingen van jouw applicatie op het Auth0 Dashboard.
+- `cacheLocation`: waar de auth tokens en andere info opgeslagen worden.
 
-LET OP: deze redirectUri moet de juiste zijn, i.e. de pagina die geladen zal worden nadat je ingelogd bent, indien deze niet correct kan je 'rare' fouten krijgen. (isAuthenticated zal false rapporteren maar je krijgt toch geen login te zien als je op login klikt, dat soort dingen)
+> **LET OP:** deze `redirectUri` moet de juiste zijn, i.e. de pagina die geladen zal worden nadat je ingelogd bent. Indien deze niet correct is, kan je 'rare' fouten krijgen. (`isAuthenticated` zal `false` rapporteren maar je krijgt toch geen login te zien als je op login klikt, dat soort dingen)
 
 Verpak de root component in `index.js` met `MyAuth0Provider`:
 
@@ -168,7 +187,6 @@ export default LoginButton;
 Door `loginWithRedirect()` uit te voeren, wordt de gebruiker omgeleid naar de [Auth0 Universal Login Page](https://auth0.com/universal-login), waar Auth0 de gebruiker kan authenticeren. Na succesvolle authenticatie zal Auth0 de gebruiker terugleiden naar de applicatie. Als het aanmelden succesvol is dan keren we terug naar de home pagina.
 
 Voeg de `LoginButton` toe aan de `NavBar`. Bij klik op de knop wordt je omgeleid naar de [Auth0 Universal Login Page](https://auth0.com/universal-login).
-
 
 #### 6. De Logout component
 
@@ -301,8 +319,9 @@ function MyAuth0Provider({ children }) {
       domain={domain}
       audience={audience} // 👈 1
       clientId={clientId}
-      edirectUri={`${window.location.origin}/transactions`}
-      useRefreshTokens // 👈 2
+      redirectUri={`${window.location.origin}/transactions`}
+      cacheLocation="localstorage"
+      useRefreshTokens {/* 👈 2*/}
     >
       {children}
     </Auth0Provider>
@@ -426,7 +445,7 @@ export default function TransactionList() {
 #### 5. Oefening
 
 - Pas de andere componenten aan zodat ze gebruik maken van de `useTransactions` hook.
-- - Pas de places API aan en roep deze hook aan in de betreffende componenten.
+- Pas de places API aan en roep deze hook aan in de betreffende componenten.
 
 ### Stap 3 - Routes afschermen
 
@@ -452,7 +471,7 @@ export default function RequireAuth({ children }) { // 👈 1
     return children;
   }
 
-  return <Navigate to="/login" />;// 👈 4
+  return <Navigate to="/login" />; // 👈 4
 }
 ```
 1. De component ontvangt React children (= de component(en) die afgeschermd moeten worden).
@@ -531,14 +550,17 @@ export default function AuthLanding() {
 Pas in `MyAuthProvider` component ook de redirect pagina aan:
 
 ```jsx
+// ...
 <Auth0Provider
   domain={domain}
   audience={audience}
   clientId={clientId}
-  redirectUri={`${window.location.origin}/login`}{/* 👈 */}
+  redirectUri={`${window.location.origin}/login`} // 👈
+  cacheLocation="localstorage"
   useRefreshTokens
 >
   {children}
+// ...
 </Auth0Provider>
 ```
 
