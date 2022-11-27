@@ -52,6 +52,8 @@ De integratie met React is zeer volledig. Daarom gaan hier dus gewoon linken naa
 
 Volg de stappen in <https://auth0.com/docs/quickstart/spa/react/01-login#get-your-application-keys>.
 
+Vergeet niet de callback urls en allowed web origins correct in te stellen of inloggen en/of API callen zal niet lukken.
+
 Maak een .env.local file aan met volgende inhoud
 ```json
 REACT_APP_AUTH0_DOMAIN={YOUR_DOMAIN}
@@ -70,7 +72,7 @@ yarn add @auth0/auth0-react
 
 #### 3. Configureer de [Auth0Provider component](https://auth0.com/docs/quickstart/spa/react/01-login#configure-the-auth0provider-component)
 
-In `components/context` folder, maak de file `MyAuth0Provider` component aan.
+In `src/contexts` folder, maak de file `MyAuth0Provider` component aan.
 ```jsx
 import { Auth0Provider } from '@auth0/auth0-react';
 function MyAuth0Provider({ children }) {
@@ -80,7 +82,7 @@ function MyAuth0Provider({ children }) {
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      redirectUri={window.location.origin}
+      redirectUri={`${window.location.origin}/transactions`}
     >
       {children}
     </Auth0Provider>
@@ -90,7 +92,9 @@ export default MyAuth0Provider;
 ```
 De Auth0 React SDK gebruikt de React Context om de authenticatiestatus van de gebruikers te beheren. Een manier om Auth0 te integreren met de React-app, is door de rootcomponent te verpakken met een Auth0Provider uit de SDK. Stel de properties in
 - domain en clientId: zie instellingen Budget app in Auth0 Dashboard
-- redirectUri: de URL waarnaar de gebruiker navigeert als hij geauthenticeerd is door Auth0.
+- redirectUri: de URL waarnaar de gebruiker navigeert als hij geauthenticeerd is door Auth0, deze URL moet toegevoegd zijn aan de `Allowed Callback URLs` in je Auth0 setup.
+  
+LET OP: deze redirectUri moet de juiste zijn, i.e. de pagina die geladen zal worden nadat je ingelogd bent, indien deze niet correct kan je 'rare' fouten krijgen. (isAuthenticated zal false rapporteren maar je krijgt toch geen login te zien als je op login klikt, dat soort dingen)
 
 
 #### 4. Verpak de root component in index.js met MyAuth0Provider.
@@ -209,6 +213,7 @@ export default function AuthenticationButton() {
   }
 
   return <LoginButton />;
+}
 ```
 
 1. `isAuthenticated` property geeft aan of Auth0 de gebruiker reeds geauthenticeerd heeft. De `user` property bevat de informatie gerelateerd aan de aangemelde gebruiker. 
@@ -251,7 +256,7 @@ Het uiteindelijke doel is dat de server toegang tot bepaalde REST routes gaat af
 
 #### 2. Configureer MyAuth0Provider component
 
-- Pas .env.local aan. Voeg onderstaande variabele toe
+- Pas .env.local aan. Voeg onderstaande variabele toe, dit moet dezelfde waarde bevatten als de `AUTH_AUDIENCE` in onze backend.
 
 ```json
 REACT_APP_AUTH0_API_AUDIENCE={YOUR_API_AUDIENCE}
@@ -270,10 +275,10 @@ function MyAuth0Provider({ children }) {
   return (
     <Auth0Provider
       domain={domain}
-      audience={audience}{/*👈 1*/}
+      audience={audience} // 👈 1
       clientId={clientId}
-      redirectUri={window.location.origin}
-      useRefreshTokens {/*👈 2*/}
+      edirectUri={`${window.location.origin}/transactions`}
+      useRefreshTokens // 👈 2
     >
       {children}
     </Auth0Provider>
@@ -421,7 +426,8 @@ export default function RequireAuth({ children }) {// 👈 1
   }
 
   return <Navigate to="/login" />;// 👈 4
-  ```
+}
+```
 1. De component ontvangt kinderen
 2. Zorg ervoor dat het laden van de SDK is voltooid voordat je toegang krijgt tot de property isAuthenticated, door te controleren of isLoading onwaar is.
 3. Adhv de property isAuthenticated van useAuth0()hook controleer je of Auth0 de gebruiker geverifieerd heeft voordat de component wordt weergegeven. 
@@ -583,5 +589,3 @@ export default App;
 
 Een werkend voorbeeld kan, zoals altijd, in de [budget applicatie](https://github.com/HOGENT-Web/frontendweb-budget) gevonden worden. Dit keer staat dit op de branch `feature/auth0`.
 
-
-MOETEN DE TOKENS IN LOCALSTORAGE WORDEN OPGESLAAN???? HIER nog iet
