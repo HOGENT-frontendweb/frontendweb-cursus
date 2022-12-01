@@ -8,7 +8,6 @@
 > git checkout -b les8 50b4dad
 > yarn install
 > yarn start
-> 
 > ```
 >
 > **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `feature/auth0`.**

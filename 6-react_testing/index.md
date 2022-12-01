@@ -10,7 +10,6 @@
 > git checkout -b les6 ef61c46
 > yarn install
 > yarn start
-> 
 > ```
 >
 > **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**
