@@ -23,6 +23,8 @@ Alvorens meteen de oplossing te geven, laten we jullie aan de slag gaan met een 
 
 ## Testgebruiker
 
+> Je kan dezelfde gebruiker nemen als bij Web Services. Je hoeft dit dus niet opnieuw te doen indien je reeds een testgebruiker hebt.
+
 Om via Cypress te kunnen aanmelden gaan we een testgebruiker aanmaken in het [Auth0 Dashboard](https://manage.auth0.com/). Ga hiervoor naar User Management > Users en klik op `Create User`. Kies onderstaande instellingen:
 
 - Email: e2e-testing@budgetapp.be
