@@ -74,7 +74,13 @@ Onderstaande secties doorlopen in principe deze tutorials, maar vormen gaandeweg
 
 *Bron: <https://auth0.com/docs/quickstart/spa/react/01-login#get-your-application-keys>*
 
+Ga op het Auth0 Dashboard naar Applications > Applications en klik op Create application. Vul hier onderstaande in:
+
+![Registratie SPA](images/new_spa.png ':size=70%')
+
 Vergeet niet de callback urls en allowed web origins correct in te stellen of inloggen en/of API callen zal niet lukken. Dit doe je in de instellingen van jouw applicatie op het Auth0 Dashboard.
+
+![Settings SPA](./images/spa_settings.png ':size=50%')
 
 Maak een `.env` bestand aan met volgende inhoud
 
@@ -285,7 +291,7 @@ Start de applicatie. Nu moet je kunnen aanmelden via Auth0.
 
 In stap 2 dienen we eerst de Budget API te registreren: <https://auth0.com/docs/get-started/auth0-overview/set-up-apis>.
 
-Vul hiervoor onderstaande in
+Ga op het Auth0 Dashboard naar Applications > APIs en klik op Create API. Vul hier onderstaande in
 
 ![Registratie API](./images/new_api.png ':size=80%')
 
