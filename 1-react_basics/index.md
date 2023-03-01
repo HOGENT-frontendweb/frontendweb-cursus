@@ -668,6 +668,7 @@ Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vind
 
 - [Switch van CRA (create-react-app) naar Vite](https://medium.com/codex/you-should-choose-vite-over-cra-for-react-apps-heres-why-47e2e7381d13)
 
-## Must read
+## Must read/see
 
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
+- [React.js: The Documentary](https://www.youtube.com/watch?v=8pDqJVdNa44)
