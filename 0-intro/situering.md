@@ -14,7 +14,7 @@ En meer bepaald hier:
 
 Concreet gaan we een Single Page Application (SPA) maken, met JavaScript. Zoals je misschien al weet komen er bijna dagelijks nieuwe JavaScript-frameworks en -libraries voor SPA's bij.
 
-Wij hebben gekozen voor React. Waarom? Het wordt [veel gebruikt](https://2021.stateofjs.com/en-US/libraries/front-end-frameworks), het is van Facebook... maar eigenlijk doen alle frameworks en libraries min of meer hetzelfde. Gelijkaardige frameworks zijn bijvoorbeeld [Angular](https://angular.io/), [VueJS](https://vuejs.org/) en [Svelte](https://svelte.dev/).
+Wij hebben gekozen voor React. Waarom? Het wordt veel gebruikt (zie <https://2021.stateofjs.com/en-US/libraries/front-end-frameworks> en ook <https://emnudge.dev/blog/react-hostage>), het is van Facebook... maar eigenlijk doen alle frameworks en libraries min of meer hetzelfde. Gelijkaardige frameworks zijn bijvoorbeeld [Angular](https://angular.io/), [VueJS](https://vuejs.org/) en [Svelte](https://svelte.dev/).
 
 ## Wat gaan jullie doen?
 
