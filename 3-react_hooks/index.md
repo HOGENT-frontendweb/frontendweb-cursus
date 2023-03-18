@@ -1249,3 +1249,4 @@ Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan 
 - [Are You Making This React State Mistake?](https://www.youtube.com/watch?v=NZqMVUEiDIw)
 - [useState: Asynchronous or what?](https://youtu.be/RAJD4KpX8LA)
 - [3 React Mistakes, 1 App Killer](https://youtu.be/QuLfCUh-iwI)
+- [Were React Hooks a Mistake?](https://jakelazaroff.com/words/were-react-hooks-a-mistake/)
