@@ -1044,3 +1044,4 @@ Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vind
 - [Choosing the State Structure](https://beta.reactjs.org/learn/choosing-the-state-structure)
 - [Preserving and Resetting State](https://beta.reactjs.org/learn/preserving-and-resetting-state)
 - [Extracting State Logic into a Reducer](https://beta.reactjs.org/learn/extracting-state-logic-into-a-reducer)
+- [The Interactive Guide to Rendering in React](https://ui.dev/why-react-renders)
