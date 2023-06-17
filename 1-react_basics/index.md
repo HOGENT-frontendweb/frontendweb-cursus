@@ -670,5 +670,6 @@ Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vind
 
 ## Must read/see
 
+- [Practice React by fixing tests - Check your JSX knowledge!](https://reactpractice.dev/exercise/practice-react-by-fixing-tests-check-your-jsx-knowledge/)
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
 - [React.js: The Documentary](https://www.youtube.com/watch?v=8pDqJVdNa44)
