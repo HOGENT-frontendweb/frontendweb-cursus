@@ -20,7 +20,7 @@ Wij hebben gekozen voor React. Waarom? Het wordt veel gebruikt (zie <https://202
 
 Programmeren leer je enkel door het te doen, niet door onze cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-Voor dit olod is er een examenopdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=53293&tool=Document&browser=Table&tool_action=Viewer&publication=2046257). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staan duidelijk in de opdracht. De bijbehorende back-end maak je in het olod Web Services (indien van toepassing).
+Voor dit olod is er een examenopdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=58955&tool=Document&browser=Table&tool_action=Viewer&publication=2201057). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staan duidelijk in de opdracht. De bijbehorende back-end maak je in het olod Web Services (indien van toepassing).
 
 Het examen van dit olod is mondeling. Je doet een demo van je applicatie. Dit is geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
 
