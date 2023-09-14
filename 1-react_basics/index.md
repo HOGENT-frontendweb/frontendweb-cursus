@@ -1,4 +1,4 @@
-# Webpack your bags, time to React
+# React basics
 
 Neem volgende HTML-code als voorbeeld:
 
@@ -178,7 +178,7 @@ function GreetingElement({ name }) {
 
 `{name}` zorgt ervoor dat de waarde van de variable `name` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken. De uitvoer van deze code zal gerenderd worden in de HTML.
 
-> Geen idee wat het verschil is tussen een statement of expression? Check dat eens de [Must read](#must-read) onderaan deze pagina.
+> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/see](#must-readsee) onderaan deze pagina.
 
 Browsers kunnen natuurlijk geen JSX renderen, de code moet eerst omgezet worden door een compiler (net zoals Java code niet rechtstreeks door een processor kan uitgevoerd worden). Babel is een compiler die als een stuk JavaScript in de browser kan geladen worden en vervolgens JSX vertaalt. Babel werd oorspronkelijk gecreëerd om moderne JavaScript te kunnen draaien in oudere browsers. Om babel te gebruiken, voeg je onderstaand script toe aan de HTML en voeg je `type="text/babel"` toe aan de `script` tag met de JSX-code.
 

@@ -1,4 +1,4 @@
-# It's a kind of state management
+# React state management
 
 > **Startpunt voorbeeldapplicatie**
 >
@@ -924,7 +924,7 @@ export default function TransactionForm({onSaveTransaction}){ // 👈 5
 
 1. Voeg state toe voor elk inputveld
 2. Verbind de inputelementen met de component state via de `value` prop.
-3. De datum moeten we converteren naar het formaat YYYY-MM-DD. Plaats de functie `toDateInputString` buiten de component om performantie-redenen. Anders wordt bij elke re-render de functie opnieuw aangemaakt.
+3. De datum moeten we converteren naar het formaat YYYY-MM-DD. Plaats de functie `toDateInputString` buiten de component om performantie-redenen. Anders wordt bij elke rerender de functie opnieuw aangemaakt.
 4. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen
 5. Nu kunnen we het formulier submitten door een handler toe te voegen. De transactie zal moeten toegevoegd worden aan de lijst van transacties die bijgehouden wordt in de parent. We voorzien dus een prop `onSaveTransaction` die de functie zal doorgeven uit de parent die dit realiseert.
 
@@ -1008,6 +1008,12 @@ export default function TransactionList() {
 2. De functie om een nieuwe transactie vooraan de lijst toe te voegen.
 3. Voeg de component `TransactionForm` toe. De methode om een transactie toe te voegen wordt als prop doorgegeven. Zo zal bij wijziging van de state de component opnieuw gerenderd worden.
 4. Start de app en bekijk de console: `transactions` toont de nieuwe transactie niet (`newTransactions` toont de nieuwe transactie wel). Meer uitleg hierover vind je op [State as a snapshot](https://beta.reactjs.org/learn/state-as-a-snapshot). `setState` is een asynchrone functie. We moeten dus gebruik maken van een variabele `newTransaction` indien we iets met de nieuwe transacties willen doen! Willen we gebruik maken van de gewijzigde state, maken we soms beter gebruik maken van de hook `useEffect`. Die zien we in een later hoofdstuk.
+
+## useReducer hook
+
+Mocht je nood hebben aan een meer complexe state in een component, dan kan je gebruik maken van de `useReducer` hook. Dit is in feite een alternatief voor `useState`. Met een reducer kan je een complexe state aanpassen o.b.v. een **reducerfunctie** die een bepaalde actie ontvangt. Wat die actie is, kies je zelf. Typisch is dit een object van de vorm `{ action: string; payload: any; }`.
+
+Lees hierover meer in de [documentatie van de hook](https://reactjs.org/docs/hooks-reference.html#usereducer).
 
 ## Oefening: SnakeEyes
 
