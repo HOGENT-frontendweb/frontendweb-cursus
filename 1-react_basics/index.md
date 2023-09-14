@@ -390,7 +390,7 @@ We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij al
 
 > Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: [Working with json](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
 
-De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het vak Web Services.
+De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
 Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerste met *mock object* werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
 
