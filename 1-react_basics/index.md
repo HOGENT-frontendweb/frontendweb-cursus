@@ -240,7 +240,7 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 ### package.json
 
-De [package.json](https://docs.npmjs.com/cli/v8/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Een voorbeeld van een `package.json` is:
+De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Een voorbeeld van een `package.json` is:
 
 [package.json](./examples/package.json ':include :type=code')
 
