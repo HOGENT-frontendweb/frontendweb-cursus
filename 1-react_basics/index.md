@@ -242,7 +242,7 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 De [package.json](https://docs.npmjs.com/cli/v8/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Een voorbeeld van een `package.json` is:
 
-[example8.html](./examples/package.json ':include :type=code')
+[package.json](./examples/package.json ':include :type=code')
 
 De `package.json` bevat enkele properties:
 
@@ -271,6 +271,12 @@ Kortom, een tilde is strenger dan een hoedje.
 Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
 
 Bij een `create-react-app` wordt er steeds automatisch een `yarn install` uitgevoerd, dus die hoeven we niet meer te doen. Met een `yarn start` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 3000 gestart: <http://localhost:3000>.
+
+### yarn.lock
+
+Wanneer je een package installeert, zal yarn een `yarn.lock` bestand aanmaken. Dit bestand bevat de exacte versies van de packages die geïnstalleerd zijn. Dit bestand moet je zeker mee opnemen in je git repository. Dit zorgt ervoor dat iedereen exact dezelfde versies van de packages gebruikt.
+
+Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd de exacte versie staat maar een bepaalde syntax die aangeeft welke versies toegelaten zijn (zie vorige sectie).
 
 ### src
 
