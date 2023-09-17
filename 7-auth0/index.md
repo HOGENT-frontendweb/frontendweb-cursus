@@ -44,7 +44,7 @@ De verschillende stappen:
 
 Het zou natuurlijk bijzonder onhandig zijn als je voor elke request opnieuw zou moeten inloggen, zeker bij moderne webapplicaties die vele requests gebruiken om één pagina op te bouwen. We moeten dus ergens kunnen 'onthouden' dat iemand ingelogd is, op een veilige manier.
 
-Hiervoor kan je (o.a.) een [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens) gebruiken, dat is in se een (base64) string die bij elke request meegestuurd wordt in de `Authorization` header. Een JWT bestaat uit drie delen (zie een voorbeeld op https://jwt.io)
+Hiervoor kan je (o.a.) een [JSON Web Token (JWT)](https://auth0.com/docs/secure/tokens/json-web-tokens) gebruiken, dat is in se een (base64) string die bij elke request meegestuurd wordt in de `Authorization` header. Een JWT bestaat uit drie delen (zie een voorbeeld op <https://jwt.io>)
 
 - een deel met meta informatie over het token (hash algoritme)
 - een deel met de echte data, de payload (wie ingelogd is, wat de rechten zijn, wanneer de token vervalt, etc)
@@ -294,7 +294,6 @@ Ga op het Auth0 Dashboard naar Applications > APIs en klik op Create API. Vul hi
 
 ![Registratie API](./images/new_api.png ':size=80%')
 
-
 In de settings van deze API gaan we Role-Based Access Control (RBAC) aanzetten, zodat we verschillende gebruikers verschillende toegangsrechten kunnen geven.
 
 ![Registratie API](./images/rbac_settings.png ':size=80%')
@@ -336,11 +335,11 @@ export default MyAuth0Provider;
 ```
 
 1. Voeg de `audience` toe, dit is de unieke identifier van je API. Auth0 gebruikt deze waarde om te bepalen tot welke API server(s) een gebruiker toegang heeft.
-3. `useRefreshTokens`: om refresh tokens te kunnen opvragen (zie verder)
+2. `useRefreshTokens`: om refresh tokens te kunnen opvragen (zie verder)
 
 #### 3. Pas de transaction API aan
 
-We moeten het token meesturen met de `Authorization` HTTP header bij elke request naar de server die authenticatie (en authorisatie) vereist. Het token kan worden opgevraagd via de `getAccessTokenSilently()` functie uit de `useAuth0()` hook. Deze functie retourneert een Promise die een access token teruggeeft. Deze token kan je gebruiken om een ​​beveiligde API aan te roepen. 
+We moeten het token meesturen met de `Authorization` HTTP header bij elke request naar de server die authenticatie (en authorisatie) vereist. Het token kan worden opgevraagd via de `getAccessTokenSilently()` functie uit de `useAuth0()` hook. Deze functie retourneert een Promise die een access token teruggeeft. Deze token kan je gebruiken om een ​​beveiligde API aan te roepen.
 
 Deze functie kan het access en ID token vernieuwen gebruik makend van een [refresh token](https://auth0.com/docs/secure/tokens/refresh-tokens). Hiervoor dient `useRefreshTokens` ingesteld zijn in de `Auth0Provider`.
 
@@ -479,6 +478,7 @@ export default function RequireAuth({ children }) { // 👈 1
   return <Navigate to="/login" />; // 👈 4
 }
 ```
+
 1. De component ontvangt React children (= de component(en) die afgeschermd moeten worden).
 2. Zorg ervoor dat het laden van de Auth0 SDK is voltooid voordat je toegang krijgt tot de property `isAuthenticated`. `isLoading` zal `false` zijn zolang Auth0 nog niet klaar is.
 3. A.d.h.v. de property `isAuthenticated` van `useAuth0` hook controleer je of Auth0 de gebruiker geverifiëerd heeft voordat de component wordt weergegeven.
