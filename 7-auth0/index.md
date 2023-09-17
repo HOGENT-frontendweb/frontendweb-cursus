@@ -220,7 +220,7 @@ function LogoutButton() {
 export default LogoutButton;
 ```
 
-`logout()` leidt de gebruiker om naar je Auth0 logout endpoint (https://YOUR_DOMAIN/v2/logout). Daarna wordt de gebruiker onmiddellijk omgeleid naar je app.
+`logout()` leidt de gebruiker om naar je Auth0 logout endpoint (<https://YOUR_DOMAIN/v2/logout>). Daarna wordt de gebruiker onmiddellijk omgeleid naar je app.
 
 #### 7. Inbouwen van aanmelden/afmelden
 
