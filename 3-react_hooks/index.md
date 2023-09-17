@@ -17,7 +17,7 @@ Een veel gemaakte denkfout is dat alle waarden (i.e. variabelen) in een componen
 
 In het vorige hoofdstuk hebben we kennis gemaakt met de `useState` en `useReducer` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
 
-Hooks hebben ervoor gezorgd dat je met function components hetzelfde kan bereiken als met class components. Toch kan het zijn alsof hooks vreemd aanvoelen, alsof React de bal mis geslaan heeft in vergelijking met andere frameworks als [Solid.js](https://www.solidjs.com/) (zie <https://jakelazaroff.com/words/were-react-hooks-a-mistake/>).
+Hooks hebben ervoor gezorgd dat je met function components hetzelfde kan bereiken als met class components. Toch kan het zijn alsof hooks vreemd aanvoelen, alsof React de bal mis geslagen heeft in vergelijking met andere frameworks als [Solid.js](https://www.solidjs.com/) (zie <https://jakelazaroff.com/words/were-react-hooks-a-mistake/>).
 
 ## Regels voor hooks
 
@@ -190,7 +190,7 @@ Cache de `TransactionForm` component en bekijk de app opnieuw. Als we een letter
 
 ### useCallback hook
 
-`TransactionForm` bevat één prop, nl. de `onSaveTransaction` functie. Deze wordt doorgegeven door de parent component `TransactionList`. `createTransaction` is de event handler functie. Javascript gaat er vanuit dat de functie `createTransaction` bij elke render verschillend is. Echter is dit niet altijd het geval. `useCallback` cacht een functie tussen twee renders en dit totdat de dependency array wijzigt.
+`TransactionForm` bevat één prop, nl. de `onSaveTransaction` functie. Deze wordt doorgegeven door de parent component `TransactionList`. `createTransaction` is de event handler functie. Javascript gaat er vanuit dat de functie `createTransaction` bij elke render verschillend is. Echter is dit niet altijd het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
 
 Pas de code van de functie in de `TransactionList` component aan:
 
@@ -336,7 +336,7 @@ export default memo(function TransactionForm({ onSaveTransaction }) {
               type="submit"
               className="btn btn-primary"
             >
-              Add transactio
+              Add transaction
             </button>
           </div>
         </div>
@@ -351,7 +351,7 @@ export default memo(function TransactionForm({ onSaveTransaction }) {
 3. Registreer de formuliervelden in de `useForm` hook.
 4. We hoeven zelf geen state meer bij te houden, deze code mag weg.
 5. Je kan ook een standaardwaarde opgeven.
-6. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het submitten van het formulier. Je geeft aan deze functie een functie mee die opgeroepen moet worden als het formulier verzonden wordt.
+6. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier. Je geeft aan deze functie een functie mee die opgeroepen moet worden als het formulier verzonden wordt.
 7. De `onSubmit` functie logt de verstuurde waarden naar de console. `data` bevat de ingevulde waarden per formulierveld: `register('user')` wordt doorgegeven als `{ user:'value' }`. De vorige `handleSubmit` functie mag weg.
 8. [reset](https://react-hook-form.com/api/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
 
@@ -797,7 +797,7 @@ export default App;
 
 1. Importeer de nodige componenten.
 2. Roep de `useContext` hook aan en gebruik destructuring om de properties, die de component nodig heeft, eruit te halen.
-3. Voeg de bootstrap klassen toe voor de achtergrondskleur en de kleur van de tekst.
+3. Voeg de bootstrap klassen toe voor de achtergrondkleur en de kleur van de tekst.
 4. Voorzie de knop om het thema te kiezen.
 
 De `TransactionTable` component blijft behouden. De `ThemeContext` komt nu wel niet uit `App.jsx` maar `Theme.context.jsx`:
@@ -1074,7 +1074,7 @@ export default function TransactionForm() {
 
 ### Oefening 4 - PlacesSelect
 
-Maak een component `PlacesSelect` aan die de lisjt van places toont. Deze component heeft geen props.
+Maak een component `PlacesSelect` aan die de lijst van places toont. Deze component heeft geen props.
 
 Mocht je later nog een `select` tag nodig hebben, kan je nog altijd een generieke `Select` component maken. Probeer niet te vroeg te abstraheren, dat maakt het moeilijker om de code te begrijpen.
 

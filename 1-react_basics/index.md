@@ -152,11 +152,11 @@ Inspecteer de werking hiervan a.d.h.v. het volgend voorbeeld.
 
 <!-- tabs:end -->
 
-Je vraagt je nu waarschijnlijk af: "Is dit echt beter dan vanilla JavaScript?". Het antwoord is dat niemand React op deze manier gebruikt. Maar het is wel belangrijk om te beseffen dat deze acties weldegelijk onderliggend gebeuren. In de volgende sectie gaan we een stap verder richting wat React eigenlijk wel is.
+Je vraagt je nu waarschijnlijk af: "Is dit echt beter dan vanilla JavaScript?". Het antwoord is dat niemand React op deze manier gebruikt. Maar het is wel belangrijk om te beseffen dat deze acties wel degelijk onderliggend gebeuren. In de volgende sectie gaan we een stap verder richting wat React eigenlijk wel is.
 
 ## JSX
 
-Als we enkel React zouden kunnen schrijven door immens, nauwelijks leesbare, boomstructuren van `createElement` te creëren hadden we waarschijnlijk nooit van React gehoord. Samen met React heeft Facebook ook JSX geïntroduceerd (een samentrekking van JavaScipt en XML). Hiermee is het mogelijk om veel efficiënter (en leesbaarder) zulke componenten uit te schrijven.
+Als we enkel React zouden kunnen schrijven door immens, nauwelijks leesbare, boomstructuren van `createElement` te creëren hadden we waarschijnlijk nooit van React gehoord. Samen met React heeft Facebook ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om veel efficiënter (en leesbaarder) zulke componenten uit te schrijven.
 
 ![JSX example](./images/jsx.png)
 
@@ -232,11 +232,11 @@ Deze map bevat onder andere volgende bestanden/mappen:
 - `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
 - er werd ook automatisch een git repository toegevoegd, met een relevante `.gitignore`
 
-> Merk op: de React-community raadt het gebruik van CRA (en react-scripts) meer en meer af wegens o.a. het onbreken van de mogelijkheid om eenvoudig configuratie van webpack aan te passen. Er zijn reeds meer hedendaagse compilers zoals bv. [Vite](https://vitejs.dev/). Durf jij de switch aan?
+> Merk op: de React-community raadt het gebruik van CRA (en react-scripts) meer en meer af wegens o.a. het ontbreken van de mogelijkheid om eenvoudig configuratie van webpack aan te passen. Er zijn reeds meer hedendaagse compilers zoals bv. [Vite](https://vitejs.dev/). Durf jij de switch aan?
 
 ### yarn
 
-[yarn](https://yarnpkg.com/) is het programma dat alle dependencies zal installeren, een andere misschien iets gekendere is [npm](https://www.npmjs.com/package/npm). Ze doen beide hetzelfde en zijn inwisselbaar maar de ene keer `yarn` gebruiken en de andere keer `npm` is dan weer geen goed idee. Ze kunnen andere versies van packages cachen e.d. en dan kan je rare fouten tegenkomen.
+[yarn](https://yarnpkg.com/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). Ze doen beide hetzelfde en zijn inwisselbaar maar de ene keer `yarn` gebruiken en de andere keer `npm` is dan weer geen goed idee. Ze kunnen andere versies van packages cachen e.d. en dan kan je rare fouten tegenkomen.
 
 ### package.json
 
@@ -282,7 +282,7 @@ Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd
 
 De src map bevat een aantal JSX-bestanden (`index.js`, `App.js`...) en wat CSS, e.d. `webpack` zet dit om naar HTML en (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
-Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de brower automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
+Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
 
 > **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
@@ -374,7 +374,7 @@ Als we nu naar [onze site](http://localhost:3000/) gaan, zouden we de hard gecod
 
 ### JSON
 
-Een hard gecodeerde string als component tonen is niet erg nuttig, daar is React complete overkill voor. In dat geval schrijf je beter een HTML pagina met wat CSS zoals je het in Webapplications I geleerd hebt.
+Een hard gecodeerde string als component tonen is niet erg nuttig, daar is React complete overkill voor. In dat geval schrijf je beter een HTML pagina met wat CSS zoals je het in Web Development I geleerd hebt.
 
 Dit soort frameworks worden pas de moeite als we componenten gaan schrijven die data op een bepaalde manier tonen en manipuleerbaar maken. Met andere woorden: als componenten hergebruikt kunnen worden.
 
@@ -521,7 +521,7 @@ import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock-data'; 
 
 function App() {
- //c onst trans = TRANSACTION_DATA[0]; 👈 1
+ // const trans = TRANSACTION_DATA[0]; 👈 1
  return (
   <div className="App">
   {TRANSACTION_DATA.map(trans => 
@@ -612,7 +612,7 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
+      You can add web fonts, meta tags, or analytics to this file.
       The build step will place the bundled scripts into the <body> tag.
 
       To begin the development, run `npm start` or `yarn start`.
