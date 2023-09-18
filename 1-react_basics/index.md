@@ -49,9 +49,7 @@ Aangezien elke React-applicatie start vanaf één bepaalde root, moeten we eerst
 ```html
 <script>
   const root = ReactDOM.createRoot(document.getElementById('greeting'));
-  root.render(
-    React.createElement('div', null, 'hello world'),
-  );
+  root.render(React.createElement('div', null, 'hello world'));
 </script>
 ```
 
@@ -73,19 +71,11 @@ Wat is nu het nut van het tweede argument? Bekijk onderstaande code. Hierbij iso
 
 ```js
 function GreetingElement() {
-  return React.createElement(
-    'div',
-    null,
-    'hello world'
-  );
+  return React.createElement('div', null, 'hello world');
 }
 
-const root = ReactDOM.createRoot(
-  document.getElementById('greeting')
-);
-root.render(
-  React.createElement(GreetingElement),
-);
+const root = ReactDOM.createRoot(document.getElementById('greeting'));
+root.render(React.createElement(GreetingElement));
 ```
 
 Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
@@ -117,9 +107,7 @@ function GreetingElement({ name }) {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('greeting'));
-root.render(
-  React.createElement(GreetingElement, { name: 'world' }),
-);
+root.render(React.createElement(GreetingElement, { name: 'world' }));
 ```
 
 Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
@@ -172,7 +160,11 @@ Wanneer we het stuk code van het `GreetingElement` omzetten naar JSX, krijgen we
 
 ```jsx
 function GreetingElement({ name }) {
-  return <div>hello <span id="name">{name}</span></div>;
+  return (
+    <div>
+      hello <span id='name'>{name}</span>
+    </div>
+  );
 }
 ```
 
@@ -200,27 +192,42 @@ Dit geeft het volgende resultaat:
 
 <!-- tabs:end -->
 
-## webpack
+## Vite
 
-Onze React-applicaties gaan natuurlijk liefst niet bestaan uit een paar grote HTML-bestanden doorspekt met `script` blokken met daarin JSX. Aangezien er toch een compilatiestap is, om de JSX om te zetten naar HTML + JavaScript, kunnen we even goed gebruik maken van deze stap om ook 'andere dingen' te doen. Deze 'andere dingen' zijn bijvoorbeeld bestanden samen nemen, afbeeldingen en CSS optimaliseren, dependencies beheren, etc.
+Onze React-applicaties gaan natuurlijk liefst niet bestaan uit een paar grote HTML-bestanden doorspekt met `script` blokken met daarin JSX. Aangezien er toch een compilatiestap is, om de JSX om te zetten naar HTML + JavaScript, kunnen we even goed gebruik maken van deze stap om ook 'andere dingen' te doen. Deze 'andere dingen' zijn bijvoorbeeld afbeeldingen en CSS optimaliseren, dependencies beheren, etc.
 
-Er bestaan tegenwoordig heel wat tools die deze taken op zich nemen, één van de populairdere is [webpack](https://webpack.js.org/). Door `webpack` te gebruiken kunnen we code in verschillende bestanden en mappen structureren, dependencies beheren, minification toepassen, verschillende debug en production builds maken, etc. Allemaal op een manier zoals je gewoon bent als je Java code schrijft.
+[**Vite**](https://vitejs.dev/) (afgeleid van het frans woord voor "snel") is een `buildtool` en `ontwikkelingsserver` die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals single-page applications (SPA's) en progressive web apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
-Net zoals we React zelf opgezet hebben kan je voor `webpack` alles downloaden en de juiste configuratiebestanden aanmaken en zo alles weer manueel opzetten en werkend krijgen. Maar `webpack` heeft ontzettend véél [configuratie](https://webpack.js.org/configuration/) opties (en wordt trouwens ook voor veel andere libraries en frameworks gebruikt). Het volledig leren gebruiken is waarschijnlijk een cursus op zich.
+Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
-Gelukkig bestaat er een handige CLI tool die dit allemaal voor ons doet en degelijke defaults configureert voor React: [create-react-app (CRA)](https://reactjs.org/docs/create-a-new-react-app.html).
+- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundelingstap tijdens de ontwikkeling.
 
-## create-react-app
+  ![Vite - native ES Modules](./images/vite_ESModules.webp)
 
-Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-react-app](https://reactjs.org/docs/create-a-new-react-app.html). Hiervoor maken we gebruik van `npx`, de `npm package runner`. `npx` zorgt ervoor dat je niet langer CLI packages lokaal moet installeren om ze te gebruiken. Dit heeft als voordeel dat we onze global npm scope niet vervuilen met CLI tools die we mogelijks maar één keer gebruiken.
+  Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.
 
+  - De **dependency modules** zijn JavaScript-modules die je hebt geïmporteerd uit de map node_modules. Deze modules worden verwerkt en gebundeld met behulp van [esbuild](https://esbuild.github.io/), een JavaScript-bundelaar geschreven in Go die 10-100x sneller presteert dan Webpack.
+
+  - De **applicatie modules** zijn modules die je voor je applicatie schrijft, zoals .jsx-...
+
+  Vite verwerkt de dependency modules alleen vóór een enkel browserverzoek. De applicatie modules worden door Vite getransformeerd en bediend wanneer ze nodig zijn voor je applicatie:
+
+- **HMR (Hot Module Replacement)**: In Vite worden enkel de gewijzigde modules vervangen. Dit zorgt voor snelle code-updates in de browser tijdens ontwikkeling.
+
+- **Ontwikkelingsserver**: Vite bevat een ingebouwde ontwikkelingsserver die je gebruikt tijdens development. Deze server ondersteunt functies zoals snel laden (fast refresh), waardoor codeveranderingen direct worden weergegeven in de browser zonder de hele toepassing opnieuw te moeten compileren.
+
+- **Builds**: Vite kan ook worden gebruikt voor productiebuilds. Tijdens de productiebuild past Vite verschillende optimalisaties toe, zoals minificatie, tree-shaking (waarbij ongebruikte code wordt verwijderd), en bundling (het samenvoegen van bestanden) om de laadtijden te minimaliseren en de prestaties van je applicatie te verbeteren. Vite bevat een vooraf geconfigureerde `build`-opdracht die de applicatie bundelt met behulp van [Rollup](https://rollupjs.org/). Vite biedt ook een standaard Rollup-configuratie die je kan aanpassen wanneer dat nodig is. De output bevindt zich in de dist folder en bevat statische assets die je plaatst op je productie server.
+
+  ![Vite en bundling](./images/vite_bundling.png)
+
+## create-vite
+
+Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/).
 Een nieuwe React-applicatie maken is zo simpel als:
 
 ```bash
-npx create-react-app budget
+yarn create vite budget --template react
 ```
-
-> Verwijder de npx cache met `npx clear-cpx-cache` indien je volgende warning krijgt: `You are running 'create-react-app' 4.x.x, which is behind the latest release (5.x.x).`
 
 Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen, we bouwen steeds verder op deze startapplicatie.
 
@@ -231,8 +238,6 @@ Deze map bevat onder andere volgende bestanden/mappen:
 - `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...)
 - `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
 - er werd ook automatisch een git repository toegevoegd, met een relevante `.gitignore`
-
-> Merk op: de React-community raadt het gebruik van CRA (en react-scripts) meer en meer af wegens o.a. het ontbreken van de mogelijkheid om eenvoudig configuratie van webpack aan te passen. Er zijn reeds meer hedendaagse compilers zoals bv. [Vite](https://vitejs.dev/). Durf jij de switch aan?
 
 ### yarn
 
@@ -252,12 +257,12 @@ De `package.json` bevat enkele properties:
 
 Met een simpele `yarn install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`yarn install --prod` installeert enkel de `dependencies`).
 
-Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden *at build time*, of dus wanneer de applicatie (door webpack) omgevormd wordt tot iets wat browsers begrijpen.
+Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (door vite) omgevormd wordt tot iets wat browsers begrijpen.
 
 Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees gerust eens door de specificatie). Kort gezegd houdt dit in dat elk versienummer bestaat uit drie delen: `MAJOR.MINOR.PATCH`, elke deel wordt met één verhoogd in volgende gevallen:
 
-- `MAJOR`: wijzigingen die ***niet*** compatibel zijn met oudere versies
-- `MINOR`: wijzigen die ***wel*** compatibel zijn met oudere versies
+- `MAJOR`: wijzigingen die **_niet_** compatibel zijn met oudere versies
+- `MINOR`: wijzigen die **_wel_** compatibel zijn met oudere versies
 - `PATCH`: kleine bugfixes (compatibel met oudere versies)
 
 In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~) of hoedje (^) als prefix, dit heeft volgende betekenis:
@@ -268,9 +273,15 @@ In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~)
 
 Kortom, een tilde is strenger dan een hoedje.
 
-Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
+Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn dev` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
 
-Bij een `create-react-app` wordt er steeds automatisch een `yarn install` uitgevoerd, dus die hoeven we niet meer te doen. Met een `yarn start` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 3000 gestart: <http://localhost:3000>.
+Na de create-vite dienen we nog een `yarn install` uit te voeren, om alle dependencies te installeren. Met een `yarn dev` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 5173 gestart: <http://localhost:5173>.
+
+```bash
+> yarn install
+> cd budget
+> yarn dev
+```
 
 ### yarn.lock
 
@@ -280,9 +291,9 @@ Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd
 
 ### src
 
-De src map bevat een aantal JSX-bestanden (`index.js`, `App.js`...) en wat CSS, e.d. `webpack` zet dit om naar HTML en (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
+De src map bevat een aantal JSX-bestanden (`main.jsx`, `App.jsx`...) en wat CSS, e.d. `vite` zet dit om naar HTML en (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
-Probeer maar iets aan te passen in de `App.js`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
+Probeer maar iets aan te passen in de `App.jsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
 
 > **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
@@ -295,82 +306,92 @@ Maak in de map `src` een map `components` aan met daarin een map `transactions`.
 ```jsx
 // src/components/transactions/Transaction.jsx
 export default function Transaction() {
- return <div>Benjamin gaf €200 uit bij Dranken Geers.</div>;
+  return <div>Benjamin gaf €200 uit bij Dranken Geers.</div>;
 }
 ```
 
 Components zijn niets meer dan functies die html terug geven, die moet getoond worden voor deze component.
 Hier voegen we hard gecodeerde tekst toe want weten of een lege component correct gerenderd wordt is nogal lastig.
 
-Om deze component te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in de `index.js`:
+Om deze component te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in de `main.jsx`:
 
 ```jsx
-// src/index.js
+// src/main.jsx
 ReactDOM.render(
- <React.StrictMode>
-  <App />
- </React.StrictMode>,
- document.getElementById('root')
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById('root')
 );
 ```
 
-Standaard rendert deze de `App` component. Het `index.js` bestand ga je zelden zelf aanpassen. Je past normaal de `App` component aan.
+Standaard rendert deze de `App` component. Het `main.jsx` bestand ga je zelden zelf aanpassen. Je past normaal de `App` component aan.
 
 [StrictMode](https://reactjs.org/docs/strict-mode.html) doet een aantal checks op alle (onderliggende) componenten. Zeker voor een onervaren React programmeur het een goed idee om altijd `StrictMode` aan te zetten.
 
-### App.js
+### App.jsx
 
 ```jsx
-// src/App.js
-import logo from './logo.svg';
+// src/App.jsx
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
 import './App.css';
 
 function App() {
- return (
-  <div className="App">
-   <header className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
-    <p>
-     Edit <code>src/App.js</code> and save to reload.
-    </p>
-    <a
-     className="App-link"
-     href="https://reactjs.org"
-     target="_blank"
-     rel="noopener noreferrer"
-    >
-     Learn React
-    </a>
-   </header>
-  </div>
- );
+  const [count, setCount] = useState(0);
+
+  return (
+    <>
+      <div>
+        <a href='https://vitejs.dev' target='_blank' rel='noreferrer'>
+          <img src={viteLogo} className='logo' alt='Vite logo' />
+        </a>
+        <a href='https://react.dev' target='_blank' rel='noreferrer'>
+          <img src={reactLogo} className='logo react' alt='React logo' />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className='card'>
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className='read-the-docs'>
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  );
 }
 
 export default App;
 ```
 
-In `App.js` staat de code voor de standaard startpagina: het React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`, deze is enkel voor deze component. Globale stijlen definieer je in het bestand `index.css`.
+In `App.jsx` staat de code voor de standaard startpagina: het Vite en React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`, deze is enkel voor deze component. Globale stijlen definieer je in het bestand `index.css`.
 
 JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Uw component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
 Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
 
 ```jsx
-// src/App.js
-import Transaction from './components/transactions/Transaction'; 
+// src/App.jsx
+import Transaction from './components/transactions/Transaction';
 
 function App() {
- return (
-  <div className="App">
-   <Transaction />
-  </div>
- );
+  return (
+    <div className='App'>
+      <Transaction />
+    </div>
+  );
 }
 
 export default App;
 ```
 
-Als we nu naar [onze site](http://localhost:3000/) gaan, zouden we de hard gecodeerde string moeten zien.
+Als we nu naar [onze site](http://localhost:5173/) gaan, zouden we de hard gecodeerde string moeten zien.
 
 ### JSON
 
@@ -398,7 +419,7 @@ We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij al
 
 De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
-Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerste met *mock object* werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
+Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerste met _mock object_ werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
 
 Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data ophalen en tonen. Daarbij dienen we enkel die import te vervangen door een echte API call en hoeven we niet onze volledige component te herschrijven.
 
@@ -408,19 +429,21 @@ Maak een map `api` met een bestand `mock-data.js` aan in de `src` map. Later ver
 
 ```js
 // src/api/mock-data.js
-const TRANSACTION_DATA = [{
- user: 'Benjamin',
- amount: -200,
- date: '2021-07-01T12:32:04.534Z',
- place: 'Dranken Geers',
-},
-{
- user: 'Benjamin',
- amount: 1500,
- date: '2021-06-30T10:09:22.534Z',
- place: 'Loon',
-}];
- 
+const TRANSACTION_DATA = [
+  {
+    user: 'Benjamin',
+    amount: -200,
+    date: '2021-07-01T12:32:04.534Z',
+    place: 'Dranken Geers',
+  },
+  {
+    user: 'Benjamin',
+    amount: 1500,
+    date: '2021-06-30T10:09:22.534Z',
+    place: 'Loon',
+  },
+];
+
 export default TRANSACTION_DATA;
 ```
 
@@ -438,26 +461,35 @@ We gaan de `Transaction` component aanpassen zodat hij data van verschillende tr
 ```jsx
 // src/components/transaction/Transaction.jsx
 export default function Transaction() {
- const user = "Benjamin"; // 👈 1
- const amount = 200; // 👈 1
- const place = "Dranken Geers"; // 👈 1
- return <div>{user} gaf €{amount} uit bij {place}</div>; // 👈 2
+  const user = 'Benjamin'; // 👈 1
+  const amount = 200; // 👈 1
+  const place = 'Dranken Geers'; // 👈 1
+  return (
+    <div>
+      {user} gaf €{amount} uit bij {place}
+    </div>
+  ); // 👈 2
 }
 ```
 
 1. Definieer een variabele voor `user`, `amount` en `place`
-2. Vervang de hardcoded info door de variabelen.  
+2. Vervang de hardcoded info door de variabelen.
 
 De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction(props) { // 👈 2
- // const user = "Benjamin"; 👈 1
- // const amount = 200; 👈 1
- // const place = "Dranken Geers"; 👈 1
- const { user, amount, place} = props; // 👈 3
- return <div>{user} gaf €{amount} uit bij {place}</div>;
+export default function Transaction(props) {
+  // 👈 2
+  // const user = "Benjamin"; 👈 1
+  // const amount = 200; 👈 1
+  // const place = "Dranken Geers"; 👈 1
+  const { user, amount, place } = props; // 👈 3
+  return (
+    <div>
+      {user} gaf €{amount} uit bij {place}
+    </div>
+  );
 }
 ```
 
@@ -471,18 +503,18 @@ Hoe krijg je nu de juiste data in de `props` van een component? In `App.js` will
 2. die we doorgeven aan de `Transaction` component. Dit doet je op dezelfde manier als bij HTML: je voegt simpelweg attributen toe op een bepaalde tag.
 
 ```jsx
-// src/App.js
+// src/App.jsx
 import Transaction from './components/transactions/Transaction';
 
 function App() {
- const user = "Benjamin"; // 👈 1
- const amount = 200; // 👈 1
- const place = "Dranken Geers"; // 👈 1
- return (
-  <div className="App">
-   <Transaction user={user} place={place} amount={amount}/> { /* 👈 2 */}
-  </div>
- );
+  const user = 'Benjamin'; // 👈 1
+  const amount = 200; // 👈 1
+  const place = 'Dranken Geers'; // 👈 1
+  return (
+    <div className='App'>
+      <Transaction user={user} place={place} amount={amount} /> {/* 👈 2 */}
+    </div>
+  );
 }
 
 export default App;
@@ -494,17 +526,22 @@ We willen natuurlijk dat hier de data van ons mock object komt.
 2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen.
 
 ```jsx
-// src/App.js
+// src/App.jsx
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './mock-data'; // 👈 1
 
 function App() {
- const trans = TRANSACTION_DATA[0]; // 👈 2
- return (
-  <div className="App">
-   <Transaction user={trans.user} place={trans.place} amount={trans.amount}/> { /* 👈 2 */}
-  </div>
- );
+  const trans = TRANSACTION_DATA[0]; // 👈 2
+  return (
+    <div className='App'>
+      <Transaction
+        user={trans.user}
+        place={trans.place}
+        amount={trans.amount}
+      />{' '}
+      {/* 👈 2 */}
+    </div>
+  );
 }
 
 export default App;
@@ -516,18 +553,24 @@ Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een
 2. We hier kunnen in de JSX-code ook onze array **mappen** waarbij we elk element omzetten naar een `Transaction` component.
 
 ```jsx
-// src/App.js
+// src/App.jsx
 import Transaction from './components/transactions/Transaction';
-import TRANSACTION_DATA from './api/mock-data'; 
+import TRANSACTION_DATA from './api/mock-data';
 
 function App() {
- // const trans = TRANSACTION_DATA[0]; 👈 1
- return (
-  <div className="App">
-  {TRANSACTION_DATA.map(trans => 
-   <Transaction user={trans.user} place={trans.place} amount={trans.amount}/> )}{ /* 👈 2 */}
-  </div>
- );
+  // const trans = TRANSACTION_DATA[0]; 👈 1
+  return (
+    <div className='App'>
+      {TRANSACTION_DATA.map((trans) => (
+        <Transaction
+          user={trans.user}
+          place={trans.place}
+          amount={trans.amount}
+        />
+      ))}
+      {/* 👈 2 */}
+    </div>
+  );
 }
 
 export default App;
@@ -537,15 +580,17 @@ Je kan ook gebruik maken van object destructuring om attributen te genereren. El
 
 ```jsx
 import Transaction from './components/transactions/Transaction';
-import TRANSACTION_DATA from './api/mock-data'; 
+import TRANSACTION_DATA from './api/mock-data';
 
 function App() {
- return (
-  <div className="App">
-  {TRANSACTION_DATA.map(trans => 
-   <Transaction {...trans}/>)}{ /* 👈 */}
-  </div>
- );
+  return (
+    <div className='App'>
+      {TRANSACTION_DATA.map((trans) => (
+        <Transaction {...trans} />
+      ))}
+      {/* 👈 */}
+    </div>
+  );
 }
 
 export default App;
@@ -573,57 +618,26 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
 
 ```html
 <!-- public/index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 👈 1 -->
+    <title>BudgetApp</title>
+    <!-- 👈 3 -->
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!-- 👈 2 -->
+    <script type="module" src="/src/main.jsx"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-  <link
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
-  rel="stylesheet"
-  integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
-  crossorigin="anonymous"> <!-- 👈 1 -->
-  <title>BudgetApp</title><!-- 👈 3 -->
-</head>
-
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add web fonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-    <script
-   src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-   integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-   crossorigin="anonymous"></script> <!-- 👈 2 -->
-</body>
-
+  </body>
 </html>
 ```
 
@@ -631,9 +645,13 @@ Pas nu de `Transaction` component aan en maak gebruik van de Bootstrap class `te
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction(props) { 
-  const { user, amount, place} = props; 
-  return <div className="text-bg-dark" style={{width:'50%'}}>{user} gaf €{amount} uit bij {place}</div>; // 👈
+export default function Transaction(props) {
+  const { user, amount, place } = props;
+  return (
+    <div className='text-bg-dark' style={{ textAlign: 'center' }}>
+      {user} gaf €{amount} uit bij {place}
+    </div>
+  ); // 👈
 }
 ```
 
@@ -669,10 +687,6 @@ end note
 Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
 
 > Uiteraard zijn heel veel oplossingen mogelijk.
-
-## Mogelijke extra's examenopdracht
-
-- [Switch van CRA (create-react-app) naar Vite](https://medium.com/codex/you-should-choose-vite-over-cra-for-react-apps-heres-why-47e2e7381d13)
 
 ## Must read/see
 
