@@ -6,7 +6,7 @@
 > git clone https://github.com/HOGENT-Web/frontendweb-budget/
 > git checkout -b les2 f34391f
 > yarn install
-> yarn start
+> yarn dev
 > ```
 
 [**Props**](https://beta.reactjs.org/learn/passing-props-to-a-component) worden gebruikt om data door te geven binnen de component tree in één richting (top - down). React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Wanneer de props van een component moeten wijzigen (bijvoorbeeld als reactie op een gebruikersinteractie), zal het zijn parent-component moeten "vragen" om de nieuwe waarden van de props door te geven! Met andere woorden, we zullen een nieuw object binnen krijgen in de kind-component.
@@ -39,7 +39,9 @@ Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toeg
 
 React volgt een batch-updatemechanisme om de browser DOM bij te werken. Dit betekent dat updates voor de browser DOM in batches worden verzonden, in plaats van updates te verzenden voor elke afzonderlijke state-wijziging. Dit leidt tot logischerwijs betere prestaties.
 
-De kosten van virtuele DOM zijn veel minder "duur", omdat het niet nodig is om *alle* elementen opnieuw te renderen. Net dit maakt React (en andere JS front-endframeworks) super gaaf.
+De kosten van virtuele DOM zijn veel minder "duur", omdat het niet nodig is om _alle_ elementen opnieuw te renderen. Net dit maakt React (en andere JS front-endframeworks) super gaaf.
+
+**You must unlearn what you just learned in Web development II: geen DOM manipulaties in code meer**
 
 ## Voorbeeld - Overview of the places
 
@@ -88,12 +90,13 @@ export { TRANSACTION_DATA, PLACE_DATA} ; // 👈 2
 Wat moet er nu nog aangepast worden?
 
 <!-- markdownlint-disable-next-line -->
-+ Antwoord +
 
-  In `App.js` vervangen we het import statement van `TRANSACTION_DATA` door:
+- Antwoord +
+
+  In `App.jsx` vervangen we het import statement van `TRANSACTION_DATA` door:
 
   ```jsx
-  import { TRANSACTION_DATA } from './api/mock-data'; 
+  import { TRANSACTION_DATA } from './api/mock-data';
   ```
 
 Voor de verdere ontwikkeling van deze UI dienen we onderstaande vragen te beantwoorden. Neem hiervoor eerst [Thinking in React: start with the mockup, step 1, 3 en 4](https://beta.reactjs.org/learn/thinking-in-react) door.
@@ -107,27 +110,27 @@ Voor de verdere ontwikkeling van deze UI dienen we onderstaande vragen te beantw
 Maak een bestand `PlacesList.jsx` aan in de map `src\components\places`. Deze component zorgt voor de weergave van alle plaatsen. We maken reeds gebruik van de `Place` component voor weergave van één plaats. Deze component zullen we verderop aanmaken en implementeren.
 
 ```jsx
-import { PLACE_DATA}  from '../../api/mock-data';
+import { PLACE_DATA } from '../../api/mock-data';
 import Place from './Place';
 
 const PlacesList = () => {
   const places = PLACE_DATA;
   return (
-    <div className="grid mt-3">
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+    <div className='grid mt-3'>
+      <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
         {places
           .sort((a, b) =>
             a.name.toUpperCase().localeCompare(b.name.toUpperCase())
           )
           .map((p) => (
-            <div className="col">
+            <div className='col'>
               <Place {...p} />
             </div>
           ))}
       </div>
     </div>
   );
-}
+};
 
 export default PlacesList;
 ```
@@ -139,18 +142,18 @@ We implementeren de `Place` component, voorlopig nog zonder rating. Deze compone
 ```jsx
 const Place = ({ id, name, rating }) => {
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
       </div>
     </div>
   );
-}
+};
 
 export default Place;
 ```
 
-Voeg de `PlacesList` component toe aan `App.js` en bekijk het resultaat.
+Voeg de `PlacesList` component toe aan `App.jsx` en bekijk het resultaat.
 
 ```jsx
 import Transaction from './components/transactions/Transaction';
@@ -160,9 +163,11 @@ import PlacesList from './components/places/PlacesList'; // 👈
 function App() {
   return (
     <div>
-    {TRANSACTION_DATA.map(trans => 
-        <Transaction {...trans}/> )}
-        <PlacesList/>{/* 👈 */}
+      {TRANSACTION_DATA.map((trans) => (
+        <Transaction {...trans} />
+      ))}
+      <PlacesList />
+      {/* 👈 */}
     </div>
   );
 }
@@ -215,18 +220,20 @@ Met het toegevoegde item ziet de daaropvolgende boom er als volgt uit:
 
 Keys helpen React bepalen welke items gewijzigd, toegevoegd of verwijderd zijn. Het is noodzakelijk om sleutels te gegeven aan de elementen om deze een "stabiele identiteit" te geven.
 
-`App.js` passen we dus als volgt aan
+`App.jsx` passen we dus als volgt aan
 
 ```jsx
 import Transaction from './components/transactions/Transaction';
-import {TRANSACTION_DATA} from './api/mock-data'; 
+import { TRANSACTION_DATA } from './api/mock-data';
 import PlacesList from './components/places/PlacesList';
 
 function App() {
   return (
     <div>
-      {TRANSACTION_DATA.map((trans, index) => 
-        <Transaction  {...trans} key={index}/>)} {/* 👈 */}
+      {TRANSACTION_DATA.map((trans, index) => (
+        <Transaction {...trans} key={index} />
+      ))}{' '}
+      {/* 👈 */}
       <PlacesList />
     </div>
   );
@@ -290,15 +297,19 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 Vervolgens willen het aantal sterren in de rating variabel maken, dit doen we d.m.v. een prop.
 
 ```jsx
-import { IoStarSharp } from 'react-icons/io5'; 
+import { IoStarSharp } from 'react-icons/io5';
 
-const Star = () => <IoStarSharp color="yellow" />;
+const Star = () => <IoStarSharp color='yellow' />;
 
-export default function StarRating({ totalStars = 5 }) { // 👈 1
+export default function StarRating({ totalStars = 5 }) {
+  // 👈 1
   return (
-    <> 
-      {[...new Array(totalStars)].map((_, i) => <Star key={i} />)}{/* 👈 2 */}
-    </> 
+    <>
+      {[...new Array(totalStars)].map((_, i) => (
+        <Star key={i} />
+      ))}
+      {/* 👈 2 */}
+    </>
   );
 }
 ```
@@ -311,14 +322,18 @@ export default function StarRating({ totalStars = 5 }) { // 👈 1
 Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `selected` prop toe.
 
 ```jsx
-import { IoStarSharp } from 'react-icons/io5'; 
+import { IoStarSharp } from 'react-icons/io5';
 
-const Star = ({ selected = false} ) => <IoStarSharp color={selected ? 'yellow' : 'grey'} /> // 👈
+const Star = ({ selected = false }) => (
+  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
+); // 👈
 
-export default function StarRating({ totalStars = 5 }) { 
+export default function StarRating({ totalStars = 5 }) {
   return (
-    <> 
-      {[...new Array(totalStars)].map((_, i ) => <Star key={i} />)}
+    <>
+      {[...new Array(totalStars)].map((_, i) => (
+        <Star key={i} />
+      ))}
     </>
   );
 }
@@ -333,14 +348,15 @@ import StarRating from './StarRating'; // 👈 1
 
 const Place = ({ id, name, rating }) => {
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <StarRating selectedStars={rating} />{/* 👈 2*/}
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <StarRating selectedStars={rating} />
+        {/* 👈 2*/}
       </div>
     </div>
   );
-}
+};
 
 export default Place;
 ```
@@ -351,16 +367,25 @@ export default Place;
 De `StarRating` component zal die informatie via de prop `selected` doorgeven aan de `Star` component:
 
 ```jsx
-import { IoStarSharp } from 'react-icons/io5'; 
+import { IoStarSharp } from 'react-icons/io5';
 
-const Star = ({ selected = false }) => <IoStarSharp color={selected ? 'yellow' : 'grey' } />
+const Star = ({ selected = false }) => (
+  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
+);
 
-export default function StarRating({ totalStars = 5, selectedStars = 0 }) { // 👈 1
+export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
+  // 👈 1
   return (
-    <> 
-      {[...new Array(totalStars)].map((_, i ) => <Star key={i} selected={selectedStars > i} />)}{/* 👈 2 */}
-      <p>{selectedStars} of {totalStars} stars</p>{/* 👈 3 */}
-    </> 
+    <>
+      {[...new Array(totalStars)].map((_, i) => (
+        <Star key={i} selected={selectedStars > i} />
+      ))}
+      {/* 👈 2 */}
+      <p>
+        {selectedStars} of {totalStars} stars
+      </p>
+      {/* 👈 3 */}
+    </>
   );
 }
 ```
@@ -373,7 +398,7 @@ Bekijk het resultaat!
 
 ## Interactiviteit toevoegen
 
-In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](<https://beta.reactjs.org/learn/responding-to-events>) door.
+In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://beta.reactjs.org/learn/responding-to-events) door.
 
 ### Samenvatting
 
@@ -386,17 +411,17 @@ In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het a
 
 #### Een voorbeeld
 
-  In pure HTML zou je dit schrijven:
+In pure HTML zou je dit schrijven:
 
-  ```html
-  <button onclick="handleClick()"/>
-  ```
+```html
+<button onclick="handleClick()" />
+```
 
-  In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
+In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 
-  ```jsx
-  <button onClick={handleClick}/>
-  ```
+```jsx
+<button onClick={handleClick} />
+```
 
 - Per conventie starten event handler props met de prefix `on` gevolgd door een hoofdletter.
 - Per conventie starten event handlers met de prefix `handle` gevolgd door de naam van het event.
@@ -409,26 +434,29 @@ In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het a
 Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op een ster, geef je `you clicked a star` in de console weer.
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   ```jsx
-  import { IoStarSharp } from 'react-icons/io5'; 
+  import { IoStarSharp } from 'react-icons/io5';
 
-  const Star = ({selected=false})=> {
+  const Star = ({ selected = false }) => {
     // 👇 1
     const handleClick = (e) => {
-      console.log("you clicked a star");
-    }
+      console.log('you clicked a star');
+    };
 
     return (
       <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleClick} /> // 👈 2
     );
-  }
+  };
 
   export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
     return (
-      <> 
-        {[...new Array(totalStars)].map((_, i) => <Star key={i} selected={selectedStars > i} />)}
+      <>
+        {[...new Array(totalStars)].map((_, i) => (
+          <Star key={i} selected={selectedStars > i} />
+        ))}
         <p>
           {selectedStars} of {totalStars} stars
         </p>
@@ -460,29 +488,29 @@ We starten met het bijhouden van de state in de `StarRating` component. Later ve
 
 ```jsx
 import { useState } from 'react'; // 👈 1
-import { IoStarSharp } from 'react-icons/io5'; 
+import { IoStarSharp } from 'react-icons/io5';
 
-const Star = ({ index, selected = false,  onSelect = (f) => f })=> { // 👈 5 en 6
+const Star = ({ index, selected = false, onSelect = (f) => f }) => {
+  // 👈 5 en 6
 
   const handleClick = () => {
     onSelect(index + 1); // 👈 6
-  }
+  };
 
   return (
     <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleClick} />
   );
-}
+};
 
 export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
   const [rating, setRating] = useState(selectedStars); // 👈 2
 
   return (
-    <> 
-      {[...new Array(totalStars)].map((_, i ) => <Star
-        key={i}
-        index={i}
-        selected={rating > i}
-        onSelect={setRating} />)} {/* 👈 3 en 4 en 6 */}
+    <>
+      {[...new Array(totalStars)].map((_, i) => (
+        <Star key={i} index={i} selected={rating > i} onSelect={setRating} />
+      ))}{' '}
+      {/* 👈 3 en 4 en 6 */}
       <p>
         {selectedStars} of {totalStars} stars
       </p>
@@ -494,14 +522,10 @@ export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
 1. Importeer de `useState` hook uit het `react` package.
 2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier de state noemen we deze variabele `rating`. De `useState` functie neemt de initiële state (het aantal geselecteerde sterren) als parameter en geeft een array terug. Deze array bevat:
 
-    - als eerste element de **state-variabele**, deze bevat de huidige waarde.
-    - het tweede element is de functie om de waarde van de state-variabele bij te werken, een zogezegde **setter**. Hierdoor de component opnieuw gerenderd zal worden.
+   - als eerste element de **state-variabele**, deze bevat de huidige waarde.
+   - het tweede element is de functie om de waarde van de state-variabele bij te werken, een zogezegde **setter**. Hierdoor de component opnieuw gerenderd zal worden.
 
-  Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de variabele en de set-functie instellen.
-3. Via de `selected` prop geven we door of de ster al dan niet geselecteerd is.
-4. Als de gebruiker een ster selecteert, dient de methode `setRating` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `setRating` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onSelect` toe.
-5. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
-6. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
+Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de variabele en de set-functie instellen. 3. Via de `selected` prop geven we door of de ster al dan niet geselecteerd is. 4. Als de gebruiker een ster selecteert, dient de methode `setRating` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `setRating` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onSelect` toe. 5. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft. 6. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
 
 Bekijk het resultaat en klik op de sterren.
 
@@ -524,7 +548,7 @@ Lees [State as a snapshot](https://beta.reactjs.org/learn/state-as-a-snapshot) e
 De `PlacesList` component houdt de places bij in zijn state. Indien de rating van een plaats wordt aangepast, dan moet de state in de `PlacesList` component worden aangepast. We moeten de rating van de bijhorende plaats aanpassen. Dit betekent dat we de state niet langer bijhouden in de `StarRating` component, maar wel in de `PlacesList` component. Deze component zal dan ook een methode bevatten om de state aan te passen. Deze geven we samen met de state door aan de child components.
 
 ```jsx
-import { useState }  from 'react';
+import { useState } from 'react';
 import { PLACE_DATA } from '../../api/mock-data';
 import Place from './Place';
 
@@ -540,14 +564,14 @@ const PlacesList = () => {
   return (
     <>
       <h1>Places</h1>
-      <div className="grid mt-3">
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+      <div className='grid mt-3'>
+        <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
           {places
             .sort((a, b) =>
               a.name.toUpperCase().localeCompare(b.name.toUpperCase())
             )
             .map((p) => (
-              <div className="col" key={p.id}>
+              <div className='col' key={p.id}>
                 <Place {...p} onRate={handleRatePlace} /> {/* 👈 2 */}
               </div>
             ))}
@@ -555,7 +579,7 @@ const PlacesList = () => {
       </div>
     </>
   );
-}
+};
 
 export default PlacesList;
 ```
@@ -568,24 +592,22 @@ De `Place` component moet ook worden aangepast:
 ```jsx
 import StarRating from './StarRating';
 
-const Place = ({ id, name, rating, onRate }) => { // 👈 1
+const Place = ({ id, name, rating, onRate }) => {
+  // 👈 1
   // 👇 2
   const handleRate = (newRating) => {
     onRate(id, newRating);
-  }
+  };
 
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <StarRating
-          selectedStars={rating}
-          onRate={handleRate} 
-        /> {/* 👈 3 */}
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <StarRating selectedStars={rating} onRate={handleRate} /> {/* 👈 3 */}
       </div>
     </div>
   );
-}
+};
 
 export default Place;
 ```
@@ -597,28 +619,37 @@ export default Place;
 De `StarRating`component wordt:
 
 ```jsx
-import { IoStarSharp } from 'react-icons/io5'; 
+import { IoStarSharp } from 'react-icons/io5';
 
-const Star = ({ index, selected = false, onSelect = (f) => f })=> {
+const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   const handleSelect = () => {
     onSelect(index + 1);
-  };  
+  };
 
   return (
-    <IoStarSharp
-      color={selected ? 'yellow' : 'grey'}
-      onClick={handleSelect}
-    />
+    <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleSelect} />
   );
 };
 
-export default function StarRating({ totalStars = 5, selectedStars = 0, onRate }) { // 👈 3
+export default function StarRating({
+  totalStars = 5,
+  selectedStars = 0,
+  onRate,
+}) {
+  // 👈 3
   //const [rating, setRating] = useState(selectedStars); // 👈 1
 
   return (
     <>
-      {[...new Array(totalStars)].map((_, i) => <Star key={i} index={i} selected={selectedStars > i}
-        onSelect={onRate} />)} {/* 👈 2 en 4 */}
+      {[...new Array(totalStars)].map((_, i) => (
+        <Star
+          key={i}
+          index={i}
+          selected={selectedStars > i}
+          onSelect={onRate}
+        />
+      ))}{' '}
+      {/* 👈 2 en 4 */}
       <p>
         {selectedStars} of {totalStars} stars
       </p>
@@ -637,7 +668,8 @@ export default function StarRating({ totalStars = 5, selectedStars = 0, onRate }
 Voeg een verwijderknop toe om een plaats te verwijderen.
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   Voeg eerst een knop met bijbehorende event handler toe aan de `Place` component. In deze event handler roepen we de event handler prop `onDelete` aan want enkel onze parent kan de plaats verwijderen.
 
@@ -653,15 +685,12 @@ Voeg een verwijderknop toe om een plaats te verwijderen.
     };
 
     return (
-      <div className="card bg-light border-dark mb-4">
-        <div className="card-body">
-          <h5 className="card-title">{name}</h5>
-          <StarRating
-            selectedStars={rating}
-            onRate={handleRate}
-          />
+      <div className='card bg-light border-dark mb-4'>
+        <div className='card-body'>
+          <h5 className='card-title'>{name}</h5>
+          <StarRating selectedStars={rating} onRate={handleRate} />
           {/* 👇 2 */}
-          <button className="btn btn-primary" onClick={handleDelete}>
+          <button className='btn btn-primary' onClick={handleDelete}>
             Verwijder
           </button>
         </div>
@@ -688,22 +717,27 @@ Voeg een verwijderknop toe om een plaats te verwijderen.
     return (
       <>
         <h1>Places</h1>
-        <div className="grid mt-3">
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+        <div className='grid mt-3'>
+          <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
             {places
               .sort((a, b) =>
                 a.name.toUpperCase().localeCompare(b.name.toUpperCase())
               )
               .map((p) => (
-                <div className="col" key={p.id}>
-                  <Place {...p} onRate={handleRatePlace} onDelete={handleDeletePLace} /> // 👈 2
+                <div className='col' key={p.id}>
+                  <Place
+                    {...p}
+                    onRate={handleRatePlace}
+                    onDelete={handleDeletePLace}
+                  />{' '}
+                  // 👈 2
                 </div>
               ))}
           </div>
         </div>
       </>
     );
-  }
+  };
 
   export default PlacesList;
   ```
@@ -738,71 +772,64 @@ We maken een component voor het toevoegen van transacties. Maak een bestand `Tra
 ```jsx
 import { PLACE_DATA } from '../../api/mock-data';
 
-export default function TransactionForm(){
+export default function TransactionForm() {
   return (
     <>
-    <h2>
-      Add transaction
-    </h2>
-    <form className="w-50 mb-3">
-      <div className="mb-3">
-        <label htmlFor="user" className="form-label">Who</label>
-        <input  
-          id="user"
-          type="text"
-          className="form-control"
-          placeholder="user" required
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="date" className="form-label">Date</label>
-        <input  
-          id="date"
-          type="date"
-          className="form-control"
-          placeholder="date"
-        />
-      </div>
-
-      <div className="mb-3">
-        <label htmlFor="places" className="form-label">
-          Place
-        </label>
-        <select
-          id="places" 
-          className="form-select"
-          required
-        >
-          <option defaultChecked>-- Select a place --</option>
-          {PLACE_DATA.map(({ id, name }) => (
-            <option key={id} value={name}>{name}</option>
-          ))}
-        </select>
-      </div>
-
-      <div className="mb-3">
-        <label htmlFor="amount" className="form-label">
-          Amount
-        </label>
-        <input    
-          id="amount"
-          type="number"
-          className="form-control"
-          required
-        />
-      </div>
-
-      <div className="clearfix">
-        <div className="btn-group float-end">
-          <button
-            type="submit"
-            className="btn btn-primary"
-          >
-            Add transaction
-          </button>
+      <h2>Add transaction</h2>
+      <form className='w-50 mb-3'>
+        <div className='mb-3'>
+          <label htmlFor='user' className='form-label'>
+            Who
+          </label>
+          <input
+            id='user'
+            type='text'
+            className='form-control'
+            placeholder='user'
+            required
+          />
         </div>
-      </div>
-    </form>
+        <div className='mb-3'>
+          <label htmlFor='date' className='form-label'>
+            Date
+          </label>
+          <input
+            id='date'
+            type='date'
+            className='form-control'
+            placeholder='date'
+          />
+        </div>
+
+        <div className='mb-3'>
+          <label htmlFor='places' className='form-label'>
+            Place
+          </label>
+          <select id='places' className='form-select' required>
+            <option defaultChecked>-- Select a place --</option>
+            {PLACE_DATA.map(({ id, name }) => (
+              <option key={id} value={name}>
+                {name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className='mb-3'>
+          <label htmlFor='amount' className='form-label'>
+            Amount
+          </label>
+          <input id='amount' type='number' className='form-control' required />
+        </div>
+
+        <div className='clearfix'>
+          <div className='btn-group float-end'>
+            <button type='submit' className='btn btn-primary'>
+              Add transaction
+            </button>
+          </div>
+        </div>
+      </form>
     </>
   );
 }
@@ -829,7 +856,8 @@ const toDateInputString = (date) => {
   return asString.substring(0, asString.indexOf('T'));
 };
 
-export default function TransactionForm({onSaveTransaction}){ // 👈 5
+export default function TransactionForm({ onSaveTransaction }) {
+  // 👈 5
   const [user, setUser] = useState(''); // 👈 1
   const [date, setDate] = useState(new Date()); // 👈 1
   const [place, setPlace] = useState('home'); // 👈 1
@@ -847,71 +875,78 @@ export default function TransactionForm({onSaveTransaction}){ // 👈 5
 
   return (
     <>
-      <h2>
-        Add transaction
-      </h2>
-      <form onSubmit={handleSubmit} className="w-50 mb-3"> {/* 👈 5 */}
-        <div className="mb-3">
-          <label htmlFor="date" className="form-label">Who</label>
-          <input  
-            value={user} 
-            onChange={(e) => setUser(e.target.value)} 
-            id="user"
-            type="text"
-            className="form-control"
-            placeholder="user" required
-          />{/* 👈 2 en 4 */}
+      <h2>Add transaction</h2>
+      <form onSubmit={handleSubmit} className='w-50 mb-3'>
+        {' '}
+        {/* 👈 5 */}
+        <div className='mb-3'>
+          <label htmlFor='date' className='form-label'>
+            Who
+          </label>
+          <input
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+            id='user'
+            type='text'
+            className='form-control'
+            placeholder='user'
+            required
+          />
+          {/* 👈 2 en 4 */}
         </div>
-        <div className="mb-3">
-          <label htmlFor="date" className="form-label">Date</label>
-          <input  
-            value={toDateInputString(date)}  
-            onChange={(e) => setDate(e.target.value)} 
-            id="date"
-            type="date"
-            className="form-control"
-            placeholder="date"
-          />{/* 👈 2, 3 en 4 */}
+        <div className='mb-3'>
+          <label htmlFor='date' className='form-label'>
+            Date
+          </label>
+          <input
+            value={toDateInputString(date)}
+            onChange={(e) => setDate(e.target.value)}
+            id='date'
+            type='date'
+            className='form-control'
+            placeholder='date'
+          />
+          {/* 👈 2, 3 en 4 */}
         </div>
-
-        <div className="mb-3">
-          <label htmlFor="places" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='places' className='form-label'>
             Place
           </label>
           <select
             value={place}
             onChange={(e) => setPlace(e.target.value)}
-            id="places"
-            className="form-select"
+            id='places'
+            className='form-select'
             required
-          >{/* 👈 2 en 4 */}
-            <option defaultChecked value="">-- Select a place --</option>
+          >
+            {/* 👈 2 en 4 */}
+            <option defaultChecked value=''>
+              -- Select a place --
+            </option>
             {PLACE_DATA.map(({ id, name }) => (
-              <option key={id} value={name}>{name}</option>
+              <option key={id} value={name}>
+                {name}
+              </option>
             ))}
           </select>
         </div>
-
-        <div className="mb-3">
-          <label htmlFor="amount" className="form-label">
+        <div className='mb-3'>
+          <label htmlFor='amount' className='form-label'>
             Amount
           </label>
-          <input    
-            value={amount} 
+          <input
+            value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            id="amount"
-            type="number"
-            className="form-control"
+            id='amount'
+            type='number'
+            className='form-control'
             required
-          />{/* 👈 2 en 4 */}
+          />
+          {/* 👈 2 en 4 */}
         </div>
-
-        <div className="clearfix">
-          <div className="btn-group float-end">
-            <button
-              type="submit"
-              className="btn btn-primary"
-            >
+        <div className='clearfix'>
+          <div className='btn-group float-end'>
+            <button type='submit' className='btn btn-primary'>
               Add transaction
             </button>
           </div>
@@ -954,14 +989,15 @@ Maak een bestand `TransactionList.jsx` aan in de map `src/components/transaction
 
 ```jsx
 import Transaction from './Transaction';
-import { TRANSACTION_DATA } from '../../api/mock-data'; 
+import { TRANSACTION_DATA } from '../../api/mock-data';
 
 export default function TransactionList() {
   return (
     <>
       <h1>Transactions</h1>
-      {TRANSACTION_DATA.map((trans, index) => 
-        <Transaction {...trans} key={index} /> )}
+      {TRANSACTION_DATA.map((trans, index) => (
+        <Transaction {...trans} key={index} />
+      ))}
     </>
   );
 }
@@ -973,7 +1009,7 @@ Nu voegen we state toe opdat de lijst van transacties kan wijzigen.
 import { useState } from 'react'; // 👈 1
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm'; // 👈 3
-import { TRANSACTION_DATA } from '../../api/mock-data'; 
+import { TRANSACTION_DATA } from '../../api/mock-data';
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState(TRANSACTION_DATA); // 👈 1
@@ -982,7 +1018,10 @@ export default function TransactionList() {
   const createTransaction = (user, place, amount, date) => {
     const newTransactions = [
       {
-        user, place, amount, date: new Date(date),
+        user,
+        place,
+        amount,
+        date: new Date(date),
       },
       ...transactions,
     ]; // newest first
@@ -994,11 +1033,15 @@ export default function TransactionList() {
   return (
     <>
       <h1>Transactions</h1>
-
       <TransactionForm onSaveTransaction={createTransaction} /> {/* 👈 1 */}
-
-      {transactions.map((trans, index) => // 👈 1
-        <Transaction {...trans} key={index} /> )}
+      {transactions.map(
+        (
+          trans,
+          index // 👈 1
+        ) => (
+          <Transaction {...trans} key={index} />
+        )
+      )}
     </>
   );
 }
