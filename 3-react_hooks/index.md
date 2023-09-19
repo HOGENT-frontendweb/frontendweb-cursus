@@ -54,6 +54,7 @@ Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal m
 In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filteren o.b.v. de plaats. Voeg deze code toe aan de `TransactionList` component:
 
 ```jsx
+// src/components/transactions/TransactionList.jsx
 import { useState } from 'react';
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
@@ -116,6 +117,7 @@ export default function TransactionList() {
 Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd. Hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken. Dit kan je oplossen door gebruik te maken van `useMemo`. Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze functie enkel en alleen uitvoeren als de dependencies gewijzigd zijn. In onderstaand voorbeeld wordt de filter pas uitgevoerd bij het laden van de component en bij het klikken op `Search`.
 
 ```jsx
+// src/components/transactions/TransactionList.jsx
 import { useState, useMemo } from 'react'; // 👈
 
 //...
@@ -144,18 +146,21 @@ Probeer de challenges op [https://beta.reactjs.org/learn/keeping-components-pure
 Voeg een `console.log` instructie toe voor elke `return` in onderstaande componenten:
 
 ```jsx
+// src/components/transactions/TransactionList.jsx
 export default function TransactionList() {
   ...
   console.log('Rendering transactionlist...');
   return (...);
 }
 
+// src/components/transactions/Transaction.jsx
 export default function Transaction(props) {
   ...
   console.log('Rendering transaction...');
   return (...);
 }
 
+// src/components/transactions/TransactionForm.jsx
 export default function TransactionForm({places, onRate}) {
   ...
   console.log('Rendering TransactionForm ...');
@@ -168,6 +173,7 @@ Telkens als we een letter ingeven in het zoekveld worden alle componenten gerere
 Een **pure component** is een component die gegeven dezelfde props dezelfde output genereert. `Transaction` is een pure component. Gegeven dezelfde props, wordt dezelfde output gegenereerd. We willen een pure component niet opnieuw renderen als de properties niet gewijzigd zijn. De `memo` functie wordt gebruikt om een component te creëren die enkel zal rerenderen als de props wijzigen.
 
 ```jsx
+// src/components/transactions/Transaction.jsx
 import { memo } from 'react'; // 👈
 
 export default memo(function Transaction(props) { // 👈
@@ -195,6 +201,7 @@ Cache de `TransactionForm` component en bekijk de app opnieuw. Als we een letter
 Pas de code van de functie in de `TransactionList` component aan:
 
 ```jsx
+// src/components/transactions/TransactionList.jsx
 import { useState, useMemo, useCallback } from 'react'; // 👈
 
 const createTransaction = useCallback((user, place, amount, date) => { // 👈
@@ -225,6 +232,7 @@ yarn add react-hook-form
 We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook uit het `react-hook-form` package.
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 import {memo} from 'react';
 import { PLACE_DATA } from '../../api/mock-data';
 import { useForm } from 'react-hook-form'; // 👈 1
@@ -362,6 +370,7 @@ In een applicatie kan je niet alleen werken met server-side validatie. In dat ge
 We geven een voorbeeld voor het inputveld van de gebruiker, dit is vrij gelijkaardig voor de overige velden.
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 //...
 
 const { register, handleSubmit, reset, formState: { errors } } = useForm(); // 👈 2
@@ -452,6 +461,7 @@ Het aanmaken van een context gebeurt typisch in 3 stappen:
 We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft.
 
 ```jsx
+// src/components/transactions/TransactionList.jsx
 import { useState, useMemo, useCallback } from 'react';
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
@@ -535,9 +545,10 @@ Pas zelf de Transaction component aan zodat de transacties als rij in de tabel w
 
 ### Stap 1: Creëer de context
 
-Voorzie voorlopig in `App.js` een knop om het thema te kiezen. In het hoofdstuk [routing](./../5-react_router/index.md) wordt dit een onderdeel van de navigatiebalk. We maken buiten de `App` component een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
+Voorzie voorlopig in `App.jsx` een knop om het thema te kiezen. In het hoofdstuk [routing](./../5-react_router/index.md) wordt dit een onderdeel van de navigatiebalk. We maken buiten de `App` component een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
+// src/App.jsx
 import { createContext } from 'react'; // 👈
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
@@ -558,14 +569,16 @@ export default App;
 
 ### Stap 2: Bied de context aan
 
-Voeg toe in `App.js`:
+Voeg toe in `App.jsx`:
 
 ```jsx
+// src/App.jsx
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
 import {createContext} from 'react';
 
 export const ThemeContext = createContext();
+
 function App() {
   return (
     <ThemeContext.Provider value={{ theme:'dark' }}> {/* 👈 */}
@@ -588,6 +601,7 @@ Elk **context object** wordt beschikbaar gemaakt met een **context provider** co
 De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. het thema in de `TransactionTable` component. De `TransactionsTable` component zal de data consumeren, en is een context consumer.
 
 ```jsx
+// src/components/transactions/TransactionList.jsx
 import { useState, useMemo, useCallback, useContext } from 'react'; // 👈 1
 import { ThemeContext } from '../../App';
 //...
@@ -637,6 +651,7 @@ De context provider kan data in de context plaatsen, maar het kan de data in de 
 Maak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.context.jsx`:
 
 ```jsx
+// src/contexts/Theme.context.jsx
 import { createContext} from 'react'; // 👈 1
 
 export const ThemeContext = createContext(); // 👈 1
@@ -659,6 +674,7 @@ export const ThemeProvider = ({ // 👈 2
 De `ThemeProvider` beheert de state en functies, en stelt deze ter beschikking aan de children. Hou hier als state het thema bij en een functie om te wisselen van thema.
 
 ```jsx
+// src/contexts/Theme.context.jsx
 import {
   createContext,
   useState,
@@ -705,6 +721,7 @@ export const ThemeProvider = ({
 Het thema zal gebruikt worden om de achtergrondkleur in te stellen, maar soms dient ook de kleur van de tekst of van een rand te worden ingesteld (de tegengestelde kleur). Dus we voorzien een extra berekende waarde en maken ook deze waarde beschikbaar.
 
 ```jsx
+// src/contexts/Theme.context.jsx
 import {
   createContext,
   useState,
@@ -747,9 +764,10 @@ export const ThemeProvider = ({
 
 ### Providing ThemeContext
 
-Stel in `index.js` de `ThemeProvider` ter beschikking aan alle children.
+Stel in `index.jsx` de `ThemeProvider` ter beschikking aan alle children.
 
 ```jsx
+// src/index.jsx
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
@@ -770,9 +788,10 @@ reportWebVitals();
 
 ### Consuming ThemeContext
 
-Voeg in `App.js` een knop toe om van thema te wisselen:
+Voeg in `App.jsx` een knop toe om van thema te wisselen:
 
 ```jsx
+// src/App.jsx
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
 import { ThemeContext, themes } from './contexts/Theme.context'; // 👈 1
@@ -827,6 +846,7 @@ Om duplicate code te vermijden kunnen we gebruik maken van een **custom hook**. 
 Maak vervolgens twee custom hooks aan in `Theme.context.jsx`:
 
 ```jsx
+// src/contexts/Theme.context.jsx
 import {
   createContext,
   useState,
@@ -856,9 +876,10 @@ export const useThemeColors = () => {
 1. Deze hook retourneert de drie waarden `theme`, `oppositeTheme` en `toggleTheme`.
 2. Deze hook retourneert enkel het `theme` en `oppositeTheme` retourneert.
 
-Zo kan de code in `App.js` als volgt aangepast worden:
+Zo kan de code in `App.jsx` als volgt aangepast worden:
 
 ```jsx
+// src/App.jsx
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
 import { useTheme, themes } from './contexts/Theme.context'; // 👈 1
@@ -876,13 +897,14 @@ function App() {
 Als laatste pas je ook `Place.jsx` aan:
 
 ```jsx
+// src/components/places/Place.jsx
 import { memo, useCallback } from 'react'; // 👈 1
 import { useThemeColors } from '../../contexts/Theme.context'; // 👈 1
 import StarRating from './StarRating';
 
 const Place = memo(({ id, name, rating, onRate, onDelete }) => {
-
-const { theme, oppositeTheme } = useThemeColors(); // 👈 2
+  const { theme, oppositeTheme } = useThemeColors(); // 👈 2
+  // ...
 ```
 
 1. Verwijder de import `useContext`, `ThemeContext`, en importeer `useThemeColors`.
@@ -900,6 +922,7 @@ Er zitten een paar anti-patterns in ons formulier:
 ### Constante objecten/arrays
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 //...
 
 const validationRules = { // 👈 1
@@ -959,6 +982,7 @@ De combinatie `label` en `input` tag komen vaak voor. Kunnen we hier aparte comp
 Componenten mag je niet definiëren binnen een andere component. Maak een functiecomponent `LabelInput` in het bestand van het formulier. Plaats de code van het invoerveld van de gebruiker hierin:
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 function LabelInput() {
   return (
     <div className="mb-3">
@@ -981,6 +1005,7 @@ function LabelInput() {
 Definieer de props van deze component:
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 function LabelInput({ label, name, type, validationRules, ...rest }) {
   const hasError = name in errors;
 
@@ -1017,6 +1042,7 @@ In de documentatie lezen we ook het volgende over de `FormProvider`:
 > React Hook Form's FormProvider is built upon React's Context API. It solves the problem where data is passed through the component tree without having to pass props down manually at every level. This also causes the component tree to trigger a rerender when React Hook Form triggers a state update.
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'; // 👈 1 en 2
 // ...
 
