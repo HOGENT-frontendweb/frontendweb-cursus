@@ -2,6 +2,7 @@
   "cSpell.language": "en,nl",
   "cSpell.caseSensitive": false,
   "cSpell.words": [
+    "browserextensie",
     "buildtool",
     "cacheable",
     "Chamilo",
@@ -13,7 +14,9 @@
     "distro",
     "geparsed",
     "gerenderd",
+    "gerenderde",
     "gererenderd",
+    "klassegebaseerd",
     "merget",
     "minificatie",
     "productiebuild",
@@ -23,10 +26,12 @@
     "rendert",
     "rerenderen",
     "specifiëren",
+    "submitten",
     "theming",
     "tussentabel",
     "tussentabellen",
-    "voorbeeldapp"
+    "voorbeeldapp",
+    "zogezegde"
   ],
   "cSpell.ignoreWords": [
     "Aelbrecht",
@@ -42,6 +47,7 @@
     "Formik",
     "HOGENT",
     "innerkey",
+    "Ionicons",
     "Menlo",
     "olod",
     "olods",

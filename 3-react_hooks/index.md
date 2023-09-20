@@ -58,7 +58,7 @@ In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filt
 import { useState } from 'react';
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
-import { TRANSACTION_DATA } from '../../api/mock-data'; 
+import { TRANSACTION_DATA } from '../../api/mock_data'; 
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState(TRANSACTION_DATA);
@@ -234,7 +234,7 @@ We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
 import {memo} from 'react';
-import { PLACE_DATA } from '../../api/mock-data';
+import { PLACE_DATA } from '../../api/mock_data';
 import { useForm } from 'react-hook-form'; // 👈 1
 
 const toDateInputString = (date) => {
@@ -465,7 +465,7 @@ We refactoren de `TransactionList` component zodat die nu een tabel met transact
 import { useState, useMemo, useCallback } from 'react';
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
-import { TRANSACTION_DATA } from '../../api/mock-data';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 function TransactionTable({
   transactions

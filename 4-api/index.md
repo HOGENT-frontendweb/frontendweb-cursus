@@ -50,7 +50,7 @@ import { useState, useMemo, useCallback, useEffect, useContext } from 'react'; /
 import { ThemeContext } from '../../contexts/Theme.context';
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
-import { TRANSACTION_DATA } from '../../api/mock-data';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 import * as transactionsApi from '../../api/transactions'; // 👈 2
 
 //...
@@ -123,7 +123,7 @@ De `TransactionList` component wordt daardoor:
 
 ```jsx
 //...
-//import { TRANSACTION_DATA } from '../../api/mock-data'; // 👈 1
+//import { TRANSACTION_DATA } from '../../api/mock_data'; // 👈 1
 function TransactionTable({ transactions}) {
 //...
         <tbody>
@@ -594,7 +594,7 @@ const onSubmit = (data) => {
 };
 ```
 
-Merk op: momenteel werken we nog met de mock-data voor de places. Pas dit aan zodat het gebruik maakt van dezelfde id's als in de places tabel.
+Merk op: momenteel werken we nog met de mock_data voor de places. Pas dit aan zodat het gebruik maakt van dezelfde id's als in de places tabel.
 
 ## PUT /api/transactions/:id
 

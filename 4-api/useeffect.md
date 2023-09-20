@@ -14,7 +14,7 @@ In onderstaand voorbeeld wordt er een boodschap naar de console gelogd als de `T
 import {useEffect, useState} from 'react'; // 👈 1
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
-import {TRANSACTION_DATA} from '../../api/mock-data'; 
+import {TRANSACTION_DATA} from '../../api/mock_data'; 
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState(TRANSACTION_DATA);
