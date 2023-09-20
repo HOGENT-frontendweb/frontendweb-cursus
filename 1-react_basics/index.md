@@ -28,6 +28,7 @@ Wat als resultaat heeft:
 
 - `React`: laat toe om "views" aan te maken.
 - `ReactDOM`: rendert deze "views" in de DOM, m.a.w. dit is React voor de browser. Er is bijvoorbeeld ook nog [React Native](https://reactnative.dev/) voor mobile applicaties.
+  - **Renderen** = het omzetten van een datastructuur naar een visuele voorstelling. Hier dus de interne voorstelling van React-componenten naar HTML.
 
 Deze libraries importeer je simpelweg in de HTML:
 
