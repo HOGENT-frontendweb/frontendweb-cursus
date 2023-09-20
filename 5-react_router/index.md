@@ -38,8 +38,8 @@ De werking van React Router is vrij intuïtief:
 
 1. vang een URL-wijziging op (bv. in de adresbalk of programmatisch gewijzigd)
 2. kijk of de URL gekend is:
-    1. indien gekend: toon de juiste pagina (lees: component)
-    2. indien niet gekend: stop (toont normaal niets maar je kan ook een eigen 404-pagina maken)
+   1. indien gekend: toon de juiste pagina (lees: component)
+   2. indien niet gekend: stop (toont normaal niets maar je kan ook een eigen 404-pagina maken)
 
 Deze werking is wel overmatig versimpeld, maar het geeft toch een idee...
 
@@ -55,26 +55,26 @@ Voor dit hoofdstuk maken we een simpele voorbeeldapplicatie, los van onze budget
 Als eerste maak je een nieuw project:
 
 ```bash
-npx create-react-app routing-demo
+yarn create vite routing-demo --template react
 ```
 
 Installeer daarin React Router
 
 ```bash
-yarn add react-router-dom@6 react-router@6
+yarn add react-router-dom react-router
 ```
 
 En start de applicatie (er gebeurt nog niets fancy, hoor):
 
 ```bash
-yarn start
+yarn dev
 ```
 
 ## BrowserRouter vs HashRouter
 
 ### BrowserRouter
 
-De `BrowserRouter` is een van de twee mogelijkheden in `react-router-dom` om te gebruiken als router. Dit type router zal functioneren zoals je verwacht dat een router funtioneert: hij gebruikt het deel na de `/` om naar een pagina te navigeren. Dit is zeer gelijkaardig aan hoe server-side gerenderde pagina's werken.
+De `BrowserRouter` is een van de mogelijkheden in `react-router-dom` om te gebruiken als router. Dit type router zal functioneren zoals je verwacht dat een router funtioneert: hij gebruikt het deel na de `/` om naar een pagina te navigeren. Dit is zeer gelijkaardig aan hoe server-side gerenderde pagina's werken.
 
 Een probleem hierbij is dat browsers standaard refreshen wanneer de URL na de `/` wijzigt. In dit geval zal `react-router-dom` dit probleem opvangen en voorkomen.
 
@@ -82,33 +82,43 @@ Het voordeel met dit soort routers is dat je webapplicatie werkt zoals een _old-
 
 ### HashRouter
 
-Het tweede type routes is de `HashRouter`. Deze router gebruikt de hash (of dus de `#`) in de url om te navigeren tussen pagina's.
+Een tweede type routes is de `HashRouter`. Deze router gebruikt de hash (of dus de `#`) in de url om te navigeren tussen pagina's.
 
 Dit heeft als voordeel dat de browser by default niet zal refreshen. Het nadeel is dat je de hash niet meer kan gebruiken om te scrollen naar een element in de pagina.
 
 Dit soort routers wordt typisch weinig gebruikt, we raden aan om `BrowserRouter` te gebruiken.
 
+Daarnaast zijn er nog andere types beschikbaar. [Lees meer](https://reactrouter.com/en/main/routers/picking-a-router)
+
 ### In de voorbeeldapplicatie
 
-De voorbeeldapplicatie zal dus gebruik maken van een `BrowserRouter`. Je importeert deze component en wrapped je hele `App` component hiermee.
+De voorbeeldapplicatie zal dus gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerst route. We doen dit in `main.jsx`, het startpunt van de app.
+`main.jsx`
 
 ```jsx
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
 import './index.css';
-import App from './App';
-// ...
-import { BrowserRouter } from "react-router-dom"; // 👈
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // 👈
 
-ReactDOM.render(
-    <React.StrictMode>
-        <BrowserRouter> // 👈
-            <App />
-        </BrowserRouter> // 👈
-    </React.StrictMode>,
-    document.getElementById('root')
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+  },
+]); // 👈
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <RouterProvider router={router} /> {/* 👈 */}
+  </React.StrictMode>
 );
 ```
+
+`createBrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL aan een component.
+
+`RouterProvider`: alle routes worden doorgegeven aan deze component.
 
 ## Routes definiëren
 
@@ -150,55 +160,55 @@ export const NotFound = () => {
   return (
     <div>
       <h1>Pagina niet gevonden</h1>
-      <p>
-        Er is geen pagina met op deze url, probeer iets anders.
-      </p>
+      <p>Er is geen pagina met op deze url, probeer iets anders.</p>
     </div>
   );
 };
 ```
 
-Nu we de nodige componenten hebben, hoeven we enkel nog de routes te configureren. Hiervoor gaan we naar de `App` component, maken deze helemaal leeg en plaatsen een `Routes` component:
+Nu we de nodige componenten hebben, hoeven we enkel nog de routes te configureren. Hiervoor gaan we naar de `main.jsx` en voegen de extra routes toe.
 
 ```jsx
-import { Routes } from 'react-router-dom' // 👈
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { NotFound, About, Contact, Home } from './pages.jsx'; // 👈 1
 
-function App() {
-  return (
-    <Routes> // 👈
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />, // 👈 3
+    errorElement: <NotFound />, // 👈 4
+  },
+  { path: 'over', element: <About /> }, // 👈 2
+  { path: 'contact', element: <Contact /> }, // 👈 2
+]);
 
-    </Routes> // 👈
-  );
-}
-
-export default App;
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
 ```
 
-URLs binnen de app worden gedefinieerd onder deze `Routes` component. Wanneer de URL in de browser wijzigt, zal deze component doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van de `Route` component:
+1. Importeer de gewenste componenten
+2. Vul de array met routes aan. 1 voor elke route. We geven telkens de component die getoond moet worden mee aan de prop `element`. Wanneer de URL in de browser wijzigt, zal deze component doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van de `Route` object.
+3. Vervang de `App` component door de `Home` component.
+4. Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test zelf eens uit:**
+
+Ipv het `errorElement` kan je ook Route object meegeven.
 
 ```jsx
-import { Routes, Route } from 'react-router-dom' // 👈
-import { Home, About, Contact, NotFound } from './pages'; // 👈
-
-function App() {
-  return (
-    <Routes>
-      <Route index element={<Home />} /> // 👈
-      <Route path="over" element={<About />} /> // 👈
-      <Route path="contact" element={<Contact />} /> // 👈
-      <Route path="*" element={<NotFound />} /> // 👈
-    </Routes>
-  );
-}
-
-export default App;
+//..
+{
+path: '*',
+element: <NotFound />,
+},
+//..
 ```
 
-We geven telkens de component die getoond moet worden mee aan de prop `element`.
-
-Bij de eerste route valt op dat we een `index` prop meegeven. Zonder deze prop kunnen we niet navigeren naar `/`, wat de zogenaamde index-pagina is. Je zou ook `path="/"` kunnen schrijven maar `index` is een best practice. Per definitie deelt een route met `index` hetzelfde pad als zijn ouder-route.
-
-De laatste route is een beetje speciaal, deze matchet met eender welke URL (door `path="*"`). Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test zelf eens uit:** deze route moet niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
+Deze route is een beetje speciaal, deze matchet met eender welke URL (door `path="*"`). Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test zelf eens uit:** Deze route moet niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
 
 Uit de route voor de `NotFound` component blijkt dus dat je ook reguliere expressies kan meegeven aan de `path` prop.
 
@@ -210,16 +220,19 @@ Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component.
 
 ```jsx
 // src/pages.jsx
+import { LoremIpsum } from 'react-lorem-ipsum';
+import { Link } from 'react-router-dom'; // 👈
+
 export const Home = () => (
   <div>
     <h1>Welkom!</h1>
     <p>Kies één van de volgende links:</p>
     <ul>
       <li>
-        <Link to="/over">Over ons</Link> // 👈
+        <Link to='/over'>Over ons</Link> {/* 👈 */}
       </li>
       <li>
-        <Link to="/contact">Contact</Link> // 👈
+        <Link to='/contact'>Contact</Link> {/* 👈 */}
       </li>
     </ul>
   </div>
@@ -234,13 +247,15 @@ Om eigenschappen over de huidige route op te vragen bestaat de hook `useLocation
 
 ```jsx
 // src/pages.jsx
+import { Link, useLocation } from 'react-router-dom'; // 👈
+//..
 export const NotFound = () => {
   const { pathname } = useLocation(); // 👈
 
   return (
     <div>
       <h1>Pagina niet gevonden</h1>
-      <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p> // 👈
+      <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p> {/* 👈 */}
     </div>
   );
 };
@@ -248,7 +263,7 @@ export const NotFound = () => {
 
 Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
-- [useLocation](https://reactrouter.com/docs/en/v6/hooks/use-location)
+- [useLocation](https://reactrouter.com/en/main/hooks/use-location)
 - [Location interface van history package](https://github.com/remix-run/history/blob/main/docs/api-reference.md#location)
 
 ![How to use docs](./images/how-to-docs.jpg ':size=50%')
@@ -266,13 +281,13 @@ export const About = () => (
 
     <ul>
       <li>
-        <Link to="/over/services">Onze diensten</Link> // 👈
+        <Link to='/over/services'>Onze diensten</Link> {/* 👈 */}
       </li>
       <li>
-        <Link to="/over/history">Geschiedenis</Link> // 👈
+        <Link to='/over/history'>Geschiedenis</Link> {/* 👈 */}
       </li>
       <li>
-        <Link to="/over/location">Locatie</Link> // 👈
+        <Link to='/over/location'>Locatie</Link> {/* 👈 */}
       </li>
     </ul>
   </div>
@@ -282,39 +297,77 @@ export const About = () => (
 Daarna passen we de definitie van `/over` aan (vergeet de nodige imports niet):
 
 ```jsx
-<Route path="over">
-  <Route index element={<About />} />
-  <Route path="services" element={<Services />} />
-  <Route path="history" element={<History />} />
-  <Route path="location" element={<Location />} />
-</Route>
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {
+  NotFound,
+  About,
+  Contact,
+  Home,
+  Services,
+  History,
+  Location,
+} from './pages.jsx'; // 👈
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Home />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: 'over',
+    element: <About />,
+    children: [
+      {
+        path: 'services',
+        element: <Services />,
+      },
+      {
+        path: 'history',
+        element: <History />,
+      },
+      {
+        path: 'location',
+        element: <Location />,
+      },
+    ], // 👈
+  },
+  { path: 'contact', element: <Contact /> },
+]);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
 ```
 
-Merk volgende wijzigingen op:
-
-- er is geen `element` meer op de `Route`-component voor `/over`
-- er is een nieuwe index-route (waarvan de component enkel getoond wordt op `/over`)
-- er zijn drie nieuwe routes die allemaal onder `/over` vallen, React Router zal telkens voor elk van deze paden `/over` verwachten
+De drie nieuwe routes dienen als child van de 'over' route te worden aangemaakt.
 
 Onze drie nieuwe component bevatten telkens weer wat lorem ipsum tekst:
 
+`src/pages.jsx`
+
 ```jsx
 // src/pages.jsx
-const Services = () => (
+export const Services = () => (
   <div>
     <h1>Our services</h1>
     <LoremIpsum p={2} />
   </div>
 );
 
-const History = () => (
+ export const History = () => (
   <div>
     <h1>History</h1>
     <LoremIpsum p={2} />
   </div>
 );
 
-const Location = () => (
+export onst Location = () => (
   <div>
     <h1>Location</h1>
     <LoremIpsum p={2} />
@@ -322,43 +375,28 @@ const Location = () => (
 );
 ```
 
-### Oefening
+Nu willen we de subroutes `/over/services`, `/over/history` en `/over/location` tonen op de `About` component. Met andere woorden `About` moet altijd getoond worden met `Services`, `History` of `Location` eronder. Hiervoor bestaat de `Outlet` component van React Router. [de documentatie](https://reactrouter.com/en/main/components/outlet).
 
-Stel we willen de subroutes `/over/services`, `/over/history` en `/over/location` tonen op de `About` component. Met andere woorden `About` moet altijd getoond worden met `Services`, `History` of `Location` eronder. Hiervoor bestaat de `Outlet` component van React Router. **Probeer deze component eerst zelf uit o.b.v. [de documentatie](https://reactrouter.com/docs/en/v6/components/outlet).**
+Voeg onderaan de `About` component de `Outlet` toe:
 
-<!-- markdownlint-disable-next-line -->
-+ Oplossing +
+```jsx
+// src/pages.jsx
+import { Outlet } from 'react-router-dom'; // 👈
 
-  Pas de definitie van `/over` aan:
-
-  ```jsx
-  <Route path="over" element={<About />}>
-    <Route path="services" element={<Services />} />
-    <Route path="history" element={<History />} />
-    <Route path="location" element={<Location />} />
-  </Route>
-  ```
-
-  Voeg onderaan de `About` component de `Outlet` toe:
-
-  ```jsx
-  // src/pages.jsx
-  import { Outlet } from 'react-router-dom';
-
-  export const About = () => (
-    <div>
-      {/* de rest */}
-      <Outlet />
-    </div>
-  );
-  ```
+export const About = () => (
+  <div>
+    {/* de rest */}
+    <Outlet /> {/* 👈 */}
+  </div>
+);
+```
 
 ## Redirects
 
-Stel we willen dat gebruikers die naar `/services` navigeren naar `/over/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `App` component:
+Stel we willen dat gebruikers die naar `/services` navigeren naar `/over/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.jsx`:
 
 ```jsx
-<Route path="services" element={<Navigate to="/over/services" replace />} />
+{ path: 'services', element: <Navigate to='/over/services' replace /> },
 ```
 
 Deze route rendert de `Navigate` component wanneer de gebruiker naar `/services` navigeert. Deze component is onderdeel van React Router en zal naar de URL in de `to` prop navigeren. De `replace` prop zorgt ervoor dat de URL `/services` vervangen wordt en bijgevolg verwijderd wordt uit de geschiedenis. Daarom kunnen we dus niet meer terugkeren naar `/services` gebruik makend van de terugknop van de browser.
@@ -369,51 +407,64 @@ In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id 
 
 ```jsx
 // src/pages.jsx
-const products = [{
-  id: 1,
-  name: 'Confituur',
-  price: 2.50
-}, {
-  id: 2,
-  name: 'Choco',
-  price: 3.50
-}, {
-  id: 3,
-  name: 'Coco-cola',
-  price: 3.20
-}, {
-  id: 4,
-  name: 'Fanta',
-  price: 3.00
-}, {
-  id: 5,
-  name: 'Sprite',
-  price: 2.90
-}];
+const products = [
+  {
+    id: 1,
+    name: 'Confituur',
+    price: 2.5,
+  },
+  {
+    id: 2,
+    name: 'Choco',
+    price: 3.5,
+  },
+  {
+    id: 3,
+    name: 'Coco-cola',
+    price: 3.2,
+  },
+  {
+    id: 4,
+    name: 'Fanta',
+    price: 3.0,
+  },
+  {
+    id: 5,
+    name: 'Sprite',
+    price: 2.9,
+  },
+];
 
 export const Products = () => (
   <div>
     <ul>
       {products.map(({ id, name }) => (
-        <li key={id}>
-          {name}
-        </li>
+        <li key={id}>{name}</li>
       ))}
     </ul>
   </div>
 );
 ```
 
-Vervolgens definiëren we twee nieuwe routes in de `App` component:
+Vervolgens definiëren we twee nieuwe routes in `main.jsx`:
 
 ```jsx
-<Route path="products">
-  <Route index element={<Products />} />
-  <Route path=":id" element={<Product />} />
-</Route>
+{
+    path: '/products',
+    children: [
+      {
+        index: true,
+        element: <Products />,
+      },
+      {
+        path: ':id',
+        element: <Product />,
+      },
+    ],
+  },
 ```
 
-De eerste route is opnieuw een index-route die enkel getoond wordt op `/products`. De tweede route zal getoond worden wanneer een id (eigenlijk eender welke string) opgegeven wordt na `/products`, bv. `/products/1` maar ook `/products/foo`.
+De eerste route is een index-route die enkel getoond wordt op `/products`. Bij de eerste route valt op dat we een `index` prop meegeven. Zonder deze prop kunnen we niet navigeren naar `/`, wat de zogenaamde index-pagina is. Per definitie deelt een route met `index` hetzelfde pad als zijn ouder-route.De tweede route zal getoond worden wanneer een id (eigenlijk eender welke string) opgegeven wordt na `/products`, bv. `/products/1` maar ook `/products/foo`.
 
 Om dit id op te halen uit de URL maken we gebruik van de `useParams` hook. Deze hook retourneert een object van key/value pairs met alle URL parameters met hun waarde uit de huidige URL. Deze hook zal een nieuw object retourneren telkens wanneer een URL parameter wijzigt.
 
@@ -422,21 +473,15 @@ Om dit id op te halen uit de URL maken we gebruik van de `useParams` hook. Deze 
 Stel we hebben volgende routes gedefinieerd:
 
 ```jsx
-function App() {
-  return (
-    <Routes>
-      <Route path="/products/:id" element={<Product />} />
-      <Route path="/posts/:year/:month" element={<Posts />} />
-    </Routes>
-  );
-}
+{path:'/products/:id', element:<Product /> },
+{ path:'/posts/:year/:month', element:<Posts />}
 ```
 
 Wanneer we navigeren naar `/products/263`, dan zal de `Product` component getoond worden. Zijn `useParams` zal volgend object retourneren:
 
 ```js
 {
-  id: '263'
+  id: '263';
 }
 ```
 
@@ -457,7 +502,7 @@ We moeten nog enkel de Product component implementeren zodat we de details van e
 
 ```jsx
 // src/pages.jsx
-import { useParams } from 'react-router';
+import { Link, Outlet, useParams, useLocation } from 'react-router-dom';
 
 export const Product = () => {
   const { id } = useParams();
@@ -469,84 +514,139 @@ export const Product = () => {
     return (
       <div>
         <h1>Product niet gevonden</h1>
-        <p>
-          Er is geen product met id {id}.
-        </p>
+        <p>Er is geen product met id {id}.</p>
       </div>
-    )
+    );
   }
 
   return (
     <div>
       <h1>{product.name}</h1>
-      <p><b>Price:</b> &euro; {product.price}</p>
+      <p>
+        <b>Price:</b> &euro; {product.price}
+      </p>
     </div>
-  )
+  );
 };
 ```
 
 Deze component zal eerst het id uit de URL ophalen en omvormen naar een `Number`. Daarna zoekt het een product met het opgegeven id. Indien dit product niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de product-informatie getoond.
 
-## Scroll restoration
+Oefening : zorg ervoor dat op de Products page, bij klik op de naam naar de detailpage wordt overgestapt.
 
-Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser. Dit is vrij logisch aangezien de routing niet door de browser afgehandeld wordt maar door JavaScript (React Router in dit geval). Indien gewenst, moet hier zelf voor gezorgd worden met de useEffect hook.
+## de Root route
 
-Maak een nieuw bestand `src/ScrollToTop.jsx` met volgende code:
-
-```jsx
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-
-export default function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
-```
-
-Deze component is niet zichtbaar voor de gebruiker door de `return null`. Zo zie je dat componenten ook enkel gedrag kunnen hebben en niet per se iets moeten tonen!
-
-Deze component haalt de huidige URL op. Wanneer deze URL wijzigt, zal de code van het effect uitgevoerd worden. Deze code herstelt de scroll-positie naar (0, 0), wat dus linksboven is.
-
-Je kan deze component toevoegen aan de `App` component om ervoor te zorgen dat de scroll-positie hersteld wordt:
+Laten we de globale layout voor deze app toevoegen. We houden het heel eenvoudig en voegen bovenaan een navigatiebar toe. Maak een `Root` component aan in de `src` folder. Deze bevat de navigatiebar en de `Outlet` component voor de weergave van de children.
 
 ```jsx
-import ScrollToTop from './ScrollToTop';
+import { Outlet, Link } from 'react-router-dom';
 
-function App() {
+export default function Root() {
   return (
-    <>
-      <ScrollToTop />
-      <Routes>
-        { /* ... */ }
-      </Routes>
-    </>
+    <div className='wrapper'>
+      <nav className='main-nav'>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link> {/* 👈 */}
+          </li>
+          <li>
+            <Link to='/over'>Over ons</Link> {/* 👈 */}
+          </li>
+          <li>
+            <Link to='/contact'>Contact</Link> {/* 👈 */}
+          </li>
+          <li>
+            <Link to='/products'>Products</Link> {/* 👈 */}
+          </li>
+        </ul>
+      </nav>
+      <Outlet className='content' />
+    </div>
   );
 }
 ```
 
-**Merk op:** we moeten de code van de `App` component wrappen in een `React.Element` (of verkort `<>`) aangezien `Routes` niet meer het enige kind is van de component.
+Pas `main.jsx` aan. Alle paden zijn nu children van de Root component
 
-Hoe kan je dit testen? Simpel: voeg op een willekeurige pagina onderaan een `div` met een gigantische hoogte toe (hoogte via CSS bv.) en plaats hierna een `Link` naar eender waar. Uiteraard werkt dit niet met een `Link` naar de pagina waar je nu bent.
+```jsx
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Root />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: 'over',
+        element: <About />,
+        children: [
+          {
+            path: 'services',
+            element: <Services />,
+          },
+          {
+            path: 'history',
+            element: <History />,
+          },
+          {
+            path: 'location',
+            element: <Location />,
+          },
+        ],
+      },
+      { path: 'contact', element: <Contact /> },
+      { path: 'services', element: <Navigate to='/over/services' replace /> },
+      {
+        path: '/products',
+        children: [
+          {
+            index: true,
+            element: <Products />,
+          },
+          {
+            path: ':id',
+            element: <Product />,
+          },
+        ],
+      },
+    ],
+  },
+]);
+```
 
-### Smooth scroll
+Ipv de NotFound page kan ook gebruik maken van een ErrorPage, waar je de foutcode en foutboodschap weergeeft
+`src/pages.jsx`
 
-Je kan het scrollen ook fancy maken door de code in het effect te vervangen door onderstaande code. Hierdoor zal de browser scrollen met een animatie. Indien de modernde `scrollTo` niet ondersteund wordt, wordt teruggevallen op de oude implementatie (in de `catch`).
+```jsx
+import {
+  Link,
+  Outlet,
+  useParams,
+  useLocation,
+  useRouteError,
+} from 'react-router-dom';
 
-```js
-try {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: 'smooth'
-  });
-} catch {
-  // Fallback voor oude browsers
-  window.scrollTo(0, 0);
+//..
+export function ErrorPage() {
+  const error = useRouteError();
+  console.error(error);
+
+  return (
+    <div id='error-page'>
+      <h1>Oops!</h1>
+      <p>Sorry, an unexpected error has occurred.</p>
+      <p>
+        <i>{error.statusText || error.message}</i>
+      </p>
+    </div>
+  );
 }
 ```
 
@@ -554,24 +654,39 @@ try {
 
 Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug met o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/docs/en/v6/hooks/use-navigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
 
-Als voorbeeld gaan we onderaan elke pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan de `App` component:
+Als voorbeeld gaan we onderaan elke pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `main.jsx`:
 
 ```jsx
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 
-function App() {
+export default function Root() {
   const navigate = useNavigate();
 
-  const handleGoHome = useCallback(() => {
+  const handleGoHome = () => {
     navigate('/', { replace: true });
-  }, [navigate]);
+  };
 
   return (
-    <>
-      { /* de rest */ }
+    <div className='wrapper'>
+      <nav className='main-nav'>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/over'>Over ons</Link>
+          </li>
+          <li>
+            <Link to='/contact'>Contact</Link>
+          </li>
+          <li>
+            <Link to='/products'>Products</Link>
+          </li>
+        </ul>
+      </nav>
+      <Outlet className='content' />
       <button onClick={handleGoHome}>Go home!</button>
-    </>
+    </div>
   );
 }
 ```
