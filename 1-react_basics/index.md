@@ -28,6 +28,7 @@ Wat als resultaat heeft:
 
 - `React`: laat toe om "views" aan te maken.
 - `ReactDOM`: rendert deze "views" in de DOM, m.a.w. dit is React voor de browser. Er is bijvoorbeeld ook nog [React Native](https://reactnative.dev/) voor mobile applicaties.
+  - **Renderen** = het omzetten van een datastructuur naar een visuele voorstelling. Hier dus de interne voorstelling van React-componenten naar HTML.
 
 Deze libraries importeer je simpelweg in de HTML:
 
@@ -170,7 +171,7 @@ function GreetingElement({ name }) {
 
 `{name}` zorgt ervoor dat de waarde van de variable `name` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken. De uitvoer van deze code zal gerenderd worden in de HTML.
 
-> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/see](#must-readsee) onderaan deze pagina.
+> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
 
 Browsers kunnen natuurlijk geen JSX renderen, de code moet eerst omgezet worden door een compiler (net zoals Java code niet rechtstreeks door een processor kan uitgevoerd worden). Babel is een compiler die als een stuk JavaScript in de browser kan geladen worden en vervolgens JSX vertaalt. Babel werd oorspronkelijk gecreëerd om moderne JavaScript te kunnen draaien in oudere browsers. Om babel te gebruiken, voeg je onderstaand script toe aan de HTML en voeg je `type="text/babel"` toe aan de `script` tag met de JSX-code.
 
@@ -196,48 +197,50 @@ Dit geeft het volgende resultaat:
 
 Onze React-applicaties gaan natuurlijk liefst niet bestaan uit een paar grote HTML-bestanden doorspekt met `script` blokken met daarin JSX. Aangezien er toch een compilatiestap is, om de JSX om te zetten naar HTML + JavaScript, kunnen we even goed gebruik maken van deze stap om ook 'andere dingen' te doen. Deze 'andere dingen' zijn bijvoorbeeld afbeeldingen en CSS optimaliseren, dependencies beheren, etc.
 
-[**Vite**](https://vitejs.dev/) (afgeleid van het frans woord voor "snel") is een `buildtool` en `ontwikkelingsserver` die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals single-page applications (SPA's) en progressive web apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
+[**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
 Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
-- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundelingstap tijdens de ontwikkeling.
+- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundel-stap tijdens de ontwikkeling.
 
-  ![Vite - native ES Modules](./images/vite_ESModules.webp)
+  ![Vite - native ES Modules](./images/vite_ESModules.webp ':size=80%')
 
-  Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.
+- Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.
 
-  - De **dependency modules** zijn JavaScript-modules die je hebt geïmporteerd uit de map node_modules. Deze modules worden verwerkt en gebundeld met behulp van [esbuild](https://esbuild.github.io/), een JavaScript-bundelaar geschreven in Go die 10-100x sneller presteert dan Webpack.
+  - De **dependency modules** zijn JavaScript-modules die je hebt geïmporteerd uit de map `node_modules`. Deze modules worden verwerkt en gebundeld met behulp van [esbuild](https://esbuild.github.io/), een JavaScript-bundler geschreven in Go die 10-100x sneller presteert dan [Webpack](https://webpack.js.org/).
+  - De **applicatie modules** zijn modules die je voor je applicatie schrijft, zoals .jsx-bestanden.
 
-  - De **applicatie modules** zijn modules die je voor je applicatie schrijft, zoals .jsx-...
-
-  Vite verwerkt de dependency modules alleen vóór een enkel browserverzoek. De applicatie modules worden door Vite getransformeerd en bediend wanneer ze nodig zijn voor je applicatie:
+- Vite verwerkt de dependency modules alleen vóór een enkel browserverzoek. De applicatie modules worden door Vite getransformeerd en aangereikt wanneer ze nodig zijn voor je applicatie.
 
 - **HMR (Hot Module Replacement)**: In Vite worden enkel de gewijzigde modules vervangen. Dit zorgt voor snelle code-updates in de browser tijdens ontwikkeling.
 
 - **Ontwikkelingsserver**: Vite bevat een ingebouwde ontwikkelingsserver die je gebruikt tijdens development. Deze server ondersteunt functies zoals snel laden (fast refresh), waardoor codeveranderingen direct worden weergegeven in de browser zonder de hele toepassing opnieuw te moeten compileren.
 
-- **Builds**: Vite kan ook worden gebruikt voor productiebuilds. Tijdens de productiebuild past Vite verschillende optimalisaties toe, zoals minificatie, tree-shaking (waarbij ongebruikte code wordt verwijderd), en bundling (het samenvoegen van bestanden) om de laadtijden te minimaliseren en de prestaties van je applicatie te verbeteren. Vite bevat een vooraf geconfigureerde `build`-opdracht die de applicatie bundelt met behulp van [Rollup](https://rollupjs.org/). Vite biedt ook een standaard Rollup-configuratie die je kan aanpassen wanneer dat nodig is. De output bevindt zich in de dist folder en bevat statische assets die je plaatst op je productie server.
+- **Builds**: Vite kan ook worden gebruikt om productiebuilds te maken. Tijdens de productiebuild past Vite verschillende optimalisaties toe, zoals minificatie, tree-shaking (waarbij ongebruikte code wordt verwijderd), en bundling (het samenvoegen van bestanden) om de laadtijden te minimaliseren en de prestaties van je applicatie te verbeteren. Vite bevat een vooraf geconfigureerde `build`-opdracht die de applicatie bundelt met behulp van [Rollup](https://rollupjs.org/). Vite biedt ook een standaard Rollup-configuratie die je kan aanpassen wanneer dat nodig is. De output bevindt zich in de `dist` folder en bevat statische assets die je plaatst op je productie server.
 
   ![Vite en bundling](./images/vite_bundling.png)
 
+Lees hierover meer in de [Vite documentatie](https://vitejs.dev/guide/why.html).
+
 ## create-vite
 
-Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/).
-Een nieuwe React-applicatie maken is zo simpel als:
+Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/). Een nieuwe React-applicatie maken is zo simpel als:
 
 ```bash
-yarn create vite budget --template react
+yarn create vite budget --template react-swc
 ```
 
-Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen, we bouwen steeds verder op deze startapplicatie.
+Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen. In deze applicatie kan je transacties op bepaalde plaatsen bijhouden om zo je budget te beheren. We bouwen steeds verder op deze startapplicatie.
 
 Deze map bevat onder andere volgende bestanden/mappen:
 
-- `node_modules`: deze map bevat alle dependencies van de applicatie, m.a.w. de React libraries en alle libraries waar die dan weer op steunen. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 40.020 (!) bestanden die 148 MB innemen)
-- `package.json`: bestand dat beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc
-- `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...)
+- `node_modules`: deze map bevat alle dependencies van de applicatie, m.a.w. de React libraries en alle libraries waar die dan weer op steunen. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 40.020 (!) bestanden die 148 MB innemen).
+- `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc.
+- `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...).
 - `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
-- er werd ook automatisch een git repository toegevoegd, met een relevante `.gitignore`
+- er werd ook automatisch een `.gitignore` voorzien.
+- `.eslintrc.cjs`: configuratiebestand voor [eslint](https://eslint.org/), een tool die je code analyseert en je waarschuwt voor mogelijke fouten, slechte praktijken, etc.
+  - Voorlopig verwijderen we dit bestand, maar later in de cursus gaan we dit opnieuw gebruiken.
 
 ### yarn
 
@@ -278,9 +281,9 @@ Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele to
 Na de create-vite dienen we nog een `yarn install` uit te voeren, om alle dependencies te installeren. Met een `yarn dev` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 5173 gestart: <http://localhost:5173>.
 
 ```bash
-> yarn install
-> cd budget
-> yarn dev
+cd budget
+yarn install
+yarn dev
 ```
 
 ### yarn.lock
@@ -425,10 +428,10 @@ Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data ophalen e
 
 ### Mock data
 
-Maak een map `api` met een bestand `mock-data.js` aan in de `src` map. Later vervangen we deze mock data door API calls.
+Maak een map `api` met een bestand `mock_data.js` aan in de `src` map. Later vervangen we deze mock data door API calls.
 
 ```js
-// src/api/mock-data.js
+// src/api/mock_data.js
 const TRANSACTION_DATA = [
   {
     user: 'Benjamin',
@@ -464,11 +467,12 @@ export default function Transaction() {
   const user = 'Benjamin'; // 👈 1
   const amount = 200; // 👈 1
   const place = 'Dranken Geers'; // 👈 1
+  // 👇 2
   return (
     <div>
       {user} gaf €{amount} uit bij {place}
     </div>
-  ); // 👈 2
+  );
 }
 ```
 
@@ -528,18 +532,18 @@ We willen natuurlijk dat hier de data van ons mock object komt.
 ```jsx
 // src/App.jsx
 import Transaction from './components/transactions/Transaction';
-import TRANSACTION_DATA from './mock-data'; // 👈 1
+import TRANSACTION_DATA from './api/mock_data'; // 👈 1
 
 function App() {
   const trans = TRANSACTION_DATA[0]; // 👈 2
   return (
     <div className='App'>
+      {/* 👇 2 */}
       <Transaction
         user={trans.user}
         place={trans.place}
         amount={trans.amount}
-      />{' '}
-      {/* 👈 2 */}
+      />
     </div>
   );
 }
@@ -555,12 +559,13 @@ Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een
 ```jsx
 // src/App.jsx
 import Transaction from './components/transactions/Transaction';
-import TRANSACTION_DATA from './api/mock-data';
+import TRANSACTION_DATA from './api/mock_data';
 
 function App() {
   // const trans = TRANSACTION_DATA[0]; 👈 1
   return (
     <div className='App'>
+      {/* 👇 2 */}
       {TRANSACTION_DATA.map((trans) => (
         <Transaction
           user={trans.user}
@@ -568,7 +573,6 @@ function App() {
           amount={trans.amount}
         />
       ))}
-      {/* 👈 2 */}
     </div>
   );
 }
@@ -580,7 +584,7 @@ Je kan ook gebruik maken van object destructuring om attributen te genereren. El
 
 ```jsx
 import Transaction from './components/transactions/Transaction';
-import TRANSACTION_DATA from './api/mock-data';
+import TRANSACTION_DATA from './api/mock_data';
 
 function App() {
   return (
@@ -588,7 +592,7 @@ function App() {
       {TRANSACTION_DATA.map((trans) => (
         <Transaction {...trans} />
       ))}
-      {/* 👈 */}
+      {/* 👆 */}
     </div>
   );
 }
@@ -610,11 +614,11 @@ Als je met 'echte' data werkt, die via een backend komt, heeft elk element heel 
 
 In dit project maken we gebruik van [Bootstrap](https://getbootstrap.com/), een populair JavaScript- en CSS-framework. Bootstrap kan op verschillende manieren worden toegevoegd aan React. Laten we gebruik maken van Bootstrap CDN, de eenvoudigste manier om Bootstrap toe te voegen aan de React. Geen extra installatie of download is vereist. Een alternatief is om gebruik te maken van [react-bootstrap](https://www.npmjs.com/package/react-bootstrap).
 
-Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-react-app` is dit het `public/index.html` bestand.
+Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-vite` is dit het `index.html` bestand.
 
-1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS
-2. Als je project ook gebruikt maakt van de JavaScript-componenten uit Bootstrap, zoals een modal venster, vervolgkeuzemenu of navigatiebalk moeten we het bestand `bootstrap.bundle.min.js` koppelen. Dat vooraf is gecompileerd met `Popper.js`. Voorzie hiervoor een script-tag die linkt naar de gebundelde Javascript CDN's vlak voor het sluiten van de body-tag. Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/)
-3. Pas ook de title van de app aan
+1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS.
+2. Als je project ook gebruikt maakt van de JavaScript-componenten uit Bootstrap, zoals een modal venster, vervolgkeuzemenu of navigatiebalk moeten we het bestand `bootstrap.bundle.min.js` koppelen. Dat vooraf is gecompileerd met `Popper.js`. Voorzie hiervoor een script-tag die linkt naar de gebundelde Javascript CDN's vlak voor het sluiten van de body-tag. Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/).
+3. Pas ook de `title` van de app aan.
 
 ```html
 <!-- public/index.html -->
@@ -624,38 +628,37 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- 👈 1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- 👆 1 -->
     <title>BudgetApp</title>
-    <!-- 👈 3 -->
+    <!-- 👆 3 -->
   </head>
   <body>
     <div id="root"></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <!-- 👈 2 -->
+    <!-- 👆 2 -->
     <script type="module" src="/src/main.jsx"></script>
-  </head>
-
-
   </body>
 </html>
 ```
 
-Pas nu de `Transaction` component aan en maak gebruik van de Bootstrap class `text_bg_dark` voor de `div` tag. Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}` in onderstaand voorbeeld:
+Gooi het bestand `App.css` weg en maak `index.css` leeg. We gaan de styling van Bootstrap gebruiken. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen.
+
+Pas nu de `Transaction` component aan en maak gebruik van de Bootstrap class `text_bg_dark` voor de `div` tag. Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}` in onderstaand voorbeeld. Je kan ook de props meteen destructuren in de parameters van de functie.
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction(props) {
-  const { user, amount, place } = props;
+export default function Transaction({ user, amount, place }) { // 👈
+  // 👇
   return (
     <div className='text-bg-dark' style={{ textAlign: 'center' }}>
       {user} gaf €{amount} uit bij {place}
     </div>
-  ); // 👈
+  );
 }
 ```
 
-## Oefening
+## Oefening 1 - To do app
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
@@ -682,13 +685,45 @@ end note
 @enduml
 ```
 
-### Oplossing
+<!-- markdownlint-disable-next-line -->
+ + Oplossing +
 
-Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
+  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
 
-> Uiteraard zijn heel veel oplossingen mogelijk.
+## Oefening 2 - Je eigen project
 
-## Must read/see
+Maak een nieuwe Vite React-applicatie aan met de naam van je project.
+
+```bash
+yarn create vite <PROJECTNAAM> --template react-swc
+```
+
+Clone jouw Git repository uit de GitHub classroom:
+
+```bash
+git clone <JOUW_GIT_REPOSITORY_URL>
+```
+
+Kopieer **_alle_** bestanden, **_behalve_** de `.eslintrc.cjs`, `.gitignore` en `README.md`, uit de Vite React-applicatie naar je eigen project. Maak **_geen_** submap voor de React-applicatie!
+
+Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
+
+- `README.md`: vul de titel en je naam, studentennummer en e-mailadres in.
+- `dossier.md`: vul de titel in, duid aan welk(e) vak(ken) je volgt, en vul de link(s) naar de GitHub repository/repositories in.
+
+Commit vervolgens de lege React-applicatie:
+
+```bash
+git add .
+git commit -m "✨ Initial commit ✨"
+git push -u origin main
+```
+
+Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
+
+> 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
+
+## Must read/watch
 
 - [Practice React by fixing tests - Check your JSX knowledge!](https://reactpractice.dev/exercise/practice-react-by-fixing-tests-check-your-jsx-knowledge/)
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)

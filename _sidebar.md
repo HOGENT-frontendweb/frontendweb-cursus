@@ -1,11 +1,12 @@
+<!-- markdownlint-disable first-line-heading -->
 <small>
   Een aantal hoofdstukken zullen sterk aangepast worden t.o.v. vorig jaar. Deze niet-afgewerkte hoofdstukken worden aangeduid met een "Work In Progress" label: WIP. Deze zullen zeker nog wijzigen, het is dus niet de bedoeling dat je deze hoofdstukken reeds doorneemt.
 </small>
 
 - [0. Algemene info](./0-intro/situering.md)
 - [0. Software](./0-intro/software.md)
-- [1. React basics (WIP)](./1-react_basics/index.md)
-- [2. React state management (WIP)](./2-react_state/index.md)
+- [1. React basics](./1-react_basics/index.md)
+- [2. React state management](./2-react_state/index.md)
 - [3. React hooks, formulieren & Context API (WIP)](./3-react_hooks/index.md)
 - [4. You can call me API (WIP)](./4-api/index.md)
 - [5. React Router (WIP)](./5-react_router/index.md)
