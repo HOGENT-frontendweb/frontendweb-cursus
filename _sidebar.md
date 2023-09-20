@@ -11,7 +11,7 @@
 - [4. You can call me API (WIP)](./4-api/index.md)
 - [5. React Router (WIP)](./5-react_router/index.md)
 - [6. Testing (WIP)](./6-react_testing/index.md)
-- [7. Authenticatie & autorisatie (WIP)](./7-auth0/index.md)
+- [7. Authenticatie & autorisatie (WIP)](./7-auth/index.md)
 - [8. E2E testen met autenticatie (WIP)](./8-auth_testing/index.md)
 - [9. CI/CD (WIP)](./9-cicd/index.md)
 - [10. FAQ (WIP)](./10_faq/index.md)
