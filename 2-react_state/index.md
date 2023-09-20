@@ -1103,7 +1103,7 @@ Het `totaal` wordt met de waarde op de dobbelsteen verhoogd.
 
 Als de dobbelsteen één oog bevat, kan er niet meer op geklikt worden.
 
-Als alle dobbelstenen één oog bevatten, dan heb je 'Snake Eyes'. Er verschijnt een boodschap `Oops, you did it again`. Het totaal wordt terug op 0 geplaatst. Nu kan je kiezen om opnieuw te spelen.
+Als alle dobbelstenen één oog bevatten, dan heb je 'Snake Eyes'. Er verschijnt een boodschap `Oeps you did it again!`. Het totaal wordt terug op 0 geplaatst. Nu kan je kiezen om opnieuw te spelen.
 
 `Max total` bevat het maximaal aantal behaalde punten over alle spelletjes heen.
 
