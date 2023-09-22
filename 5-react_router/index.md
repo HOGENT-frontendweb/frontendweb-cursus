@@ -1,19 +1,8 @@
 # React Router
 
-> **Mini-voorbeeldapplicatie voor dit hoofdstuk**
->
-> Onderstaande repository bevat alle componenten uit dit hoofdstuk, met uitzondering van `Product` en `ScrollToTop`.
-> Het enige wat nog toegevoegd moet worden is routing uiteraard.
->
-> ```bash
-> git clone https://github.com/HOGENT-Web/RoutingDemoStarter.git
-> yarn install
-> yarn start
-> ```
+Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door webpack gegenereerde scripts en stylesheets geïnjecteerd.
 
-Zoals je al weet, maken we met React een zogenaamde Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door webpack gegenereerde scripts en stylesheets geïnjecteerd.
-
-Wanneer een client een React-applicatie opent (a.k.a. naar de URL ervan surft), wordt die ene `index.html` gedownload en gebeuren alle andere acties client-side. Het probleem is dat deze `index.html` enkel gedownload indien we naar de `/` navigeren. Er zijn verder geen statische of server-side gegenereerde pagina's. Bijgevolg kunnen we enkel naar `/` navigeren, de browser download dan `index.html` by default.
+Wanneer een client een React-applicatie opent (a.k.a. naar de URL ervan surft), wordt die ene `index.html` gedownload en gebeuren alle andere acties client-side. Het probleem is dat deze `index.html` enkel gedownload wordt indien we naar de `/` navigeren. Er zijn verder geen statische of server-side gegenereerde pagina's. Bijgevolg kunnen we enkel naar `/` navigeren, de browser download dan `index.html` by default.
 
 Daarnaast is React een library en geen framework, zoals Angular dat wel is. Dit zorgt ervoor dat er dus geen ingebouwde router beschikbaar is. Daarvoor biedt [React Router](https://reactrouter.com/) een oplossing.
 
@@ -92,7 +81,8 @@ Daarnaast zijn er nog andere types beschikbaar. [Lees meer](https://reactrouter.
 
 ### In de voorbeeldapplicatie
 
-De voorbeeldapplicatie zal dus gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerst route. We doen dit in `main.jsx`, het startpunt van de app.
+De voorbeeldapplicatie zal gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerst route. We doen dit in `main.jsx`, het startpunt van de app.
+
 `main.jsx`
 
 ```jsx
@@ -116,7 +106,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 );
 ```
 
-`createBrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL aan een component.
+[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router): de functie creëert een [BrowserRouter](https://reactrouter.com/en/main/router-components/browser-router) component, die doorgegeven wordt als waarde in de [RouterProvider](https://reactrouter.com/en/main/routers/router-provider). De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL(`path`) aan een component(`element`).
 
 `RouterProvider`: alle routes worden doorgegeven aan deze component.
 
@@ -179,10 +169,10 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Home />, // 👈 3
-    errorElement: <NotFound />, // 👈 4
   },
   { path: 'over', element: <About /> }, // 👈 2
   { path: 'contact', element: <Contact /> }, // 👈 2
+  { path: '*', element: <NotFound /> }, // 👈 4
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -193,22 +183,11 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 ```
 
 1. Importeer de gewenste componenten
-2. Vul de array met routes aan. 1 voor elke route. We geven telkens de component die getoond moet worden mee aan de prop `element`. Wanneer de URL in de browser wijzigt, zal deze component doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van de `Route` object.
+2. Vul de array met route objecten aan, 1 voor elke route. We geven telkens de component die getoond moet worden mee aan de prop `element`. Wanneer de URL in de browser wijzigt, zal deze component doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van de `Route` object.
 3. Vervang de `App` component door de `Home` component.
 4. Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test zelf eens uit:**
 
-Ipv het `errorElement` kan je ook Route object meegeven.
-
-```jsx
-//..
-{
-path: '*',
-element: <NotFound />,
-},
-//..
-```
-
-Deze route is een beetje speciaal, deze matchet met eender welke URL (door `path="*"`). Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test zelf eens uit:** Deze route moet niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
+De laatste route is een beetje speciaal, deze matchet met eender welke URL (door `path="*"`). Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test zelf eens uit:** Deze route moet niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
 
 Uit de route voor de `NotFound` component blijkt dus dat je ook reguliere expressies kan meegeven aan de `path` prop.
 
@@ -270,7 +249,7 @@ Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
 ## Routes nesten
 
-Stel we willen nog drie extra routes die starten met `/over`: `/over/services`, `/over/history` en `/over/location`. We voegen enkel links toe aan onze `About` component:
+Stel we willen nog drie extra routes die starten met `/over`: `/over/services`, `/over/history` en `/over/location`. We voegen enkele links toe aan onze `About` component:
 
 ```jsx
 // src/pages.jsx
@@ -290,6 +269,31 @@ export const About = () => (
         <Link to='/over/location'>Locatie</Link> {/* 👈 */}
       </li>
     </ul>
+  </div>
+);
+```
+
+En we voorzien deze pagina's in `pages.jsx`.
+
+```jsx
+export const Services = () => (
+  <div>
+    <h1>Our services</h1>
+    <LoremIpsum p={2} />
+  </div>
+);
+
+export const History = () => (
+  <div>
+    <h1>History</h1>
+    <LoremIpsum p={2} />
+  </div>
+);
+
+export const Location = () => (
+  <div>
+    <h1>Location</h1>
+    <LoremIpsum p={2} />
   </div>
 );
 ```
@@ -532,19 +536,19 @@ export const Product = () => {
 
 Deze component zal eerst het id uit de URL ophalen en omvormen naar een `Number`. Daarna zoekt het een product met het opgegeven id. Indien dit product niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de product-informatie getoond.
 
-Oefening : zorg ervoor dat op de Products page, bij klik op de naam naar de detailpage wordt overgestapt.
+**Oefening** : zorg ervoor dat op de Products page, bij klik op de naam naar de detailpage wordt overgestapt.
 
 ## de Root route
 
-Laten we de globale layout voor deze app toevoegen. We houden het heel eenvoudig en voegen bovenaan een navigatiebar toe. Maak een `Root` component aan in de `src` folder. Deze bevat de navigatiebar en de `Outlet` component voor de weergave van de children.
+We willen een navigatiebar toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebar komt op elke pagina voor. Om globale layout voor de app toe te voegen maak je een `Root` component aan in de `src` folder. Deze bevat de navigatiebar en de `Outlet` component voor de weergave van de children.
 
 ```jsx
 import { Outlet, Link } from 'react-router-dom';
 
 export default function Root() {
   return (
-    <div className='wrapper'>
-      <nav className='main-nav'>
+    <div>
+      <nav>
         <ul>
           <li>
             <Link to='/'>Home</Link> {/* 👈 */}
@@ -560,7 +564,7 @@ export default function Root() {
           </li>
         </ul>
       </nav>
-      <Outlet className='content' />
+      <Outlet />
     </div>
   );
 }
@@ -573,7 +577,6 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
-    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -616,59 +619,51 @@ const router = createBrowserRouter([
           },
         ],
       },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);
 ```
 
-Ipv de NotFound page kan ook gebruik maken van een ErrorPage, waar je de foutcode en foutboodschap weergeeft
-`src/pages.jsx`
+Voeg onderstaande css toe in `index.css`
 
-```jsx
-import {
-  Link,
-  Outlet,
-  useParams,
-  useLocation,
-  useRouteError,
-} from 'react-router-dom';
+```css
+nav ul {
+  list-style-type: none;
+  display: flex;
+  background-color: rgb(16, 167, 218);
+  margin: 0;
+  padding: 5px;
+}
 
-//..
-export function ErrorPage() {
-  const error = useRouteError();
-  console.error(error);
+nav ul li a {
+  color: white;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+}
 
-  return (
-    <div id='error-page'>
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
-  );
+nav li {
+  font-size: 16px;
+}
+
+nav ul li a:hover {
+  background-color: darkblue;
 }
 ```
 
-## Navigeren vanuit code
+## Scroll restoration
 
-Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug met o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/docs/en/v6/hooks/use-navigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
-
-Als voorbeeld gaan we onderaan elke pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `main.jsx`:
+- Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser.
+- Indien gewenst, moet hier zelf voor gezorgd worden. Maak hiervoor gebruik van `ScrollRestoration` component. Elke keer de url wijzigt, vraag de browser om naar boven te scrollen. Pas hiervoor de `Root` component aan.
 
 ```jsx
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { Outlet, Link, ScrollRestoration } from 'react-router-dom';
 
 export default function Root() {
-  const navigate = useNavigate();
-
-  const handleGoHome = () => {
-    navigate('/', { replace: true });
-  };
-
   return (
-    <div className='wrapper'>
-      <nav className='main-nav'>
+    <div>
+      <nav>
         <ul>
           <li>
             <Link to='/'>Home</Link>
@@ -684,8 +679,50 @@ export default function Root() {
           </li>
         </ul>
       </nav>
-      <Outlet className='content' />
+      <Outlet />
+      <ScrollRestoration />
+    </div>
+  );
+}
+```
+
+## Navigeren vanuit code
+
+Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug met o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/docs/en/v6/hooks/use-navigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
+
+Als voorbeeld gaan we onderaan elke pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `main.jsx`:
+
+```jsx
+import { Outlet, Link, useNavigate, ScrollRestoration } from 'react-router-dom';
+
+export default function Root() {
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/', { replace: true });
+  };
+
+  return (
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <Link to='/'>Home</Link>
+          </li>
+          <li>
+            <Link to='/over'>Over ons</Link>
+          </li>
+          <li>
+            <Link to='/contact'>Contact</Link>
+          </li>
+          <li>
+            <Link to='/products'>Products</Link>
+          </li>
+        </ul>
+      </nav>
+      <Outlet />
       <button onClick={handleGoHome}>Go home!</button>
+      <ScrollRestoration />
     </div>
   );
 }
@@ -727,4 +764,8 @@ git clone https://github.com/hogent-web/frontendweb-budget
 git checkout -b oplossing-les5 ef61c46
 yarn install
 yarn start
+```
+
+```
+
 ```
