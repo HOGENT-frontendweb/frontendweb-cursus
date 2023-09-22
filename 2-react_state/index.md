@@ -4,7 +4,7 @@
 >
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget/
-> git checkout -b les2 c1fc181
+> git checkout -b les2 44682fe
 > yarn install
 > yarn dev
 > ```
@@ -244,7 +244,7 @@ Met het toegevoegde item ziet de daaropvolgende boom er als volgt uit:
 <div class="text-bg-dark" key="2">Benjamin gaf €1500 uit bij Loon</div>
 ```
 
-Keys helpen React bepalen welke items gewijzigd, toegevoegd of verwijderd zijn. Het is noodzakelijk om sleutels te gegeven aan de elementen om deze een "stabiele identiteit" te geven.
+Keys helpen React bepalen welke items gewijzigd, toegevoegd of verwijderd zijn. Het is noodzakelijk om sleutels te geven aan de elementen om deze een "stabiele identiteit" te geven.
 
 `App.jsx` passen we dus als volgt aan
 
@@ -266,7 +266,7 @@ function App() {
 export default App;
 ```
 
-Gebruik voorlopig de index als key. Vervang dit, éénmaal de data wordt opgevraagd uit de REST API, door het id van de transactie. In de React-documentatie staat dat de index key niet wordt aanbevolen wanneer de volgorde van items kan veranderen. Het heeft een negatieve invloed op de prestaties en kan problemen veroorzaken met de component state. [Index als een key is een anti-pattern](https://medium.com/geekculture/reactjs-why-index-as-a-key-is-an-anti-pattern-4b9dc6ef0067)
+Gebruik voorlopig de index als key. Vervang dit, éénmaal de data wordt opgevraagd uit de REST API, door het id van de transactie. In de React-documentatie staat dat de index key niet wordt aanbevolen wanneer de volgorde van items kan veranderen. Het heeft een negatieve invloed op de prestaties en kan problemen veroorzaken met de component state. [Index als een key is een anti-pattern](https://medium.com/geekculture/reactjs-why-index-as-a-key-is-an-anti-pattern-4b9dc6ef0067).
 
 > Merk op: je plaatst de key altijd bij de parent-tag die herhaald wordt.
 
@@ -710,7 +710,7 @@ Voeg een verwijderknop toe om een plaats te verwijderen.
   // src/components/places/Place.jsx
   // imports
 
-  const Place = memo(({ id, name, rating, onRate, onDelete }) => {
+  const Place = ({ id, name, rating, onRate, onDelete }) => {
     // handleRate
 
     // 👇 1
@@ -745,7 +745,7 @@ Voeg een verwijderknop toe om een plaats te verwijderen.
     // state en handleRatePlace
 
     // 👇 1
-    const handleDeletePLace = (id) => {
+    const handleDeletePlace = (id) => {
       setPlaces((places) => places.filter((p) => p.id !== id));
     };
 
@@ -763,7 +763,7 @@ Voeg een verwijderknop toe om een plaats te verwijderen.
                   <Place
                     {...p}
                     onRate={handleRatePlace}
-                    onDelete={handleDeletePLace}
+                    onDelete={handleDeletePlace}
                   /> {/* 👆 2 */}
                 </div>
               ))}

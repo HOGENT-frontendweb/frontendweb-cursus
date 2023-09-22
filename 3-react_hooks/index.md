@@ -4,7 +4,7 @@
 >
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget/
-> git checkout -b les3 d82466f
+> git checkout -b les3 e842183
 > yarn install
 > yarn start
 > ```
@@ -67,7 +67,7 @@ export default function TransactionList() {
 
   // 👇 2
   const filteredTransactions = transactions.filter((t) => {
-    console.log("filtering...");
+    console.log('filtering...');
     return t.place.toLowerCase().includes(search.toLowerCase());
   });
 
@@ -192,7 +192,7 @@ Cache de `TransactionForm` component en bekijk de app opnieuw. Als we een letter
 <!-- markdownlint-disable-next-line -->
  + Oplossing +
 
-  De `TransactionForm` component bevat een state-variabelen voor de inputvelden. Telkens als je in deze velden typt, wordt de state van de component aangepast en zal deze dus rerenderen.
+  De `TransactionForm` component bevat state-variabelen voor de inputvelden. Telkens als je in deze velden typt, wordt de state van de component aangepast en zal deze dus rerenderen.
 
 ### useCallback hook
 
@@ -351,7 +351,7 @@ export default memo(function TransactionForm({ onSaveTransaction }) {
       </form>
     </>
   );
-});
+};
 ```
 
 1. `useForm` is een **custom hook** om forms te beheren. Het geeft allerlei nuttige functies en andere info over het formulier terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/api/useform/).
@@ -378,7 +378,7 @@ const { register, handleSubmit, reset, formState: { errors } } = useForm(); // �
 //...
 <form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3"> 
   <div className="mb-3">
-    <label htmlFor="date" className="form-label">Who</label>
+    <label htmlFor="user" className="form-label">Who</label>
     <input
       {/* 👇 1 */}
       {...register('user', {
@@ -764,26 +764,23 @@ export const ThemeProvider = ({
 
 ### Providing ThemeContext
 
-Stel in `index.jsx` de `ThemeProvider` ter beschikking aan alle children.
+Stel in `main.jsx` de `ThemeProvider` ter beschikking aan alle children.
 
 ```jsx
-// src/index.jsx
+// src/main.jsx
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import App from './App';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
 import './index.css';
-import { ThemeProvider } from './contexts/Theme.context'; // 👈
+import { ThemeProvider } from './contexts/Theme.context';
 
-const root = createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ThemeProvider>{/* 👈 */}
       <App />
     </ThemeProvider>{/* 👈 */}
   </React.StrictMode>
 );
-reportWebVitals();
 ```
 
 ### Consuming ThemeContext
@@ -910,6 +907,8 @@ const Place = memo(({ id, name, rating, onRate, onDelete }) => {
 1. Verwijder de import `useContext`, `ThemeContext`, en importeer `useThemeColors`.
 2. De hook `useThemeColors` retourneert de twee waarden die we in deze component nodig hebben.
 
+Pas ook `StarRating` component aan.
+
 ## Form revisited - code refactoring
 
 Er zitten een paar anti-patterns in ons formulier:
@@ -952,7 +951,7 @@ export default memo(function TransactionForm({ onSaveTransaction }) {
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3">
         <div className="mb-3">
-          <label htmlFor="date" className="form-label">Who</label>
+          <label htmlFor="user" className="form-label">Who</label>
           <input
             {...register('user', validationRules.user)}//👈2
             defaultValue=''

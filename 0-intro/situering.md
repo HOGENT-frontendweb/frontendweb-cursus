@@ -55,13 +55,15 @@ Hier en daar moeten een paar kleine en grote aanpassingen gebeuren aan de cursus
 
 ## Planning
 
+Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
+
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
-| week 2  | useState, useContext                          |
-| week 3  | useState, useContext, useEffect               |
-| week 4  | UseContext, useEffect                         |
-| week 5  | Data ophalen van een back-end                 |
+| week 2  | React Basics, useState                        |
+| week 3  | useState, useContext                          |
+| week 4  | UseContext, formulieren                       |
+| week 5  | Data ophalen van een back-end, useEffect      |
 | week 6  | React Router                                  |
 | week 7  | Testen en linting                             |
 | week 8  | (geen nieuwe theorie, aan de opdracht werken) |

@@ -730,6 +730,61 @@ export default function Root() {
 
 Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React Router terug naar de home-pagina navigeren en de huidige URL hierdoor vervangen.
 
+## Aanduiden van de active link in de navigatie
+
+Maak hiervoor gebruik van de `NavLink` component. De active link maak je op in css met de `active` class.
+
+`Root.jsx`
+
+```jsx
+import {
+  Outlet,
+  NavLink,
+  useNavigate,
+  ScrollRestoration,
+} from 'react-router-dom';
+
+export default function Root() {
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/', { replace: true });
+  };
+
+  return (
+    <div>
+      <nav>
+        <ul>
+          <li>
+            <NavLink to='/'>Home</NavLink>
+          </li>
+          <li>
+            <NavLink to='/over'>Over ons</NavLink>
+          </li>
+          <li>
+            <NavLink to='/contact'>Contact</NavLink>
+          </li>
+          <li>
+            <NavLink to='/products'>Products</NavLink>
+          </li>
+        </ul>
+      </nav>
+      <Outlet />
+      <button onClick={handleGoHome}>Go home!</button>
+      <ScrollRestoration />
+    </div>
+  );
+}
+```
+
+`index.css`
+
+```css
+nav a.active {
+  color: darkblue;
+}
+```
+
 ## Oplossing mini-voorbeeldapplicatie
 
 Te vinden op <https://github.com/HOGENT-Web/RoutingDemo>
