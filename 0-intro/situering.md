@@ -43,7 +43,7 @@ Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers.
 - Websites om te zoeken/luisteren naar podcasts
 - Website voor een vereniging of het bedrijf van een vriend(in), familielid...
 
-## Slides?
+## Cursus?
 
 Het cursusmateriaal wordt op GitHub gehost: <https://hogent-web.github.io/frontendweb-cursus>.
 
@@ -62,7 +62,7 @@ Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 | week 1  | Inleiding, React Basics                       |
 | week 2  | React Basics, useState                        |
 | week 3  | useState, useContext                          |
-| week 4  | UseContext, formulieren                       |
+| week 4  | useContext, formulieren                       |
 | week 5  | Data ophalen van een back-end, useEffect      |
 | week 6  | React Router                                  |
 | week 7  | Testen en linting                             |
