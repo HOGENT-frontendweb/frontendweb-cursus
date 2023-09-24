@@ -53,6 +53,8 @@ De bijhorende back-end is te vinden op: <https://github.com/hogent-web/webservic
 
 Hier en daar moeten een paar kleine en grote aanpassingen gebeuren aan de cursusinhoud. Elk hoofdstuk met het label `WIP` is nog niet volledig afgewerkt. De inhoud van deze hoofdstukken kan dus nog veranderen.
 
+> Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/hogent-web/frontendweb-cursus>.
+
 ## Planning
 
 Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
