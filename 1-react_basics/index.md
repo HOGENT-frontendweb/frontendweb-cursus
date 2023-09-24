@@ -271,8 +271,8 @@ Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees 
 In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~) of hoedje (^) als prefix, dit heeft volgende betekenis:
 
 - geen prefix: exact deze versie
-- tilde (~): ongeveer deze versie (zie <https://docs.npmjs.com/cli/v6/using-npm/semver#tilde-ranges-123-12-1>)
-- hoedje (^): compatibel met deze versie (<https://docs.npmjs.com/cli/v6/using-npm/semver#caret-ranges-123-025-004>)
+- tilde (~): ongeveer deze versie (zie <https://github.com/npm/node-semver#tilde-ranges-123-12-1>)
+- hoedje (^): compatibel met deze versie (<https://github.com/npm/node-semver#caret-ranges-123-025-004>)
 
 Kortom, een tilde is strenger dan een hoedje.
 
@@ -417,7 +417,7 @@ Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in 
 
 We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij altijd strings. De values zijn strings, numbers, booleans, arrays of opnieuw objecten.
 
-> Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: [Working with json](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
+> Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: [Working with JSON](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
 
 De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
@@ -695,10 +695,9 @@ end note
 ```
 
 <!-- markdownlint-disable-next-line -->
+  + Oplossing +
 
-- Oplossing +
-
-Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
+  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
 
 ## Oefening 2 - Je eigen project
 
