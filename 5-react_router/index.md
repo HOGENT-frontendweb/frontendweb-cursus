@@ -820,7 +820,3 @@ git checkout -b oplossing-les5 ef61c46
 yarn install
 yarn start
 ```
-
-```
-
-```
