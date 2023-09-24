@@ -461,8 +461,7 @@ In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op een ster, geef je `you clicked a star` in de console weer.
 
 <!-- markdownlint-disable-next-line -->
-
-- Oplossing +
+  + Oplossing +
 
   ```jsx
   // src/components/places/StarRating.jsx
@@ -701,8 +700,7 @@ export default function StarRating({
 Voeg een verwijderknop toe om een plaats te verwijderen.
 
 <!-- markdownlint-disable-next-line -->
-
-- Oplossing +
+  + Oplossing +
 
   Voeg eerst een knop met bijbehorende event handler toe aan de `Place` component. In deze event handler roepen we de event handler prop `onDelete` aan want enkel onze parent kan de plaats verwijderen.
 
