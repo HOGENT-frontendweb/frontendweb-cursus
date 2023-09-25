@@ -725,7 +725,7 @@ Commit vervolgens de lege React-applicatie:
 ```bash
 git add .
 git commit -m "✨ Initial commit ✨"
-git push -u origin main
+git push
 ```
 
 Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
