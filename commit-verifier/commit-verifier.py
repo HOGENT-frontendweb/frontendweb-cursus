@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import sys
 import re
@@ -73,7 +74,9 @@ def commit_exists(url, commit):
     return response.status_code == 200
 
 if __name__ == "__main__":
-    markdown_files = list_markdown_files("..")
+    # read dir from env GITHUB_WORKSPACE
+    directory = os.environ.get("GITHUB_WORKSPACE")
+    markdown_files = list_markdown_files(directory)
 
     should_fail = False
     nr_of_broken_references = 0
