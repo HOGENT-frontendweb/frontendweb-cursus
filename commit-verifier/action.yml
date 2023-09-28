@@ -1,13 +1,6 @@
 # action.yml
 name: "Check for broken GitHub commit references"
 description: "Search for broken GitHub commit references in markdown files in the given directory and its subdirectories"
-outputs:
-  nr_of_broken_references:
-    description: "The number of broken references found"
-  # broken-references:
-  #   description: "The broken references found"
 runs:
   using: "docker"
   image: "Dockerfile"
-  args:
-    - ${{ inputs.who-to-greet }}

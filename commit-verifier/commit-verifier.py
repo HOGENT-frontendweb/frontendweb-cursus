@@ -79,7 +79,6 @@ if __name__ == "__main__":
     markdown_files = list_markdown_files(directory)
 
     should_fail = False
-    nr_of_broken_references = 0
 
     for file in markdown_files:
         not_existing_commits = []
@@ -97,12 +96,10 @@ if __name__ == "__main__":
         print(file)
 
         for [url, commit] in not_existing_commits:
-            print(f"\tCommit {commit} does not exist in {url}", file=sys.stderr)
+            print(f"\tCommit {commit} does not exist in {url}")
 
         nr_of_broken_references += len(not_existing_commits)
 
         print("")
-
-    print(f"nr_of_broken_references={nr_of_broken_references}")
 
     sys.exit(should_fail and 1 or 0)
