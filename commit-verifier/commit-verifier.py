@@ -98,8 +98,6 @@ if __name__ == "__main__":
         for [url, commit] in not_existing_commits:
             print(f"\tCommit {commit} does not exist in {url}")
 
-        nr_of_broken_references += len(not_existing_commits)
-
         print("")
 
     sys.exit(should_fail and 1 or 0)
