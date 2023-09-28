@@ -1,14 +1,15 @@
 # Data ophalen uit een REST API
 
-!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen).
+!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen). Maak ook een .env aan. Zie readme voor meer info.
 
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> cd frontendweb-budget
 > git checkout -b les4 b3b27e0
 > yarn install
-> yarn start
+> yarn dev
 > ```
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
@@ -511,6 +512,8 @@ Eerst en vooral maken we een algemene functie voor een GET all request. Hernoem 
 Pas het bestand aan als volgt:
 
 ```jsx
+import axios from 'axios';
+
 const baseUrl = `http://localhost:9000/api`; // 👈 1
 
 export async function getAll(url) { // 👈 2
@@ -566,7 +569,7 @@ export default function TransactionsList() {
       <div className="mt-4">
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error}>
-          <TransactionsTable transactions={data} />
+          <TransactionsTable transactions={filteredTransactions} />
         </AsyncData>
       </div>
     </>
@@ -1062,7 +1065,7 @@ export default memo(function Transaction({
       <td>
         <div className="btn-group float-end">
           {/* 👇 3 */}
-          <button type="button" className="btn btn-light" onClick={handleUpdate}>
+          <button type="button" className="btn btn-light" onClick={handleEdit}>
             <IoPencil />
           </button>
           <button type="button" className="btn btn-danger" onClick={handleDelete}>
