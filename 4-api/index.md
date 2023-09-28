@@ -774,9 +774,9 @@ export default function TransactionForm() { // 👈 4
 
   // ...
 
-  const onSubmit = useCallback((data) => {
+  const onSubmit = useCallback(async (data) => { // 👈 3
     const { user, place, amount, date } = data;
-    saveTransaction({ user, place, amount: parseInt(amount), date }); // 👈 3
+    await saveTransaction({ user, place, amount: parseInt(amount), date }); // 👈 3
     reset();
   }, [reset, saveTransaction]); // 👈 3
 
@@ -799,6 +799,7 @@ export default function TransactionForm() { // 👈 4
    - `error`: een eventuele fout die zich voordoet bij het opslaan van de transactie. We hernoemen deze naar `saveError`.
 3. Wijzig de `onSubmit` zodat `saveTransaction` aangeroepen wordt i.p.v. `onSaveTransaction`. We geven de `user`, `place`, `amount` en `date` mee als argumenten als **object** deze keer.
    - Pas ook de dependency array aan van de `useCallback` hook.
+   - **Let op:** de functie is nu `async`, dus we moeten `await` gebruiken.
 4. Verwijder de `onSaveTransaction` prop, deze is niet meer nodig. Verwijder ook meteen de `createTransaction` functie en het doorgeven van deze functie aan de `TransactionForm` component uit de `TransactionList` component.
 5. We tonen een eventuele fout na het opslaan d.m.v. de `Error` component. Vergeet de import niet!
 
@@ -833,9 +834,9 @@ function PlacesSelect({ name, places }) {
 De `onSubmit` (in `TransactionForm`) wordt dan:
 
 ```jsx
-const onSubmit = (data) => {
+const onSubmit = async (data) => {
   const { user, place, amount, date } = data;
-  saveTransaction({
+  await saveTransaction({
     user,
     placeId: place, // 👈
     amount: parseInt(amount),
@@ -1093,9 +1094,9 @@ export default function TransactionForm({ currentTransaction, setTransactionToUp
     formState: { errors },
   } = useForm();
 
-  const onSubmit = useCallback((data) => {
+  const onSubmit = useCallback(async (data) => {
     const { user, place, amount, date } = data;
-    saveTransaction({
+    await saveTransaction({
       user,
       placeId: place,
       amount: parseInt(amount),
@@ -1232,7 +1233,19 @@ Implementeer een willekeurige PUT uit je eigen project (liefst dezelfde entiteit
 
 ### Oefening 6 - PlacesSelect via API
 
-Doe hetzelfde voor `PlacesSelect`, disable dit veld tijdens het verzenden van het formulier.
+Doe hetzelfde voor `PlacesSelect`, disable dit veld tijdens het verzenden van het formulier. Verwijder vervolgens de mock data uit het project, dit hebben we niet meer nodig.
+
+<!-- markdownlint-disable-next-line -->
++ Oplossing +
+
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontendweb-budget> in commit `1daa903`.
+
+  ```bash
+  git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+  git checkout -b oplossing 1daa903
+  yarn install
+  yarn dev
+  ```
 
 ## Het .env bestand
 
@@ -1258,7 +1271,7 @@ const baseUrl = `${import.meta.env.VITE_API_URL}/transactions`;
 
 Over environment variables in React & Vite vind je meer op <https://vitejs.dev/guide/env-and-mode.html>.
 
-## Oefening 4 - PlacesList via API
+## Oefening 7 - PlacesList via API
 
 Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API.
 
