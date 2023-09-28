@@ -339,7 +339,7 @@ export default MyAuth0Provider;
 
 #### 3. Pas de transaction API aan
 
-We moeten het token meesturen met de `Authorization` HTTP header bij elke request naar de server die authenticatie (en authorisatie) vereist. Het token kan worden opgevraagd via de `getAccessTokenSilently()` functie uit de `useAuth0()` hook. Deze functie retourneert een Promise die een access token teruggeeft. Deze token kan je gebruiken om een ​​beveiligde API aan te roepen.
+We moeten het token meesturen met de `Authorization` HTTP header bij elke request naar de server die authenticatie (en autorisatie) vereist. Het token kan worden opgevraagd via de `getAccessTokenSilently()` functie uit de `useAuth0()` hook. Deze functie retourneert een Promise die een access token teruggeeft. Deze token kan je gebruiken om een ​​beveiligde API aan te roepen.
 
 Deze functie kan het access en ID token vernieuwen gebruik makend van een [refresh token](https://auth0.com/docs/secure/tokens/refresh-tokens). Hiervoor dient `useRefreshTokens` ingesteld zijn in de `Auth0Provider`.
 
