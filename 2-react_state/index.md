@@ -3,7 +3,7 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget/
+> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > git checkout -b les2 44682fe
 > yarn install
 > yarn dev

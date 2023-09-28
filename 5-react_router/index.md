@@ -815,7 +815,7 @@ Let op er zijn aanpassingen nodig aan de `TransactionForm` component om de huidi
 Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in commit `ef61c46`:
 
 ```bash
-git clone https://github.com/hogent-web/frontendweb-budget
+git clone https://github.com/hogent-web/frontendweb-budget.git
 git checkout -b oplossing-les5 ef61c46
 yarn install
 yarn start

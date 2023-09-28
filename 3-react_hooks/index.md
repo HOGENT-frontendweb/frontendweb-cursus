@@ -3,7 +3,7 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget/
+> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > git checkout -b les3 e842183
 > yarn install
 > yarn start
@@ -58,7 +58,7 @@ In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filt
 import { useState } from 'react';
 import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
-import { TRANSACTION_DATA } from '../../api/mock_data'; 
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState(TRANSACTION_DATA);
@@ -165,7 +165,7 @@ export default function TransactionForm({places, onRate}) {
   ...
   console.log('Rendering TransactionForm ...');
   return (...);
-} 
+}
 ```
 
 Telkens als we een letter ingeven in het zoekveld worden alle componenten gererenderd, hoewel er niets wijzigt aan de output van de component. De `Transaction` component heeft als prop een transaction en deze blijft ongewijzigd als de gebruiker een letter ingeeft in het zoekveld. Toch wordt de component gererenderd.
@@ -177,7 +177,7 @@ Een **pure component** is een component die gegeven dezelfde props dezelfde outp
 import { memo } from 'react'; // 👈
 
 export default memo(function Transaction(props) { // 👈
-  const { user, amount, place} = props; 
+  const { user, amount, place} = props;
   console.log('Rendering transaction...');
   return <div className="text-bg-dark" style={{ width: '50%' }}>{user} gaf €{amount} uit bij {place}</div>;
 });
@@ -376,7 +376,7 @@ We geven een voorbeeld voor het inputveld van de gebruiker, dit is vrij gelijkaa
 const { register, handleSubmit, reset, formState: { errors } } = useForm(); // 👈 2
 
 //...
-<form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3"> 
+<form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3">
   <div className="mb-3">
     <label htmlFor="user" className="form-label">Who</label>
     <input
@@ -693,7 +693,7 @@ export const ThemeProvider = ({
   children
 }) => {
   const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark); // 👈 2
-  
+
   const toggleTheme = useCallback(() => { // 👈 3
     const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
     setTheme(newThemeValue);
@@ -857,7 +857,7 @@ export const themes = {
   light: "light"
 }
 
-export const ThemeContext = createContext(); 
+export const ThemeContext = createContext();
 
 export const useTheme = () => useContext(ThemeContext); // 👈 1
 

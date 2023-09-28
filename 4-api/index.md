@@ -5,7 +5,7 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget/
+> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > git checkout -b les4 b3b27e0
 > yarn install
 > yarn start
@@ -189,7 +189,7 @@ const baseUrl = `http://localhost:9000/api/transactions`; // 👈 2
 
 // 👇 3
 export const getAll = async () => {
-  const response = await axios.get(baseUrl); 
+  const response = await axios.get(baseUrl);
   return response;
 };
 ```
@@ -283,7 +283,7 @@ export default function TransactionList() {
   const [transactions, setTransactions] = useState([]); // 👈 2
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
-  
+
   useEffect(() => {
     const fetchTransactions = async () => {
       const data = await transactionsApi.getAll(); // 👈 3
@@ -553,7 +553,7 @@ export default function TransactionsList() {
         },
         ...transactions,
       ]; // newest first
-      // 👇 5 
+      // 👇 5
       // setTransactions(newTransactions);
     },
     [transactions]
@@ -1054,7 +1054,7 @@ export default memo(function Transaction({
   // 👇 3
   const handleEdit = useCallback(() => {
     onEdit(id);
-  }, [id, onEdit]); 
+  }, [id, onEdit]);
 
   return (
     <tr>
@@ -1123,7 +1123,7 @@ export default function TransactionForm({ currentTransaction, setTransactionToUp
       reset();
     }
   }, [currentTransaction, setValue, reset]);
-  
+
   //..
   return (
     {/* ... */}
