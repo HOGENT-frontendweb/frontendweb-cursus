@@ -1,6 +1,6 @@
 FROM python:3-alpine
 
-WORKDIR /app
+WORKDIR /github/workspace
 
 COPY requirements.txt ./requirements.txt
 RUN pip install -r ./requirements.txt
