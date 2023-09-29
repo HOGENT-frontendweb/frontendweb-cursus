@@ -1,6 +1,6 @@
 # Data ophalen uit een REST API
 
-!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen). Maak ook een .env aan. Zie readme voor meer info.
+!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen als je zonder databank werkt). Maak ook een .env aan, bekijk de README.md voor meer informatie.
 
 > **Startpunt voorbeeldapplicatie**
 >
@@ -834,13 +834,36 @@ function PlacesSelect({ name, places }) {
 }
 ```
 
-De `onSubmit` (in `TransactionForm`) wordt dan:
+Idem voor de `user` verwacht de API een id, we passen de validatieregels aan:
+
+```js
+const validationRules = {
+  user: {
+    required: 'User is required',
+    min: { value: 1, message: 'min 1' }, // 👈
+  },
+  // ..
+};
+```
+
+En ook de definitie van de `LabelInput` component voor de gebruiker, nu moeten we hier een id (= getal) invullen i.p.v. een naam:
 
 ```jsx
+<LabelInput
+  label='User ID' // 👈
+  name='user'
+  type='number' // 👈
+  validationRules={validationRules.user}
+/>
+```
+
+De `onSubmit` (in `TransactionForm`) wordt dan:
+
+```js
 const onSubmit = async (data) => {
   const { user, place, amount, date } = data;
   await saveTransaction({
-    user,
+    userId: user,  // 👈
     placeId: place, // 👈
     amount: parseInt(amount),
     date: new Date(date)
@@ -848,6 +871,8 @@ const onSubmit = async (data) => {
   reset();
 };
 ```
+
+Later verwijderen we het user-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee.
 
 ### Oefening 4 - PlacesSelect via API
 
