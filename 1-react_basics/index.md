@@ -667,7 +667,40 @@ export default function Transaction({ user, amount, place }) {
 }
 ```
 
-## Oefening 1 - To do app
+## Oefening 1 - Je eigen project
+
+Maak een nieuwe Vite React-applicatie aan met de naam van je project.
+
+```bash
+yarn create vite <PROJECTNAAM> --template react-swc
+```
+
+Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Clone jouw Git repository uit de GitHub classroom:
+
+```bash
+git clone <JOUW_GIT_REPOSITORY_URL>
+```
+
+Kopieer **_alle_** bestanden, **_behalve_** de `.eslintrc.cjs`, `.gitignore` en `README.md`, uit de Vite React-applicatie naar je eigen project. Maak **_geen_** submap voor de React-applicatie!
+
+Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
+
+- `README.md`: vul de titel en je naam, studentennummer en e-mailadres in.
+- `dossier.md`: vul de titel in, duid aan welk(e) vak(ken) je volgt, en vul de link(s) naar de GitHub repository/repositories in.
+
+Commit vervolgens de lege React-applicatie:
+
+```bash
+git add .
+git commit -m "✨ Initial commit ✨"
+git push
+```
+
+Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
+
+> 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
+
+## Oefening 2 - To do app
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
@@ -699,38 +732,6 @@ end note
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
 
-## Oefening 2 - Je eigen project
-
-Maak een nieuwe Vite React-applicatie aan met de naam van je project.
-
-```bash
-yarn create vite <PROJECTNAAM> --template react-swc
-```
-
-Clone jouw Git repository uit de GitHub classroom:
-
-```bash
-git clone <JOUW_GIT_REPOSITORY_URL>
-```
-
-Kopieer **_alle_** bestanden, **_behalve_** de `.eslintrc.cjs`, `.gitignore` en `README.md`, uit de Vite React-applicatie naar je eigen project. Maak **_geen_** submap voor de React-applicatie!
-
-Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
-
-- `README.md`: vul de titel en je naam, studentennummer en e-mailadres in.
-- `dossier.md`: vul de titel in, duid aan welk(e) vak(ken) je volgt, en vul de link(s) naar de GitHub repository/repositories in.
-
-Commit vervolgens de lege React-applicatie:
-
-```bash
-git add .
-git commit -m "✨ Initial commit ✨"
-git push
-```
-
-Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
-
-> 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
 
 ## Must read/watch
 
