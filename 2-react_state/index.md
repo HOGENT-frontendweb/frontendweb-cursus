@@ -9,9 +9,9 @@
 > yarn dev
 > ```
 
-[**Props**](https://beta.reactjs.org/learn/passing-props-to-a-component) worden gebruikt om data door te geven binnen de component tree in één richting (top - down). React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Wanneer de props van een component moeten wijzigen (bijvoorbeeld als reactie op een gebruikersinteractie), zal het zijn parent-component moeten "vragen" om de nieuwe waarden van de props door te geven! Met andere woorden, we zullen een nieuw object binnen krijgen in de kind-component.
+[**Props**](https://react.dev/learn/passing-props-to-a-component) worden gebruikt om data door te geven binnen de component tree in één richting (top - down). React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Wanneer de props van een component moeten wijzigen (bijvoorbeeld als reactie op een gebruikersinteractie), zal het zijn parent-component moeten "vragen" om de nieuwe waarden van de props door te geven! Met andere woorden, we zullen een nieuw object binnen krijgen in de kind-component.
 
-[**State**](https://beta.reactjs.org/learn/state-a-components-memory) is het dynamische deel van een React-component. Een component kan zo bepaalde informatie bijhouden en wijzigen als reactie op interacties. Wanneer de state wijzigt (door een gebruikersinteractie, API call die data retourneert...), past de UI zich aan (dit is waarom React 'so cool' is). Je kan dit vergelijken met een spreadsheet. Als één cel wijzigt, worden andere cellen aangepast.
+[**State**](https://react.dev/learn/state-a-components-memory) is het dynamische deel van een React-component. Een component kan zo bepaalde informatie bijhouden en wijzigen als reactie op interacties. Wanneer de state wijzigt (door een gebruikersinteractie, API call die data retourneert...), past de UI zich aan (dit is waarom React 'so cool' is). Je kan dit vergelijken met een spreadsheet. Als één cel wijzigt, worden andere cellen aangepast.
 
 Stel je voor dat we een component renderen waarbij een stuk state initieel een lege array is (bv. een lege lijst van transacties). Later wordt deze array gevuld met gegevens (we voegen bv. een transactie toe). Dit wordt een **state change** genoemd. Telkens wanneer we een React-component vertellen om zijn state te wijzigen (via een `setState` methode), zal de component zichzelf automatisch opnieuw renderen. De state kan ingesteld worden door de component zelf of een ander stukje code buiten de component. Het proces wordt hier gevisualiseerd:
 
@@ -100,7 +100,7 @@ Wat moet er nu nog aangepast worden?
   import { TRANSACTION_DATA } from './api/mock_data';
   ```
 
-Voor de verdere ontwikkeling van deze UI dienen we onderstaande vragen te beantwoorden. Neem hiervoor eerst [Thinking in React: start with the mockup, step 1, 3 en 4](https://beta.reactjs.org/learn/thinking-in-react) door.
+Voor de verdere ontwikkeling van deze UI dienen we onderstaande vragen te beantwoorden. Neem hiervoor eerst [Thinking in React: start with the mockup, step 1, 3 en 4](https://react.dev/learn/thinking-in-react) door.
 
 - In welke componenten kunnen we de UI opdelen?
 - Welke props, state hebben we nodig?
@@ -425,7 +425,7 @@ Bekijk het resultaat!
 
 ## Interactiviteit toevoegen
 
-In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://beta.reactjs.org/learn/responding-to-events) door.
+In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://react.dev/learn/responding-to-events) door.
 
 ### Samenvatting
 
@@ -499,7 +499,7 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
 
 Wanneer we klikken op een ster moet de kleur aangepast worden. Hierdoor dient het aantal geselecteerde sterren in `state` bijgehouden te worden bijgehouden. Dit doen we aan de hand van de `useState` hook.
 
-Neem de tutorial [Updating the screen](https://beta.reactjs.org/learn#updating-the-screen) door.
+Neem de tutorial [Updating the screen](https://react.dev/learn#updating-the-screen) door.
 
 Vroeger was React klassegebaseerd, tegenwoordig is letterlijk alles een functie in React. Toch bestaan function components al heel lang. Echter konden deze enkel gebruikt worden indien de component stateless was, m.a.w. geen state bevatte, of geen gebruik maakte van de lifecycle features van een component (bv. iets doen als de component uit de VDOM verdwijnt).
 
@@ -568,11 +568,11 @@ Alvorens de componenten getoond worden op het scherm moeten ze gerenderd worden 
 2. Render
 3. Commit
 
-Lees [Render and commit](https://beta.reactjs.org/learn/render-and-commit) en bekijk een visuele weergave: [A Visual Guide to React Rendering - It Always Re-renders](https://alexsidorenko.com/blog/react-render-always-rerenders/)
+Lees [Render and commit](https://react.dev/learn/render-and-commit) en bekijk een visuele weergave: [A Visual Guide to React Rendering - It Always Re-renders](https://alexsidorenko.com/blog/react-render-always-rerenders/)
 
 ### State snapshot
 
-Lees [State as a snapshot](https://beta.reactjs.org/learn/state-as-a-snapshot) en [Queueing a Series of State Updates](https://beta.reactjs.org/learn/queueing-a-series-of-state-updates)
+Lees [State as a snapshot](https://react.dev/learn/state-as-a-snapshot) en [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
 
 ### Liften van de state
 
@@ -616,7 +616,7 @@ const PlacesList = () => {
 export default PlacesList;
 ```
 
-1. Deze methode past de rating van een plaats aan. We gaan door de bestaande plaatsen en passen de rating van de plaats met het opgegeven id aan. Je vindt hierover meer op [Updating Objects in state](https://beta.reactjs.org/learn/updating-objects-in-state). Als we `setPlaces` aanroepen, wordt de state variabele `places` aangepast en zal de UI tree gerenderd worden met de nieuwe data.
+1. Deze methode past de rating van een plaats aan. We gaan door de bestaande plaatsen en passen de rating van de plaats met het opgegeven id aan. Je vindt hierover meer op [Updating Objects in state](https://react.dev/learn/updating-objects-in-state). Als we `setPlaces` aanroepen, wordt de state variabele `places` aangepast en zal de UI tree gerenderd worden met de nieuwe data.
 2. We geven deze methode door aan de kinderen via de prop `onRate`. Zo kunnen de kinderen de rating van de plaats aanpassen wanneer op een ster geklikt wordt.
 
 De `Place` component moet ook worden aangepast:
@@ -1085,7 +1085,7 @@ export default function TransactionList() {
 1. We voegen state toe om de transacties te beheren. We overlopen nu de `transactions` i.p.v. `TRANSACTION_DATA`.
 2. Deze functie voegt een nieuwe transactie toe vooraan de lijst.
 3. Voeg de component `TransactionForm` toe. De methode om een transactie toe te voegen wordt als prop doorgegeven. Zo zal bij wijziging van de state de component opnieuw gerenderd worden.
-4. Start de app en bekijk de console: `transactions` toont de nieuwe transactie niet (`newTransactions` toont de nieuwe transactie wel). Meer uitleg hierover vind je op [State as a snapshot](https://beta.reactjs.org/learn/state-as-a-snapshot). `setState` is een asynchrone functie. We moeten dus gebruik maken van een variabele `newTransaction` indien we iets met de nieuwe transacties willen doen! Willen we gebruik maken van de gewijzigde state, maken we soms beter gebruik maken van de hook `useEffect`. Die zien we in een later hoofdstuk.
+4. Start de app en bekijk de console: `transactions` toont de nieuwe transactie niet (`newTransactions` toont de nieuwe transactie wel). Meer uitleg hierover vind je op [State as a snapshot](https://react.dev/learn/state-as-a-snapshot). `setState` is een asynchrone functie. We moeten dus gebruik maken van een variabele `newTransaction` indien we iets met de nieuwe transacties willen doen! Willen we gebruik maken van de gewijzigde state, maken we soms beter gebruik maken van de hook `useEffect`. Die zien we in een later hoofdstuk.
 
 ## useReducer hook
 
@@ -1125,9 +1125,9 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 
 ## Must reads
 
-- [Reacting to Input with State](https://beta.reactjs.org/learn/reacting-to-input-with-state)
-- [Choosing the State Structure](https://beta.reactjs.org/learn/choosing-the-state-structure)
-- [Preserving and Resetting State](https://beta.reactjs.org/learn/preserving-and-resetting-state)
-- [Extracting State Logic into a Reducer](https://beta.reactjs.org/learn/extracting-state-logic-into-a-reducer)
+- [Reacting to Input with State](https://react.dev/learn/reacting-to-input-with-state)
+- [Choosing the State Structure](https://react.dev/learn/choosing-the-state-structure)
+- [Preserving and Resetting State](https://react.dev/learn/preserving-and-resetting-state)
+- [Extracting State Logic into a Reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer)
 - [The Interactive Guide to Rendering in React](https://ui.dev/why-react-renders)
 - [React re-renders guide: everything, all at once](https://www.developerway.com/posts/react-re-renders-guide)
