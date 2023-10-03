@@ -453,7 +453,7 @@ In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 
 - Per conventie starten event handler props met de prefix `on` gevolgd door een hoofdletter.
 - Per conventie starten event handlers met de prefix `handle` gevolgd door de naam van het event.
-- Een event handler in React heeft als argument een cross-browser native event wrapper, nl. het [`SyntheticEvent`](https://reactjs.org/docs/events.html).
+- Een event handler in React heeft als argument een cross-browser native event wrapper, nl. het [**synthetic event**](https://react.dev/reference/react-dom/components/common#react-event-object).
 - Event handlers definieer je meestal binnen een component zodat ze toegang hebben tot de props en de state.
 - Je kan een event handler definiëren in een parent en doorgeven als een prop aan een child component
 
@@ -493,7 +493,7 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
   }
   ```
 
-  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event. React voorziet in een cross-browser native event wrapper, nl het `SyntheticEvent`. Print dit object gerust eens in de console om de inhoud ervan te bekijken.
+  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event. React voorziet in een cross-browser native event wrapper, nl het synthetic event. Print dit object gerust eens in de console om de inhoud ervan te bekijken.
   2. Voorzie de prop `onClick` en geef de event handler functie mee.
 
 ## State toevoegen
