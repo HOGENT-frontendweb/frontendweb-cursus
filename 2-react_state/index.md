@@ -538,7 +538,7 @@ export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
         <Star key={i} index={i} selected={rating > i} onSelect={setRating} /> {/* 👈 3, 4 en 6 */}
       ))}{' '}
       <p>
-        {selectedStars} of {totalStars} stars
+        {rating} of {totalStars} stars {/* 👈 3 */}
       </p>
     </>
   );
@@ -554,7 +554,7 @@ export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
   Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de variabele en de set-functie instellen.
 
 <!-- markdownlint-disable ol-prefix -->
-3. Via de `selected` prop geven we door of de ster al dan niet geselecteerd is.
+3. Via de `selected` prop geven we door of de ster al dan niet geselecteerd is. We passen ook de tekst aan die het aantal geselecteerde sterren weergeeft.
 4. Als de gebruiker een ster selecteert, dient de methode `setRating` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `setRating` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onSelect` toe.
 5. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
 6. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
@@ -684,7 +684,7 @@ export default function StarRating({
       ))}
       {/* 👆 2 en 4 */}
       <p>
-        {selectedStars} of {totalStars} stars
+        {selectedStars} of {totalStars} stars {/* 👈 2 */}
       </p>
     </>
   );
@@ -692,7 +692,7 @@ export default function StarRating({
 ```
 
 1. Verwijder de state.
-2. Vervang de variabele `rating` door de prop `selectedStars`.
+2. Vervang de variabele `rating` door de prop `selectedStars`. Doe hetzelfde voor de tekst die het aantal geselecteerde sterren weergeeft.
 3. `onRate` wordt via de props doorgegeven, samen met de andere props.
 4. Roep de methode aan in de event handler prop `onSelect`.
 
