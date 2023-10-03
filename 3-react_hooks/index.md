@@ -4,6 +4,7 @@
 >
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> cd frontendweb-budget
 > git checkout -b les3 e842183
 > yarn install
 > yarn start
