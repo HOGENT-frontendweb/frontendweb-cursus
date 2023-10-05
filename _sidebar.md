@@ -9,7 +9,7 @@
 - [2. React state management](./2-react_state/index.md)
 - [3. React hooks, formulieren & Context API](./3-react_hooks/index.md)
 - [4. Data ophalen uit een REST API](./4-api/index.md)
-- [5. React Router (WIP)](./5-react_router/index.md)
+- [5. React Router](./5-react_router/index.md)
 - [6. Testing (WIP)](./6-react_testing/index.md)
 - [7. Authenticatie & autorisatie (WIP)](./7-auth/index.md)
 - [8. E2E testen met autenticatie (WIP)](./8-auth_testing/index.md)
