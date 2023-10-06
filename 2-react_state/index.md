@@ -1092,7 +1092,7 @@ export default function TransactionList() {
 
 Mocht je nood hebben aan een meer complexe state in een component, dan kan je gebruik maken van de `useReducer` hook. Dit is in feite een alternatief voor `useState`. Met een reducer kan je een complexe state aanpassen o.b.v. een **reducer-functie** die een bepaalde actie ontvangt. Wat die actie is, kies je zelf. Typisch is dit een object van de vorm `{ action: string; payload: any; }`.
 
-Lees hierover meer in de [documentatie van de hook](https://reactjs.org/docs/hooks-reference.html#usereducer).
+Lees hierover meer in de [documentatie van de hook](https://react.dev/reference/react/useReducer).
 
 ## Oefening 5 - SnakeEyes
 
