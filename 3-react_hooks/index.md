@@ -7,7 +7,7 @@
 > cd frontendweb-budget
 > git checkout -b les3 e842183
 > yarn install
-> yarn start
+> yarn dev
 > ```
 
 **Componenten** zijn functies die de UI renderen. Het renderen gebeurt wanneer de app voor het eerst geladen wordt en wanneer state waarden wijzigen. Renderen van code moet "[puur](https://react.dev/learn/keeping-components-pure)" zijn. Componenten mogen enkel 'hun' JSX retourneren en mogen objecten of variabelen die bestaan voor de rendering niet wijzigen (bv. geen nieuwe waarde toekennen aan props). Gegeven dezelfde input, dient het dezelfde output te retourneren. Net als een wiskundige formule zou het alleen het resultaat moeten berekenen, maar niets anders doen.
@@ -1117,7 +1117,7 @@ Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan 
   git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
   git checkout -b oplossing 9181134
   yarn install
-  yarn start
+  yarn dev
   ```
 
 ## Mogelijke extra's voor de examenopdracht

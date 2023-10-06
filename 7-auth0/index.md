@@ -8,7 +8,7 @@
 > cd frontendweb-budget
 > git checkout -b les7
 > yarn install
-> yarn start
+> yarn dev
 > ```
 >
 > **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**

@@ -7,7 +7,7 @@
 > cd frontendweb-budget
 > git checkout -b les3 d82466f
 > yarn install
-> yarn start
+> yarn dev
 > ```
 
 ## API calls voor login
