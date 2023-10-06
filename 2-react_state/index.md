@@ -931,7 +931,7 @@ export default function TransactionForm({ onSaveTransaction }) { // 👈 5
           </label>
           <input
             value={toDateInputString(date)}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(e) => setDate(new Date(e.target.value))}
             id='date'
             type='date'
             className='form-control'
