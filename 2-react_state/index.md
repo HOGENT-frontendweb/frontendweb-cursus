@@ -1121,7 +1121,6 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 
 - [Redux Toolkit](https://redux-toolkit.js.org/)
 - [Elf](https://github.com/ngneat/elf)
-- [The new wave of React state management](https://frontendmastery.com/posts/the-new-wave-of-react-state-management/)
 - Een alternatief state management framework...
 
 ## Must reads
@@ -1132,3 +1131,4 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 - [Extracting State Logic into a Reducer](https://react.dev/learn/extracting-state-logic-into-a-reducer)
 - [The Interactive Guide to Rendering in React](https://ui.dev/why-react-renders)
 - [React re-renders guide: everything, all at once](https://www.developerway.com/posts/react-re-renders-guide)
+- [The new wave of React state management](https://frontendmastery.com/posts/the-new-wave-of-react-state-management/)
