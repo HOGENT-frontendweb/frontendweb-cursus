@@ -24,13 +24,21 @@ Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev depend
 yarn add cypress --dev
 ```
 
-Vervolgens kan je Cypress openen met onderstaand commando (je kan hiervoor ook een `test` script maken in de `package.json`):
+Vervolgens kan je Cypress openen met onderstaand commando:
 
 ```bash
-npx cypress open
+yarn cypress open
 ```
 
-Wanneer je Cypress voor de eerste keer opent in een project, dien je een wizard te doorlopen om Cypress te configureren.
+> Tip: je kan hiervoor ook een `test` script maken in de `package.json`:
+>
+> ```json
+> "scripts": {
+>   "test": "cypress open"
+> }
+> ```
+
+Wanneer je Cypress voor de eerste keer opent in een project, dien je een wizard te doorlopen om Cypress te configureren. Sla een eventuele melding van de nieuwtjes in Cypress over.
 
 In de eerste stap dien je te kiezen voor **E2E Testing** (= je runt de applicatie en je bezoekt pagina's om ze te testen) of **Component testing** (= je monteert afzonderlijke componenten en test die afzonderlijk). Kies hier voor `E2E Testing`.
 
@@ -53,7 +61,7 @@ Cypress opent **The Launchpad** in de browser. The Launchpad is het portaal naar
 Dan is het tijd voor onze eerste test. Kies `Create new empty spec`. Behoud de standaard naam voor de spec en klik op `Create spec`. Een dialoogvenster met de gegenereerde spec wordt getoond. De test zal controleren of het surfen naar de [Example app](https://example.cypress.io) werkt.
 
 ```jsx
-describe('empty spec', () => {
+describe('template spec', () => {
   it('passes', () => {
     cy.visit('https://example.cypress.io')
   })
@@ -89,7 +97,7 @@ We willen natuurlijk onze applicatie testen. Een eerste test nuttige kan zijn om
 ```js
 describe("mijn eerste test", () => {
   it("draait de applicatie", () => { // 👈 1
-    cy.visit('http://localhost:3000'); // 👈 2
+    cy.visit('http://localhost:5173'); // 👈 2
   });
 });
 ```
@@ -97,7 +105,7 @@ describe("mijn eerste test", () => {
 1. Geef een betekenisvolle naam aan de test
 2. Bezoek de website
 
-Zorg er wel voor dat de React applicatie draait, anders faalt de test.
+**Zorg er wel voor dat de front-end én backend draaien**, anders faalt de test.
 
 Ga naar de **Test Runner** en voer de test uit:
 
@@ -110,7 +118,7 @@ Nu controleren we ook of er een `h1` element gevonden kan worden:
 ```js
 describe("mijn eerste test", () => {
   it("draait de applicatie", () => {
-    cy.visit('http://localhost:3000');
+    cy.visit('http://localhost:5173');
     cy.get("h1").should("exist"); // 👈
   });
 });
@@ -142,7 +150,6 @@ In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon ch
 Neem volgende stukje HTML als voorbeeld:
 
 ```html
-<!-- eenofandere.html-->
 <button
   id="main"
   class="btn btn-large"
@@ -255,13 +262,13 @@ export default memo(function Transaction({ id, user, amount, place, date, onDele
   }, [id, onDelete]);
 
   return (
-    <tr data-cy="transaction">{/*👈*/}
-      <td data-cy="transaction_date">{/*👈*/}
+    <tr data-cy="transaction">{/* 👈 */}
+      <td data-cy="transaction_date">{/* 👈 */}
         {dateFormat.format(new Date(date))}
       </td>
-      <td data-cy="transaction_user">{user.name}</td>{/*👈*/}
-      <td data-cy="transaction_place">{place.name}</td>{/*👈*/}
-      <td data-cy="transaction_amount">{amountFormat.format(amount)}</td>{/*👈*/}
+      <td data-cy="transaction_user">{user.name}</td>{/* 👈 */}
+      <td data-cy="transaction_place">{place.name}</td>{/* 👈 */}
+      <td data-cy="transaction_amount">{amountFormat.format(amount)}</td>{/* 👈 */}
       <td>
         <div className="btn-group float-end">
           <Link data-cy="transaction_edit_btn" to={`/transactions/edit/${id}`} className="btn btn-light">{/* 👈 */}
@@ -277,28 +284,27 @@ export default memo(function Transaction({ id, user, amount, place, date, onDele
 })
 ```
 
-Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypress/e2e/addtransaction.cy.js` toe.
-
-<!-- TODO: testcode toevoegen aan project -->
-<!-- TODO: describe in dit bestand? -->
+Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypress/e2e/addTransaction.cy.js` toe.
 
 ```js
-it("should add a transaction", () => {
-  cy.visit("http://localhost:3000/transactions/add"); // 👈 1
+describe('Add transaction', () => {
+  it("should add a transaction", () => {
+    cy.visit("http://localhost:5173/transactions/add"); // 👈 1
 
-  cy.get("[data-cy=user_input]").type("Pieter"); // 👈 2
-  cy.get("[data-cy=date_input]").type("2021-11-01"); // 👈 2
-  cy.get("[data-cy=place_input]").select("Irish Pub"); // 👈 2
-  cy.get("[data-cy=amount_input]").type("200"); // 👈 2
-  cy.get("[data-cy=submit_transaction]").click(); // 👈 3
+    cy.get("[data-cy=user_input]").type("2"); // 👈 2
+    cy.get("[data-cy=date_input]").type("2021-11-01"); // 👈 2
+    cy.get("[data-cy=place_input]").select("Irish Pub"); // 👈 2
+    cy.get("[data-cy=amount_input]").type("200"); // 👈 2
+    cy.get("[data-cy=submit_transaction]").click(); // 👈 3
 
-  cy.get("[data-cy=transaction_user]").eq(9).contains("Pieter"); // 👈 4
-  cy.get("[data-cy=transaction_amount]").each((el, idx) => { // 👈 5
-    if (idx === 9) {
-      expect(Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.'))).to.equal(200);
-    }
+    cy.get("[data-cy=transaction_user]").eq(9).contains("Pieter"); // 👈 4
+    cy.get("[data-cy=transaction_amount]").each((el, idx) => { // 👈 5
+      if (idx === 9) {
+        expect(Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.'))).to.equal(200);
+      }
+    });
+    cy.get("[data-cy=transaction]").should("have.length", 10); // 👈 6
   });
-  cy.get("[data-cy=transaction]").should("have.length", 10); // 👈 6
 });
 ```
 
@@ -335,10 +341,15 @@ We moeten ervoor zorgen dat onze testen geen blijvende wijzigingen veroorzaken, 
 Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen (en dan hebben we direct een verwijder test ook).:
 
 ```js
-it("should remove the transaction", () => {
-  cy.visit("http://localhost:3000/transactions/"); // 👈 1
-  cy.get("[data-cy=transaction_remove_btn]").eq(9).click(); // 👈 2
-  cy.get("[data-cy=transaction]").should("have.length", 9); // 👈 3
+describe('Add transaction', () => {
+
+  // ...
+
+  it("should remove the transaction", () => {
+    cy.visit("http://localhost:5173/transactions/"); // 👈 1
+    cy.get("[data-cy=transaction_remove_btn]").eq(9).click(); // 👈 2
+    cy.get("[data-cy=transaction]").should("have.length", 9); // 👈 3
+  });
 });
 ```
 
@@ -358,11 +369,11 @@ Vaak is het echter minstens even interessant (zo niet interessanter) om alle edg
 + Oplossing +
 
   1. Voeg een `data-cy` attribuut aan de tags met foutboodschappen.
-  2. Voeg een nieuwe test toe aan het `addtransaction.cy.js` bestand.
-  3. Ga naar de juiste URL, typ één letter in het veld voor de gebruiker.
+  2. Voeg een nieuwe test toe aan het `addTransaction.cy.js` bestand.
+  3. Ga naar de juiste URL, typ een negatief getal in het veld voor de gebruiker.
   4. Klik op het toevoegen van een transactie.
   5. Controleer of een foutboodschap verschijnt.
-  6. Extra: test zowel niets als één letter invullen en controleer dat in beide gevallen de juiste foutboodschap verschijnt.
+  6. Extra: test zowel niets als een negatief getal invullen en controleer dat in beide gevallen de juiste foutboodschap verschijnt.
 
 Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan je misschien helpen. Bekijk zeker ook de voorbeeldtesten voor inspiratie als je niet verder kan.
 
@@ -377,7 +388,7 @@ Neem de documentatie [Network requests](https://docs.cypress.io/guides/guides/ne
 Laat ons een nieuwe test toevoegen die kijkt of de lijst van transacties wel correct getoond wordt. Maak hiervoor een nieuw bestand `cypress/e2e/transactions.cy.js`.
 
 ```js
-describe("transactions test", () => {
+describe("Transactions list", () => {
   it("should show the transactions", () => {
     // 👇 1
     cy.intercept(
@@ -387,7 +398,7 @@ describe("transactions test", () => {
     );
 
     // 👇 2
-    cy.visit("http://localhost:3000");
+    cy.visit("http://localhost:5173");
     cy.get("[data-cy=transaction]").should("have.length", 1);
     cy.get("[data-cy=transaction_place]").eq(0).contains("Chinese Restaurant");
     cy.get("[data-cy=transaction_date]").eq(0).should("contain", "01/11/2021");
@@ -431,7 +442,7 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 Pas vervolgens de test aan om deze fixture terug te geven i.p.v. de hardgecodeerde string:
 
 ```js
-describe("transactions test", () => {
+describe("Transactions list", () => {
   it("should show the transactions", () => {
     cy.intercept(
       "GET",
@@ -439,7 +450,7 @@ describe("transactions test", () => {
       { fixture: 'transactions.json' } // 👈
     );
 
-    cy.visit("http://localhost:3000");
+    cy.visit("http://localhost:5173");
     cy.get("[data-cy=transaction]").should("have.length", 1);
     cy.get("[data-cy=transaction_place]").eq(0).contains("Chinese Restaurant");
     cy.get("[data-cy=transaction_date]").eq(0).should("contain", "01/11/2021");
@@ -456,19 +467,24 @@ Je kan nog veel meer doen dan simpel antwoorden terugsturen. Neem de documentati
 Als voorbeeld gaan we een request eens sterk vertragen. Dan kunnen we testen of onze loading indicator wel effectief getoond wordt. Voeg deze test toe aan het bestand `cypress/e2e/transactions.cy.js`:
 
 ```js
-it("should show a loading indicator for a very slow response", () => {
- cy.intercept(
-    "http://localhost:9000/api/transactions", // 👈 1
-    (req) => {
-      req.on("response", (res) => {
-        res.setDelay(1000);
-      }); // 👈 2
-    }
-  ).as("slowResponse"); // 👈 5
-  cy.visit("http://localhost:3000"); // 👈 3
-  cy.get("[data-cy=loading]").should("be.visible"); // 👈 4
-  cy.wait("@slowResponse"); // 👈 6
-  cy.get("[data-cy=loading]").should("not.exist"); // 👈 7
+describe("Transactions list", () => {
+
+  // ...
+
+  it("should show a loading indicator for a very slow response", () => {
+  cy.intercept(
+      "http://localhost:9000/api/transactions", // 👈 1
+      (req) => {
+        req.on("response", (res) => {
+          res.setDelay(1000);
+        }); // 👈 2
+      }
+    ).as("slowResponse"); // 👈 5
+    cy.visit("http://localhost:5173"); // 👈 3
+    cy.get("[data-cy=loader]").should("be.visible"); // 👈 4
+    cy.wait("@slowResponse"); // 👈 6
+    cy.get("[data-cy=loader]").should("not.exist"); // 👈 7
+  });
 });
 ```
 
@@ -490,7 +506,7 @@ Als naar 'Ir' gezocht wordt, willen we enkel de transacties van Irish Pub zien.
 
 - Voeg `data-cy` attributen toe waar nodig.
 - Check of er drie transacties in de lijst voorkomen.
-- Check of de 3 transacties 'Ir' bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://www.chaijs.com/api/bdd/#method_match>).
+- Check of de 3 transacties 'Ir' bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://glebbahmutov.com/cypress-examples/recipes/contains-regular-expression.html>).
 
 ### Invoer zonder resultaten
 
@@ -498,17 +514,15 @@ Als er naar 'xyz' gezocht wordt mag er geen enkel element getoond worden. Check 
 
 ### Fouten in de back-end
 
-Als er naar 'Ir' gezocht wordt maar de backend geeft fouten, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
+Als de backend fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
 
 ### Oplossing
 
-<!-- TODO: update commit -->
-
-Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in commit `50e2881`:
+Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in commit `8539c87`:
 
 ```bash
 git clone https://github.com/hogent-web/frontendweb-budget.git
-git checkout -b oplossing-les5 50e2881
+git checkout -b oplossing-les5 8539c87
 yarn install
 yarn dev
 ```
