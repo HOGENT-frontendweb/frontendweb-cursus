@@ -5,30 +5,28 @@
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 d82466f
+> git checkout -b les3 8539c87
 > yarn install
 > yarn dev
 > ```
+>
+> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `feature/auth0`.Plaats in de configuratie voor Auth.disabled op false**
 
 ## API calls voor login
 
-Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we in een bestand `user.js` in de map `src/api`.
+Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we in het bestand `index.js` in de map `src/api`.
 
 ```js
-import axios from 'axios';
+export async function post(url, { arg: { email, password } }) {
+  const {
+    data,
+  } = await axios.post(url, { email, password });
 
-const baseUrl = `${import.meta.env.VITE_API_URL}/users`;
-
-export const login = async (email, password) => {
-  return await axios.post(`${baseUrl}/login`, {
-    email,
-    password,
-  });
-};
+  return data;
+}
 ```
 
-- Importeer opnieuw axios en de configuratie
-- definieer een functie `login` die een gebruiker met een e-mailadres en wachtwoord probeert in te loggen
+- definieer een functie `post` die een gebruiker met een e-mailadres en wachtwoord probeert in te loggen
 - voer het HTTP request uit binnen deze functie en geef het response terug
 
 ## AuthProvider
@@ -39,21 +37,22 @@ We maken gebruik van een context om alles omtrent authenticatie en autorisatie b
 
 ```jsx
 import {
-  createContext, // 👈 2
+  createContext, // 👈 1
   useState, // 👈 4
   useCallback, // 👈 6
   useMemo, // 👈 5
   useContext, // 👈 5
 } from 'react';
 import useSWRMutation from 'swr/mutation'; // 👈 8
+import * as api from '../api';// 👈 8
 
 const JWT_TOKEN_KEY = 'jwtToken'; // 👈 15
 const USER_ID_KEY = 'userId'; // 👈 15
-const AuthContext = createContext(); // 👈 2
+const AuthContext = createContext(); // 👈 1
 
 export const useAuth = () => useContext(AuthContext); // 👈 5
 
-// 👈 1
+// 👈 2
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false); // 👈 4
   const [error, setError] = useState(''); // 👈 4
@@ -62,7 +61,6 @@ export const AuthProvider = ({ children }) => {
 
   const {
     trigger: doLogin,
-    // error: loginError,
   } = useSWRMutation('users/login', api.post); // 👈 8
 
   // 👈 6
@@ -80,8 +78,8 @@ export const AuthProvider = ({ children }) => {
         setToken(token); // 👈 10
         setUser(user); // 👈 10
 
-        localStorage.setItem(JWT_TOKEN_KEY, token); // 👈 16
-        localStorage.setItem(USER_ID_KEY, user.id); // 👈 16
+        localStorage.setItem(JWT_TOKEN_KEY, token); // 👈 14
+        localStorage.setItem(USER_ID_KEY, user.id); // 👈 14
 
         return true; // 👈 10
         // 👈 9
@@ -116,16 +114,16 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
     }),
-    [token, user, error, ready, loading, isAuthed, login, logout]
+    [token, user, error, loading, login, logout]
   ); // 👈 5 en 11 en 13
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>; // 👈 3
 };
 ```
 
-1. Maak een `AuthProvider` aan
-2. Creëer een nieuwe context
-3. en retourneren reeds de kinderen gewrapped in de `Provider`.
+1. Creëer een nieuwe context
+2. Maak een `AuthProvider` aan
+3. en retourneer reeds de kinderen gewrapped in de `Provider`.
 4. Definieer twee state-variabelen om onze JWT en ingelogde gebruiker bij te houden. We voorzien ook een state-variabele voor een fout (bv. wachtwoord verkeerd) en om aan te duiden dat een request bezig is
 5. We zetten deze waarden alvast op de context. Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan deze waarde kunnen. We definiëren eerst een hook om aan onze volledige context-waarde te kunnen, we exporteren deze.
 6. We definiëren een functie waarmee we een gebruiker kunnen inloggen. We wrappen de functie in een `useCallback`
@@ -136,15 +134,16 @@ export const AuthProvider = ({ children }) => {
 11. Voeg ook deze functie toe aan de context
 12. We voorzien ook een functie om een gebruiker terug uit te loggen. Uitloggen is zo eenvoudig als de token verwijderen en de user op null zetten. herinner je: een JWT is stateful, de server stateless. M.a.w. een JWT bevat alle nodige informatie, een server valideert deze. Gooien we de JWT weg, dan kunnen we niet meer aan de beveiligde routes
 13. We zetten ook deze functie op de context
-14. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`
+14. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`, evenals de userId
 15. We voegen de huidige token uit localStorage toe als initiële waarde van onze state-variabele. we houden de localStorage key bij in een globale constante. We willen ook het userId bijhouden in local storage. Hiervoor voorzien we eveneens een globale constante
-16. Hebben we een token, dan slaan we hem op in localStorage, evenals het userId
 
 We wrappen de hele app in de `AuthProvider`.
 
-`src/index.jsx`
+`src/main.jsx`
 
 ```jsx
+import { AuthProvider } from './contexts/Auth.context';
+//..
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
@@ -164,7 +163,7 @@ OPLOSSING: Axios voegt ons token nog niet toe aan elk request.
 
 We passen `index.js` bestand in de `src/api` map. Hierin gaan we een instantie van axios configureren voor gebruik met het `bearer` token.
 
-`src/api/index.js`
+`src/api/index.jsx`
 
 ```jsx
 import axiosRoot from 'axios'; // 👈 1
@@ -217,21 +216,56 @@ useEffect(() => {
 - Deze heeft twee velden: email en password, beide required.
 - Onderaan het formulier staan ook twee knoppen: Sign in en Cancel. Deze knoppen implementeren we straks
 
-OPLOSSING : TODO!!! checkout ........
+Vermits we hier de `LabelInput` component uit de `TransactionForm` kunnen herbruiken plaatsen we dit eerst in een aparte module.
 
-### Sign in
+`src\components\LabelInput.jsx`
 
-Om het aanmelden maken we gebruik van de `useAuth` hook.
+```jsx
+import { useFormContext } from 'react-hook-form';
+
+export default function LabelInput({
+  label, name, type, ...rest
+}) {
+  const {
+    register,
+    formState: {
+      errors,
+      isSubmitting,
+    },
+  } = useFormContext();
+
+  const hasError = name in errors;
+
+  return (
+    <div className="mb-3">
+      <label htmlFor={name} className="form-label">
+        {label}
+      </label>
+      <input
+        {...register(name)}
+        id={name}
+        type={type}
+        disabled={isSubmitting}
+        className="form-control"
+        {...rest}
+      />
+      {hasError ? (
+        <div className="form-text text-danger">
+          {errors[name]}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+```
+
+En voeg dan de `Login` component toe.
 
 `src/pages/Login.jsx`
 
 ```jsx
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';// 👈 3
 import { FormProvider, useForm } from 'react-hook-form';
 import LabelInput from '../components/LabelInput';
-import { useAuth } from '../contexts/Auth.context'; // 👈 2
-import Error from '../components/Error';
 
 const validationRules = {
   email: {
@@ -243,7 +277,80 @@ const validationRules = {
 };
 
 export default function Login() {
-  const { error, loading, login } = useAuth(); // 👈 2, 4 en 5
+
+const methods = useForm();
+
+  return (
+    <FormProvider {...methods}>
+      <div className='container'>
+        <form
+          className='d-flex flex-column'>  
+          <h1>Sign in</h1>
+
+          <LabelInput
+            label='email'
+            type='text'
+            name='email'
+            placeholder='your@email.com'
+            validation={validationRules.email}
+          />
+
+          <LabelInput
+            label='password'
+            type='password'
+            name='password'
+            validation={validationRules.password}
+          />
+
+          <div className='clearfix'>
+            <div className='btn-group float-end'>
+              <button
+                type='submit'
+                className='btn btn-primary'
+              >
+                Sign in
+              </button>
+
+              <button
+                type='button'
+                className='btn btn-light'
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </FormProvider>
+  );
+}
+```
+Maak de url `/login` aan.
+### Sign in
+
+Om aan te melden maken we gebruik van de `useAuth` hook.
+
+`src/pages/Login.jsx`
+
+```jsx
+import { useCallback } from 'react';// 👈 1
+import { useNavigate } from 'react-router-dom';// 👈 3
+import { FormProvider, useForm } from 'react-hook-form';
+import LabelInput from '../components/LabelInput';
+import { useAuth } from '../contexts/Auth.context'; // 👈 2
+import Error from '../components/Error';// 👈 5
+
+const validationRules = {
+  email: {
+    required: true,
+  },
+  password: {
+    required: true,
+  },
+};
+
+export default function Login() {
+  const { error, loading, login} = useAuth(); // 👈 2, 4 en 5 
   const navigate = useNavigate();// 👈 3
 
   const methods = useForm({
@@ -304,16 +411,16 @@ export default function Login() {
               <button
                 type='submit'
                 className='btn btn-primary'
-                disabled={loading}  {/* 👈4 */}
-              >
+                disabled={loading} 
+              >{/* 👈4 */}
                 Sign in
               </button>
 
               <button
                 type='button'
                 className='btn btn-light'
-                onClick={handleCancel}{/* 👈 6*/}
-              >
+                onClick={handleCancel}
+              >{/* 👈 6*/}
                 Cancel
               </button>
             </div>
@@ -424,7 +531,7 @@ export default function PrivateRoute() {
 
 Tot slot maken we gebruik van deze component om onze Routes af te schermen. `Transactions` en `Places` dienen te worden afgeschermd. `ProtectedRoute` wordt de parent component, en in de `Outlet` component worden de children gerendered als de gebruiker is aangemeld.
 
-`src/index.jsx`
+`src/main.jsx`
 
 ```jsx
 //..
@@ -441,11 +548,7 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />,
-      },
-      {
-        path: '/logout',
-        element: <Logout />,
-      },
+      },     
       {
         path: '/transactions',
         element: <PrivateRoute />,
@@ -512,13 +615,13 @@ export default function Navbar() {
             ? (
               <div className="nav-item my-2 mx-sm-3 my-sm-0">
                 <Link className="nav-link" to="/logout">Logout</Link>
-              </div>{/* 👈 4*/}
-            )
+              </div>
+            )// 👈 4
             : (
               <div className="nav-item my-2 mx-sm-3 my-sm-0">
                 <Link className="nav-link" to="/login">Login</Link>
-              </div>{/* 👈 5*/}
-            )
+              </div>
+            )// 👈 5
         }
 
         <button className="btn btn-secondary" type="button" onClick={toggleTheme}>
@@ -534,11 +637,12 @@ export default function Navbar() {
 }
 ```
 
-we moeten nog een paar items aan onze navigatie toevoegen:
+We moeten nog een paar items aan onze navigatie toevoegen:
 
 - login
 - uitloggen
-  Niet alle knopen mogen tegelijk getoond worden, bv. enkel uitloggen als je aangemeld bent.
+
+Niet alle knopen mogen tegelijk getoond worden, bv. enkel uitloggen als je aangemeld bent.
 
 1. we voegen een div toe om deze knoppen rechts uit te lijnen, deze div vult de lege ruimte
 2. we halen op of er een gebruiker ingelogd is
@@ -588,6 +692,32 @@ export default function Logout() {
 1. Ook hier maken we gebruik van een `useEffect` voor het uitloggen.
 2. Als de gebruiker aan het uitloggen is (nog aangemeld is), geven we een loading indicator weer
 3. Als de gebruiker is uitgelogd, geven we een melding weer
+
+Voeg de route naar Logout toe aan `src/main.jsx`
+
+```jsx
+import Logout from './pages/Logout';
+//...
+const router = createBrowserRouter([
+  {
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate replace to="/transactions" />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/logout',
+        element: <Logout />,
+      },//....
+      
+      ]}])
+      //...
+```
 
 ## Oefening
 
