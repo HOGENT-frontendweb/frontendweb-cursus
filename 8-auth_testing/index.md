@@ -14,7 +14,6 @@
 
 Momenteel moet je voor elke pagina in onze budget applicatie aangemeld zijn (behalve de `/login`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze een voor een falen.
 
-
 ## Cypress commands
 
 Neem eerst [Building Cypress Commands](https://learn.cypress.io/advanced-cypress-concepts/building-the-right-cypress-commands) door.
@@ -28,16 +27,16 @@ Maak een nieuw commando aan in het bestand `cypress/support/commands.js`:
 ```js
 // cypress/support/commands.js
 Cypress.Commands.add('login', (email, password) => {
-	cy.visit('http://localhost:5173/login');// 👈 1
-	cy.get('[data-cy=email_input]').clear().type(email);// 👈 2
-	cy.get('[data-cy=password_input]').clear().type(password);// 👈 2
-	cy.get('[data-cy=submit_btn]').click();// 👈 3
+ cy.visit('http://localhost:5173/login');// 👈 1
+ cy.get('[data-cy=email_input]').clear().type(email);// 👈 2
+ cy.get('[data-cy=password_input]').clear().type(password);// 👈 2
+ cy.get('[data-cy=submit_btn]').click();// 👈 3
 });
 ```
 
 1. Als eerste gaat dit commando naar de juiste URL
 2. Vervolgens wordt het e-mailadres en wachtwoord ingevuld. Eerst worden de inputvelden leeggemaakt. Voorzie de nodige `data-cy` attributen in de `login` component
-3. Dan wordt geklikt op de login-knop. 
+3. Dan wordt geklikt op de login-knop.
 Nu zijn we normaal ingelogd.
 
 We kunnen dit commando snel even uittesten door een test toe te voegen aan `spec.cy.js`
@@ -50,10 +49,11 @@ describe("mijn eerste test", () => {
     cy.get("h1").should("exist");
   });
   it("should login", () => {// 👈 1
-		cy.login('thomas.aelbrecht@hogent.be', '12345678');// 👈 2
-	}); 
+  cy.login('thomas.aelbrecht@hogent.be', '12345678');// 👈 2
+ });
 });
 ```
+
 1. Maak een test `should login` aan
 2. Hier gebruiken we het `login` command
 Voer dit testbestand uit. Je zou Cypress moeten zien inloggen.
@@ -84,18 +84,19 @@ describe('...', () => {
   // de testen
 });
 ```
+
 Voer de testen uit: ze falen, waarom?
 Er wordt niet gewacht tot het inloggen voltooid is. We moeten ons login commando aanpassen.
 
 ```jsx
 // cypress/support/commands.js
 Cypress.Commands.add('login', (email, password) => {
-	cy.intercept('/api/users/login').as('login');// 👈 1
-	cy.visit('http://localhost:5173/login');
-	cy.get('[data-cy=email_input]').clear().type(email);
-	cy.get('[data-cy=password_input]').clear().type(password);
-	cy.get('[data-cy=submit_btn]').click();
-	cy.wait('@login');// 👈 2
+ cy.intercept('/api/users/login').as('login');// 👈 1
+ cy.visit('http://localhost:5173/login');
+ cy.get('[data-cy=email_input]').clear().type(email);
+ cy.get('[data-cy=password_input]').clear().type(password);
+ cy.get('[data-cy=submit_btn]').click();
+ cy.wait('@login');// 👈 2
 });
 ```
 
@@ -105,10 +106,10 @@ Cypress.Commands.add('login', (email, password) => {
 Voer de testen opnieuw uit, ze slagen
 
 ## Oefening: add transaction form
+
 - Herhaal hetzelfde voor de testen van het formulier
 - Deze testen falen om verschillende redenen: bv. user veld niet editable...
 - Los alle fouten op en zorg dat de testen slagen
-
 
 ## Oplossing
 

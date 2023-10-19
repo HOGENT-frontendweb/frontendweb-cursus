@@ -284,7 +284,7 @@ const methods = useForm();
     <FormProvider {...methods}>
       <div className='container'>
         <form
-          className='d-flex flex-column'>  
+          className='d-flex flex-column'>
           <h1>Sign in</h1>
 
           <LabelInput
@@ -325,7 +325,9 @@ const methods = useForm();
   );
 }
 ```
+
 Maak de url `/login` aan.
+
 ### Sign in
 
 Om aan te melden maken we gebruik van de `useAuth` hook.
@@ -350,7 +352,7 @@ const validationRules = {
 };
 
 export default function Login() {
-  const { error, loading, login} = useAuth(); // 👈 2, 4 en 5 
+  const { error, loading, login} = useAuth(); // 👈 2, 4 en 5
   const navigate = useNavigate();// 👈 3
 
   const methods = useForm({
@@ -411,7 +413,7 @@ export default function Login() {
               <button
                 type='submit'
                 className='btn btn-primary'
-                disabled={loading} 
+                disabled={loading}
               >{/* 👈4 */}
                 Sign in
               </button>
@@ -548,7 +550,7 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />,
-      },     
+      },
       {
         path: '/transactions',
         element: <PrivateRoute />,
@@ -714,7 +716,7 @@ const router = createBrowserRouter([
         path: '/logout',
         element: <Logout />,
       },//....
-      
+
       ]}])
       //...
 ```
