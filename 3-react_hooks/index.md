@@ -428,6 +428,7 @@ yarn remove eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-r
 
   ```bash
   git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  cd frontend-ch3-exercise-solution
   git checkout -b oplossing 4db7f21
   yarn install
   yarn dev
@@ -1115,6 +1116,7 @@ Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan 
 
   ```bash
   git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  cd frontend-ch3-exercise-solution
   git checkout -b oplossing 9181134
   yarn install
   yarn dev

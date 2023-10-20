@@ -42,7 +42,7 @@ def fetch_commits_from_file(filepath):
     with open(filepath, "r") as f:
         content = f.read()
         # find git clone and git checkout commands
-        return re.findall(r">?\s?git clone (.*)\s+>?\s?git checkout -b .* ([a-z0-9]{7})", content)
+        return re.findall(r">?\s?git clone (.*)\s+>?\s?cd .*\s+?>?\s?git checkout -b .* ([a-z0-9]{7})", content)
 
 """
 Construct a commit URL from the given URL and commit.
@@ -69,6 +69,7 @@ Returns:
     bool: True if the commit exists, False otherwise.
 """
 def commit_exists(url, commit):
+    print(f"\t{url} - {commit}")
     url = construct_commit_url(url, commit)
     response = requests.get(url)
     return response.status_code == 200
@@ -78,9 +79,15 @@ if __name__ == "__main__":
     directory = os.environ.get("GITHUB_WORKSPACE")
     markdown_files = list_markdown_files(directory)
 
+    print('Found markdown files:')
+    for file in markdown_files:
+        print(f"\t{file}")
+    print()
+
     should_fail = False
 
     for file in markdown_files:
+        print(file)
         not_existing_commits = []
 
         commits = fetch_commits_from_file(file)
@@ -91,9 +98,7 @@ if __name__ == "__main__":
                 not_existing_commits.append([url, commit])
 
         if (len(not_existing_commits) == 0):
-            continue
-
-        print(file)
+            print("\tNo broken GitHub commit references found.")
 
         for [url, commit] in not_existing_commits:
             print(f"\tCommit {commit} does not exist in {url}")
@@ -101,6 +106,6 @@ if __name__ == "__main__":
         print("")
 
     if not should_fail:
-        print("No broken GitHub commit references found.")
+        print("\t=> No broken GitHub commit references found.")
 
     sys.exit(should_fail and 1 or 0)

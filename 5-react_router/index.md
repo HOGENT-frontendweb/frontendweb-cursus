@@ -815,6 +815,7 @@ Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendwe
 
 ```bash
 git clone https://github.com/hogent-web/frontendweb-budget.git
+cd frontendweb-budget
 git checkout -b oplossing-les5 50e2881
 yarn install
 yarn dev

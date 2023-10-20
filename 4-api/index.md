@@ -1270,6 +1270,7 @@ Doe hetzelfde voor `PlacesSelect`, disable dit veld tijdens het verzenden van he
 
   ```bash
   git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+  cd frontendweb-budget
   git checkout -b oplossing 1daa903
   yarn install
   yarn dev

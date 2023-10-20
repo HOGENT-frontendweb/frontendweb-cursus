@@ -522,6 +522,7 @@ Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendwe
 
 ```bash
 git clone https://github.com/hogent-web/frontendweb-budget.git
+cd frontendweb-budget
 git checkout -b oplossing-les5 8539c87
 yarn install
 yarn dev
