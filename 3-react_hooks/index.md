@@ -699,7 +699,7 @@ export const ThemeProvider = ({
     const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
     setTheme(newThemeValue);
     sessionStorage.setItem('themeMode', newThemeValue);
-  }, [theme, setTheme]);
+  }, [theme]);
 
   const value = useMemo (()=> ({ theme, toggleTheme}), [theme, toggleTheme]); // 👈 4
 
@@ -746,7 +746,7 @@ export const ThemeProvider = ({
     const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
     setTheme(newThemeValue);
     sessionStorage.setItem('themeMode', newThemeValue);
-  }, [theme, setTheme]);
+  }, [theme]);
 
   const oppositeTheme = useMemo(() => theme === themes.dark ? themes.light : themes.dark, [theme]); // 👈 1
 
