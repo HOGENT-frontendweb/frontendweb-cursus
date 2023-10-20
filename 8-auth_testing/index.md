@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8 50b4dad
+> git checkout -b les8 TODO:
 > yarn install
 > yarn start
 > ```
@@ -113,5 +113,6 @@ Voer de testen opnieuw uit, ze slagen
 
 ## Oplossing
 
-TODO
+<!-- TODO: oplossing toevoegen -->
+
 Zoals altijd vind je een werkend voorbeeld in de [budget applicatie](https://github.com/HOGENT-Web/frontendweb-budget). Dit keer staat dit op de branch `feature/auth0`, je zal een gelijknamige branch vinden in de [backend](https://github.com/HOGENT-Web/webservices-budget). Zo kan je kiezen om wel of niet met authenticatie te werken.
