@@ -164,7 +164,7 @@ Vervolgens gaan we een instantie van axios configureren voor het gebruik van een
 ```jsx
 import axiosRoot from 'axios'; // 👈 1
 
-const baseUrl = 'http://localhost:9000/api';
+const baseUrl = import.meta.env.VITE_API_URL;
 
 // 👇 2
 export const axios = axiosRoot.create({
