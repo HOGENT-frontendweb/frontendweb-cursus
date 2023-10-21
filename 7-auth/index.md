@@ -1,5 +1,7 @@
 # Authenticatie en autorisatie
 
+<!-- TODO: branch back-end? -->
+
 > **Startpunt voorbeeldapplicatie**
 >
 > Het volstaat om uit te checken op de `main` branch
@@ -704,7 +706,7 @@ const router = createBrowserRouter([
         element: <Logout />,
       },
       // ...
-      ]
+    ]
   }
   // ...
 ]);
