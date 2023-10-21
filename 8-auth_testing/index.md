@@ -1,13 +1,11 @@
 # E2E testen met authenticatie
 
-<!-- TODO: startpunt invullen (commit op branch authenticatie) -->
-
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8 TODO:
+> git checkout -b les8 d90ece0
 > yarn install
 > yarn start
 > ```

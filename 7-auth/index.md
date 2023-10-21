@@ -1,7 +1,5 @@
 # Authenticatie en autorisatie
 
-<!-- TODO: branch back-end? -->
-
 > **Startpunt voorbeeldapplicatie**
 >
 > Het volstaat om uit te checken op de `main` branch
@@ -14,20 +12,20 @@
 > yarn dev
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `main`. Na toevoegen van het login-formulier, mag je switchen naar de branch `authenticatie`.**
+> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
 
 ## API calls voor login
 
 Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we in het bestand `index.js` in de map `src/api`. Definieer hierin een functie `post` die alle gegeven data als body verzendt naar de gegeven URL. Voer het HTTP request uit binnen deze functie en geef het response terug.
 
 ```js
-export async function post(url, { arg: data }) {
+export const post = async (url, { arg }) => {
   const {
     data,
-  } = await axios.post(url, data);
+  } = await axios.post(url, arg);
 
   return data;
-}
+};
 ```
 
 ## AuthProvider
@@ -59,7 +57,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // 👈 4
 
   const {
-    isLoading: loading,
+    isMutating: loading,
     error,
     trigger: doLogin,
   } = useSWRMutation('users/login', api.post); // 👈 8
@@ -112,7 +110,12 @@ export const AuthProvider = ({ children }) => {
     [token, user, error, loading, login, logout]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>; // 👈 3
+  // 👇 3
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 ```
 
@@ -122,7 +125,7 @@ export const AuthProvider = ({ children }) => {
 4. Definieer twee state-variabelen om onze JWT en ingelogde gebruiker bij te houden.
 5. We zetten deze waarden alvast op de context. Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan deze waarde kunnen. We definiëren eerst een hook om aan onze volledige context-waarde te kunnen, we exporteren deze.
 6. We definiëren een functie waarmee we een gebruiker kunnen aanmelden. We wrappen de functie in een `useCallback`.
-7. Roep de API aan om een gebruiker aan te melden. We maken hiervoor gebruik van de `useSWRMutation` hook. Deze hook handelt automatisch de loading en error state voor ons af.
+7. Roep de API aan om een gebruiker aan te melden. We maken hiervoor gebruik van de `useSWRMutation` hook. Deze hook handelt automatisch de loading (via `isMutating`) en error state voor ons af.
 8. Als alles goed ging, houden we de JWT en user bij.
 9. Voeg ook deze functie toe aan de context.
 10. We retourneren ook `true` zodat we kunnen weten of het aanmelden gelukt is. Indien iets fout ging, retourneren we `false`.
@@ -147,14 +150,11 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
-<!-- TODO: krijgen we effectief een HTTP 500? -->
-
-Als we de app opstarten, krijgen we een `HTTP 500` want de server verwacht een token voor o.a. `GET /api/transactions`. Wat is de oorzaak van dit probleem?
+Als we de app opstarten, krijgen we een `HTTP 401` want de server verwacht een token voor o.a. `GET /api/transactions`. Wat is de oorzaak van dit probleem?
 
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  <!-- TODO: Oplossing degelijker schrijven -->
   Axios voegt ons token nog niet toe aan elk request.
 
 ### Axios configuratie
@@ -164,7 +164,7 @@ Vervolgens gaan we een instantie van axios configureren voor het gebruik van een
 ```jsx
 import axiosRoot from 'axios'; // 👈 1
 
-const baseUrl = import.meta.env.VITE_API_URL;
+const baseUrl = 'http://localhost:9000/api';
 
 // 👇 2
 export const axios = axiosRoot.create({
@@ -219,7 +219,7 @@ Vermits we hier de `LabelInput` component uit de `TransactionForm` kunnen hergeb
 import { useFormContext } from 'react-hook-form';
 
 export default function LabelInput({
-  label, name, type, ...rest
+  label, name, type, validationRules, ...rest
 }) {
   const {
     register,
@@ -237,7 +237,7 @@ export default function LabelInput({
         {label}
       </label>
       <input
-        {...register(name)}
+        {...register(name, validationRules)}
         id={name}
         type={type}
         disabled={isSubmitting}
@@ -262,16 +262,16 @@ import LabelInput from '../components/LabelInput';
 
 const validationRules = {
   email: {
-    required: true,
+    required: 'Email is required',
   },
   password: {
-    required: true,
+    required: 'Password is required',
   },
 };
 
 export default function Login() {
 
-const methods = useForm();
+  const methods = useForm();
 
   return (
     <FormProvider {...methods}>
@@ -285,14 +285,14 @@ const methods = useForm();
             type='text'
             name='email'
             placeholder='your@email.com'
-            validation={validationRules.email}
+            validationRules={validationRules.email}
           />
 
           <LabelInput
             label='password'
             type='password'
             name='password'
-            validation={validationRules.password}
+            validationRules={validationRules.password}
           />
 
           <div className='clearfix'>
@@ -331,25 +331,25 @@ Zorg ervoor dat deze component getoond wordt op de URL `/login`. Voeg deze route
 Om aan te melden maken we gebruik van onze `useAuth` hook. Pas `src/pages/Login.jsx` als volgt aan:
 
 ```jsx
-import { useCallback } from 'react';// 👈 1
-import { useNavigate } from 'react-router-dom';// 👈 3
+import { useCallback } from 'react'; // 👈 1
+import { useNavigate } from 'react-router-dom'; // 👈 3
 import { FormProvider, useForm } from 'react-hook-form';
 import LabelInput from '../components/LabelInput';
 import { useAuth } from '../contexts/Auth.context'; // 👈 2
-import Error from '../components/Error';// 👈 5
+import Error from '../components/Error'; // 👈 5
 
 const validationRules = {
   email: {
-    required: true,
+    required: 'Email is required',
   },
   password: {
-    required: true,
+    required: 'Password is required',
   },
 };
 
 export default function Login() {
   const { error, loading, login } = useAuth(); // 👈 2, 4 en 5
-  const navigate = useNavigate();// 👈 3
+  const navigate = useNavigate(); // 👈 3
 
   // 👇 7
   const methods = useForm({
@@ -396,14 +396,14 @@ export default function Login() {
             type='text'
             name='email'
             placeholder='your@email.com'
-            validation={validationRules.email}
+            validationRules={validationRules.email}
           />
 
           <LabelInput
             label='password'
             type='password'
             name='password'
-            validation={validationRules.password}
+            validationRules={validationRules.password}
           />
 
           <div className='clearfix'>
@@ -440,6 +440,8 @@ export default function Login() {
 6. We koppelen ook een click handler aan de cancel-knop.
 7. We voorzien alle standaardwaarden, dan moeten we niet steeds de gegevens ingeven bij het aanmelden. In een echte applicatie zou dit niet mogen, maar als we aan het ontwikkelen zijn, is dit wel handig.
 
+Je kan testen of de component werkt door eens te navigeren naar `/login`. Na het aanmelden zou je alle transacties in de lijst moeten kunnen zien.
+
 ## Routes afschermen
 
 Als laatste moeten we nog routes kunnen afschermen voor ingelogde gebruikers. Hiervoor definiëren we zelf een component `PrivateRoute`:
@@ -464,6 +466,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
   // ...
 
+  // 👇
   const value = useMemo(
     () => ({
       token,
@@ -476,7 +479,7 @@ export const AuthProvider = ({ children }) => {
       logout,
     }),
     [token, user, error, ready, loading, isAuthed, login, logout]
-  ); // 👆
+  );
 
   // ...
 };
@@ -605,7 +608,6 @@ export default function Navbar() {
         </div>
         <div className="flex-grow-1"></div>{/* 👈 1*/}
 
-        {/* */}
         {// 👇 3
           isAuthed
             ? (// 👇 4
@@ -644,8 +646,10 @@ We dienen nog een `Logout` component aan te maken. Maak een nieuw bestand `src/p
 ```jsx
 import { useEffect } from 'react'; // 👈 1
 import { useAuth } from '../contexts/Auth.context'; // 👈 1
+import { useThemeColors } from '../contexts/Theme.context';
 
 export default function Logout() {
+  const { theme, oppositeTheme } = useThemeColors();
   const { isAuthed, logout } = useAuth(); // 👈 1
 
   // 👇 1
@@ -656,7 +660,7 @@ export default function Logout() {
   // 👇 2
   if (isAuthed) {
     return (
-      <div className='container'>
+      <div className={`container bg-${theme} text-${oppositeTheme}`}>
         <div className='row'>
           <div className='col-12'>
             <h1>Logging out...</h1>
@@ -668,7 +672,7 @@ export default function Logout() {
 
   // 👇 3
   return (
-    <div className='container'>
+    <div className={`container bg-${theme} text-${oppositeTheme}`}>
       <div className='row'>
         <div className='col-12'>
           <h1>You were successfully logged out</h1>
@@ -730,14 +734,12 @@ Maak een `Register` component op de URL `/register`.
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  <!-- TODO: oplossing toevoegen -->
-
-  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie` op commit `TODO:`:
+  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie` op commit `d90ece0`:
 
   ```bash
   git clone https://github.com/hogent-web/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b oplossing-les7 TODO:
+  git checkout -b oplossing-les7 d90ece0
   yarn install
   yarn dev
   ```
