@@ -2,38 +2,37 @@
 
 > **Startpunt voorbeeldapplicatie**
 >
+> Het volstaat om uit te checken op de `main` branch
+>
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 8539c87
+> git checkout -b les7
 > yarn install
 > yarn dev
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `feature/auth0`.Plaats in de configuratie voor Auth.disabled op false**
+> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `main`. Na toevoegen van het login-formulier, mag je switchen naar de branch `authenticatie`.**
 
 ## API calls voor login
 
-Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we in het bestand `index.js` in de map `src/api`.
+Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we in het bestand `index.js` in de map `src/api`. Definieer hierin een functie `post` die alle gegeven data als body verzendt naar de gegeven URL. Voer het HTTP request uit binnen deze functie en geef het response terug.
 
 ```js
-export async function post(url, { arg: { email, password } }) {
+export async function post(url, { arg: data }) {
   const {
     data,
-  } = await axios.post(url, { email, password });
+  } = await axios.post(url, data);
 
   return data;
 }
 ```
 
-- definieer een functie `post` die een gebruiker met een e-mailadres en wachtwoord probeert in te loggen
-- voer het HTTP request uit binnen deze functie en geef het response terug
-
 ## AuthProvider
 
-We maken gebruik van een context om alles omtrent authenticatie en autorisatie bij te houden.
+### Context opstellen
 
-`src/contexts/Auth.context.jsx`
+We maken gebruik van een context om alles omtrent authenticatie en autorisatie bij te houden. Maak een bestand `src/contexts/Auth.context.jsx` aan met volgende inhoud:
 
 ```jsx
 import {
@@ -44,59 +43,52 @@ import {
   useContext, // 👈 5
 } from 'react';
 import useSWRMutation from 'swr/mutation'; // 👈 8
-import * as api from '../api';// 👈 8
+import * as api from '../api'; // 👈 8
 
-const JWT_TOKEN_KEY = 'jwtToken'; // 👈 15
-const USER_ID_KEY = 'userId'; // 👈 15
+const JWT_TOKEN_KEY = 'jwtToken'; // 👈 13
+const USER_ID_KEY = 'userId'; // 👈 13
 const AuthContext = createContext(); // 👈 1
 
 export const useAuth = () => useContext(AuthContext); // 👈 5
 
-// 👈 2
+// 👇 2
 export const AuthProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false); // 👈 4
-  const [error, setError] = useState(''); // 👈 4
-  const [token, setToken] = useState(localStorage.getItem(JWT_TOKEN_KEY)); // 👈 4 en 15
+  const [token, setToken] = useState(localStorage.getItem(JWT_TOKEN_KEY)); // 👈 4 en 13
   const [user, setUser] = useState(null); // 👈 4
 
   const {
+    isLoading: loading,
+    error,
     trigger: doLogin,
   } = useSWRMutation('users/login', api.post); // 👈 8
 
-  // 👈 6
+  // 👇 6
   const login = useCallback(
     async (email, password) => {
       try {
-        setLoading(true); // 👈 7
-        setError(''); // 👈 7
-
+        // 👇 7
         const { token, user } = await doLogin({
           email,
           password,
-        }); // 👈 8
+        });
 
-        setToken(token); // 👈 10
-        setUser(user); // 👈 10
+        setToken(token); // 👈 8
+        setUser(user); // 👈 8
 
-        localStorage.setItem(JWT_TOKEN_KEY, token); // 👈 14
-        localStorage.setItem(USER_ID_KEY, user.id); // 👈 14
+        localStorage.setItem(JWT_TOKEN_KEY, token); // 👈 13
+        localStorage.setItem(USER_ID_KEY, user.id); // 👈 13
 
         return true; // 👈 10
-        // 👈 9
+        // 👇 10
       } catch (error) {
         console.error(error);
-        setError(error.response?.data?.message || 'Login failed, try again');
-
         return false;
-        // 👈 9
-      } finally {
-        setLoading(false);
       }
     },
     [doLogin]
   );
 
-  // 👈 12
+  // 👇 11
   const logout = useCallback(() => {
     setToken(null);
     setUser(null);
@@ -105,6 +97,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(USER_ID_KEY);
   }, []);
 
+  // 👇 5 en 9 en 12
   const value = useMemo(
     () => ({
       token,
@@ -115,35 +108,32 @@ export const AuthProvider = ({ children }) => {
       logout,
     }),
     [token, user, error, loading, login, logout]
-  ); // 👈 5 en 11 en 13
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>; // 👈 3
 };
 ```
 
-1. Creëer een nieuwe context
-2. Maak een `AuthProvider` aan
-3. en retourneer reeds de kinderen gewrapped in de `Provider`.
-4. Definieer twee state-variabelen om onze JWT en ingelogde gebruiker bij te houden. We voorzien ook een state-variabele voor een fout (bv. wachtwoord verkeerd) en om aan te duiden dat een request bezig is
+1. Creëer een nieuwe context.
+2. Maak een `AuthProvider` aan.
+3. Retourneer reeds de kinderen gewrapped in de `AuthContext.Provider`.
+4. Definieer twee state-variabelen om onze JWT en ingelogde gebruiker bij te houden.
 5. We zetten deze waarden alvast op de context. Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan deze waarde kunnen. We definiëren eerst een hook om aan onze volledige context-waarde te kunnen, we exporteren deze.
-6. We definiëren een functie waarmee we een gebruiker kunnen inloggen. We wrappen de functie in een `useCallback`
-7. We initialiseren eerst de error (initieel "") en de loading (op true)
-8. Roep de API aan om een gebruiker aan te melden. We maken hiervoor gebruik van de useSWRMutation hook
-9. Indien er iets fout ging, houden we de fout bij. De loading state wordt terug op false geplaatst
-10. Als alles goed ging, houden we de JWT en user bij
-11. Voeg ook deze functie toe aan de context
-12. We voorzien ook een functie om een gebruiker terug uit te loggen. Uitloggen is zo eenvoudig als de token verwijderen en de user op null zetten. herinner je: een JWT is stateful, de server stateless. M.a.w. een JWT bevat alle nodige informatie, een server valideert deze. Gooien we de JWT weg, dan kunnen we niet meer aan de beveiligde routes
-13. We zetten ook deze functie op de context
-14. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`, evenals de userId
-15. We voegen de huidige token uit localStorage toe als initiële waarde van onze state-variabele. we houden de localStorage key bij in een globale constante. We willen ook het userId bijhouden in local storage. Hiervoor voorzien we eveneens een globale constante
+6. We definiëren een functie waarmee we een gebruiker kunnen aanmelden. We wrappen de functie in een `useCallback`.
+7. Roep de API aan om een gebruiker aan te melden. We maken hiervoor gebruik van de `useSWRMutation` hook. Deze hook handelt automatisch de loading en error state voor ons af.
+8. Als alles goed ging, houden we de JWT en user bij.
+9. Voeg ook deze functie toe aan de context.
+10. We retourneren ook `true` zodat we kunnen weten of het aanmelden gelukt is. Indien iets fout ging, retourneren we `false`.
+11. We voorzien ook een functie om een gebruiker terug uit te loggen. Uitloggen is zo eenvoudig als de token verwijderen en de user op null zetten. Herinner je: een JWT is stateful, de server stateless. M.a.w. een JWT bevat alle nodige informatie, een server valideert deze. Gooien we de JWT weg, dan kunnen we niet meer aan de beveiligde routes.
+12. We zetten ook deze functie op de context.
+13. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`, evenals de userId. We voegen de huidige token uit localStorage toe als initiële waarde van onze state-variabele. We houden de localStorage key bij in een globale constante.
 
-We wrappen de hele app in de `AuthProvider`.
-
-`src/main.jsx`
+We wrappen de hele app in de `AuthProvider` (in `src/main.jsx`):
 
 ```jsx
 import { AuthProvider } from './contexts/Auth.context';
-//..
+
+// ...
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
@@ -155,26 +145,31 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
+<!-- TODO: krijgen we effectief een HTTP 500? -->
+
 Als we de app opstarten, krijgen we een `HTTP 500` want de server verwacht een token voor o.a. `GET /api/transactions`. Wat is de oorzaak van dit probleem?
 
-OPLOSSING: Axios voegt ons token nog niet toe aan elk request.
+<!-- markdownlint-disable-next-line -->
++ Oplossing +
 
-## AuthProvider: axios configuratie
+  <!-- TODO: Oplossing degelijker schrijven -->
+  Axios voegt ons token nog niet toe aan elk request.
 
-We passen `index.js` bestand in de `src/api` map. Hierin gaan we een instantie van axios configureren voor gebruik met het `bearer` token.
+### Axios configuratie
 
-`src/api/index.jsx`
+Vervolgens gaan we een instantie van axios configureren voor het gebruik van een Bearer token. We passen hiervoor `src/api/index.js` aan:
 
 ```jsx
 import axiosRoot from 'axios'; // 👈 1
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
+// 👇 2
 export const axios = axiosRoot.create({
   baseURL: baseUrl,
-}); // 👈 2
+});
 
-// 👈 3
+// 👇 3
 export const setAuthToken = (token) => {
   if (token) {
     axios.defaults.headers['Authorization'] = `Bearer ${token}`; // 👈 4
@@ -183,14 +178,14 @@ export const setAuthToken = (token) => {
   }
 };
 
-//..
+// ...
 ```
 
-1. We hernoemen de import van axios naar `axiosRoot` omdat we zelf een constante genaamd `axios` gaan maken en dat zorgt voor een duplicate variabele
-2. We creëren een nieuwe instantie van axios met een gegeven baseUrl. Elke request zal deze baseUrl voor de URL plaatsen. Zo hoeven we dit niet handmatig te doen.
-3. We definiëren ook een functie om een JWT in de axios-instantie te plaatsen
-4. Als we een token gekregen hebben, en dus niet null, undefined of een lege string, dan plaatsen we deze in de `Authorization` header met de prefix `Bearer`
-5. Indien we geen token kregen, verwijderen we de `Authorization` header. Het maakt niet uit of hij al dan niet aanwezig was
+1. We hernoemen de import van axios naar `axiosRoot` omdat we zelf een constante genaamd `axios` gaan maken en dat zorgt voor een duplicate variabele.
+2. We creëren een nieuwe instantie van axios met een gegeven `baseUrl`. Elke request zal deze `baseUrl` voor de URL plaatsen. Zo hoeven we dit niet handmatig te doen.
+3. We definiëren ook een functie om een JWT in de axios-instantie te plaatsen.
+4. Als we een token gekregen hebben, en dus niet `null`, `undefined` of een lege string, dan plaatsen we deze in de `Authorization` header met de prefix `Bearer`.
+5. Indien we geen token kregen, verwijderen we de `Authorization` header. Het maakt niet uit of hij al dan niet aanwezig was.
 
 Nu moeten we er nog voor zorgen dat het token toegevoegd wordt aan de `Authorization` header. Dit doen we terug in de `AuthProvider`. Vermits dit pas kan gebeuren als we het token verkregen hebben, maken we hiervoor gebruik van een `useEffect`.
 
@@ -199,26 +194,24 @@ import {
   createContext,
   useState,
   useCallback,
-  useEffect,
+  useEffect, // 👈
   useMemo,
   useContext,
 } from 'react';
-// ..
+
+// ...
+// 👇 voeg toe aan de AuthProvider, na de state variabelen
 useEffect(() => {
   api.setAuthToken(token);
 }, [token]);
-//..
+// ...
 ```
 
 ## Login component
 
-- Maak een Login component op de url /login.
-- Deze heeft twee velden: email en password, beide required.
-- Onderaan het formulier staan ook twee knoppen: Sign in en Cancel. Deze knoppen implementeren we straks
+Om te kunnen aanmelden hebben we een `Login` component op de URL `/login` nodig. Deze component bevat een formulier met twee velden: `email` en `password`, beide zijn verplicht. Onderaan het formulier staan ook twee knoppen: "Sign in" en "Cancel". Deze knoppen implementeren we straks.
 
-Vermits we hier de `LabelInput` component uit de `TransactionForm` kunnen herbruiken plaatsen we dit eerst in een aparte module.
-
-`src\components\LabelInput.jsx`
+Vermits we hier de `LabelInput` component uit de `TransactionForm` kunnen hergebruiken, plaatsen we deze eerst in een aparte module `src\components\LabelInput.jsx`:
 
 ```jsx
 import { useFormContext } from 'react-hook-form';
@@ -259,9 +252,7 @@ export default function LabelInput({
 }
 ```
 
-En voeg dan de `Login` component toe.
-
-`src/pages/Login.jsx`
+Daarna voegen we de `Login` component toe in `src/pages/Login.jsx`:
 
 ```jsx
 import { FormProvider, useForm } from 'react-hook-form';
@@ -326,13 +317,16 @@ const methods = useForm();
 }
 ```
 
-Maak de url `/login` aan.
+Zorg ervoor dat deze component getoond wordt op de URL `/login`. Voeg deze route toe aan de router in `src/main.jsx`:
 
-### Sign in
+```jsx
+{
+  path: '/login',
+  element: <Login />,
+}
+```
 
-Om aan te melden maken we gebruik van de `useAuth` hook.
-
-`src/pages/Login.jsx`
+Om aan te melden maken we gebruik van onze `useAuth` hook. Pas `src/pages/Login.jsx` als volgt aan:
 
 ```jsx
 import { useCallback } from 'react';// 👈 1
@@ -352,25 +346,27 @@ const validationRules = {
 };
 
 export default function Login() {
-  const { error, loading, login} = useAuth(); // 👈 2, 4 en 5
+  const { error, loading, login } = useAuth(); // 👈 2, 4 en 5
   const navigate = useNavigate();// 👈 3
 
+  // 👇 7
   const methods = useForm({
     defaultValues: {
       email: 'thomas.aelbrecht@hogent.be',
       password: '12345678',
-    },// 👈 7
+    },
   });
-  const { handleSubmit, reset } = methods;// 👈 1 en 6
+  const { handleSubmit, reset } = methods; // 👈 1 en 6
 
+  // 👇 6
   const handleCancel = useCallback(() => {
     reset();
-  }, [reset]);// 👈 6
+  }, [reset]);
 
-// 👈 1
+  // 👇 1
   const handleLogin = useCallback(
     async ({ email, password }) => {
-      const loggedIn = await login(email, password);// 👈 2
+      const loggedIn = await login(email, password); // 👈 2
 
       if (loggedIn) {
         navigate({
@@ -388,7 +384,7 @@ export default function Login() {
         <form
           className='d-flex flex-column'
           onSubmit={handleSubmit(handleLogin)}
-        >  {/* 👈 1 */}
+        >  {/* 👆 1 */}
           <h1>Sign in</h1>
 
           <Error error={error} /> {/* 👈 5 */}
@@ -414,7 +410,7 @@ export default function Login() {
                 type='submit'
                 className='btn btn-primary'
                 disabled={loading}
-              >{/* 👈4 */}
+              >{/* 👆 4 */}
                 Sign in
               </button>
 
@@ -422,7 +418,7 @@ export default function Login() {
                 type='button'
                 className='btn btn-light'
                 onClick={handleCancel}
-              >{/* 👈 6*/}
+              >{/* 👆 6*/}
                 Cancel
               </button>
             </div>
@@ -434,40 +430,37 @@ export default function Login() {
 }
 ```
 
-1. We maken vervolgens onze functie `handleLogin` die opgeroepen zal worden als het formulier gesubmit wordt
-   en stellen de `onSubmit` van het formulier in.
-2. We proberen in te loggen
-3. Als het succesvol was, dan keren we terug naar de home. We gebruiken `navigate` aangezien we niet terug naar deze component mogen gaan
-4. we disablen de submit-knop indien ons login-request bezig is
-5. Ook tonen we een mogelijke error
-6. We handelen ook de Cancel knop af
-7. We voorzien al default waarden, dan moeten we niet steeds de gegevens ingeven bij het aanmelden
+1. We maken vervolgens onze functie `handleLogin` die opgeroepen zal worden als het formulier gesubmit wordt en stellen de `onSubmit` van het formulier in.
+2. We proberen in te loggen.
+3. Als het succesvol was, dan keren we terug naar de home. We gebruiken `navigate` met de `replace` optie aangezien we niet terug naar deze component mogen gaan.
+4. We schakelen de submit-knop uit indien ons login-request bezig is.
+5. Ook tonen we een mogelijke error.
+6. We koppelen ook een click handler aan de cancel-knop.
+7. We voorzien alle standaardwaarden, dan moeten we niet steeds de gegevens ingeven bij het aanmelden. In een echte applicatie zou dit niet mogen, maar als we aan het ontwikkelen zijn, is dit wel handig.
 
 ## Routes afschermen
 
-Als laatste moeten we nog routes kunnen afschermen voor ingelogde gebruikers. Hiervoor definiëren we zelf een component `PrivateRoute`.
+Als laatste moeten we nog routes kunnen afschermen voor ingelogde gebruikers. Hiervoor definiëren we zelf een component `PrivateRoute`:
 
-- als we de credentials aan het ophalen zijn, dan toont dit een loading indicator
-- als we aangemeld zijn, dan retourneren we een Outlet voor de weergave van de child routes
-- en anders navigeren we naar de login pagina
+- Als we de credentials aan het ophalen zijn, dan toont dit een loading indicator.
+- Als we aangemeld zijn, dan retourneren we een `Outlet` voor de weergave van de child routes.
+- Anders navigeren we naar de login pagina.
 
 Hiervoor dienen we de `AuthProvider` eerst aan te passen. We moeten weten wanneer we de credentials aan het ophalen zijn en of we zijn aangemeld. Hiervoor voegen we 2 state variabelen toe, respectievelijk `ready` en `isAuthed`, die worden ingesteld als het token is opgehaald. We plaatsen deze variabelen ook in de context.
 
-`Auth.context.jsx`
-
 ```jsx
-//..
+// ...
 export const AuthProvider = ({ children }) => {
   const [ready, setReady] = useState(false); // 👈
   const [isAuthed, setIsAuthed] = useState(false); // 👈
-  //..
+  // ...
 
   useEffect(() => {
     api.setAuthToken(token);
     setIsAuthed(Boolean(token)); // 👈
     setReady(true); // 👈
   }, [token]);
-  //..
+  // ...
 
   const value = useMemo(
     () => ({
@@ -481,27 +474,26 @@ export const AuthProvider = ({ children }) => {
       logout,
     }),
     [token, user, error, ready, loading, isAuthed, login, logout]
-  ); // 👈
+  ); // 👆
 
-  //..
+  // ...
 };
 ```
 
-Nu kunnen we de `PrivateRoute` component aanmaken.
-
-`src/components/PrivateRoute.jsx`
+Nu kunnen we de `PrivateRoute` component aanmaken. Maak een bestand `src/components/PrivateRoute.jsx` aan met volgende inhoud:
 
 ```jsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom'; // 👈 3 en 4
 import { useAuth } from '../contexts/Auth.context'; // 👈 2
 
-// 👈 1
+// 👇 1
 export default function PrivateRoute() {
   const { ready, isAuthed } = useAuth(); // 👈 2
   const { pathname } = useLocation(); // 👈 4
 
   const loginPath = `/login?redirect=${pathname}`; // 👈 4
 
+  // 👇 2
   if (!ready) {
     return (
       <div className='container'>
@@ -516,27 +508,26 @@ export default function PrivateRoute() {
         </div>
       </div>
     );
-  } // 👈 2
+  }
 
+  // 👇 3
   if (isAuthed) {
     return <Outlet />;
-  } // 👈 3
+  }
 
   return <Navigate replace to={loginPath} />; // 👈 4
 }
 ```
 
 1. We definiëren een `PrivateRoute` component.
-2. Als we de credentials aan het controleren zijn, tonen we de loading indicator
-3. Als de gebruiker ingelogd is, dan retourneren we een Outlet component voor de weergave van de child routes
-4. Als de gebruiker niet ingelogd is, dan sturen we hem door naar de login. Omdat we de from URL niet op voorhand kennen, moeten we deze ophalen via useLocation. Na het aanmelden willen we terug navigeren naar de from pagina
+2. Als we de credentials aan het controleren zijn, tonen we de loading indicator.
+3. Als de gebruiker ingelogd is, dan retourneren we een Outlet component voor de weergave van de child routes.
+4. Als de gebruiker niet ingelogd is, dan sturen we hem door naar de login. Om de gebruiker na het aanmelden terug te sturen naar de pagina waarvan hij kwam, voegen we een `redirect` query parameter toe aan de huidige URL. Deze kunnen we ophalen via `useLocation`.
 
-Tot slot maken we gebruik van deze component om onze Routes af te schermen. `Transactions` en `Places` dienen te worden afgeschermd. `ProtectedRoute` wordt de parent component, en in de `Outlet` component worden de children gerendered als de gebruiker is aangemeld.
-
-`src/main.jsx`
+Tot slot maken we gebruik van deze component om onze routes af te schermen. `Transactions` en `Places` dienen afgeschermd te worden. `ProtectedRoute` wordt de parent component, en in de `Outlet` component worden de children gerenderd als de gebruiker is aangemeld. Pas `src/main.jsx` als volgt aan:
 
 ```jsx
-//..
+// ...
 import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter([
@@ -553,8 +544,8 @@ const router = createBrowserRouter([
       },
       {
         path: '/transactions',
-        element: <PrivateRoute />,
-        children: [
+        element: <PrivateRoute />, // 👈
+        children: [ // 👈
           {
             index: true,
             element: <TransactionsList />,
@@ -571,8 +562,8 @@ const router = createBrowserRouter([
       },
       {
         path: '/places',
-        element: <PrivateRoute />,
-        children: [
+        element: <PrivateRoute />, // 👈
+        children: [ // 👈
           {
             index: true,
             element: <PlacesList />,
@@ -586,20 +577,20 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-//..
+// ...
 ```
 
 ## NavBar: afwerking
 
-`src/components/Navbar.jsx`
+Als laatste voegen we nog een login- en logout-knop toe aan onze navbar. Deze knoppen mogen ook niet altijd getoond worden. Pas hiervoor `src/components/Navbar.jsx` aan als volgt:
 
 ```jsx
-//..
+// ...
 import { useAuth } from '../contexts/Auth.context';
 
 export default function Navbar() {
-  const { isAuthed } = useAuth();// 👈 2
-  //..
+  const { isAuthed } = useAuth(); // 👈 2
+  // ...
 
   return (
     <nav className={`navbar sticky-top bg-${theme} mb-4`}>
@@ -612,18 +603,19 @@ export default function Navbar() {
         </div>
         <div className="flex-grow-1"></div>{/* 👈 1*/}
 
-        { // 👈 3
+        {/* */}
+        {// 👇 3
           isAuthed
-            ? (
+            ? (// 👇 4
               <div className="nav-item my-2 mx-sm-3 my-sm-0">
                 <Link className="nav-link" to="/logout">Logout</Link>
               </div>
-            )// 👈 4
-            : (
+            )
+            : (// 👇 5
               <div className="nav-item my-2 mx-sm-3 my-sm-0">
                 <Link className="nav-link" to="/login">Login</Link>
               </div>
-            )// 👈 5
+            )
         }
 
         <button className="btn btn-secondary" type="button" onClick={toggleTheme}>
@@ -639,22 +631,13 @@ export default function Navbar() {
 }
 ```
 
-We moeten nog een paar items aan onze navigatie toevoegen:
+1. We voegen een `div` toe om deze knoppen rechts uit te lijnen, deze `div` vult de lege ruimte.
+2. We controleren of er een gebruiker ingelogd is.
+3. En tonen afhankelijk van de waarde andere knoppen.
+4. Als we aangemeld zijn, tonen we de logout-knop.
+5. In het andere geval, tonen we de login-knop.
 
-- login
-- uitloggen
-
-Niet alle knopen mogen tegelijk getoond worden, bv. enkel uitloggen als je aangemeld bent.
-
-1. we voegen een div toe om deze knoppen rechts uit te lijnen, deze div vult de lege ruimte
-2. we halen op of er een gebruiker ingelogd is
-3. en tonen afhankelijk van de waarde andere knoppen
-4. als we aangemeld zijn, tonen we de logout-knop
-5. in het andere geval, tonen we de login-knop
-
-We dienen nog een `Logout` component aan te maken.
-
-`src/pages/Logout.jsx`
+We dienen nog een `Logout` component aan te maken. Maak een nieuw bestand `src/pages/Logout.jsx` met volgende inhoud:
 
 ```jsx
 import { useEffect } from 'react'; // 👈 1
@@ -663,10 +646,12 @@ import { useAuth } from '../contexts/Auth.context'; // 👈 1
 export default function Logout() {
   const { isAuthed, logout } = useAuth(); // 👈 1
 
+  // 👇 1
   useEffect(() => {
     logout();
-  }, [logout]); // 👈 1
+  }, [logout]);
 
+  // 👇 2
   if (isAuthed) {
     return (
       <div className='container'>
@@ -677,8 +662,9 @@ export default function Logout() {
         </div>
       </div>
     );
-  } // 👈 2
+  }
 
+  // 👇 3
   return (
     <div className='container'>
       <div className='row'>
@@ -687,19 +673,20 @@ export default function Logout() {
         </div>
       </div>
     </div>
-  ); // 👈 3
+  );
 }
 ```
 
 1. Ook hier maken we gebruik van een `useEffect` voor het uitloggen.
-2. Als de gebruiker aan het uitloggen is (nog aangemeld is), geven we een loading indicator weer
-3. Als de gebruiker is uitgelogd, geven we een melding weer
+2. Als de gebruiker aan het uitloggen is (en dus nog aangemeld is), geven we aan dat we aan het uitloggen zijn.
+3. Als de gebruiker is uitgelogd, geven we een melding weer.
 
-Voeg de route naar Logout toe aan `src/main.jsx`
+Voeg de route naar Logout toe aan `src/main.jsx`:
 
 ```jsx
 import Logout from './pages/Logout';
-//...
+
+// ...
 const router = createBrowserRouter([
   {
     element: <Layout />,
@@ -715,22 +702,40 @@ const router = createBrowserRouter([
       {
         path: '/logout',
         element: <Logout />,
-      },//....
-
-      ]}])
-      //...
+      },
+      // ...
+      ]
+  }
+  // ...
+]);
 ```
 
 ## Oefening
 
-- maak een Register component op de URL /register
-- deze bevat een formulier met 4 velden:
-  - name
-  - email
-  - password
-  - confirmPassword
-- alle velden zijn verplicht + de waarde van het confirmPassword veld moet gelijk zijn aan de waarde van het password veld
-  - gebruik hiervoor de validate functie van register
-  - je moet hiervoor de validationRules binnen de component zetten, gebruik een useMemo om dit object te maken
-  - om een waarde van een veld op te vragen gebruik je getValues
-- als de gebruiker reeds aangemeld is, moet deze pagina hem doorsturen naar de / route
+Maak een `Register` component op de URL `/register`.
+
+- Deze component bevat een formulier met 4 velden:
+  - `name`
+  - `email`
+  - `password`
+  - `confirmPassword`
+- Alle velden zijn verplicht + de waarde van het `confirmPassword` veld moet gelijk zijn aan de waarde van het password veld.
+  - Gebruik hiervoor de `validate` functie van `register`: <https://react-hook-form.com/docs/useform/register>.
+  - Je moet hiervoor de `validationRules` binnen de component zetten, gebruik een `useMemo` om dit object te maken.
+  - Om een waarde van een veld op te vragen gebruik je `getValues`.
+- Als de gebruiker reeds aangemeld is, moet deze pagina hem doorsturen naar de `/` route.
+
+<!-- markdownlint-disable-next-line -->
++ Oplossing +
+
+  <!-- TODO: oplossing toevoegen -->
+
+  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie` op commit `TODO:`:
+
+  ```bash
+  git clone https://github.com/hogent-web/frontendweb-budget.git
+  cd frontendweb-budget
+  git checkout -b oplossing-les7 TODO:
+  yarn install
+  yarn dev
+  ```
