@@ -12,6 +12,6 @@
 - [5. React Router](./5-react_router/index.md)
 - [6. Testing](./6-react_testing/index.md)
 - [7. Authenticatie & autorisatie](./7-auth/index.md)
-- [8. E2E testen met authenticatie (WIP)](./8-auth_testing/index.md)
+- [8. E2E testen met authenticatie](./8-auth_testing/index.md)
 - [9. CI/CD (WIP)](./9-cicd/index.md)
 - [10. FAQ (WIP)](./10_faq/index.md)

@@ -25,7 +25,6 @@ We hebben hiervoor een command nodig aangezien Cypress per test de hele browsero
 Maak een nieuw commando aan in het bestand `cypress/support/commands.js`:
 
 ```js
-// cypress/support/commands.js
 Cypress.Commands.add('login', (email, password) => { // 👈 1
   // 👇 5
   Cypress.log({
@@ -69,14 +68,13 @@ Voer dit testbestand uit. Je zou Cypress moeten zien inloggen.
 
 Eventueel kan je ook een `logout` command toevoegen:
 
-<!-- TODO: werkt die goToHomePage ? -->
-
 ```js
 Cypress.Commands.add('logout', () => {
   Cypress.log({
     displayName: 'logout',
   });
-  cy.goToHomePage();
+
+  cy.visit('http://localhost:5173');
   cy.get('[data-cy=logout_btn]').click();
 });
 ```
@@ -117,7 +115,7 @@ Cypress.Commands.add('login', (email, password) => {
 1. Vang elk login-request op en geef dit de naam `login`.
 2. Laat Cypress wachten tot dit request afgerond is.
 
-Voer de testen opnieuw uit, ze slagen!
+Voer de testen opnieuw uit, enkel de test van het zoeken naar de transacties van de "Irish pub" faalt. Pas deze test aan zodat deze maar één transactie verwacht. Zonder authenticate waren dit er 3, één voor elke gebruiker. Met authenticatie is dit er maar één.
 
 ## Oefening: add transaction form
 
@@ -127,8 +125,6 @@ Voer de testen opnieuw uit, ze slagen!
 
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
-
-  <!-- TODO: oplossing toevoegen -->
 
   Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie`
 

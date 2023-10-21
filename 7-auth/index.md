@@ -245,7 +245,7 @@ export default function LabelInput({
         {...rest}
       />
       {hasError ? (
-        <div className="form-text text-danger">
+        <div className="form-text text-danger" data-cy="label_input_error">
           {errors[name]}
         </div>
       ) : null}
