@@ -1144,8 +1144,8 @@ export default function TransactionForm({ currentTransaction, setTransactionToUp
     ) {
       const dateAsString = toDateInputString(new Date(currentTransaction.date));
       setValue("date", dateAsString);
-      setValue("user", currentTransaction.user.name);
-      setValue("place", currentTransaction.place.id);
+      setValue("userId", currentTransaction.user.name);
+      setValue("placeId", currentTransaction.place.id);
       setValue("amount", currentTransaction.amount);
     } else {
       reset();
@@ -1295,7 +1295,7 @@ VITE_API_URL='http://localhost:9000/api'
 In de code van `api/index.js` vervang je `baseUrl` door
 
 ```js
-const baseUrl = `${import.meta.env.VITE_API_URL}/transactions`;
+const baseUrl = import.meta.env.VITE_API_URL;
 ```
 
 Over environment variables in React & Vite vind je meer op <https://vitejs.dev/guide/env-and-mode.html>.
