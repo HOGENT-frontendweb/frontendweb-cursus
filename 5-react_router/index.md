@@ -820,3 +820,7 @@ git checkout -b oplossing-les5 50e2881
 yarn install
 yarn dev
 ```
+
+## Mogelijke extra's voor de examenopdracht
+
+- Gebruik de nieuwe [loader](https://reactrouter.com/en/main/route/loader) en [action](https://reactrouter.com/en/main/route/action) props van de `Route` component van `react-router-dom` om de data op te halen.

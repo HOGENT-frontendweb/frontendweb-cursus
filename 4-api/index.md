@@ -1313,4 +1313,3 @@ Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API.
 
 - [react-query](https://www.npmjs.com/package/react-query)
 - [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
-- Gebruik de nieuwe [loader](https://reactrouter.com/en/main/route/loader) en [action](https://reactrouter.com/en/main/route/action) props van de `Route` component van `react-router-dom` om de data op te halen.
