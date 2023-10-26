@@ -51,6 +51,8 @@ Voor dit hoofdstuk maken we een simpele voorbeeldapplicatie, los van onze budget
 - Contact (`/contact`)
 - 404 Not Found (alle andere)
 
+In wat volgt, bouwen we deze voorbeeldapplicatie stap voor stap. Je kan ook het project vanop <https://github.com/HOGENT-Web/RoutingDemoStarter> clonen om zo alle basiscomponenten reeds te hebben. In dat geval kan je onderstaande commando's overslaan, alsook het aanmaken van de meeste componenten.
+
 Als eerste maak je een nieuw project:
 
 ```bash
@@ -126,10 +128,10 @@ Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`,
 
 Alvorens we routes kunnen definiëren, hebben we eerst een aantal componenten nodig. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `react-lorem-ipsum`.
 
-Installeer dit package:
+Installeer dit package (met een extra dependency ervan):
 
 ```bash
-yarn add react-lorem-ipsum
+yarn add react-lorem-ipsum prop-types
 ```
 
 Vervolgens maak je een bestand `src/pages.jsx` met de componenten `Home`, `About`, `Contact` en `NotFound`:
