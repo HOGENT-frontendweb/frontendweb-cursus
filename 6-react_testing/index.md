@@ -129,15 +129,17 @@ describe("mijn eerste test", () => {
 
 > **Opmerking**
 >
-> Als je een ESlint melding krijgt voor het `cy` object, voeg dan een `.eslintrc.json` bestand toe aan de `cypress` map met onderstaande inhoud:
+> Als je een ESlint melding krijgt voor het `cy` object, voeg dan een `.eslintrc.cjs` bestand toe aan de `cypress` map met onderstaande inhoud:
 >
-> ```json
-> {
+> ```js
+> module.exports = {
 >   "extends": [
 >     "plugin:cypress/recommended"
 >   ]
-> }
+> };
 > ```
+>
+> Installeer vervolgens de noodzakelijke ESLint plugin: `yarn add --dev eslint-plugin-cypress`
 
 Neem de documentatie [Introduction to Cypress](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress) door.
 

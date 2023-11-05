@@ -17,59 +17,77 @@ Het zou handig zijn als we in VS Code konden debuggen... Uiteraard kan dit ook. 
 
 Linting is statische analyse van code om problemen zoals verkeerde syntax en twijfelachtig gebruik van code te detecteren. Waarom zou je gebruiken maken van linting en formatting? Het kan vroegtijdig fouten, typo's en syntax errors vinden. Het verplicht developers dezelfde codeerstijl te gebruiken, best practices te volgen en vermijdt het committen van slechte code.
 
-[ESLint](https://github.com/eslint/eslint ':ignore'), gecreëerd door Nicholas C. Zakas in 2013, is een linting tool voor JavaScript. [Airbnb](https://github.com/airbnb/javascript ':ignore') heeft een eigen coding style opgesteld. Je kan hiervan vertrekken, of van de standaard aanbevolen instellingen van ESLint.
+[ESLint](https://github.com/eslint/eslint ':ignore'), gecreëerd door Nicholas C. Zakas in 2013, is een linting tool voor JavaScript. [Airbnb](https://github.com/airbnb/javascript ':ignore') heeft een eigen coding style opgesteld. Je kan hiervan vertrekken, of van de standaard aanbevolen instellingen van ESLint of het Vite template.
 
-Installeer ESLint:
-
-```bash
-yarn add eslint --dev
-```
-
-Verwijder de bestaande ESLint configuratie uit de `package.json`.
-
-Voer onderstaand commando uit om een standaard configuratie voor ESLint te krijgen:
+Installeer ESLint en specifieke React plugins:
 
 ```bash
-npx eslint --init
+yarn add --dev eslint eslint-plugin-react eslint-plugin-react-hooks
 ```
 
-Kies hierbij volgende settings:
+- `eslint`: de linting tool
+- `eslint-plugin-react`: de plugin met specifieke regels voor React
+- `eslint-plugin-react-hooks`: de plugin met specifieke regels rond React hooks
 
-- How would you like to use ESLint?: To check syntax, find problems and enforce code style
-- What type of modules does your project use?: JavaScript modules
-- Which framework does your project use?: React
-- Does your project use TypeScript?: No
-- Where does your code run?: Browser
-- How would you like to define a style for your project?: Use a popular style guide
-- Which style guide do you want to follow?: Airbnb
-- What format do you want your config file to be in? JSON
-- Would you like to install them now?: Yes
-- Which package manager do you want to use?: yarn
+Verwijder eventueel bestaande ESLint configuratie uit de `package.json` en maak een `.eslintrc.js` bestand aan in de root van je project. Voeg volgende inhoud toe:
 
-Aangezien we gebruik maken van React 18, moeten we `plugin:react/jsx-runtime` toevoegen aan de `extends` property van `.eslintrc.json` (zie [documentatie](https://github.com/jsx-eslint/eslint-plugin-react#configuration-legacy-eslintrc)).
+```js
+module.exports = {
+  root: true,
+  env: {
+    browser: true,
+    es2020: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+    'plugin:import/recommended',
+  ],
+  ignorePatterns: [
+    'dist',
+    'node_modules',
+    '.eslintrc.cjs',
+  ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  settings: {
+    react:{
+      version: '18.2',
+    },
+    "import/resolver": {
+      node: {
+        extensions: [
+          ".js",
+          ".jsx",
+        ],
+      },
+    },
+  },
+  rules: {
+    'react/prop-types': 'off',
+    'comma-dangle': ['error', 'always-multiline'],
+    semi: ['error', 'always'],
+  },
+};
+```
 
 Voeg een extra script toe aan de `package.json`:
 
 ```json
 {
   "scripts": {
-    "lint": "npx eslint . --fix --ext jsx,js"
+    "lint": "eslint . --ext js,jsx --fix --report-unused-disable-directives --max-warnings 0"
   }
 }
 ```
 
-Voer dit script uit en fix de fouten, een paar hints:
+De opties van het `eslint` script betekenen:
 
-- Voeg onderstaande property toe aan de `.eslintrc.json`:
-
-```json
-{
-  "ignorePatterns": [
-    "node_modules",
-    "*.config.js"
-  ],
-}
-```
-
-- `App.test.js` mag je simpelweg verwijderen aangezien we geen component testen schrijven.
-- Sommige fouten kan je oplossen door bestanden met JSX een extensie `jsx` te geven (i.p.v. `js`).
+- `--ext js,jsx`: enkel `.js` en `.jsx` bestanden linten
+- `--fix`: automatisch op te lossen fouten oplossen
+- `--report-unused-disable-directives`: rapporteer ongebruikte `eslint-disable` commentaar
+- `--max-warnings 0`: er mogen ook geen warning optreden (als er zijn, krijg je een exit code != 0)
