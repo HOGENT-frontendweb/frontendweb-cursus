@@ -1,5 +1,8 @@
 <!-- markdownlint-disable first-line-heading -->
 
+<img src="./images/HOGENT_Logo.png" alt="HOGENT logo" width="50%" />
+<br/>
+
 - [0. Algemene info](./0-intro/situering.md)
 - [0. Software](./0-intro/software.md)
 - [1. React basics](./1-react_basics/index.md)
