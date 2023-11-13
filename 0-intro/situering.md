@@ -4,11 +4,11 @@
 
 Waarschijnlijk weet je wel tot welk keuzepakket dit olod behoort, maar we bevinden ons voor de duidelijkheid binnen het keuzepakket `Development`:
 
-![Keuzepakketten](./images/MT_development.png ':size=70%')
+![Keuzepakketten](../images/MT_development.png ':size=70%')
 
 En meer bepaald hier:
 
-![Dit olod in de keuzepakketten](./images/MT_olods.png ':size=70%')
+![Dit olod in de keuzepakketten](../images/MT_olods.png ':size=70%')
 
 ## Wat gaan we doen?
 
