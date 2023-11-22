@@ -67,9 +67,9 @@ Transaction ||-- "place" Place
 @enduml
 ```
 
-We gaan een component ontwerpen die een lijst van plaatsen zal tonen. Elke plaats bevat een naam en een rating. De rating kan worden aangepast door te klikken op een ster. De UI ziet er als volgt uit:
+We gaan een component ontwerpen die een lijst van plaatsen zal tonen. Elke plaats bevat een naam en een rating. De rating kan worden aangepast door te klikken op een ster. Een plaats kan verwijderd worden. De UI ziet er als volgt uit:
 
-![Places overview](./images/places.png ':size=40%')
+![Places overview](./images/places.png ':size=100%')
 
 De JSON API retourneert onderstaande data. Pas hiervoor `mock_data.js` in de `api` folder aan:
 
@@ -121,7 +121,7 @@ Voor de verdere ontwikkeling van deze UI dienen we onderstaande vragen te beantw
       - Props: geen
     - `Place`:
       - State: geen
-      - Props: de attributen van een place, handler voor het aanpassen van de rating
+      - Props: de attributen van een place, handler voor het aanpassen van de rating, handler voor verwijderen place
     - `StarRating`:
       - State: de huidige rating (kan wijzigen door het klikken op een ster)
       - Props: het aantal sterren, de huidige rating, handler voor het aanpassen van de rating
@@ -131,7 +131,7 @@ Voor de verdere ontwikkeling van deze UI dienen we onderstaande vragen te beantw
 
 ### Place component
 
-We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.jsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props.
+We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.jsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props. De verwijder button implementeren we in de volgende sectie
 
 ```jsx
 // src/components/places/Place.jsx
@@ -140,6 +140,9 @@ const Place = ({ id, name, rating }) => {
     <div className='card bg-light border-dark mb-4'>
       <div className='card-body'>
         <h5 className='card-title'>{name}</h5>
+         <button className='btn btn-primary'>
+          Verwijder
+        </button>
       </div>
     </div>
   );
@@ -275,7 +278,209 @@ Gebruik voorlopig de index als key. Vervang dit, éénmaal de data wordt opgevra
 
 Pas ook `PlacesList.jsx` aan. Maak hier gebruik van het id.
 
-## Star Rating component
+## Interactiviteit toevoegen
+
+In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://react.dev/learn/responding-to-events) door.
+
+### Samenvatting
+
+- `DOM events` worden gegenereerd door de browser (zoals klikken op knop, wijzigen van tekst input,...). Alle browsers voorzien in een **event based programming model**.
+- Built-in componenten zoals een knop ondersteunen enkel browser events zoals `onClick`. Maar ook aan je eigen componenten kan je **event handler props** toevoegen die je benoemt zoals je wil.
+- Het afhandelen van events met React-elementen lijkt op het afhandelen van events van DOM-elementen. Er zijn enkele verschillen:
+  - React-gebeurtenissen worden benoemd in camelCase in plaats van kleine letters.
+  - Met JSX geef je een functie door als event handler en niet een string. Je mag de functie ook niet aanroepen, we geven de referentie door.
+  - In de browser retourneer je `false` om het standaard klikgedrag te voorkomen. In React moet je `preventDefault` expliciet aanroepen.
+
+#### Een voorbeeld
+
+In pure HTML zou je dit schrijven:
+
+```html
+<button onclick="handleClick()" />
+```
+
+In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
+
+```jsx
+<button onClick={handleClick} />
+```
+
+- Per conventie starten event handler props met de prefix `on` gevolgd door een hoofdletter.
+- Per conventie starten event handlers met de prefix `handle` gevolgd door de naam van het event.
+- Een event handler in React heeft als argument een cross-browser native event wrapper, nl. het [**synthetic event**](https://react.dev/reference/react-dom/components/common#react-event-object).
+- Event handlers definieer je meestal binnen een component zodat ze toegang hebben tot de props en de state.
+- Je kan een event handler definiëren in een parent en doorgeven als een prop aan een child component
+
+### Oefening 3 - Event handler toevoegen
+
+Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verwijder knop, geef je `you clicked the remove button` in de console weer.
+
+<!-- markdownlint-disable-next-line -->
+  + Oplossing +
+
+```jsx
+// src/components/places/Place.jsx
+const Place = ({ id, name, rating }) => {
+  // 👇 1
+    const handleClick = (e) => {
+      console.log('you clicked the remove button');
+    };
+  return (
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+         <button className='btn btn-primary' onClick={handleClick} /> {/* 👈 2 */}
+          Verwijder
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Place;
+```
+ 
+  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, binnen de component. Per conventie starten event handlers met `handle` gevolgd door het event. React voorziet in een cross-browser native event wrapper, nl het synthetic event. Print dit object gerust eens in de console om de inhoud ervan te bekijken.
+  2. Voorzie de prop `onClick` en geef de event handler functie mee.
+
+## State toevoegen
+
+Wanneer we klikken op de verwijder knop dient de place te worden verwijderd uit de lijst van plaatsen. Dus de lijst van plaatsen kan veranderen en dient dus in `state` te worden bijgehouden. Dit doen we aan de hand van de `useState` hook.
+
+Neem de tutorial [Updating the screen](https://react.dev/learn#updating-the-screen) door.
+
+Vroeger was React klassegebaseerd, tegenwoordig is letterlijk alles een functie in React. Toch bestaan function components al heel lang. Echter konden deze enkel gebruikt worden indien de component stateless was, m.a.w. geen state bevatte, of geen gebruik maakte van de lifecycle features van een component (bv. iets doen als de component uit de VDOM verdwijnt).
+
+**Hooks** hebben dit probleem opgelost. Het zijn functies die function components toelaten om state bij te houden alsook om in te haken ("hook into") op de lifecycle features van een component.
+
+De naam van een hooks begint altijd met `use`. React bevat een aantal **builtin hooks** maar je kan ook je eigen **custom hooks** bouwen. Ze zijn dus de ideal manier om code herbruikbaar te maken.
+
+De [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook wordt gebruikt om een component stateful te maken. Hij geeft een component met andere woorden state.
+
+### Toevoegen van state aan de PlacesList component
+
+We starten met het bijhouden van de state in de `PlacesList` component. Indien een plaats verwijderd wordt, dan moet de state in de `PlacesList` component worden aangepast. Deze component zal dan ook een methode bevatten om de plaats uit de state te verwijderen. Deze geven we samen met de overige props door aan de child components.
+
+```jsx
+// src/components/places/PlacesList.jsx
+import { useState } from 'react'; // 👈 1
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
+
+const PlacesList = () => {
+  const [places, setPlaces] = useState(PLACE_DATA);// 👈 2
+
+   // 👇 3
+    const handleDeletePlace = (id) => {
+      setPlaces((places) => places.filter((p) => p.id !== id));
+    };
+
+
+  return (
+    <>
+      <h1>Places</h1>
+      <div className='grid mt-3'>
+        <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
+          {places
+            .sort((a, b) =>
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+            )
+            .map((p) => (
+              <div className='col' key={p.id}>
+                <Place {...p} onDelete={handleDeletePlace} /> {/* 👈 3 */}
+              </div>
+            ))}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default PlacesList;
+```
+
+1. Importeer de `useState` hook uit het `react` package.
+2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier noemen we deze variabele `places`. De `useState` functie neemt de initiële state ( PLACES_DATA) als parameter en geeft een array terug. Deze array bevat:
+
+   - als eerste element de **state-variabele**, deze bevat de huidige waarde.
+   - als tweede element de functie om de waarde van de state-variabele bij te werken, een zogezegde **setter**. Hierdoor zal de component opnieuw gerenderd worden.
+
+  Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de variabele en de set-functie instellen.
+
+<!-- markdownlint-disable ol-prefix -->
+3. Als de gebruiker op verwijder klikt, dient de methode `handleDeletePlace` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `handleDeletePlace` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onDelete` toe.
+
+
+De `Place` component moet ook worden aangepast:
+
+```jsx
+// src/components/places/Place.jsx
+
+const Place = ({ id, name, rating, onDelete=f=>f }) => { // 👈 1
+  // 👇 2
+  const handleDelete = () => {
+    onDelete(id);
+  };
+
+  return (
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <button onClick={handleDelete}>Verwijder</button>{/* 👈 3 */}
+      </div>
+    </div>
+  );
+};
+
+export default Place;
+```
+
+1. Props worden doorgegeven van de parent aan de child component. We voegen een `onDelete` prop toe aan de `Place` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
+2. `handleDelete` zal het verwijderen van de plaats afhandelen. We geven het id van de plaats mee.
+3. Nu moet deze functie opgeroepen worden als de gebruiker op de verwijder knop klikt. 
+
+Bekijk het resultaat en klik op de verwijder knop.
+
+### Render en commit
+
+Alvorens de componenten getoond worden op het scherm moeten ze gerenderd worden door React. Elke update van het scherm gebeurt in 3 stappen in React:
+
+1. Trigger
+2. Render
+3. Commit
+
+Er zijn 2 redenen voor een component om te renderen
+1. De initiële render (veroorzaakt in main.jsx door de `render` )
+2. De state van de component of 1 van zijn parents is aangepast (veroorzaakt door een set functie)
+
+I.g.v. een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de functionele component aan wiens state werd aangepast. Dit proces is recursief. 
+
+React past tenslotte de DOM aan. Bij een initïele render gebruikt React de `appendChild() DOM API` om alle DOM-knooppunten die het heeft gemaakt op het scherm te zetten. Voor re-renders zal React de minimaal noodzakelijke bewerkingen toepassen (berekend tijdens het renderen!) om de DOM te laten overeenkomen met de nieuwste rendering-uitvoer.
+
+Lees [Render and commit](https://react.dev/learn/render-and-commit) en bekijk een visuele weergave: [A Visual Guide to React Rendering - It Always Re-renders](https://alexsidorenko.com/blog/react-render-always-rerenders/)
+
+### State snapshot
+
+Lees [State as a snapshot](https://react.dev/learn/state-as-a-snapshot) 
+
+Samengevat
+- Het instellen van de status verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render. De state wordt pas aangepast voor de volgende render! Dus in 1 eventhandler 3 maal `setNumber(number + 1)` aanroepen zal het `number` maar met 1 verhogen!
+- Het instellen van de status vraagt ​​om een ​​nieuwe render. "Rendering" betekent dat React de component, die een functie is, aanroept. De props, event handlers en lokale variabelen werden allemaal berekend op basis van `de state op het moment van renderen`.
+- De waarde van een statusvariabele verandert nooit binnen een render.
+- React slaat de state op buiten de component, het 'leeft' in React! 
+![state overview](./images/reactstate.jpg ':size=70%')
+- Variabelen en eventhandlers `overleven` geen re-render. Elke render heeft zijn eigen eventhandlers.
+
+Lees [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
+
+Samengevat
+
+- Het instellen van de status verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render.
+- React verwerkt statusupdates NADAT alle eventhandlers zijn uitgevoerd. Dit wordt `batching` genoemd.
+- Om een ​​bepaalde status meerdere keren in één gebeurtenis bij te werken, kan je de updaterfunctie setNumber(n => n + 1) gebruiken.
+
+
+## StarRating component
 
 Maak het bestand `StarRating.jsx` aan in de map `src/components/places`:
 
@@ -323,7 +528,7 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 Vervolgens willen het aantal sterren in de rating variabel maken, dit doen we d.m.v. een prop.
 
 ```jsx
-// src/components/places/StarRating.jsx&
+// src/components/places/StarRating.jsx
 import { IoStarSharp } from 'react-icons/io5';
 
 const Star = () => <IoStarSharp color='yellow' />;
@@ -426,37 +631,6 @@ Bekijk het resultaat!
 
 ## Interactiviteit toevoegen
 
-In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://react.dev/learn/responding-to-events) door.
-
-### Samenvatting
-
-- `DOM events` worden gegenereerd door de browser (zoals klikken op knop, wijzigen van tekst input,...). Alle browsers voorzien in een **event based programming model**.
-- Built-in componenten zoals een knop ondersteunen enkel browser events zoals `onClick`. Maar ook aan je eigen componenten kan je **event handler props** toevoegen die je benoemt zoals je wil.
-- Het afhandelen van events met React-elementen lijkt op het afhandelen van events van DOM-elementen. Er zijn enkele verschillen:
-  - React-gebeurtenissen worden benoemd in camelCase in plaats van kleine letters.
-  - Met JSX geef je een functie door als event handler en niet een string. Je mag de functie ook niet aanroepen, we geven de referentie door.
-  - In de browser retourneer je `false` om het standaard klikgedrag te voorkomen. In React moet je `preventDefault` expliciet aanroepen.
-
-#### Een voorbeeld
-
-In pure HTML zou je dit schrijven:
-
-```html
-<button onclick="handleClick()" />
-```
-
-In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
-
-```jsx
-<button onClick={handleClick} />
-```
-
-- Per conventie starten event handler props met de prefix `on` gevolgd door een hoofdletter.
-- Per conventie starten event handlers met de prefix `handle` gevolgd door de naam van het event.
-- Een event handler in React heeft als argument een cross-browser native event wrapper, nl. het [**synthetic event**](https://react.dev/reference/react-dom/components/common#react-event-object).
-- Event handlers definieer je meestal binnen een component zodat ze toegang hebben tot de props en de state.
-- Je kan een event handler definiëren in een parent en doorgeven als een prop aan een child component
-
 ### Oefening 3 - Event handler toevoegen
 
 Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op een ster, geef je `you clicked a star` in de console weer.
@@ -493,91 +667,13 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
   }
   ```
 
-  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event. React voorziet in een cross-browser native event wrapper, nl het synthetic event. Print dit object gerust eens in de console om de inhoud ervan te bekijken.
+  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event. 
   2. Voorzie de prop `onClick` en geef de event handler functie mee.
 
 ## State toevoegen
 
-Wanneer we klikken op een ster moet de kleur aangepast worden. Hierdoor dient het aantal geselecteerde sterren in `state` bijgehouden te worden bijgehouden. Dit doen we aan de hand van de `useState` hook.
-
-Neem de tutorial [Updating the screen](https://react.dev/learn#updating-the-screen) door.
-
-Vroeger was React klassegebaseerd, tegenwoordig is letterlijk alles een functie in React. Toch bestaan function components al heel lang. Echter konden deze enkel gebruikt worden indien de component stateless was, m.a.w. geen state bevatte, of geen gebruik maakte van de lifecycle features van een component (bv. iets doen als de component uit de VDOM verdwijnt).
-
-**Hooks** hebben dit probleem opgelost. Het zijn functies die function components toelaten om state bij te houden alsook om in te haken ("hook into") op de lifecycle features van een component.
-
-De naam van een hooks begint altijd met `use`. React bevat een aantal **builtin hooks** maar je kan ook je eigen **custom hooks** bouwen. Ze zijn dus de ideal manier om code herbruikbaar te maken.
-
-De [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook wordt gebruikt om een component stateful te maken. Hij geeft een component met andere woorden state.
-
-### Toevoegen van state aan de StarRating component
-
-We starten met het bijhouden van de state in de `StarRating` component. Later verplaatsen we de state naar de parent, de reden hiervoor zal nog wel duidelijk worden.
-
-```jsx
-// src/components/places/StarRating.jsx
-import { useState } from 'react'; // 👈 1
-import { IoStarSharp } from 'react-icons/io5';
-
-const Star = ({ index, selected = false, onSelect = (f) => f }) => { // 👈 5 en 6
-  const handleClick = () => {
-    onSelect(index + 1); // 👈 6
-  };
-
-  return (
-    <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleClick} />
-  );
-};
-
-export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
-  const [rating, setRating] = useState(selectedStars); // 👈 2
-
-  return (
-    <>
-      {[...new Array(totalStars)].map((_, i) => (
-        <Star key={i} index={i} selected={rating > i} onSelect={setRating} /> {/* 👈 3, 4 en 6 */}
-      ))}{' '}
-      <p>
-        {rating} of {totalStars} stars {/* 👈 3 */}
-      </p>
-    </>
-  );
-}
-```
-
-1. Importeer de `useState` hook uit het `react` package.
-2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier noemen we deze variabele `rating`. De `useState` functie neemt de initiële state (het aantal geselecteerde sterren) als parameter en geeft een array terug. Deze array bevat:
-
-   - als eerste element de **state-variabele**, deze bevat de huidige waarde.
-   - als tweede element de functie om de waarde van de state-variabele bij te werken, een zogezegde **setter**. Hierdoor zal de component opnieuw gerenderd worden.
-
-  Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de variabele en de set-functie instellen.
-
-<!-- markdownlint-disable ol-prefix -->
-3. Via de `selected` prop geven we door of de ster al dan niet geselecteerd is. We passen ook de tekst aan die het aantal geselecteerde sterren weergeeft.
-4. Als de gebruiker een ster selecteert, dient de methode `setRating` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `setRating` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onSelect` toe.
-5. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
-6. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
-
-Bekijk het resultaat en klik op de sterren.
-
-### Render en commit
-
-Alvorens de componenten getoond worden op het scherm moeten ze gerenderd worden door React. Elke update van het scherm gebeurt in 3 stappen in React:
-
-1. Trigger
-2. Render
-3. Commit
-
-Lees [Render and commit](https://react.dev/learn/render-and-commit) en bekijk een visuele weergave: [A Visual Guide to React Rendering - It Always Re-renders](https://alexsidorenko.com/blog/react-render-always-rerenders/)
-
-### State snapshot
-
-Lees [State as a snapshot](https://react.dev/learn/state-as-a-snapshot) en [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
-
-### Liften van de state
-
-De `PlacesList` component houdt de places bij in zijn state. Indien de rating van een plaats wordt aangepast, dan moet de state in de `PlacesList` component worden aangepast. We moeten de rating van de bijhorende plaats aanpassen. Dit betekent dat we de state niet langer bijhouden in de `StarRating` component, maar wel in de `PlacesList` component. Deze component zal dan ook een methode bevatten om de state aan te passen. Deze geven we samen met de state door aan de child components.
+Wanneer we klikken op een ster moet de kleur aangepast worden. Hierdoor dient het aantal geselecteerde sterren in `state` bijgehouden te worden bijgehouden. De `PlacesList` component houdt de places bij in zijn state. Indien de rating van een plaats wordt aangepast, dan moet de state in de `PlacesList` component worden aangepast. We moeten de rating van de bijhorende plaats aanpassen. 
+Dit betekent dat we in de `PlacesList` component een methode dienen te voorzien om de rating van een bepaalde place aan te passen. Deze methode geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
 ```jsx
 // src/components/places/PlacesList.jsx
@@ -594,6 +690,10 @@ const PlacesList = () => {
     setPlaces(newPlaces);
   };
 
+  const handleDeletePlace = (id) => {
+    setPlaces((places) => places.filter((p) => p.id !== id));
+  };
+
   return (
     <>
       <h1>Places</h1>
@@ -605,7 +705,7 @@ const PlacesList = () => {
             )
             .map((p) => (
               <div className='col' key={p.id}>
-                <Place {...p} onRate={handleRatePlace} /> {/* 👈 2 */}
+                <Place {...p} onDelete={handleDeletePlace} onRate={handleRatePlace} /> {/* 👈 2 */}
               </div>
             ))}
         </div>
@@ -626,17 +726,21 @@ De `Place` component moet ook worden aangepast:
 // src/components/places/Place.jsx
 import StarRating from './StarRating';
 
-const Place = ({ id, name, rating, onRate }) => { // 👈 1
+const Place = ({ id, name, rating, onDelete, onRate }) => { // 👈 1
   // 👇 2
   const handleRate = (newRating) => {
     onRate(id, newRating);
+  };
+
+  const handleDelete = () => {
+    onDelete(id);
   };
 
   return (
     <div className='card bg-light border-dark mb-4'>
       <div className='card-body'>
         <h5 className='card-title'>{name}</h5>
-        <StarRating selectedStars={rating} onRate={handleRate} /> {/* 👈 3 */}
+        <StarRating selectedStars={rating} onRate={handleRate} onDelete={handleDelete} /> {/* 👈 3 */}
       </div>
     </div>
   );
@@ -649,16 +753,16 @@ export default Place;
 2. `handleRate` zal het instellen van een nieuwe rating afhandelen. De nieuwe rating is hier al gekend. We geven ook het id van de plaats mee.
 3. Het klikken op een ster worden lager in de boom afgehandeld. Dus moeten we deze methode doorgeven aan de `StarRating` component via een event handler prop `onSelect`.
 
-De `StarRating`component wordt:
+De `StarRating`component en `Star` component worden:
 
 ```jsx
 // src/components/places/StarRating.jsx
 import { IoStarSharp } from 'react-icons/io5';
 
-const Star = ({ index, selected = false, onSelect = (f) => f }) => {
+const Star = ({ index, selected = false, onSelect = (f) => f }) => { // 👈 3 en 4
   const handleSelect = () => {
     onSelect(index + 1);
-  };
+  };// 👈 4
 
   return (
     <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleSelect} />
@@ -668,10 +772,8 @@ const Star = ({ index, selected = false, onSelect = (f) => f }) => {
 export default function StarRating({
   totalStars = 5,
   selectedStars = 0,
-  onRate, // 👈 3
+  onRate, // 👈 1
 }) {
-  //const [rating, setRating] = useState(selectedStars); // 👈 1
-
   return (
     <>
       {[...new Array(totalStars)].map((_, i) => (
@@ -684,96 +786,18 @@ export default function StarRating({
       ))}
       {/* 👆 2 en 4 */}
       <p>
-        {selectedStars} of {totalStars} stars {/* 👈 2 */}
+        {selectedStars} of {totalStars} stars
       </p>
     </>
   );
 }
 ```
 
-1. Verwijder de state.
-2. Vervang de variabele `rating` door de prop `selectedStars`. Doe hetzelfde voor de tekst die het aantal geselecteerde sterren weergeeft.
-3. `onRate` wordt via de props doorgegeven, samen met de andere props.
-4. Roep de methode aan in de event handler prop `onSelect`.
+1. `onRate` wordt via de props doorgegeven, samen met de andere props.
+2. Geef de methode door in de event handler prop `onSelect` van de `Star` component.
+3. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
+4. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
 
-### Oefening 4 - Verwijderen van een plaats
-
-Voeg een verwijderknop toe om een plaats te verwijderen.
-
-<!-- markdownlint-disable-next-line -->
-  + Oplossing +
-
-  Voeg eerst een knop met bijbehorende event handler toe aan de `Place` component. In deze event handler roepen we de event handler prop `onDelete` aan want enkel onze parent kan de plaats verwijderen.
-
-  ```jsx
-  // src/components/places/Place.jsx
-  // imports
-
-  const Place = ({ id, name, rating, onRate, onDelete }) => {
-    // handleRate
-
-    // 👇 1
-    const handleDelete = () => {
-      onDelete(id);
-    };
-
-    return (
-      <div className='card bg-light border-dark mb-4'>
-        <div className='card-body'>
-          <h5 className='card-title'>{name}</h5>
-          <StarRating selectedStars={rating} onRate={handleRate} />
-          {/* 👇 2 */}
-          <button className='btn btn-primary' onClick={handleDelete}>
-            Verwijder
-          </button>
-        </div>
-      </div>
-    );
-  });
-
-  export default Place;
-  ```
-
-  Voeg dan de implementatie van het verwijderen toe aan de parent en geef deze functie door aan elke `Place`.
-
-  ```jsx
-  // src/components/places/PlacesList.jsx
-  // imports
-
-  const PlacesList = () => {
-    // state en handleRatePlace
-
-    // 👇 1
-    const handleDeletePlace = (id) => {
-      setPlaces((places) => places.filter((p) => p.id !== id));
-    };
-
-    return (
-      <>
-        <h1>Places</h1>
-        <div className='grid mt-3'>
-          <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
-            {places
-              .sort((a, b) =>
-                a.name.toUpperCase().localeCompare(b.name.toUpperCase())
-              )
-              .map((p) => (
-                <div className='col' key={p.id}>
-                  <Place
-                    {...p}
-                    onRate={handleRatePlace}
-                    onDelete={handleDeletePlace}
-                  /> {/* 👆 2 */}
-                </div>
-              ))}
-          </div>
-        </div>
-      </>
-    );
-  };
-
-  export default PlacesList;
-  ```
 
 ## React DevTools
 
