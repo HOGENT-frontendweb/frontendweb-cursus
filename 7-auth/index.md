@@ -734,12 +734,12 @@ Maak een `Register` component op de URL `/register`.
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie` op commit `d90ece0`:
+  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie` op commit `14016d2`:
 
   ```bash
   git clone https://github.com/hogent-web/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b oplossing-les7 d90ece0
+  git checkout -b oplossing-les7 14016d2
   yarn install
   yarn dev
   ```
