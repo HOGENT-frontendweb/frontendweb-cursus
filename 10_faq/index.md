@@ -22,14 +22,16 @@ Linting is statische analyse van code om problemen zoals verkeerde syntax en twi
 Installeer ESLint en specifieke React plugins:
 
 ```bash
-yarn add --dev eslint eslint-plugin-react eslint-plugin-react-hooks
+yarn add --dev eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-import eslint-plugin-cypress
 ```
 
 - `eslint`: de linting tool
 - `eslint-plugin-react`: de plugin met specifieke regels voor React
 - `eslint-plugin-react-hooks`: de plugin met specifieke regels rond React hooks
+- `eslint-plugin-import`: de plugin met specifieke regels rond imports (bv. om een bepaalde volgorde af te dwingen)
+- `eslint-plugin-cypress`: de plugin met specifieke regels voor Cypress
 
-Verwijder eventueel bestaande ESLint configuratie uit de `package.json` en maak een `.eslintrc.js` bestand aan in de root van je project. Voeg volgende inhoud toe:
+Verwijder eventueel bestaande ESLint configuratie uit de `package.json` en maak een `.eslintrc.cjs` bestand aan in de root van je project. Voeg volgende inhoud toe:
 
 ```js
 module.exports = {
@@ -72,6 +74,16 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     semi: ['error', 'always'],
   },
+};
+```
+
+Maak ook een `.eslintrc.cjs` aan in de `cypress` map met volgende inhoud:
+
+```js
+module.exports = {
+  extends: [
+    "plugin:cypress/recommended"
+  ]
 };
 ```
 
