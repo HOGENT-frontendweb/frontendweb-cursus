@@ -2,10 +2,13 @@
 
 > **Startpunt voorbeeldapplicatie**
 >
+> Het volstaat om uit te checken op de `authenticatie` branch en op commit `f4bab5c`
+>
 > ```bash
 > git clone https://github.com/HOGENT-Web/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8 d90ece0
+> git checkout origin/authenticatie
+> git checkout -b les8 f4bab5c
 > yarn install
 > yarn start
 > ```
