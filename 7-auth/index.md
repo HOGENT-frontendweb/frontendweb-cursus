@@ -585,6 +585,47 @@ const router = createBrowserRouter([
 // ...
 ```
 
+We dienen er ook voor te zorgen dat na het inloggen er geredirect wordt naar de pagina die de gebruiker wou raadplegen. Pas hiervoor de `login` component aan
+
+```jsx
+import { useCallback, useMemo } from 'react';// 👈1
+//...
+
+export default function Login() {
+  const { error, loading, login } = useAuth();
+  const navigate = useNavigate();
+  const { search } = useLocation();
+
+  const redirect = useMemo(() => {
+    const urlParams = new URLSearchParams(search);
+    if (urlParams.has("redirect"))
+      return urlParams.get("redirect");
+    return "/";
+  }, [search]);// 👈1
+
+  //..
+
+  const handleLogin = useCallback(
+    async ({ email, password }) => {
+      const loggedIn = await login(email, password);
+
+      if (loggedIn) {
+        navigate({
+          pathname: redirect,// 👈2
+          replace: true,
+        });
+      }
+    },
+    [login, navigate, redirect],// 👈2
+  );
+
+  //...
+```
+
+1. Haal de querystring op en kijk of de key redirect voorkomt. 
+2. Navigeer naar de startpagina of naar de redirect
+
+
 ## NavBar: afwerking
 
 Als laatste voegen we nog een login- en logout-knop toe aan onze navbar. Deze knoppen mogen ook niet altijd getoond worden. Pas hiervoor `src/components/Navbar.jsx` aan als volgt:
