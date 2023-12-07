@@ -1221,7 +1221,22 @@ export default function TransactionForm({ currentTransaction, onSaveTransaction 
     isSubmitting,
   } = useForm();
   //...
-
+ const onSubmit = useCallback(async (data) => {
+    const { user, place, amount, date } = data;
+    try{ // 👈 5
+    await saveTransaction({
+      userId: user,
+      placeId: place,
+      amount: parseInt(amount),
+      date,
+      id: currentTransaction?.id,
+    });
+    setTransactionToUpdate(null);
+    catch(error){
+      console.log(error)
+    }
+  }, [saveTransaction]);
+  //...
   return (
     <FormProvider
       handleSubmit={handleSubmit}
@@ -1250,6 +1265,7 @@ export default function TransactionForm({ currentTransaction, onSaveTransaction 
    - Tip: je kan ook alles uit de `useForm` hook verzamelen in een object en doorgeven aan de `FormProvider` met de spread operator. Je moet vervolgens enkel in deze component destructuren wat je nodig hebt. Zo kan je ook niets vergeten door te geven.
 3. Disable de knop tijdens submit.
 4. Disable het inputveld tijdens submit, doe hetzelfde voor de `PlacesSelect` component.
+5. Zorg voor foutafhandeling als de opslag mislukt (fout aan de api-kant), anders blijft isSubmitting true en kan de gebruiker de waarden niet meer aanpassen
 
 ### Oefening 5 - PUT in je eigen project
 
