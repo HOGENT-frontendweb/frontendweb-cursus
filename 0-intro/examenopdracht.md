@@ -2,7 +2,7 @@
 
 ## 1. De opdracht
 
-Gedurende het semester maak je een webapplicatie bestaande uit een front-end gedeelte in React en, indien je het olod Web Services ook volgt, een bijhorende back-end in NodeJS. Indien je het olod Web Services niet volgt, zie [sectie 5](#5-indien-je-het-vak-web-services-niet-volgt).
+Gedurende het semester maak je een webapplicatie bestaande uit een front-end gedeelte in React en, indien je het olod Web Services ook volgt, een bijhorende back-end in NodeJS. Indien je het olod Web Services niet volgt, zie [sectie 5](#5-indien-je-het-olod-web-services-niet-volgt).
 
 Je bent volledig vrij om te kiezen welke applicatie je ontwikkelt, maar het is wel belangrijk dat het een dynamische webapplicatie betreft. Het equivalent van iets wat met statische HTML kan bekomen worden is onvoldoende. Indien je twijfelt over jouw idee, mag je altijd eerst met je lector overleggen of een GitHub issue aanmaken.
 
