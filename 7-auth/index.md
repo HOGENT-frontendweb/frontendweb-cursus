@@ -622,9 +622,8 @@ export default function Login() {
   //...
 ```
 
-1. Haal de querystring op en kijk of de key redirect voorkomt. 
+1. Haal de querystring op en kijk of de key redirect voorkomt.
 2. Navigeer naar de startpagina of naar de redirect
-
 
 ## NavBar: afwerking
 
