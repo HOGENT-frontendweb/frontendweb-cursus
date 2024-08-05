@@ -4,6 +4,7 @@
 
 - [0. Algemene info](./0-intro/situering.md)
 - [0. Software](./0-intro/software.md)
+- [0. Examenopdracht (WIP)](./0-intro/examenopdracht.md)
 - [1. React basics](./1-react_basics/index.md)
 - [2. React state management](./2-react_state/index.md)
 - [3. React hooks, formulieren & Context API](./3-react_hooks/index.md)
