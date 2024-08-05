@@ -2,33 +2,29 @@
 
 ## Situering
 
-Waarschijnlijk weet je wel tot welk keuzepakket dit olod behoort, maar we bevinden ons voor de duidelijkheid binnen het keuzepakket `Development`:
-
-![Keuzepakketten](../images/MT_development.png ':size=70%')
-
-En meer bepaald hier:
+Dit olod behoort tot het keuzepakket `Development`, zoals je hieronder kan zien:
 
 ![Dit olod in de keuzepakketten](../images/MT_olods.png ':size=70%')
 
 ## Wat gaan we doen?
 
-Concreet gaan we een Single Page Application (SPA) maken, met JavaScript. Zoals je misschien al weet komen er bijna dagelijks nieuwe JavaScript-frameworks en -libraries voor SPA's bij.
+Concreet maken we een Single Page Application (SPA), met JavaScript. Zoals je misschien al weet komen er bijna dagelijks nieuwe JavaScript-frameworks en -libraries voor SPA's bij.
 
-Wij hebben gekozen voor React. Waarom? Het wordt veel gebruikt (zie <https://2022.stateofjs.com/en-US/libraries/front-end-frameworks> en ook <https://emnudge.dev/blog/react-hostage>), het is van Facebook... maar eigenlijk doen alle frameworks en libraries min of meer hetzelfde. Gelijkaardige frameworks zijn bijvoorbeeld [Angular](https://angular.io/), [VueJS](https://vuejs.org/), [Svelte](https://svelte.dev/) en [SolidJS](https://www.solidjs.com/).
+Wij hebben gekozen voor React. Waarom? Het wordt veel gebruikt (zie <https://2023.stateofjs.com/en-US/libraries/front-end-frameworks> en ook <https://emnudge.dev/blog/react-hostage>), het is van Meta... maar eigenlijk doen alle frameworks en libraries min of meer hetzelfde. Gelijkaardige frameworks zijn bijvoorbeeld [Angular](https://angular.io/), [VueJS](https://vuejs.org/), [Svelte](https://svelte.dev/) en [SolidJS](https://www.solidjs.com/).
 
 ## Wat gaan jullie doen?
 
 Programmeren leer je enkel door het te doen, niet door onze cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-Voor dit olod is er een examenopdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=58955&tool=Document&browser=Table&tool_action=Viewer&publication=2201057). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app staan duidelijk in de opdracht. De bijbehorende back-end maak je in het olod Web Services (indien van toepassing).
+> TODO: links naar Chamilo updaten
 
-Het examen van dit olod is mondeling. Je doet een demo van je applicatie. Dit is geen commerciële presentatie maar simpelweg tonen wat de app kan (en/of wat niet). Daarna beantwoord je enkele vragen die polsen naar je kennis van React.
+Voor dit olod is er een examenopdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=58955&tool=Document&browser=Table&tool_action=Viewer&publication=2201057). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je in het olod Web Services (indien van toepassing).
 
 De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?application=Chamilo%5CApplication%5CWeblcms&go=CourseViewer&course=58955). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examenopdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
-> Week 13: vrijdag 22 december 2023 om 23u59
+> Week 13: vrijdag 20 december 2024 om 23u59
 
 Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
@@ -47,15 +43,15 @@ Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers.
 
 Het cursusmateriaal wordt op GitHub gehost: <https://hogent-web.github.io/frontendweb-cursus>.
 
-Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/hogent-web/frontendweb-budget>
+Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/hogent-web/frontendweb-budget>.
 
-De bijhorende back-end is te vinden op: <https://github.com/hogent-web/webservices-budget>
-
-Hier en daar moeten een paar kleine en grote aanpassingen gebeuren aan de cursusinhoud. Elk hoofdstuk met het label `WIP` is nog niet volledig afgewerkt. De inhoud van deze hoofdstukken kan dus nog veranderen.
+De bijhorende back-end is te vinden op: <https://github.com/hogent-web/webservices-budget>.
 
 > Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/hogent-web/frontendweb-cursus>.
 
 ## Planning
+
+> TODO: planning updaten
 
 Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 
