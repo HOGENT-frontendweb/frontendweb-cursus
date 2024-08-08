@@ -43,6 +43,8 @@ Daarnaast verwachten we dat je een dossier met uitleg over je app indient op Cha
 
 ## 4. Voorbeelden van extra's
 
+Je vindt misschien wel een interessante extra technologie in de [Node.js Toolbox](https://nodejstoolbox.com/). Een aantal veelgebruikte extra's zijn:
+
 - Production build automatiseren en online plaatsen (front- én back-end)
 - Real time toepassing (sockets...)
 - PWA
