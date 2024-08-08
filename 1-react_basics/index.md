@@ -734,6 +734,7 @@ end note
 
 ## Must read/watch
 
+- [Don't Use JS for That: Moving Features to CSS and HTML by Kilian Valkhof](https://www.youtube.com/watch?v=IP_rtWEMR0o)
 - [Practice React by fixing tests - Check your JSX knowledge!](https://reactpractice.dev/exercise/practice-react-by-fixing-tests-check-your-jsx-knowledge/)
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
 - [React.js: The Documentary](https://www.youtube.com/watch?v=8pDqJVdNa44)
