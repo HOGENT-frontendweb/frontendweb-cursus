@@ -52,7 +52,7 @@ Je vindt misschien wel een interessante extra technologie in de [Node.js Toolbox
 - UI Component library (antd, Chakra UI…)
 - Front-end in TypeScript i.p.v. JavaScript
 - Ander op React gebaseerd framework (Next.js, preact...)
-  - Let op: nog steeds met het toepassen van de nodige best practices, aangepast aan het framework
+  - Let op: nog steeds met het toepassen van de nodige best practices, aangepast aan het framework! We merken vaak dat studenten die afwijken op dit punt, ook de best practices vergeten (door online tutorials) waardoor het project niet voldoet aan meerdere minimumvereisten.
 - ... (eigen inbreng, verras ons)
 
 ## 5. Indien je het olod Web Services niet volgt
