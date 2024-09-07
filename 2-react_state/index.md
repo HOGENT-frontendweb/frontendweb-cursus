@@ -339,7 +339,7 @@ const Place = ({ id, name, rating }) => {
 
 export default Place;
 ```
- 
+
   1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, binnen de component. Per conventie starten event handlers met `handle` gevolgd door het event. React voorziet in een cross-browser native event wrapper, nl het synthetic event. Print dit object gerust eens in de console om de inhoud ervan te bekijken.
   2. Voorzie de prop `onClick` en geef de event handler functie mee.
 
@@ -410,7 +410,6 @@ export default PlacesList;
 <!-- markdownlint-disable ol-prefix -->
 3. Als de gebruiker op verwijder klikt, dient de methode `handleDeletePlace` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `handleDeletePlace` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onDelete` toe.
 
-
 De `Place` component moet ook worden aangepast:
 
 ```jsx
@@ -437,7 +436,7 @@ export default Place;
 
 1. Props worden doorgegeven van de parent aan de child component. We voegen een `onDelete` prop toe aan de `Place` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
 2. `handleDelete` zal het verwijderen van de plaats afhandelen. We geven het id van de plaats mee.
-3. Nu moet deze functie opgeroepen worden als de gebruiker op de verwijder knop klikt. 
+3. Nu moet deze functie opgeroepen worden als de gebruiker op de verwijder knop klikt.
 
 Bekijk het resultaat en klik op de verwijder knop.
 
@@ -450,10 +449,11 @@ Alvorens de componenten getoond worden op het scherm moeten ze gerenderd worden 
 3. Commit
 
 Er zijn 2 redenen voor een component om te renderen
+
 1. De initiële render (veroorzaakt in main.jsx door de `render` )
 2. De state van de component of 1 van zijn parents is aangepast (veroorzaakt door een set functie)
 
-I.g.v. een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de functionele component aan wiens state werd aangepast. Dit proces is recursief. 
+I.g.v. een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de functionele component aan wiens state werd aangepast. Dit proces is recursief.
 
 React past tenslotte de DOM aan. Bij een initïele render gebruikt React de `appendChild() DOM API` om alle DOM-knooppunten die het heeft gemaakt op het scherm te zetten. Voor re-renders zal React de minimaal noodzakelijke bewerkingen toepassen (berekend tijdens het renderen!) om de DOM te laten overeenkomen met de nieuwste rendering-uitvoer.
 
@@ -461,13 +461,14 @@ Lees [Render and commit](https://react.dev/learn/render-and-commit) en bekijk ee
 
 ### State snapshot
 
-Lees [State as a snapshot](https://react.dev/learn/state-as-a-snapshot) 
+Lees [State as a snapshot](https://react.dev/learn/state-as-a-snapshot)
 
 Samengevat
+
 - Het instellen van de status verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render. De state wordt pas aangepast voor de volgende render! Dus in 1 eventhandler 3 maal `setNumber(number + 1)` aanroepen zal het `number` maar met 1 verhogen!
 - Het instellen van de status vraagt ​​om een ​​nieuwe render. "Rendering" betekent dat React de component, die een functie is, aanroept. De props, event handlers en lokale variabelen werden allemaal berekend op basis van `de state op het moment van renderen`.
 - De waarde van een statusvariabele verandert nooit binnen een render.
-- React slaat de state op buiten de component, het 'leeft' in React! 
+- React slaat de state op buiten de component, het 'leeft' in React!
 ![state overview](./images/reactstate.jpg ':size=70%')
 - Variabelen en eventhandlers `overleven` geen re-render. Elke render heeft zijn eigen eventhandlers.
 
@@ -478,7 +479,6 @@ Samengevat
 - Het instellen van de status verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render.
 - React verwerkt statusupdates NADAT alle eventhandlers zijn uitgevoerd. Dit wordt `batching` genoemd.
 - Om een ​​bepaalde status meerdere keren in één gebeurtenis bij te werken, kan je de updaterfunctie setNumber(n => n + 1) gebruiken.
-
 
 ## StarRating component
 
@@ -667,12 +667,12 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
   }
   ```
 
-  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event. 
+  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event.
   2. Voorzie de prop `onClick` en geef de event handler functie mee.
 
 ## State toevoegen
 
-Wanneer we klikken op een ster moet de kleur aangepast worden. Hierdoor dient het aantal geselecteerde sterren in `state` bijgehouden te worden bijgehouden. De `PlacesList` component houdt de places bij in zijn state. Indien de rating van een plaats wordt aangepast, dan moet de state in de `PlacesList` component worden aangepast. We moeten de rating van de bijhorende plaats aanpassen. 
+Wanneer we klikken op een ster moet de kleur aangepast worden. Hierdoor dient het aantal geselecteerde sterren in `state` bijgehouden te worden bijgehouden. De `PlacesList` component houdt de places bij in zijn state. Indien de rating van een plaats wordt aangepast, dan moet de state in de `PlacesList` component worden aangepast. We moeten de rating van de bijhorende plaats aanpassen.
 Dit betekent dat we in de `PlacesList` component een methode dienen te voorzien om de rating van een bepaalde place aan te passen. Deze methode geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
 ```jsx
@@ -797,7 +797,6 @@ export default function StarRating({
 2. Geef de methode door in de event handler prop `onSelect` van de `Star` component.
 3. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
 4. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
-
 
 ## React DevTools
 
