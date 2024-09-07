@@ -1,7 +1,5 @@
 <!-- markdownlint-disable first-line-heading -->
 
-![logo](../images/HOGENT_Logo.png ':size=33% :ignore')
-
 <small>
   Een aantal hoofdstukken van deze cursus zijn nog niet nagelezen. Deze hoofdstukken worden aangeduid met een "Work In Progress" label: WIP. Deze zullen mogelijks nog wijzigen, het is dus niet de bedoeling dat je deze hoofdstukken reeds doorneemt.
 </small>
