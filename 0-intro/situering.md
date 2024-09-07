@@ -4,7 +4,7 @@
 
 Dit olod behoort tot het keuzepakket `Development`, zoals je hieronder kan zien:
 
-![Dit olod in de keuzepakketten](../images/MT_olods.png ':size=70%')
+![Dit olod in de keuzepakketten](./images/MT_olods.png ':size=70%')
 
 ## Wat gaan we doen?
 
