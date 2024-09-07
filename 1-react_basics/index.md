@@ -28,184 +28,42 @@ Wat als resultaat heeft:
 
 - `React`: laat toe om "views" aan te maken.
 - `ReactDOM`: rendert deze "views" in de DOM, m.a.w. dit is React voor de browser. Er is bijvoorbeeld ook nog [React Native](https://reactnative.dev/) voor mobile applicaties.
-  - **Renderen** = het omzetten van een datastructuur naar een visuele voorstelling. Hier dus de interne voorstelling van React-componenten naar HTML.
 
-Deze libraries importeer je simpelweg in de HTML:
+Een React applicatie bestaat uit een heleboel componenten die samen een webpagina vormen. Een component is een stukje code dat een bepaald deel van de webpagina voorstelt. Een component kan andere componenten bevatten. Dit is een van de redenen waarom React zo populair is: je kan je code opdelen in kleine, herbruikbare stukken. Deze componenten samen vormen één boomstructuur, de component tree.
 
-```html
-<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-```
+Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML.
 
-Vervolgens maak je één root voor de applicatie met een uniek `id`. Onder deze tag zal één React-applicatie alle DOM-manipulaties en magie uitvoeren. Het is dus perfect mogelijk om meerdere afzonderlijke React-applicaties in eenzelfde HTML-pagina te hebben, elk met een aparte root.
+### JSX
 
-```html
-<div id="greeting"></div>
-```
+Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript. Let welop: JSX is geen standaard JavaScript en wordt niet begrepeen door de browser. JSX wordt door de compiler omgezet naar JavaScript.
 
-Vervolgens kan je met `React.createElement` bepaalde elementen van de pagina aanmaken. `createElement` verwacht als eerste argument de naam van een HTML-tag, als tweede een object met properties om door te geven aan de HTML en als derde optioneel de inhoud van deze tag (m.a.w. eventuele kind-tags of simpelweg tekst).
+Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waarop je moet letten:
 
-Aangezien elke React-applicatie start vanaf één bepaalde root, moeten we eerst met `ReactDOM.createRoot` een root aanmaken. Deze functie verwacht het DOM-element waaronder de applicatie draait als enige argument. Vervolgens kan je op deze root de `render` functie aanroepen om een element te renderen onder deze root.
-
-```html
-<script>
-  const root = ReactDOM.createRoot(document.getElementById('greeting'));
-  root.render(React.createElement('div', null, 'hello world'));
-</script>
-```
-
-Dit geeft volgend resultaat:
-
-<!-- tabs:start -->
-
-### **Voorbeeld**
-
-[example4.html](./examples/example4.html ':include height=100px')
-
-### **Code**
-
-[example4.html](./examples/example4.html ':include :type=code')
-
-<!-- tabs:end -->
-
-Wat is nu het nut van het tweede argument? Bekijk onderstaande code. Hierbij isoleren we de code van de begroeting in een functie genaamd `GreetingElement`. Vervolgens geven we deze functie door aan `createElement`. Dit geeft opnieuw hetzelfde resultaat als de vorige demo (test zelf maar uit).
-
-```js
-function GreetingElement() {
-  return React.createElement('div', null, 'hello world');
-}
-
-const root = ReactDOM.createRoot(document.getElementById('greeting'));
-root.render(React.createElement(GreetingElement));
-```
-
-Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
-
-<!-- tabs:start -->
-
-### **Voorbeeld**
-
-[example5.html](./examples/example5.html ':include height=100px')
-
-### **Code**
-
-[example5.html](./examples/example5.html ':include :type=code')
-
-<!-- tabs:end -->
-
-Het wordt pas echt spannend wanneer we de functie `GreetingElement` een argument meegeven, dit argument is **altijd een object**. Het bevat alle properties die van bovenaf doorgegeven worden. In de React-wereld worden dit de **props** van een component genoemd. In onderstaand voorbeeld krijgt de functie `GreetingElement` een prop met als naam `name` mee. Het zal deze `name` tonen in een span met id gelijk aan `name`.
-
-> Merk op dat we hier meteen object destructuring toepassen op de props, m.a.w. we pakken meteen de name uit dit object
-
-```js
-function GreetingElement({ name }) {
-  return React.createElement(
-    'div',
-    null,
-    'hello ',
-    React.createElement('span', { id: 'name' }, name)
-  );
-}
-
-const root = ReactDOM.createRoot(document.getElementById('greeting'));
-root.render(React.createElement(GreetingElement, { name: 'world' }));
-```
-
-Inspecteer het resultaat van dit voorbeeld via de DevTools van je browser.
-
-<!-- tabs:start -->
-
-### **Voorbeeld**
-
-[example6.html](./examples/example6.html ':include height=100px')
-
-### **Code**
-
-[example6.html](./examples/example6.html ':include :type=code')
-
-<!-- tabs:end -->
-
-Bijgevolg is het ook eenvoudig om twee afzonderlijke React-applicaties te hebben op één pagina. Je maakt hiervoor twee verschillende roots en rendert een (verschillende) component in deze roots.
-
-Inspecteer de werking hiervan a.d.h.v. het volgend voorbeeld.
-
-<!-- tabs:start -->
-
-### **Voorbeeld**
-
-[example7.html](./examples/example7.html ':include height=100px')
-
-### **Code**
-
-[example7.html](./examples/example7.html ':include :type=code')
-
-<!-- tabs:end -->
-
-Je vraagt je nu waarschijnlijk af: "Is dit echt beter dan vanilla JavaScript?". Het antwoord is dat niemand React op deze manier gebruikt. Maar het is wel belangrijk om te beseffen dat deze acties wel degelijk onderliggend gebeuren. In de volgende sectie gaan we een stap verder richting wat React eigenlijk wel is.
-
-## JSX
-
-Als we enkel React zouden kunnen schrijven door immens, nauwelijks leesbare, boomstructuren van `createElement` te creëren hadden we waarschijnlijk nooit van React gehoord. Samen met React heeft Facebook ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om veel efficiënter (en leesbaarder) zulke componenten uit te schrijven.
-
-![JSX example](./images/jsx.png)
-
-Hier heb je een simpel JavaScript-bestand, maar waar je normaal ingewikkelde `React.createElement` structuren hebt om HTML te manipuleren, schrijf je gewoon iets wat erg op HTML lijkt om dat te doen.
-
-Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waar je moet op letten:
-
-- `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS class mee te geven aan een element, het wordt vervangen door `className`
+- `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS klasse mee te geven aan een element, het wordt vervangen door `className`
 - `for` is ook een reserved keyword in JavaScript, het wordt vervangen door `htmlFor`
 - Als je JavaScript code wilt mixen met een stuk 'HTML', dien je het tussen `{ }` te zetten, bijvoorbeeld `<h1>{title}</h1>`.
 
-Wanneer we het stuk code van het `GreetingElement` omzetten naar JSX, krijgen we het volgende resultaat:
-
-```jsx
-function GreetingElement({ name }) {
-  return (
-    <div>
-      hello <span id='name'>{name}</span>
-    </div>
-  );
-}
-```
+<!-- TODO: onderstaande ergens anders zetten -->
 
 `{name}` zorgt ervoor dat de waarde van de variable `name` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken. De uitvoer van deze code zal gerenderd worden in de HTML.
 
 > Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
 
-Browsers kunnen natuurlijk geen JSX renderen, de code moet eerst omgezet worden door een compiler (net zoals Java code niet rechtstreeks door een processor kan uitgevoerd worden). Babel is een compiler die als een stuk JavaScript in de browser kan geladen worden en vervolgens JSX vertaalt. Babel werd oorspronkelijk gecreëerd om moderne JavaScript te kunnen draaien in oudere browsers. Om babel te gebruiken, voeg je onderstaand script toe aan de HTML en voeg je `type="text/babel"` toe aan de `script` tag met de JSX-code.
-
-```html
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-```
-
-Dit geeft het volgende resultaat:
-
-<!-- tabs:start -->
-
-### **Voorbeeld**
-
-[example8.html](./examples/example8.html ':include height=100px')
-
-### **Code**
-
-[example8.html](./examples/example8.html ':include :type=code')
-
-<!-- tabs:end -->
-
 ## Vite
 
-Onze React-applicaties gaan natuurlijk liefst niet bestaan uit een paar grote HTML-bestanden doorspekt met `script` blokken met daarin JSX. Aangezien er toch een compilatiestap is, om de JSX om te zetten naar HTML + JavaScript, kunnen we even goed gebruik maken van deze stap om ook 'andere dingen' te doen. Deze 'andere dingen' zijn bijvoorbeeld afbeeldingen en CSS optimaliseren, dependencies beheren, etc.
+Bij een React applicatie is er steeds een compilatiestap nodig die de JSX omzet naar JavaScript. Deze compilatiestap zorgt ervoor dat de browser de code kan begrijpen, maar is niet beperkt tot enkel het omzetten van JSX naar JavaScript. Tijdens deze stap worden ook afbeeldingen goed gezet, CSS geoptimaliseerd, dependencies gebundeld, etc. Een tool die dergelijke taken uitvoert noemen we een buildtool of bundler.
 
-[**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
+Vroeger werd [`create-react-app`](https://create-react-app.dev/) gebruikt om een nieuwe React-applicatie te maken. Dit is een command line tool die een nieuwe React-applicatie opzet met een aantal standaardinstellingen. Het gebruikt achter de schermen [Webpack](https://webpack.js.org/) als bundler.service
+
+De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
 Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
-- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundel-stap tijdens de ontwikkeling.
+- **Native ES modules**: Vite maakt gebruik van native ES modserviceules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundel-stap tijdens de ontwikkeling.
 
   ![Vite - native ES Modules](./images/vite_ESModules.webp ':size=80%')
 
-- Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.
+- Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.service
 
   - De **dependency modules** zijn JavaScript-modules die je hebt geïmporteerd uit de map `node_modules`. Deze modules worden verwerkt en gebundeld met behulp van [esbuild](https://esbuild.github.io/), een JavaScript-bundler geschreven in Go die 10-100x sneller presteert dan [Webpack](https://webpack.js.org/).
   - De **applicatie modules** zijn modules die je voor je applicatie schrijft, zoals .jsx-bestanden.
