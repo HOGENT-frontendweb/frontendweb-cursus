@@ -488,15 +488,12 @@ export const AuthProvider = ({ children }) => {
 Nu kunnen we de `PrivateRoute` component aanmaken. Maak een bestand `src/components/PrivateRoute.jsx` aan met volgende inhoud:
 
 ```jsx
-import { Navigate, Outlet, useLocation } from 'react-router-dom'; // 👈 3 en 4
+import { Navigate, Outlet } from 'react-router-dom'; // 👈 3
 import { useAuth } from '../contexts/Auth.context'; // 👈 2
 
 // 👇 1
 export default function PrivateRoute() {
   const { ready, isAuthed } = useAuth(); // 👈 2
-  const { pathname } = useLocation(); // 👈 4
-
-  const loginPath = `/login?redirect=${pathname}`; // 👈 4
 
   // 👇 2
   if (!ready) {
@@ -520,14 +517,14 @@ export default function PrivateRoute() {
     return <Outlet />;
   }
 
-  return <Navigate replace to={loginPath} />; // 👈 4
+  return <Navigate replace to="/login" />; // 👈 4
 }
 ```
 
 1. We definiëren een `PrivateRoute` component.
 2. Als we de credentials aan het controleren zijn, tonen we de loading indicator.
 3. Als de gebruiker ingelogd is, dan retourneren we een Outlet component voor de weergave van de child routes.
-4. Als de gebruiker niet ingelogd is, dan sturen we hem door naar de login. Om de gebruiker na het aanmelden terug te sturen naar de pagina waarvan hij kwam, voegen we een `redirect` query parameter toe aan de huidige URL. Deze kunnen we ophalen via `useLocation`.
+4. Als de gebruiker niet ingelogd is, dan sturen we hem door naar de loginpagina.
 
 Tot slot maken we gebruik van deze component om onze routes af te schermen. `Transactions` en `Places` dienen afgeschermd te worden. `ProtectedRoute` wordt de parent component, en in de `Outlet` component worden de children gerenderd als de gebruiker is aangemeld. Pas `src/main.jsx` als volgt aan:
 
