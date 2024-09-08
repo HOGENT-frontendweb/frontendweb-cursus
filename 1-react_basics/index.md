@@ -31,7 +31,7 @@ Wat als resultaat heeft:
 
 Een React applicatie bestaat uit een heleboel componenten die samen een webpagina vormen. Een component is een stukje code dat een bepaald deel van de webpagina voorstelt. Een component kan andere componenten bevatten. Dit is een van de redenen waarom React zo populair is: je kan je code opdelen in kleine, herbruikbare stukken. Deze componenten samen vormen één boomstructuur, de component tree.
 
-Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML.
+Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML. Tijdens het renderen zal React de component tree doorlopen en voor elk component de bijbehorende functie uitvoeren. Deze functie zal JSX teruggeven, wat React dan omzet naar HTML.
 
 ### JSX
 
@@ -51,9 +51,9 @@ Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurl
 
 ## Vite
 
-Bij een React applicatie is er steeds een compilatiestap nodig die de JSX omzet naar JavaScript. Deze compilatiestap zorgt ervoor dat de browser de code kan begrijpen, maar is niet beperkt tot enkel het omzetten van JSX naar JavaScript. Tijdens deze stap worden ook afbeeldingen goed gezet, CSS geoptimaliseerd, dependencies gebundeld, etc. Een tool die dergelijke taken uitvoert noemen we een buildtool of bundler.
+Bij een React applicatie is er steeds een compilatiestap nodig die de JSX omzet naar JavaScript. Deze compilatiestap zorgt ervoor dat de browser de code kan begrijpen, maar is niet beperkt tot enkel het omzetten van JSX naar JavaScript. Tijdens deze stap worden ook afbeeldingen goed gezet, CSS geoptimaliseerd, dependencies gebundeld, etc. Een tool die dergelijke taken uitvoert noemen we een buildtool of **bundler**.
 
-Vroeger werd [`create-react-app`](https://create-react-app.dev/) gebruikt om een nieuwe React-applicatie te maken. Dit is een command line tool die een nieuwe React-applicatie opzet met een aantal standaardinstellingen. Het gebruikt achter de schermen [Webpack](https://webpack.js.org/) als bundler.service
+Vroeger werd [`create-react-app`](https://create-react-app.dev/) gebruikt om een nieuwe React-applicatie te maken. Dit is een command line tool die een nieuwe React-applicatie opzet met een aantal standaardinstellingen. Het gebruikt achter de schermen [Webpack](https://webpack.js.org/) als bundler.
 
 De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
@@ -94,69 +94,103 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 - `node_modules`: deze map bevat alle dependencies van de applicatie, m.a.w. de React libraries en alle libraries waar die dan weer op steunen. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 40.020 (!) bestanden die 148 MB innemen).
 - `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc.
+- `yarn.lock`: dit bestand bevat de exacte versies van de dependencies die effectief geïnstalleerd zijn.
 - `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...).
 - `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
 - er werd ook automatisch een `.gitignore` voorzien.
-- `.eslintrc.cjs`: configuratiebestand voor [eslint](https://eslint.org/), een tool die je code analyseert en je waarschuwt voor mogelijke fouten, slechte praktijken, etc.
-  - Voorlopig verwijderen we dit bestand, maar later in de cursus gaan we dit opnieuw gebruiken.
+- `eslintr.config.js`: configuratiebestand voor [eslint](https://eslint.org/), een tool die je code analyseert en je waarschuwt voor mogelijke fouten, slechte praktijken, etc.
+- `vite.config.js`: configuratiebestand voor Vite.
+- `index.html`: de enige HTML-pagina van de applicatie. De inhoud van deze pagina zal steeds aangepast worden door React.
 
 ### yarn
 
 [yarn](https://yarnpkg.com/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). Ze doen beide hetzelfde en zijn inwisselbaar maar de ene keer `yarn` gebruiken en de andere keer `npm` is dan weer geen goed idee. Ze kunnen andere versies van packages cachen e.d. en dan kan je rare fouten tegenkomen.
 
+Het project gebruikt standaard Yarn v1. Dit passen we aan naar Yarn v2, naar analogie bij Web Services. Dit doen we door de volgende commando's uit te voeren:
+
+```bash
+corepack enable
+yarn set version berry
+```
+
+Maak vervolgens een `.yarnrc.yml` bestand aan in de root van je project met volgende inhoud:
+
+```yml
+nodeLinker: node-modules
+```
+
+Dit zorgt ervoor dat Yarn v2 de dependencies installeert in de `node_modules` map. Voer hierna een `yarn install` uit om de dependencies te installeren.
+
 ### package.json
 
-De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Een voorbeeld van een `package.json` is:
+De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `yarn init` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
 
-[package.json](./examples/package.json ':include :type=code')
+[package.json](examples/package.json ':include :type=code')
 
-De `package.json` bevat enkele properties:
+De `package.json` kan enkele properties bevatten:
 
+- `name`: de naam van het project
+- `version`: de versie van het project
+- `description`: een korte beschrijving van het project
+- `main`: het entry point van de applicatie
+- `repository`: de URL van de git repository
+- `author`: de auteur van de applicatie
+- `license`: de licentie van de applicatie
+- `private`: of de applicatie publiek is of niet, npm zal bv. niet toelaten om een private package te publiceren
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
 - `devDependencies`: packages enkel nodig in development (en dus niet in productie)
 - `scripts`: laten toe om een soort van shortcuts te maken voor scripts (bv. de applicatie starten, testen, builden voor productie, etc.)
+- `packageManager`: de package manager die gebruikt wordt (in dit geval Yarn)
 
 Met een simpele `yarn install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`yarn install --prod` installeert enkel de `dependencies`).
 
-Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (door vite) omgevormd wordt tot iets wat browsers begrijpen.
+Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden *at build time*, of dus wanneer de applicatie (bv. door webpack) omgevormd wordt tot iets wat browsers begrijpen.
 
 Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees gerust eens door de specificatie). Kort gezegd houdt dit in dat elk versienummer bestaat uit drie delen: `MAJOR.MINOR.PATCH`, elke deel wordt met één verhoogd in volgende gevallen:
 
-- `MAJOR`: wijzigingen die **_niet_** compatibel zijn met oudere versies
-- `MINOR`: wijzigen die **_wel_** compatibel zijn met oudere versies
+- `MAJOR`: wijzigingen die ***niet*** compatibel zijn met oudere versies
+- `MINOR`: wijzigen die ***wel*** compatibel zijn met oudere versies
 - `PATCH`: kleine bugfixes (compatibel met oudere versies)
 
 In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~) of hoedje (^) als prefix, dit heeft volgende betekenis:
 
 - geen prefix: exact deze versie
-- tilde (~): ongeveer deze versie (zie <https://github.com/npm/node-semver#tilde-ranges-123-12-1>)
-- hoedje (^): compatibel met deze versie (<https://github.com/npm/node-semver#caret-ranges-123-025-004>)
+- tilde (~): ongeveer deze versie (zie <https://docs.npmjs.com/cli/v6/using-npm/semver#tilde-ranges-123-12-1>)
+- hoedje (^): compatibel met deze versie (<https://docs.npmjs.com/cli/v6/using-npm/semver#caret-ranges-123-025-004>)
 
 Kortom, een tilde is strenger dan een hoedje.
 
-Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn dev` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
+Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
 
-Na de create-vite dienen we nog een `yarn install` uit te voeren, om alle dependencies te installeren. Met een `yarn dev` zien we dan onze (default, lege) React-applicatie. Standaard wordt deze op poort 5173 gestart: <http://localhost:5173>.
+We hebben in bovenstaand voorbeeld een start-script toegevoegd dat je kan gebruiken om de server te starten. Kopieer de `scripts` naar jouw `package.json`. Dit script kan je nu uitvoeren met `yarn start`.
 
-```bash
-cd budget
-yarn install
-yarn dev
-```
+Er zijn nog heel wat andere opties voor de `package.json`. Je vindt alles op <https://docs.npmjs.com/cli/v10/configuring-npm/package-json>.
 
-### yarn.lock
+### yarn.lock en .yarn map
 
 Wanneer je een package installeert, zal yarn een `yarn.lock` bestand aanmaken. Dit bestand bevat de exacte versies van de packages die geïnstalleerd zijn. Dit bestand moet je zeker mee opnemen in je git repository. Dit zorgt ervoor dat iedereen exact dezelfde versies van de packages gebruikt.
 
 Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd de exacte versie staat maar een bepaalde syntax die aangeeft welke versies toegelaten zijn (zie vorige sectie).
 
+Yarn zal ook een `.yarn` map aanmaken. Deze map bevat de geïnstalleerde versie van Yarn en wordt door [Corepack](https://nodejs.org/api/corepack.html) gebruikt om de packages te installeren. Deze map moet je niet opnemen in je git repository.
+
+### .gitignore
+
+Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `yarn install`.
+
+Download de `.gitignore` van <https://github.com/github/gitignore/blob/main/Node.gitignore> en plaats deze in de root van je project. Het is belangrijk dat je het bestand exact de naam `.gitignore` heeft.
+
+Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestand ook aanpassen naar eigen wens, maar dit is een vrij complete voor een Node.js project.
+
 ### src
 
-De src map bevat een aantal JSX-bestanden (`main.jsx`, `App.jsx`...) en wat CSS, e.d. `vite` zet dit om naar HTML en (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
+Start de applicatie met het commando `yarn dev`.
+
+De `src` map bevat een aantal JSX-bestanden (`main.jsx`, `App.jsx`...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
 Probeer maar iets aan te passen in de `App.jsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
 
-> **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
+?> **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
 ## Transaction
 
@@ -279,7 +313,7 @@ We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij al
 
 De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
-Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met _mock object_ werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
+Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met *mock object* werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
 
 Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data ophalen en tonen. Daarbij dienen we enkel die import te vervangen door een echte API call en hoeven we niet onze volledige component te herschrijven.
 
@@ -539,7 +573,7 @@ Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introdu
 git clone <JOUW_GIT_REPOSITORY_URL>
 ```
 
-Kopieer **_alle_** bestanden, **_behalve_** de `.eslintrc.cjs`, `.gitignore` en `README.md`, uit de Vite React-applicatie naar je eigen project. Maak **_geen_** submap voor de React-applicatie!
+Kopieer ***alle*** bestanden, ***behalve*** de `.eslintrc.cjs`, `.gitignore` en `README.md`, uit de Vite React-applicatie naar je eigen project. Maak ***geen*** submap voor de React-applicatie!
 
 Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
 
@@ -556,7 +590,7 @@ git push
 
 Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
 
-> 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
+> 💡 Tip: begin ***niet*** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
 
 ## Oefening 2 - To do app
 
