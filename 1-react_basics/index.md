@@ -74,7 +74,7 @@ Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
 Lees hierover meer in de [Vite documentatie](https://vitejs.dev/guide/why.html).
 
-?> Merk op: ondertussen werkt React zelf aan [een compiler](https://react.dev/learn/react-compiler) die slimmer zou moeten zijn. Deze compiler zou de code optimaliseren en sneller maken. Echter is de compiler nog niet zo mooi als het lijkt, zie [dit artikel](https://www.developerway.com/posts/i-tried-react-compiler). De inhoud van het artikel zal je wel beter begrijpen na het hoofdstuk over React Hooks.
+?> Merk op: ondertussen werkt React zelf aan [een (experimentele!) compiler](https://react.dev/learn/react-compiler) die slimmer zou moeten zijn. Deze compiler zou de code optimaliseren en sneller maken. Echter is de compiler nog niet zo mooi als het lijkt, zie [dit artikel](https://www.developerway.com/posts/i-tried-react-compiler). De inhoud van het artikel zal je wel beter begrijpen na het hoofdstuk over React Hooks.
 
 ## create-vite
 
