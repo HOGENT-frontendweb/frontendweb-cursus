@@ -43,12 +43,6 @@ Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurl
 - `for` is ook een reserved keyword in JavaScript, het wordt vervangen door `htmlFor`
 - Als je JavaScript code wilt mixen met een stuk 'HTML', dien je het tussen `{ }` te zetten, bijvoorbeeld `<h1>{title}</h1>`.
 
-<!-- TODO: onderstaande ergens anders zetten -->
-
-`{name}` zorgt ervoor dat de waarde van de variable `name` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken. De uitvoer van deze code zal gerenderd worden in de HTML.
-
-> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
-
 ## Vite
 
 Bij een React applicatie is er steeds een compilatiestap nodig die de JSX omzet naar JavaScript. Deze compilatiestap zorgt ervoor dat de browser de code kan begrijpen, maar is niet beperkt tot enkel het omzetten van JSX naar JavaScript. Tijdens deze stap worden ook afbeeldingen goed gezet, CSS geoptimaliseerd, dependencies gebundeld, etc. Een tool die dergelijke taken uitvoert noemen we een buildtool of **bundler**.
@@ -208,6 +202,83 @@ Als je meer wil weten over de configuratie, gebruik dan de [ESLint documentatie]
 
 Je kan de linting starten met het commando `yarn lint`. Deze print vervolgens alle fouten en waarschuwingen in de console. Als je aan dit commando `--fix` toevoegt, zal ESLint proberen om de fouten automatisch op te lossen.
 
+Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
+
+```terminal
+yarn add -D @stylistic/eslint-plugin-js
+```
+
+We breiden dit bestand alvast uit met een paar stijlregels:
+
+```js
+import js from '@eslint/js';
+import stylisticJs from '@stylistic/eslint-plugin-js'; // 👈 1
+import globals from 'globals';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+
+export default [
+  { ignores: ['dist'] },
+  {
+    files: ['**/*.{js,jsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        ecmaFeatures: { jsx: true },
+        sourceType: 'module',
+      },
+    },
+    settings: { react: { version: '18.3' } },
+    plugins: {
+      react,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+      '@stylistic': stylisticJs, // 👈 2
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      ...react.configs.recommended.rules,
+      ...react.configs['jsx-runtime'].rules,
+      ...reactHooks.configs.recommended.rules,
+      'react/jsx-no-target-blank': 'off',
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      // 👇 3
+      '@stylistic/no-multiple-empty-lines': ['error', {
+        max: 1, maxEOF: 1, maxBOF: 0,
+      }],
+      '@stylistic/indent': ['error', 2, {'SwitchCase': 1}],
+      '@stylistic/linebreak-style': ['error', 'unix'],
+      '@stylistic/quotes': ['error', 'single'],
+      '@stylistic/semi': ['error', 'always'],
+      '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/no-tabs': ['error'],
+      '@stylistic/max-len': ['error', {
+        'code': 120,
+        'tabWidth': 2,
+      }],
+      '@stylistic/arrow-parens': ['error', 'always'],
+      '@stylistic/brace-style': ['error', '1tbs', {'allowSingleLine': false}],
+      '@stylistic/object-curly-newline': ['error', {
+        'minProperties': 2,
+        'multiline': true,
+      }],
+      '@stylistic/object-property-newline': ['error', {'allowAllPropertiesOnSameLine': true}],
+      '@stylistic/no-inner-declarations': 'off',
+    },
+  },
+];
+```
+
+1. Importeer de `@stylistic/eslint-plugin-js` plugin.
+2. Voeg de plugin toe aan de `plugins` property.
+3. Voeg enkele stijlregels toe. Voor regels gebruik je hier dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
+
 ## Transaction
 
 In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van één transactie.
@@ -221,23 +292,23 @@ export default function Transaction() {
 }
 ```
 
-Components zijn niets meer dan functies die html terug geven, die moet getoond worden voor deze component.
+Components zijn niets meer dan functies die de HTML, die getoond moet worden door deze component, teruggeeft.
 Hier voegen we hard gecodeerde tekst toe want weten of een lege component correct gerenderd wordt is nogal lastig.
 
 Om deze component te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in de `main.jsx`:
 
 ```jsx
 // src/main.jsx
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
     <App />
-  </React.StrictMode>
+  </StrictMode>,
 );
 ```
 
-Standaard rendert deze de `App` component. Het `main.jsx` bestand ga je zelden zelf aanpassen. Je past normaal de `App` component aan.
+Standaard rendert deze de `App` component. Het `main.jsx` bestand ga je zelden zelf aanpassen, dit zal enkel globale componenten bevatten.
 
-[StrictMode](https://reactjs.org/docs/strict-mode.html) doet een aantal checks op alle (onderliggende) componenten. Zeker voor een onervaren React programmeur het een goed idee om altijd `StrictMode` aan te zetten.
+[StrictMode](https://reactjs.org/docs/strict-mode.html) doet een aantal checks op alle (onderliggende) componenten. Het is altijd een goed idee om `StrictMode` aan te zetten.
 
 ### App.jsx
 
@@ -254,15 +325,15 @@ function App() {
   return (
     <>
       <div>
-        <a href='https://vitejs.dev' target='_blank' rel='noreferrer'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
-        <a href='https://react.dev' target='_blank' rel='noreferrer'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
-      <div className='card'>
+      <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
@@ -270,7 +341,7 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p className='read-the-docs'>
+      <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
     </>
@@ -282,7 +353,7 @@ export default App;
 
 In `App.jsx` staat de code voor de standaard startpagina: het Vite en React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`, deze is enkel voor deze component. Globale stijlen definieer je in het bestand `index.css`.
 
-JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Uw component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
+JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
 Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
 
@@ -305,33 +376,33 @@ Als we nu naar [onze site](http://localhost:5173/) gaan, zouden we de hard gecod
 
 ### JSON
 
-Een hard gecodeerde string als component tonen is niet erg nuttig, daar is React complete overkill voor. In dat geval schrijf je beter een HTML pagina met wat CSS zoals je het in Web Development I geleerd hebt.
+Een hardgecodeerde string als component tonen is niet erg nuttig, daar is React complete overkill voor. In dat geval schrijf je beter een HTML pagina met wat CSS zoals je het in Web Development I geleerd hebt.
 
 Dit soort frameworks worden pas de moeite als we componenten gaan schrijven die data op een bepaalde manier tonen en manipuleerbaar maken. Met andere woorden: als componenten hergebruikt kunnen worden.
 
-Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in JSON-formaat (JavaScript Object Notation). Heel kort gezegd is dit de voorstelling van een JavaScript-object. (of alleszins, lijkt het er heel sterk op)
+Het is ooit anders geweest, maar tegenwoordig is die data zo goed als altijd in JSON-formaat (JavaScript Object Notation). Heel kort gezegd is dit de voorstelling van een JavaScript-object (of alleszins, lijkt het er heel sterk op).
 
 ```js
 {
- "key": "some string",
- "otherKey": 15,
- "key3": true,
- "listOfData": ["a", 15],
- "otherObject": {
-  "innerkey" : 42
- }
+  "key": "some string",
+  "otherKey": 15,
+  "key3": true,
+  "listOfData": ["a", 15],
+  "otherObject": {
+    "innerkey" : 42
+  }
 }
 ```
 
 We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij altijd strings. De values zijn strings, numbers, booleans, arrays of opnieuw objecten.
 
-> Dit zou allemaal herhaling moeten zijn, als 't wat ver zit: [Working with JSON](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
+> Dit zou allemaal herhaling moeten zijn, als het wat ver zit: [Working with JSON](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/JSON)
 
 De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
-Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met *mock object* werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
+Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met *mock object* werken. We steken wat JSON data hardgecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
 
-Later, als we een backend hebben, kunnen we dan makkelijk 'echte' data ophalen en tonen. Daarbij dienen we enkel die import te vervangen door een echte API call en hoeven we niet onze volledige component te herschrijven.
+Later, als we een back-end hebben, kunnen we dan makkelijk 'echte' data ophalen en tonen. Daarbij dienen we enkel die import te vervangen door een echte API call en hoeven we niet onze volledige component te herschrijven.
 
 ### Mock data
 
@@ -341,16 +412,32 @@ Maak een map `api` met een bestand `mock_data.js` aan in de `src` map. Later ver
 // src/api/mock_data.js
 const TRANSACTION_DATA = [
   {
-    user: 'Benjamin',
-    amount: -200,
-    date: '2021-07-01T12:32:04.534Z',
-    place: 'Dranken Geers',
+    id: 1,
+    amount: 3500,
+    date: "2021-05-25T17:40:00.000Z",
+    place: {
+      id: 1,
+      name: "Loon",
+      rating: 5
+    },
+    user: {
+      id: 1,
+      name: "Karine Samyn"
+    }
   },
   {
-    user: 'Benjamin',
-    amount: 1500,
-    date: '2021-06-30T10:09:22.534Z',
-    place: 'Loon',
+    id: 2,
+    amount: -220,
+    date: "2021-05-08T18:00:00.000Z",
+    place: {
+      id: 2,
+      name: "Dranken Geers",
+      rating: 3
+    },
+    user: {
+      id: 2,
+      name: "Thomas Aelbrecht"
+    }
   },
 ];
 
@@ -362,11 +449,6 @@ export default TRANSACTION_DATA;
 ### React props
 
 We gaan de `Transaction` component aanpassen zodat hij data van verschillende transacties kan weergeven:
-
-1. Definieer een variabele voor `user`, `amount` en `place`.
-2. Vervang de hard gecodeerde info door de variabelen.
-
-> Ter herinnering: als je JavaScript-code wil uitvoeren binnen JSX-code moet je deze tussen `{}` plaatsen.
 
 ```jsx
 // src/components/transaction/Transaction.jsx
@@ -383,19 +465,19 @@ export default function Transaction() {
 }
 ```
 
-1. Definieer een variabele voor `user`, `amount` en `place`
-2. Vervang de hardcoded info door de variabelen.
+1. Definieer een variabele voor `user`, `amount` en `place`.
+2. Vervang de hard gecodeerde info door de variabelen.
+
+`{user}` zorgt ervoor dat de waarde van de variable `user` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken. De uitvoer van deze code zal gerenderd worden in de HTML.
+
+> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
 
 De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction(props) {
-  // 👈 2
-  // const user = "Benjamin"; 👈 1
-  // const amount = 200; 👈 1
-  // const place = "Dranken Geers"; 👈 1
-  const { user, amount, place } = props; // 👈 3
+export default function Transaction(props) { // 👈 1
+  const { user, amount, place } = props; // 👈 2
   return (
     <div>
       {user} gaf €{amount} uit bij {place}
@@ -404,14 +486,11 @@ export default function Transaction(props) {
 }
 ```
 
-1. Verwijder de constanten met de hard gecodeerde data.
-2. We geven de data door via de `props` parameter, de React properties. Op die manier kunnen we informatie doorgeven van de ene component aan de andere.
-3. Om niet telkens `props.user`, `props.amount`... te moeten schrijven, maken we gebruik van **object destructuring**.
+1. We geven de data door via de `props` parameter, de React properties. Op die manier kunnen we informatie doorgeven van de ene component aan de andere. Elke React component ontvangt als eerste parameter een object `props` met daarin alle properties die aan de component zijn doorgegeven.
+2. Verwijder de constanten met de hard gecodeerde data. Om niet telkens `props.user`, `props.amount`... te moeten schrijven, maken we gebruik van **object destructuring**.
+   - Je kan natuurlijk ook meteen de properties destructureren in de parameters van de functie.
 
 Hoe krijg je nu de juiste data in de `props` van een component? In `App.js` willen we:
-
-1. drie variabelen `user`, `amount`, `place`.
-2. die we doorgeven aan de `Transaction` component. Dit doet je op dezelfde manier als bij HTML: je voegt simpelweg attributen toe op een bepaalde tag.
 
 ```jsx
 // src/App.jsx
@@ -431,10 +510,10 @@ function App() {
 export default App;
 ```
 
-We willen natuurlijk dat hier de data van ons mock object komt.
+1. Maak drie variabelen `user`, `amount`, `place`.
+2. Geef deze door aan de `Transaction` component. Dit doet je op dezelfde manier als bij HTML: je voegt simpelweg attributen toe op een bepaalde tag.
 
-1. Importeer de constante `TRANSACTION_DATA`.
-2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen.
+We willen natuurlijk dat hier de data van ons mock object komt:
 
 ```jsx
 // src/App.jsx
@@ -458,10 +537,24 @@ function App() {
 export default App;
 ```
 
-Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een `Transaction` component tonen.
+1. Importeer de constante `TRANSACTION_DATA`.
+2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen.
 
-1. Verwijder de lijn die de eerste transactie ophaalt.
-2. We hier kunnen in de JSX-code ook onze array **mappen** waarbij we elk element omzetten naar een `Transaction` component.
+Pas ook de `Transaction` component aan zodat je de naam van de gebuiker en de plaats ziet. Je kan altijd eens kijken welke foutmeldingen je krijgt in de console indien je `user` of `place` rechtstreeks probeert te gebruiken.
+
+```jsx
+// src/components/transaction/Transaction.jsx
+export default function Transaction(props) {
+  const { user, amount, place } = props;
+  return (
+    <div>
+      {user.name} gaf €{amount} uit bij {place.name} {/* 👈 */}
+    </div>
+  );
+}
+```
+
+Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een `Transaction` component tonen.
 
 ```jsx
 // src/App.jsx
@@ -487,7 +580,10 @@ function App() {
 export default App;
 ```
 
-Je kan ook gebruik maken van object destructuring om attributen te genereren. Elke key wordt dan een attribuut met de bijbehorende waarde. Het is niet altijd een goed idee maar het bespaart soms wel wat typwerk.
+1. Verwijder de lijn die de eerste transactie ophaalt.
+2. We hier kunnen in de JSX-code ook onze array **mappen** waarbij we elk element omzetten naar een `Transaction` component.
+
+Je kan ook gebruik maken van object destructuring om attributen te genereren. Elke key wordt dan een attribuut met de bijbehorende waarde. Het is **niet altijd een goed idee** maar het bespaart soms wel wat typwerk. Het zorgt vaak voor onleesbare code, je weet bv. niet welke props effectief gebruikt worden en het is moeilijker om later te debuggen.
 
 ```jsx
 import Transaction from './components/transactions/Transaction';
@@ -511,21 +607,28 @@ export default App;
 
 Alles lijkt te werken, maar als je de console opent zal je een error zien staan: `Each child in a list should have a unique "key" prop.`
 
+!> Als front-end developer moet je namelijk **altijd** de console van de browser open hebben. Hierin krijg je foutmeldingen en waarschuwingen te zien die je helpen bij het debuggen van je code. Soms crasht React door een fout en zie je gewoonweg niets meer in de browser. De console is dan je enige hulpmiddel, dit moet altijd de eerste reflex zijn bij een fout.
+
 Als je een lijst van elementen maakt, moet je altijd een `key` property voorzien (van het type `string`). Op basis van deze keys kan React weten welke elementen gewijzigd, toegevoegd of verwijderd zijn. Keys moeten uniek zijn binnen de array waarin de componenten gecreëerd worden, dus enkel t.o.v. de broer en zus elementen, niet over de hele applicatie.
 
-Hoewel je altijd de index van een array kan gebruiken is dat zelden een goed idee. De key is het enige dat React gebruikt om DOM-elementen te identificeren. Dus stel dat je een element toevoegt op het einde van de lijst en halfweg een element verwijdert, dan zou bij een index-key React denken dat alle tussenliggende elementen dezelfde zijn!
+Hoewel je altijd de **index van een array** kan gebruiken is dat **zelden een goed idee**. De key is het enige dat React gebruikt om DOM-elementen te identificeren. Dus stel dat je een element toevoegt op het einde van de lijst en halfweg een element verwijdert, dan zou bij een index-key React denken dat alle tussenliggende elementen dezelfde zijn!
 
-Als je met 'echte' data werkt, die via een backend komt, heeft elk element heel vaak een unieke id (uit de databank). Dit id gebruik je dan ook om het element te identificeren in API calls. Dit vormt meteen een uitstekende key voor React-lijsten. In ons eenvoudig voorbeeld hebben we nog geen unieke id's, dus kunnen we voorlopig niet anders dan de index expliciet toevoegen als key om de error te zien verdwijnen. Als je niets meegeeft, gebruikt React onderliggend sowieso een index als key. Functioneel maakt het geen verschil of we het expliciet maken of niet. We komen hier later zeker op terug.
+Als je met 'echte' data werkt, die via een backend komt, heeft elk element heel vaak een **unieke id (uit de databank)**. Dit id gebruik je dan ook om het element te identificeren in API calls. Dit vormt meteen een uitstekende key voor React-lijsten. Als je niets meegeeft, gebruikt React onderliggend sowieso een index als key. Functioneel maakt het geen verschil of we het expliciet maken of niet. In ons eenvoudig voorbeeld hebben we ook unieke id's, dus we kunnen deze meteen gebruiken:
+
+```jsx
+<Transaction
+  key={trans.id} // 👈 2
+  {...trans}
+/>
+```
+
+Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
 
 ## CSS in React
 
 In dit project maken we gebruik van [Bootstrap](https://getbootstrap.com/), een populair JavaScript- en CSS-framework. Bootstrap kan op verschillende manieren worden toegevoegd aan React. Laten we gebruik maken van Bootstrap CDN, de eenvoudigste manier om Bootstrap toe te voegen aan de React. Geen extra installatie of download is vereist. Een alternatief is om gebruik te maken van [react-bootstrap](https://www.npmjs.com/package/react-bootstrap).
 
 Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-vite` is dit het `index.html` bestand.
-
-1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS.
-2. Als je project ook gebruikt maakt van de JavaScript-componenten uit Bootstrap, zoals een modal venster, vervolgkeuzemenu of navigatiebalk moeten we het bestand `bootstrap.bundle.min.js` koppelen. Dat vooraf is gecompileerd met `Popper.js`. Voorzie hiervoor een script-tag die linkt naar de gebundelde Javascript CDN's vlak voor het sluiten van de body-tag. Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/).
-3. Pas ook de `title` van de app aan.
 
 ```html
 <!-- public/index.html -->
@@ -536,9 +639,9 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
     <!-- 👆 1 -->
@@ -548,8 +651,8 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
   <body>
     <div id="root"></div>
     <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
     <!-- 👆 2 -->
@@ -558,30 +661,39 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
 </html>
 ```
 
-Gooi het bestand `App.css` weg en maak `index.css` leeg. We gaan de styling van Bootstrap gebruiken. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen.
+1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS.
+2. Als je project ook gebruikt maakt van de JavaScript-componenten uit Bootstrap, zoals een modal venster, vervolgkeuzemenu of navigatiebalk moeten we het bestand `bootstrap.bundle.min.js` koppelen. Dat vooraf is gecompileerd met `Popper.js`. Voorzie hiervoor een script-tag die linkt naar de gebundelde Javascript CDN's vlak voor het sluiten van de body-tag. Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/).
+3. Pas ook de `title` van de app aan.
+
+Gooi het bestand `App.css` weg en maak `index.css` leeg. We gaan de styling van Bootstrap gebruiken. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
 
 Pas nu de `Transaction` component aan en maak gebruik van de Bootstrap class `text_bg_dark` voor de `div` tag. Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}` in onderstaand voorbeeld. Je kan ook de props meteen destructuren in de parameters van de functie.
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction({ user, amount, place }) {
-  // 👈
+export default function Transaction({ user, amount, place }) { // 👈
   // 👇
   return (
     <div className='text-bg-dark' style={{ textAlign: 'center' }}>
-      {user} gaf €{amount} uit bij {place}
+      {user.name} gaf €{amount} uit bij {place.name}
     </div>
   );
 }
 ```
 
+## Debugging
+
+Een applicatie ontwikkelen zonder eens te moeten debuggen is een utopie, ook in React.
+
+Net zoals in vanilla JavaScript kan je hier gebruik maken van o.a. `console.log`, maar op die manier debuggen is tijdrovend en lastig.
+
+Uiteraard heb je ook het [`debugger`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/debugger?retiredLocale=nl ':ignore') statement, maar daarvoor moet je in de browser de inspector tools open staan hebben.
+
+Het zou handig zijn als we in VS Code konden debuggen... Uiteraard kan dit ook. [Lees in deze tutorial hoe je dit opzet](https://profy.dev/article/debug-react-vscode ':ignore'). Tip: onze webapplicatie draait op `http://localhost:5173`.
+
+Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de `return` in de `App` component. Als je nu naar de browser gaat, zou de debugger moeten stoppen op het breakpoint. Hoera, we kunnen degelijk debuggen!
+
 ## Oefening 1 - Je eigen project
-
-Maak een nieuwe Vite React-applicatie aan met de naam van je project.
-
-```bash
-yarn create vite <PROJECTNAAM> --template react-swc
-```
 
 Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Clone jouw Git repository uit de GitHub classroom:
 
@@ -589,18 +701,28 @@ Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introdu
 git clone <JOUW_GIT_REPOSITORY_URL>
 ```
 
-Kopieer ***alle*** bestanden, ***behalve*** de `.eslintrc.cjs`, `.gitignore` en `README.md`, uit de Vite React-applicatie naar je eigen project. Maak ***geen*** submap voor de React-applicatie!
+Maak een nieuwe Vite React-applicatie aan met de naam van je project in de map van je Git repository. Gebruik een zinnige naam zodat duidelijk is in welke map jouw front-end zich bevindt (bv. suffix `-frontend`).
+
+```bash
+yarn create vite <PROJECTNAAM> --template react-swc
+```
 
 Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
 
-- `README.md`: vul de titel en je naam, studentennummer en e-mailadres in.
-- `dossier.md`: vul de titel in, duid aan welk(e) vak(ken) je volgt, en vul de link(s) naar de GitHub repository/repositories in.
+- `README.md`:
+  - Vul de titel en je naam, studentennummer en e-mailadres in.
+- `dossier.md`:
+  - Vul de titel en de link naar de GitHub repository in
+  - Duid aan welk(e) olod(s) je volgt
+  - Je laat de links voor de online versie staan, je kan deze wel weggooien voor olods die je niet volgt
+
+?> Zet ook meteen de ESLint en debugger configuratie op punt!
 
 Commit vervolgens de lege React-applicatie:
 
 ```bash
 git add .
-git commit -m "✨ Initial commit ✨"
+git commit -m "✨ Add empty React app ✨"
 git push
 ```
 
