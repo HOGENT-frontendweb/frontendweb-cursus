@@ -760,7 +760,7 @@ end note
 <!-- markdownlint-disable-next-line -->
   + Oplossing +
 
-  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/frontendweb-ch1-solution>.
+  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/Web-IV/frontendweb-ch1-solution>.
 
 ## Must read/watch
 
