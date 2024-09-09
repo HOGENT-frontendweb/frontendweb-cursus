@@ -764,6 +764,8 @@ end note
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/Web-IV/frontendweb-ch1-solution>.
 
+l> fe oplossing 4331ea1 les1-opl
+
 ## Must read/watch
 
 - [Don't Use JS for That: Moving Features to CSS and HTML by Kilian Valkhof](https://www.youtube.com/watch?v=IP_rtWEMR0o)
