@@ -210,21 +210,21 @@ Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
 yarn add -D @stylistic/eslint-plugin-js
 ```
 
-We breiden dit bestand alvast uit met een paar stijlregels:
+We overlopen dit bestand en breiden het alvast uit met een paar stijlregels:
 
 ```js
 import js from '@eslint/js';
-import stylisticJs from '@stylistic/eslint-plugin-js'; // 👈 1
+import stylisticJs from '@stylistic/eslint-plugin-js'; // 👈 5
 import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist'] }, // 👈 1
   {
-    files: ['**/*.{js,jsx}'],
-    languageOptions: {
+    files: ['**/*.{js,jsx}'],  // 👈 2
+    languageOptions: {  // 👈 3
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
@@ -233,24 +233,24 @@ export default [
         sourceType: 'module',
       },
     },
-    settings: { react: { version: '18.3' } },
-    plugins: {
+    settings: { react: { version: '18.3' } }, // 👈 3
+    plugins: { // 👈 4
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      '@stylistic': stylisticJs, // 👈 2
+      '@stylistic': stylisticJs, // 👈 6
     },
     rules: {
-      ...js.configs.recommended.rules,
-      ...react.configs.recommended.rules,
-      ...react.configs['jsx-runtime'].rules,
-      ...reactHooks.configs.recommended.rules,
+      ...js.configs.recommended.rules, // 👈 7
+      ...react.configs.recommended.rules, // 👈 7
+      ...react.configs['jsx-runtime'].rules, // 👈 7
+      ...reactHooks.configs.recommended.rules, // 👈 7
       'react/jsx-no-target-blank': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      // 👇 3
+      // 👇 8
       '@stylistic/no-multiple-empty-lines': ['error', {
         max: 1, maxEOF: 1, maxBOF: 0,
       }],
@@ -266,20 +266,24 @@ export default [
       }],
       '@stylistic/arrow-parens': ['error', 'always'],
       '@stylistic/brace-style': ['error', '1tbs', {'allowSingleLine': false}],
-      '@stylistic/object-curly-newline': ['error', {
-        'minProperties': 2,
-        'multiline': true,
-      }],
-      '@stylistic/object-property-newline': ['error', {'allowAllPropertiesOnSameLine': true}],
       '@stylistic/no-inner-declarations': 'off',
+      "react/react-in-jsx-scope": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/prop-types": "off",
     },
   },
 ];
 ```
 
-1. Importeer de `@stylistic/eslint-plugin-js` plugin.
-2. Voeg de plugin toe aan de `plugins` property.
-3. Voeg enkele stijlregels toe. Voor regels gebruik je hier dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
+1. We negeren de `dist` map. Deze map zal later onze gebouwde React applicatie bevatten.
+2. We linten enkel bestanden met een `.js` of `.jsx` extensie.
+3. We definiëren de versie van ECMAScript (ES) die we gebruiken, de globale variabelen die we gebruiken, de parser opties en de versie van React die we gebruiken.
+   - ECMAScript is de standaard waarop JavaScript gebaseerd is. De versie van ECMAScript die we gebruiken is 2020.
+4. We importeren een aantal plugins die we gebruiken in onze linting configuratie. Plugins bevatten regels die specifiek zijn voor een bepaalde technologie, een bepaalde bibliotheek, etc.
+5. Importeer de `@stylistic/eslint-plugin-js` plugin.
+6. Voeg de plugin toe aan de `plugins` property.
+7. We vertrekken van een aantal aanbevolen regels van ESLint en React.
+8. We voegen ook enkele stijlregels en React-specifieke regels toe. Voor regels gebruik je altijd dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
 
 Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd telkens je CTRL+S (of COMMAND+S) drukt. Open de JSON settings via F1 > Zoek naar "Preferences: Open Settings (JSON)" en voeg onderstaand toe (zonder de { }):
 
