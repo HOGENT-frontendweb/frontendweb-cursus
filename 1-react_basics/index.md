@@ -281,6 +281,19 @@ export default [
 2. Voeg de plugin toe aan de `plugins` property.
 3. Voeg enkele stijlregels toe. Voor regels gebruik je hier dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
 
+Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd telkens je CTRL+S (of COMMAND+S) drukt. Open de JSON settings via F1 > Zoek naar "Preferences: Open Settings (JSON)" en voeg onderstaand toe (zonder de { }):
+
+```json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+}
+```
+
+Run voor elke commit `yarn lint`. Dit zal je code linten, sommige problemen zelf oplossen en fouten geven omtrent manueel op te lossen problemen.
+
 ## Transaction
 
 In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van één transactie.
