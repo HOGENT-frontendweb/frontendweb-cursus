@@ -16,4 +16,3 @@
 - [7. Authenticatie & autorisatie (WIP)](./7-auth/index.md)
 - [8. E2E testen met authenticatie (WIP)](./8-auth_testing/index.md)
 - [9. CI/CD (WIP)](./9-cicd/index.md)
-- [10. FAQ (WIP)](./10_faq/index.md)

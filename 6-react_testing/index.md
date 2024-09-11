@@ -12,6 +12,8 @@
 >
 > **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**
 
+<!-- TODO: cypress linting toevoegen: https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md -->
+
 Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Cypress](https://www.cypress.io/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten, dit m.b.v. [Jest](https://jestjs.io/). Maar deze testen vallen buiten de scope van deze cursus.
 
 ## Cypress
