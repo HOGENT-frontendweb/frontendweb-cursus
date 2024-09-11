@@ -88,8 +88,8 @@ Dit commando maakt een map `budget` met alle bestanden voor deze React-applicati
 
 Deze map bevat onder andere volgende bestanden/mappen:
 
-- `node_modules`: deze map bevat alle dependencies van de applicatie, m.a.w. de React libraries en alle libraries waar die dan weer op steunen. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 40.020 (!) bestanden die 148 MB innemen).
 - `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc.
+  - Hieronder configureren we Yarn zodat alle dependencies in de `node_modules` map geïnstalleerd worden. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 40.020 (!) bestanden die 148 MB innemen).
 - `yarn.lock`: dit bestand bevat de exacte versies van de dependencies die effectief geïnstalleerd zijn.
 - `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...).
 - `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
@@ -102,10 +102,15 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 [yarn](https://yarnpkg.com/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). Ze doen beide hetzelfde en zijn inwisselbaar maar de ene keer `yarn` gebruiken en de andere keer `npm` is dan weer geen goed idee. Ze kunnen andere versies van packages cachen e.d. en dan kan je rare fouten tegenkomen.
 
-Het project gebruikt standaard Yarn v1. Dit passen we aan naar Yarn v2, naar analogie bij Web Services. Dit doen we door de volgende commando's uit te voeren:
+Het project gebruikt standaard Yarn v1. Dit passen we aan naar Yarn v2, naar analogie bij Web Services. Alvorens je Yarn v2 kan gebruiken, moet je eerst [Corepack](https://nodejs.org/api/corepack.html) inschakelen. Op Windows moet je hiervoor een terminal openen als administrator.
 
-```bash
+```terminal
 corepack enable
+```
+
+Vervolgens kiezen we de laatste versie van Yarn:
+
+```terminal
 yarn set version berry
 ```
 
@@ -207,14 +212,14 @@ Je kan de linting starten met het commando `yarn lint`. Deze print vervolgens al
 Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
 
 ```terminal
-yarn add -D @stylistic/eslint-plugin-js
+yarn add -D @stylistic/eslint-plugin
 ```
 
 We overlopen dit bestand en breiden het alvast uit met een paar stijlregels:
 
 ```js
 import js from '@eslint/js';
-import stylisticJs from '@stylistic/eslint-plugin-js'; // 👈 5
+import stylistic from '@stylistic/eslint-plugin'; // 👈 5
 import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -238,7 +243,7 @@ export default [
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      '@stylistic': stylisticJs, // 👈 6
+      '@stylistic': stylistic, // 👈 6
     },
     rules: {
       ...js.configs.recommended.rules, // 👈 7
@@ -267,9 +272,9 @@ export default [
       '@stylistic/arrow-parens': ['error', 'always'],
       '@stylistic/brace-style': ['error', '1tbs', {'allowSingleLine': false}],
       '@stylistic/no-inner-declarations': 'off',
-      "react/react-in-jsx-scope": "off",
-      "react/jsx-props-no-spreading": "off",
-      "react/prop-types": "off",
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'react/prop-types': 'off',
     },
   },
 ];
@@ -433,30 +438,30 @@ const TRANSACTION_DATA = [
   {
     id: 1,
     amount: 3500,
-    date: "2021-05-25T17:40:00.000Z",
+    date: '2021-05-25T17:40:00.000Z',
     place: {
       id: 1,
-      name: "Loon",
-      rating: 5
+      name: 'Loon',
+      rating: 5,
     },
     user: {
       id: 1,
-      name: "Karine Samyn"
-    }
+      name: 'Karine Samyn',
+    },
   },
   {
     id: 2,
     amount: -220,
-    date: "2021-05-08T18:00:00.000Z",
+    date: '2021-05-08T18:00:00.000Z',
     place: {
       id: 2,
-      name: "Dranken Geers",
-      rating: 3
+      name: 'Dranken Geers',
+      rating: 3,
     },
     user: {
       id: 2,
-      name: "Thomas Aelbrecht"
-    }
+      name: 'Thomas Aelbrecht',
+    },
   },
 ];
 
@@ -624,7 +629,7 @@ export default App;
 
 ### Property 'key'
 
-Alles lijkt te werken, maar als je de console opent zal je een error zien staan: `Each child in a list should have a unique "key" prop.`
+Alles lijkt te werken, maar als je de console opent zal je een error zien staan: `Each child in a list should have a unique "key" prop.`. Als je de ESLint plugin in VS Code hebt, zou je deze foutmelding moeten zien in je editor.
 
 !> Als front-end developer moet je namelijk **altijd** de console van de browser open hebben. Hierin krijg je foutmeldingen en waarschuwingen te zien die je helpen bij het debuggen van je code. Soms crasht React door een fout en zie je gewoonweg niets meer in de browser. De console is dan je enige hulpmiddel, dit moet altijd de eerste reflex zijn bij een fout.
 
@@ -665,24 +670,18 @@ Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de ent
     />
     <!-- 👆 1 -->
     <title>BudgetApp</title>
-    <!-- 👆 3 -->
+    <!-- 👆 2 -->
   </head>
   <body>
     <div id="root"></div>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-      integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
-      crossorigin="anonymous"
-    ></script>
-    <!-- 👆 2 -->
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
 ```
 
 1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS.
-2. Als je project ook gebruikt maakt van de JavaScript-componenten uit Bootstrap, zoals een modal venster, vervolgkeuzemenu of navigatiebalk moeten we het bestand `bootstrap.bundle.min.js` koppelen. Dat vooraf is gecompileerd met `Popper.js`. Voorzie hiervoor een script-tag die linkt naar de gebundelde Javascript CDN's vlak voor het sluiten van de body-tag. Meer info op [https://getbootstrap.com/docs/5.2/getting-started/introduction/](https://getbootstrap.com/docs/5.2/getting-started/introduction/).
-3. Pas ook de `title` van de app aan.
+   - Als je gebruik wil maken van geavanceerde features van Bootstrap (zoals een modal, dropdown menu's...), dan installeer je best [react-bootstrap](https://www.npmjs.com/package/react-bootstrap).
+2. Pas ook de `title` van de app aan.
 
 Gooi het bestand `App.css` weg en maak `index.css` leeg. We gaan de styling van Bootstrap gebruiken. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
 
