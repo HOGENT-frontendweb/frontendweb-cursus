@@ -145,12 +145,12 @@ De `package.json` kan enkele properties bevatten:
 
 Met een simpele `yarn install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`yarn install --prod` installeert enkel de `dependencies`).
 
-Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden *at build time*, of dus wanneer de applicatie (bv. door webpack) omgevormd wordt tot iets wat browsers begrijpen.
+Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (bv. door webpack) omgevormd wordt tot iets wat browsers begrijpen.
 
 Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees gerust eens door de specificatie). Kort gezegd houdt dit in dat elk versienummer bestaat uit drie delen: `MAJOR.MINOR.PATCH`, elke deel wordt met één verhoogd in volgende gevallen:
 
-- `MAJOR`: wijzigingen die ***niet*** compatibel zijn met oudere versies
-- `MINOR`: wijzigen die ***wel*** compatibel zijn met oudere versies
+- `MAJOR`: wijzigingen die **_niet_** compatibel zijn met oudere versies
+- `MINOR`: wijzigen die **_wel_** compatibel zijn met oudere versies
 - `PATCH`: kleine bugfixes (compatibel met oudere versies)
 
 In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~) of hoedje (^) als prefix, dit heeft volgende betekenis:
@@ -228,8 +228,9 @@ import reactRefresh from 'eslint-plugin-react-refresh';
 export default [
   { ignores: ['dist'] }, // 👈 1
   {
-    files: ['**/*.{js,jsx}'],  // 👈 2
-    languageOptions: {  // 👈 3
+    files: ['**/*.{js,jsx}'], // 👈 2
+    languageOptions: {
+      // 👇 3
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
@@ -239,7 +240,8 @@ export default [
       },
     },
     settings: { react: { version: '18.3' } }, // 👈 3
-    plugins: { // 👈 4
+    plugins: {
+      // 👇 4
       react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
@@ -256,21 +258,29 @@ export default [
         { allowConstantExport: true },
       ],
       // 👇 8
-      '@stylistic/no-multiple-empty-lines': ['error', {
-        max: 1, maxEOF: 1, maxBOF: 0,
-      }],
-      '@stylistic/indent': ['error', 2, {'SwitchCase': 1}],
+      '@stylistic/no-multiple-empty-lines': [
+        'error',
+        {
+          max: 1,
+          maxEOF: 1,
+          maxBOF: 0,
+        },
+      ],
+      '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
       '@stylistic/linebreak-style': ['error', 'unix'],
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/no-tabs': ['error'],
-      '@stylistic/max-len': ['error', {
-        'code': 120,
-        'tabWidth': 2,
-      }],
+      '@stylistic/max-len': [
+        'error',
+        {
+          code: 120,
+          tabWidth: 2,
+        },
+      ],
       '@stylistic/arrow-parens': ['error', 'always'],
-      '@stylistic/brace-style': ['error', '1tbs', {'allowSingleLine': false}],
+      '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
       '@stylistic/no-inner-declarations': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/jsx-props-no-spreading': 'off',
@@ -297,7 +307,12 @@ Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd 
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
 }
 ```
 
@@ -349,15 +364,15 @@ function App() {
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
+        <a href='https://vitejs.dev' target='_blank'>
+          <img src={viteLogo} className='logo' alt='Vite logo' />
         </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
+        <a href='https://react.dev' target='_blank'>
+          <img src={reactLogo} className='logo react' alt='React logo' />
         </a>
       </div>
       <h1>Vite + React</h1>
-      <div className="card">
+      <div className='card'>
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
@@ -365,7 +380,7 @@ function App() {
           Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
-      <p className="read-the-docs">
+      <p className='read-the-docs'>
         Click on the Vite and React logos to learn more
       </p>
     </>
@@ -424,7 +439,7 @@ We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij al
 
 De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
-Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met *mock object* werken. We steken wat JSON data hardgecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
+Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met _mock object_ werken. We steken wat JSON data hardgecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
 
 Later, als we een back-end hebben, kunnen we dan makkelijk 'echte' data ophalen en tonen. Daarbij dienen we enkel die import te vervangen door een echte API call en hoeven we niet onze volledige component te herschrijven.
 
@@ -500,7 +515,8 @@ De data zal natuurlijk van een andere component moeten komen, nu hebben we nog s
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction(props) { // 👈 1
+export default function Transaction(props) {
+  // 👇 1
   const { user, amount, place } = props; // 👈 2
   return (
     <div>
@@ -689,7 +705,8 @@ Pas nu de `Transaction` component aan en maak gebruik van de Bootstrap class `te
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-export default function Transaction({ user, amount, place }) { // 👈
+// 👇
+export default function Transaction({ user, amount, place }) {
   // 👇
   return (
     <div className='text-bg-dark' style={{ textAlign: 'center' }}>
@@ -746,7 +763,7 @@ git push
 
 Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
 
-> 💡 Tip: begin ***niet*** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
+> 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
 
 ## Oefening 2 - To do app
 
@@ -776,9 +793,10 @@ end note
 ```
 
 <!-- markdownlint-disable-next-line -->
-  + Oplossing +
 
-  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/Web-IV/frontendweb-ch1-solution>.
+- Oplossing +
+
+Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/Web-IV/frontendweb-ch1-solution>.
 
 l> fe oplossing 4331ea1 les1-opl
 
