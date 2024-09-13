@@ -1,20 +1,22 @@
-l> fe start 4331ea1 les2
-
 # React state management
 
-[**Props**](https://react.dev/learn/passing-props-to-a-component) zijn een mechanisme waarmee gegevens van een oudercomponent naar een kindcomponent kunnen worden doorgegeven. Ze worden gebruikt om componenten dynamischer en herbruikbaar te maken door informatie van buitenaf in een component te injecteren. React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Een component kan de props die het ontvangt niet wijzigen, ze zijn bedoeld voor gegevensoverdracht, niet voor manipulatie. Een oudercomponent kan gegevens doorgeven aan een kindcomponent door attributen te gebruiken wanneer de kindcomponent wordt gerenderd. Binnen de kindcomponent kunnen de props worden gebruikt via het argument _props_.
+l> fe start 4331ea1 les2
 
-[**State**](https://react.dev/learn/state-a-components-memory) is het dynamische deel van een React-component. Een component kan zo zijn eigen gegevens opslaan en beheren, die in de loop van de tijd kunnen veranderen door bvb interacties van de gebruiker. Wanneer de state tijdens de levenscyclus van een component wijzigt (door een gebruikersinteractie, API call die data retourneert...), wordt de component opnieuw gerenderd om de nieuwe state weer te geven (dit is waarom React 'so cool' is). Je kan dit vergelijken met een spreadsheet. Als één cel wijzigt, worden andere cellen aangepast.
+## Props en state
+
+[**Props**](https://react.dev/learn/passing-props-to-a-component) zijn een mechanisme waarmee gegevens van een oudercomponent (of parent component) naar een kindcomponent (of child component) kunnen worden doorgegeven. Ze worden gebruikt om componenten dynamischer en herbruikbaar te maken door informatie van buitenaf in een component te injecteren. React props zijn [immutable (= onveranderlijk)](https://en.wikipedia.org/wiki/Immutable_object). Een component kan de props die het ontvangt niet wijzigen, ze zijn bedoeld voor gegevensoverdracht, niet voor manipulatie. Een oudercomponent kan gegevens doorgeven aan een kindcomponent door attributen te gebruiken wanneer de kindcomponent wordt gerenderd. Binnen de kindcomponent kunnen de props worden gebruikt via het argument _props_ van de functie die de component definieert.
+
+[**State**](https://react.dev/learn/state-a-components-memory) is het dynamische deel van een React-component. Een component kan zo zijn eigen gegevens opslaan en beheren, die in de loop van de tijd kunnen veranderen door bv. interacties van de gebruiker. Wanneer de state tijdens de levenscyclus van een component wijzigt (door een gebruikersinteractie, API call die data retourneert...), wordt de component opnieuw gerenderd om de nieuwe state weer te geven (dit is waarom React 'so cool' is). Je kan dit vergelijken met een spreadsheet. Als één cel wijzigt, worden andere cellen aangepast.
 
 Stel je voor dat we een component renderen waarbij een stuk state initieel een lege array is (bv. een lege lijst van transacties). Later wordt deze array gevuld met gegevens (we voegen bv. een transactie toe). Dit wordt een **state change** genoemd. Telkens wanneer we een React-component vertellen om zijn state te wijzigen (via een `setState` methode), zal de component zichzelf automatisch opnieuw renderen. De state kan ingesteld worden door de component zelf of een ander stukje code buiten de component. Het proces wordt hier gevisualiseerd:
 
 ![State change visualisatie](./images/statechange.webp ":size=60%")
 
-State en props zijn verschillend, maar ze werken samen om de UI dynamisch en interactief te maken. Een parent-component houdt vaak data in state bij die op zijn beurt doorgegeven kan worden als props naar de child componenten. Bij elke wijziging van de state in de parent, zal elk kind nieuwe props krijgen en opnieuw renderen.
+State en props zijn verschillend, maar ze werken samen om de UI dynamisch en interactief te maken. Een oudercomponent houdt vaak data in state bij die op zijn beurt doorgegeven kan worden als props naar de kindcomponenten. Bij elke wijziging van de state in de ouder, zal elk kind nieuwe props krijgen en opnieuw renderen.
 
 ## Virtual DOM
 
-Het **Document Object Model (DOM)** is de in het geheugen opgeslagen boomstructuur van een HTML-document. De browser DOM biedt een interface (API) om de nodes te bekijken en te wijzigen. De DOM's zijn tegenwoordig enorm groot en worden (zeker in geval van SPA's) voortdurend aangepast. DOM-bewerkingen zijn vaak traag.
+Het **Document Object Model (DOM)** is de in het geheugen opgeslagen boomstructuur van een HTML-document. De browser DOM biedt een interface (API) om de nodes te bekijken en te wijzigen. De DOM's zijn tegenwoordig enorm groot en worden (zeker in het geval van SPA's) voortdurend aangepast. DOM-bewerkingen zijn vaak traag.
 
 ![Browser DOM voorbeeld](./images/BrowserDOM.png)
 
@@ -25,12 +27,12 @@ React gebruikt een **Virtual DOM (VDOM)** als een extra abstractielaag bovenop h
 Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toegepast op de VDOM. De React DOM-library wordt gebruikt om efficiënt te controleren welke delen van de UI echt visueel moeten worden bijgewerkt in de echte DOM. Het is nl. niet altijd zo dat een state-wijziging ervoor zorgt dat elk kind gewijzigd is. Dit proces wordt [**reconciliation**](https://reactjs.org/docs/reconciliation.html) genoemd en is gebaseerd op deze stappen:
 
 1. VDOM wordt bijgewerkt door een state-wijziging in de applicatie. In React is elk UI-stuk een component en elke component heeft een state. React volgt het **observable** patroon en luistert naar state-wijzigingen. Wanneer de state of props van een component verandert, werkt React de virtuele DOM-structuur bij.
-2. De nieuwe VDOM wordt vergeleken met een eerdere VDOM-snapshot (= **diffing**)
+2. De nieuwe VDOM wordt vergeleken met een eerdere VDOM-snapshot (= **diffing**).
 3. Enkel de gewijzigde delen van de echte DOM worden bijgewerkt. Er is geen DOM-update als er niets is veranderd.
 
 ![Reconciliation visualisatie](./images/reconciliation.png ":size=60%")
 
-React volgt een batch-updatemechanisme om de browser DOM bij te werken. Dit betekent dat React state-wijzigingen bundelt en ze dan samen doorvoert in 1 enkele rendering cyclus, in plaats van updates te verzenden voor elke afzonderlijke state-wijziging. Dit leidt tot logischerwijs betere prestaties.
+React volgt een batch-updatemechanisme om de browser DOM bij te werken. Dit betekent dat React state-wijzigingen bundelt en ze dan samen doorvoert in één enkele rendering cyclus, in plaats van updates te verzenden voor elke afzonderlijke state-wijziging. Dit leidt tot logischerwijs betere prestaties.
 
 De kosten van virtuele DOM zijn veel minder "duur", omdat het niet nodig is om _alle_ elementen opnieuw te renderen. Net dit maakt React (en andere JS front-endframeworks) super gaaf.
 
@@ -52,10 +54,15 @@ entity Transaction {
   id: number
   amount: number
   date: Date
-  user: string
+}
+
+entity User {
+  id: string
+  name: string
 }
 
 Transaction ||-- "place" Place
+Transaction ||-- "user" User
 @enduml
 ```
 
@@ -63,19 +70,20 @@ We gaan een component ontwerpen die een lijst van plaatsen zal tonen. Elke plaat
 
 ![Places overview](./images/places.png ":size=100%")
 
-De JSON API retourneert onderstaande data. Pas hiervoor `mock_data.js` in de `api` folder aan:
+We voegen een beetje mock data voor de plaatsen toe aan `mock_data.js` in de `api` folder:
 
 ```javascript
 // src/api/mock_data.js
 const TRANSACTION_DATA = [...];
 
+// 👇 1
 const PLACE_DATA = [
   { id: 1, name: 'home', rating: 5 },
   { id: 4, name: 'hogent', rating: 1 },
   { id: 7, name: 'bar', rating: 3 },
-]; // 👈 1
+];
 
-export { TRANSACTION_DATA, PLACE_DATA} ; // 👈 2
+export { TRANSACTION_DATA, PLACE_DATA } ; // 👈 2
 ```
 
 1. Voeg de mock data voor places toe
@@ -94,9 +102,9 @@ Wat moet er nu nog aangepast worden?
   import { TRANSACTION_DATA } from "./api/mock_data";
   ```
 
-Het opdelen van een React-applicatie in componenten is een essentieel onderdeel van het maken van herbruikbare, leesbare en onderhoudbare code. Neem hiervoor eerst [Thinking in React: start with the mockup, step 1, 3 en 4](https://react.dev/learn/thinking-in-react) door.
+Het opdelen van een React-applicatie in componenten is een essentieel onderdeel van het maken van herbruikbare, leesbare en onderhoudbare code. Neem hiervoor eerst [Thinking in React: start with the mockup (step 1, 3 en 4)](https://react.dev/learn/thinking-in-react) door.
 
-Beantwoord dan onderstaande vragen voor de ontwikkeling van bovenstaande UI. Hou componenten klein, herbruikbaar en geef de verantwoordelijkheid voor statebeheer aan de juiste componenten.
+Beantwoord daarna onderstaande vragen voor de ontwikkeling van bovenstaande UI. Hou componenten klein, herbruikbaar en geef de verantwoordelijkheid voor statebeheer aan de juiste componenten.
 
 - In welke componenten kunnen we de UI opdelen?
 - Welke data heeft je app nodig? Wat is hiervan state?
@@ -118,7 +126,7 @@ Beantwoord dan onderstaande vragen voor de ontwikkeling van bovenstaande UI. Hou
       - Props: geen
     - `Place`:
       - State: geen
-      - Props: de attributen van een place, handler voor het aanpassen van de rating, handler voor verwijderen place
+      - Props: de attributen van een place, handler voor het aanpassen van de rating, handler voor het verwijderen van de place
     - `StarRating`:
       - State: geen
       - Props: het aantal sterren, de huidige rating, handler voor het aanpassen van de rating
@@ -157,8 +165,8 @@ Maak een bestand `PlacesList.jsx` aan in de map `src\components\places`. Deze co
 
 ```jsx
 // src/components/places/PlacesList.jsx
-import { PLACE_DATA } from '../../api/mock_data';
-import Place from './Place';
+import { PLACE_DATA } from "../../api/mock_data";
+import Place from "./Place";
 
 const PlacesList = () => {
   const places = PLACE_DATA;
@@ -167,7 +175,7 @@ const PlacesList = () => {
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
         {places
           .sort((a, b) =>
-            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+            a.name.toUpperCase().localeCompare(b.name.toUpperCase())
           )
           .map((p) => (
             <div className="col" key={p.id}>
@@ -182,15 +190,15 @@ const PlacesList = () => {
 export default PlacesList;
 ```
 
-Merk op: je plaatst de key altijd bij de parent-tag die herhaald wordt.
+Merk op: je plaatst de `key` altijd bij de parent-tag die herhaald wordt.
 
 Voeg de `PlacesList` component toe aan `App.jsx` en bekijk het resultaat.
 
 ```jsx
 // src/App.jsx
-import Transaction from './components/transactions/Transaction';
-import { TRANSACTION_DATA } from './api/mock_data';
-import PlacesList from './components/places/PlacesList'; // 👈
+import Transaction from "./components/transactions/Transaction";
+import { TRANSACTION_DATA } from "./api/mock_data";
+import PlacesList from "./components/places/PlacesList"; // 👈
 
 function App() {
   return (
@@ -210,13 +218,14 @@ export default App;
 
 In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://react.dev/learn/responding-to-events) door.
 
-### Samenvatting
+### Samenvatting van het artikel
 
-- `DOM events` worden gegenereerd door de browser (zoals klikken op knop, wijzigen van tekst input,...). Alle browsers voorzien in een **event based programming model**.
+- `DOM events` worden gegenereerd door de browser (zoals klikken op knop, wijzigen van tekst input...). Alle browsers voorzien een **event based programming model**.
 - Built-in componenten zoals een knop ondersteunen enkel browser events zoals `onClick`. Maar ook aan je eigen componenten kan je **event handler props** toevoegen die je benoemt zoals je wil.
+  - De naam van deze props start ook altijd met de prefix `on` gevolgd door de naam van het event.
 - Het afhandelen van events met React-elementen lijkt op het afhandelen van events van DOM-elementen. Er zijn enkele verschillen:
   - React-gebeurtenissen worden benoemd in camelCase in plaats van kleine letters.
-  - Met JSX geef je een functie door als event handler en niet een string. Je mag de functie ook niet aanroepen, we geven de referentie door.
+  - Met JSX geef je een functie door als event handler en geen string. Je mag de functie ook niet aanroepen, we geven de referentie door.
   - In de browser retourneer je `false` om het standaard klikgedrag te voorkomen. In React moet je `preventDefault` expliciet aanroepen.
 
 #### Een voorbeeld
@@ -233,8 +242,8 @@ In JSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 <button onClick={handleClick} />
 ```
 
-- Per conventie starten event handler props met de prefix `on` gevolgd door een hoofdletter.
-- Per conventie starten event handlers met de prefix `handle` gevolgd door de naam van het event.
+- Per conventie starten _event handler props_ met de prefix `on` gevolgd door een hoofdletter.
+- Per conventie starten _event handlers_ met de prefix `handle` gevolgd door de naam van het event.
 - Een event handler in React heeft als argument een cross-browser native event wrapper, nl. het [**synthetic event**](https://react.dev/reference/react-dom/components/common#react-event-object). Dit zorgt voor consistent gedrag van events in verschillende browsers.
 - Event handlers definieer je meestal binnen een component zodat ze toegang hebben tot de props en de state.
 - Je kan een event handler definiëren in een parent en doorgeven als een prop aan een child component
@@ -252,7 +261,7 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   const Place = ({ id, name, rating }) => {
     // 👇 1
     const handleClick = (e) => {
-      console.log('you clicked the remove button');
+      console.log("you clicked the remove button");
     };
     return (
       <div className="card bg-light border-dark mb-4">
@@ -270,8 +279,10 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   export default Place;
   ```
 
-  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, binnen de component. Per conventie starten event handlers met `handle` gevolgd door het event. Wanneer een event handler wordt aangeroepen, kan het synthetische event-object als argument aan de handler worden doorgegeven. Dit object werkt net als het normale DOM-event-object en biedt toegang tot informatie zoals de target (element dat het event heeft getriggerd) en de event-type (bijvoorbeeld 'click'). Print dit object gerust eens in de console om de inhoud ervan te bekijken.
+  1. Definieer binnen de component een functie `handleClick`, die het `onClick` event zal afhandelen. Per conventie starten event handlers met `handle` gevolgd door het event. Wanneer een event handler wordt aangeroepen, kan het synthetische event-object als argument aan de handler worden doorgegeven. Dit object werkt net als het normale DOM-event-object en biedt toegang tot informatie zoals de target (element dat het event heeft getriggerd) en de event-type (bijvoorbeeld 'click'). Print dit object gerust eens in de console om de inhoud ervan te bekijken.
   2. Voorzie de prop `onClick` en geef de event handler functie mee.
+
+<!-- TODO: hier verder nalezen -->
 
 ## State toevoegen
 
@@ -293,9 +304,9 @@ We starten met het bijhouden van de state in de `PlacesList` component. Indien e
 
 ```jsx
 // src/components/places/PlacesList.jsx
-import { useState } from 'react'; // 👈 1
-import { PLACE_DATA } from '../../api/mock_data';
-import Place from './Place';
+import { useState } from "react"; // 👈 1
+import { PLACE_DATA } from "../../api/mock_data";
+import Place from "./Place";
 
 const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA); // 👈 2
@@ -312,7 +323,7 @@ const PlacesList = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
           {places
             .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
             )
             .map((p) => (
               <div className="col" key={p.id}>
@@ -441,7 +452,7 @@ Implementeer de `StarRating` component als volgt:
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from 'react-icons/io5'; // 👈 1
+import { IoStarSharp } from "react-icons/io5"; // 👈 1
 
 const Star = () => <IoStarSharp color="yellow" />; // 👈 2
 
@@ -472,7 +483,7 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 
   ```jsx
   // src/components/places/Place.jsx
-  import StarRating from './StarRating';
+  import StarRating from "./StarRating";
 
   const Place = ({ id, name, rating, onDelete = (f) => f }) => {
     const handleDelete = () => {
@@ -503,7 +514,7 @@ Vervolgens willen het aantal sterren in de rating variabel maken. Dit doen we d.
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from 'react-icons/io5';
+import { IoStarSharp } from "react-icons/io5";
 
 const Star = () => <IoStarSharp color="yellow" />;
 
@@ -530,11 +541,11 @@ Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `selected` prop
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from 'react-icons/io5';
+import { IoStarSharp } from "react-icons/io5";
 
 // 👇
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
+  <IoStarSharp color={selected ? "yellow" : "grey"} />
 );
 // 👆
 
@@ -556,7 +567,7 @@ De `Place` component krijgt via een prop de `rating` door van de parent en zal d
 
 ```jsx
 // src/components/places/Place.jsx
-import StarRating from './StarRating'; // 👈 1
+import StarRating from "./StarRating"; // 👈 1
 
 const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   const handleDelete = () => {
@@ -588,10 +599,10 @@ De `StarRating` component zal die informatie via de prop `selected` doorgeven aa
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from 'react-icons/io5';
+import { IoStarSharp } from "react-icons/io5";
 
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
+  <IoStarSharp color={selected ? "yellow" : "grey"} />
 );
 
 export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
@@ -665,9 +676,9 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
 Wanneer we klikken op een ster moet de rating van de plaats worden aangepast. De rating van een plaats wordt bijgehouden in de state `places` in de `PlacesList` component. We voorzien hiervoor de functie `handleRatePlace`. Deze methode geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
 ```jsx
-import { useState } from 'react';
-import { PLACE_DATA } from '../../api/mock_data';
-import Place from './Place';
+import { useState } from "react";
+import { PLACE_DATA } from "../../api/mock_data";
+import Place from "./Place";
 
 const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA);
@@ -689,7 +700,7 @@ const PlacesList = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
           {places
             .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
             )
             .map((p) => (
               <div className="col" key={p.id}>
@@ -717,7 +728,7 @@ De `Place` component moet ook worden aangepast:
 
 ```jsx
 // src/components/places/Place.jsx
-import StarRating from './StarRating'; // 👈 1
+import StarRating from "./StarRating"; // 👈 1
 
 const Place = ({ id, name, rating, onDelete, onRate }) => {
   // 👈 1
@@ -755,7 +766,7 @@ De `StarRating`component en `Star` component worden:
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from 'react-icons/io5';
+import { IoStarSharp } from "react-icons/io5";
 
 const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   // 👈 3 en 4
@@ -764,7 +775,7 @@ const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   }; // 👈 4
 
   return (
-    <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleSelect} />
+    <IoStarSharp color={selected ? "yellow" : "grey"} onClick={handleSelect} />
   );
 };
 
@@ -806,8 +817,8 @@ Maak een bestand `TransactionList.jsx` aan in de map `src/components/transaction
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import Transaction from './Transaction';
-import { TRANSACTION_DATA } from '../../api/mock_data';
+import Transaction from "./Transaction";
+import { TRANSACTION_DATA } from "../../api/mock_data";
 
 export default function TransactionList() {
   return (
@@ -824,8 +835,8 @@ export default function TransactionList() {
 Gebruik vervolgens deze component in `App.jsx`.
 
 ```jsx
-import TransactionList from './components/transactions/TransactionList'; // 👈 1
-import PlacesList from './components/places/PlacesList';
+import TransactionList from "./components/transactions/TransactionList"; // 👈 1
+import PlacesList from "./components/places/PlacesList";
 
 function App() {
   return (
@@ -851,8 +862,8 @@ In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filt
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import Transaction from './Transaction';
-import { TRANSACTION_DATA } from '../../api/mock_data';
+import Transaction from "./Transaction";
+import { TRANSACTION_DATA } from "../../api/mock_data";
 
 export default function TransactionList() {
   return (
@@ -883,17 +894,17 @@ Formulierelementen in React zijn read-only. Door state toe te voegen, kan de com
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState } from 'react'; // 👈 1
-import Transaction from './Transaction';
-import { TRANSACTION_DATA } from '../../api/mock_data';
+import { useState } from "react"; // 👈 1
+import Transaction from "./Transaction";
+import { TRANSACTION_DATA } from "../../api/mock_data";
 
 export default function TransactionList() {
-  const [text, setText] = useState(''); // 👈 1
-  const [search, setSearch] = useState(''); // 👈 1
+  const [text, setText] = useState(""); // 👈 1
+  const [search, setSearch] = useState(""); // 👈 1
 
   // 👇 5
   const filteredTransactions = TRANSACTION_DATA.filter((t) => {
-    console.log('filtering...');
+    console.log("filtering...");
     return t.place.name.toLowerCase().includes(search.toLowerCase());
   });
 
@@ -962,7 +973,7 @@ Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze f
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState, useMemo } from 'react'; // 👈
+import { useState, useMemo } from "react"; // 👈
 
 //...
 
@@ -970,7 +981,7 @@ const filteredTransactions = useMemo(
   () =>
     TRANSACTION_DATA.filter((t) => {
       // 👈
-      console.log('filtering...');
+      console.log("filtering...");
       return t.place.toLowerCase().includes(search.toLowerCase());
     }),
   [search]
