@@ -157,8 +157,8 @@ Maak een bestand `PlacesList.jsx` aan in de map `src\components\places`. Deze co
 
 ```jsx
 // src/components/places/PlacesList.jsx
-import { PLACE_DATA } from "../../api/mock_data";
-import Place from "./Place";
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
 
 const PlacesList = () => {
   const places = PLACE_DATA;
@@ -167,7 +167,7 @@ const PlacesList = () => {
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
         {places
           .sort((a, b) =>
-            a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
           )
           .map((p) => (
             <div className="col" key={p.id}>
@@ -188,9 +188,9 @@ Voeg de `PlacesList` component toe aan `App.jsx` en bekijk het resultaat.
 
 ```jsx
 // src/App.jsx
-import Transaction from "./components/transactions/Transaction";
-import { TRANSACTION_DATA } from "./api/mock_data";
-import PlacesList from "./components/places/PlacesList"; // 👈
+import Transaction from './components/transactions/Transaction';
+import { TRANSACTION_DATA } from './api/mock_data';
+import PlacesList from './components/places/PlacesList'; // 👈
 
 function App() {
   return (
@@ -252,7 +252,7 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   const Place = ({ id, name, rating }) => {
     // 👇 1
     const handleClick = (e) => {
-      console.log("you clicked the remove button");
+      console.log('you clicked the remove button');
     };
     return (
       <div className="card bg-light border-dark mb-4">
@@ -293,9 +293,9 @@ We starten met het bijhouden van de state in de `PlacesList` component. Indien e
 
 ```jsx
 // src/components/places/PlacesList.jsx
-import { useState } from "react"; // 👈 1
-import { PLACE_DATA } from "../../api/mock_data";
-import Place from "./Place";
+import { useState } from 'react'; // 👈 1
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
 
 const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA); // 👈 2
@@ -312,7 +312,7 @@ const PlacesList = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
           {places
             .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
             )
             .map((p) => (
               <div className="col" key={p.id}>
@@ -441,7 +441,7 @@ Implementeer de `StarRating` component als volgt:
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5"; // 👈 1
+import { IoStarSharp } from 'react-icons/io5'; // 👈 1
 
 const Star = () => <IoStarSharp color="yellow" />; // 👈 2
 
@@ -472,7 +472,7 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 
   ```jsx
   // src/components/places/Place.jsx
-  import StarRating from "./StarRating";
+  import StarRating from './StarRating';
 
   const Place = ({ id, name, rating, onDelete = (f) => f }) => {
     const handleDelete = () => {
@@ -503,7 +503,7 @@ Vervolgens willen het aantal sterren in de rating variabel maken. Dit doen we d.
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 const Star = () => <IoStarSharp color="yellow" />;
 
@@ -530,11 +530,11 @@ Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `selected` prop
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 // 👇
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? "yellow" : "grey"} />
+  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
 );
 // 👆
 
@@ -556,7 +556,7 @@ De `Place` component krijgt via een prop de `rating` door van de parent en zal d
 
 ```jsx
 // src/components/places/Place.jsx
-import StarRating from "./StarRating"; // 👈 1
+import StarRating from './StarRating'; // 👈 1
 
 const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   const handleDelete = () => {
@@ -588,10 +588,10 @@ De `StarRating` component zal die informatie via de prop `selected` doorgeven aa
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? "yellow" : "grey"} />
+  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
 );
 
 export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
@@ -665,10 +665,9 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
 Wanneer we klikken op een ster moet de rating van de plaats worden aangepast. De rating van een plaats wordt bijgehouden in de state `places` in de `PlacesList` component. We voorzien hiervoor de functie `handleRatePlace`. Deze methode geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
 ```jsx
-// src/components/places/PlacesList.jsx
-import { useState } from "react";
-import { PLACE_DATA } from "../../api/mock_data";
-import Place from "./Place";
+import { useState } from 'react';
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
 
 const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA);
@@ -690,7 +689,7 @@ const PlacesList = () => {
         <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
           {places
             .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
             )
             .map((p) => (
               <div className="col" key={p.id}>
@@ -718,7 +717,7 @@ De `Place` component moet ook worden aangepast:
 
 ```jsx
 // src/components/places/Place.jsx
-import StarRating from "./StarRating"; // 👈 1
+import StarRating from './StarRating'; // 👈 1
 
 const Place = ({ id, name, rating, onDelete, onRate }) => {
   // 👈 1
@@ -756,7 +755,7 @@ De `StarRating`component en `Star` component worden:
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   // 👈 3 en 4
@@ -765,7 +764,7 @@ const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   }; // 👈 4
 
   return (
-    <IoStarSharp color={selected ? "yellow" : "grey"} onClick={handleSelect} />
+    <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleSelect} />
   );
 };
 
@@ -807,8 +806,8 @@ Maak een bestand `TransactionList.jsx` aan in de map `src/components/transaction
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import Transaction from "./Transaction";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import Transaction from './Transaction';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
   return (
@@ -825,8 +824,8 @@ export default function TransactionList() {
 Gebruik vervolgens deze component in `App.jsx`.
 
 ```jsx
-import TransactionList from "./components/transactions/TransactionList"; // 👈 1
-import PlacesList from "./components/places/PlacesList";
+import TransactionList from './components/transactions/TransactionList'; // 👈 1
+import PlacesList from './components/places/PlacesList';
 
 function App() {
   return (
@@ -852,8 +851,8 @@ In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filt
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import Transaction from "./Transaction";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import Transaction from './Transaction';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
   return (
@@ -884,17 +883,17 @@ Formulierelementen in React zijn read-only. Door state toe te voegen, kan de com
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState } from "react"; // 👈 1
-import Transaction from "./Transaction";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import { useState } from 'react'; // 👈 1
+import Transaction from './Transaction';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
-  const [text, setText] = useState(""); // 👈 1
-  const [search, setSearch] = useState(""); // 👈 1
+  const [text, setText] = useState(''); // 👈 1
+  const [search, setSearch] = useState(''); // 👈 1
 
   // 👇 5
   const filteredTransactions = TRANSACTION_DATA.filter((t) => {
-    console.log("filtering...");
+    console.log('filtering...');
     return t.place.name.toLowerCase().includes(search.toLowerCase());
   });
 
@@ -963,7 +962,7 @@ Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze f
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState, useMemo } from "react"; // 👈
+import { useState, useMemo } from 'react'; // 👈
 
 //...
 
@@ -971,7 +970,7 @@ const filteredTransactions = useMemo(
   () =>
     TRANSACTION_DATA.filter((t) => {
       // 👈
-      console.log("filtering...");
+      console.log('filtering...');
       return t.place.toLowerCase().includes(search.toLowerCase());
     }),
   [search]
