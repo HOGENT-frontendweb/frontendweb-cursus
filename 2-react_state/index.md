@@ -848,8 +848,6 @@ export default App;
 1. Importeer `TransactionList` en verwijder de andere niet gebruikte imports
 2. Het aanmaken van de lijst gebeurt nu door de `TransactionList` component
 
-<!-- TODO: hier verder nalezen -->
-
 ## Input velden toevoegen a.d.h.v. controlled components
 
 In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaans hun eigen state bij. Ze werken deze bij op basis van gebruikersinvoer.
@@ -939,18 +937,18 @@ export default function TransactionList() {
 
 1. Voeg state toe voor het inputveld. De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld (vandaar de twee state variabelen).
 2. Verbind de inputelementen met de component state via de `value` prop.
-3. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen
-4. Nu kunnen we het klikken op de zoek knop de search tekst instellen, waardoor de component gererenderd wordt en de gefilterde transacties getoond moeten worden
+3. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen.
+4. Nu kunnen we bij het klikken op de zoekknop de `search` tekst instellen, waardoor de component gererenderd wordt en de gefilterde transacties getoond moeten worden.
 5. We maken een functie voor het filteren van de transacties.
 6. We tonen enkel de gefilterde transacties.
 
 ## Verbeteren van de performantie
 
-Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (Zie developer tools, de console) Hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
+Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
 
 In een React applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
 
-Een oplossing voor dit probleem is **memoization**. Wikipedia geeft hiervoor volgende definitie:
+Een oplossing voor dit probleem is **memoization**. [Wikipedia](https://en.wikipedia.org/wiki/Memoization) geeft hiervoor volgende definitie:
 
 > In computing, memoization or memoisation is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
 
@@ -966,7 +964,7 @@ Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal m
 
 ### useMemo hook
 
-`useMemo` is een React Hook waarmee je het resultaat van een berekening tussen rerenders kan cachen.
+`useMemo` is een React Hook waarmee je het resultaat van een berekening tussen renders kan cachen.
 Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze functie enkel en alleen uitvoeren als de dependencies gewijzigd zijn. In onderstaand voorbeeld wordt de filter pas uitgevoerd bij het laden van de component en bij het klikken op `Search`.
 
 ```jsx
@@ -975,10 +973,10 @@ import { useState, useMemo } from "react"; // 👈
 
 //...
 
+// 👇
 const filteredTransactions = useMemo(
   () =>
     TRANSACTION_DATA.filter((t) => {
-      // 👈
       console.log("filtering...");
       return t.place.toLowerCase().includes(search.toLowerCase());
     }),
@@ -990,8 +988,8 @@ const filteredTransactions = useMemo(
 
 De `useMemo` hook verwacht twee parameters:
 
-1. een **calculation function** die het resultaat van de berekening retourneert. Het resultaat van die functie wordt bijgehouden in de cache, **niet** de functie zelf.
-2. een **dependency array** die elke waarde bevat waarnaar verwezen wordt in de calculation function.
+1. Een **calculation function** die het resultaat van de berekening retourneert. Het resultaat van die functie wordt bijgehouden in de cache, **niet** de functie zelf.
+2. Een **dependency array** die elke waarde bevat waarnaar verwezen wordt in de calculation function.
 
 Bij elke volgende render vergelijkt React de dependencies met de dependencies die je tijdens de laatste render hebt doorgegeven. Als geen van de dependencies is gewijzigd, retourneert `useMemo` de waarde die al eerder werd berekend. Anders zal React de berekening opnieuw uitvoeren en de nieuwe waarde retourneren.
 
@@ -1003,13 +1001,7 @@ Lees hierover meer in de [documentatie van de hook](https://react.dev/reference/
 
 ## React DevTools
 
-Een rerender wordt veroorzaakt door
-
-- aanpassen van de state
-- doorgeven van props
-- de Context API (zie later)
-
-[React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) is een browserextensie die ons helpt bij het debuggen, profileren en monitoren van de uitvoering van onze React-app.
+Na de initiële render wordt een nieuwe render wordt enkel veroorzaakt door een state wijziging. [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) is een browserextensie die ons helpt bij het debuggen, profileren en monitoren van de uitvoering van onze React applicatie.
 
 Installeer de extensie en open de console. Ga naar het tabblad `components`. Daar kan je de componenten en bijhorende props inspecteren.
 
@@ -1026,13 +1018,13 @@ Probeer de challenges op [https://react.dev/learn/keeping-components-pure](https
 
 ## Oefening 5 - SnakeEyes
 
-SnakeEyes is het resultaat van het gooien van twee dobbelstenen. Als op beide dobbelstenen één oog staat heb je 'SnakeEyes'. Bij de aanvang van het spel worden twee dobbelstenen getoond met de waarde 6. Het aantal dobbelstenen is standaard 2 maar kan ook meer zijn. Telkens wanneer de gebruiker op een dobbelsteen klikt, wordt een willekeurig getal gegenereerd.
+SnakeEyes is het resultaat van het gooien van twee dobbelstenen. Als op beide dobbelstenen één oog staat heb je "snake eyes". Bij de aanvang van het spel worden twee dobbelstenen getoond met de waarde 6. Het aantal dobbelstenen is standaard 2, maar kan ook meer zijn. Telkens wanneer de gebruiker op een dobbelsteen klikt, wordt een willekeurig getal gegenereerd.
 
 Het `totaal` wordt met de waarde op de dobbelsteen verhoogd.
 
 Als de dobbelsteen één oog bevat, kan er niet meer op geklikt worden.
 
-Als alle dobbelstenen één oog bevatten, dan heb je 'Snake Eyes'. Er verschijnt een boodschap `Oeps you did it again!`. Het totaal wordt terug op 0 geplaatst. Nu kan je kiezen om opnieuw te spelen.
+Als alle dobbelstenen één oog bevatten, dan heb je "snake eyes". Er verschijnt een boodschap `Oeps you did it again!`. Het totaal wordt terug op 0 geplaatst. Nu kan je kiezen om opnieuw te spelen.
 
 `Max total` bevat het maximaal aantal behaalde punten over alle spelletjes heen.
 
@@ -1046,13 +1038,16 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 
 - Oplossing +
 
-  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-Web/SnakeEyes>.
+  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/Web-IV/SnakeEyes>.
 
 ## Mogelijke extra's voor de examenopdracht
 
 - [Redux Toolkit](https://redux-toolkit.js.org/)
+  - Zie hierbij ook <https://gitnation.com/contents/why-you-should-use-redux-in-2024>
 - [Elf](https://github.com/ngneat/elf)
 - Een alternatief state management framework...
+
+?> Houd rekening met de extra complexiteit die deze frameworks met zich meebrengen. Voor sommige toepassingen zijn ze overkill.
 
 ## Must reads
 
@@ -1063,3 +1058,4 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 - [The Interactive Guide to Rendering in React](https://ui.dev/why-react-renders)
 - [React re-renders guide: everything, all at once](https://www.developerway.com/posts/react-re-renders-guide)
 - [The new wave of React state management](https://frontendmastery.com/posts/the-new-wave-of-react-state-management/)
+- [Why You Should Use Redux in 2024](https://gitnation.com/contents/why-you-should-use-redux-in-2024)
