@@ -8,7 +8,7 @@ l> fe start 4331ea1 les2
 
 [**State**](https://react.dev/learn/state-a-components-memory) is het dynamische deel van een React-component. Een component kan zo zijn eigen gegevens opslaan en beheren, die in de loop van de tijd kunnen veranderen door bv. interacties van de gebruiker. Wanneer de state tijdens de levenscyclus van een component wijzigt (door een gebruikersinteractie, API call die data retourneert...), wordt de component opnieuw gerenderd om de nieuwe state weer te geven (dit is waarom React 'so cool' is). Je kan dit vergelijken met een spreadsheet. Als één cel wijzigt, worden andere cellen aangepast.
 
-Stel je voor dat we een component renderen waarbij een stuk state initieel een lege array is (bv. een lege lijst van transacties). Later wordt deze array gevuld met gegevens (we voegen bv. een transactie toe). Dit wordt een **state change** genoemd. Telkens wanneer we een React-component vertellen om zijn state te wijzigen (via een `setState` methode), zal de component zichzelf automatisch opnieuw renderen. De state kan ingesteld worden door de component zelf of een ander stukje code buiten de component. Het proces wordt hier gevisualiseerd:
+Stel je voor dat we een component renderen waarbij een stuk state initieel een lege array is (bv. een lege lijst van transacties). Later wordt deze array gevuld met gegevens (we voegen bv. een transactie toe). Dit wordt een **state change** genoemd. Telkens wanneer we een React-component vertellen om zijn state te wijzigen (via een `setState` functie), zal de component zichzelf automatisch opnieuw renderen. De state kan ingesteld worden door de component zelf of een ander stukje code buiten de component. Het proces wordt hier gevisualiseerd:
 
 ![State change visualisatie](./images/statechange.webp ":size=60%")
 
@@ -214,7 +214,7 @@ function App() {
 export default App;
 ```
 
-## Interactiviteit toevoegen
+## Verwijderen van een place
 
 In React kunnen we gebruik maken van event handlers in onze JSX-code. Neem het artikel [Responding to Events](https://react.dev/learn/responding-to-events) door.
 
@@ -282,11 +282,9 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   1. Definieer binnen de component een functie `handleClick`, die het `onClick` event zal afhandelen. Per conventie starten event handlers met `handle` gevolgd door het event. Wanneer een event handler wordt aangeroepen, kan het synthetische event-object als argument aan de handler worden doorgegeven. Dit object werkt net als het normale DOM-event-object en biedt toegang tot informatie zoals de target (element dat het event heeft getriggerd) en de event-type (bijvoorbeeld 'click'). Print dit object gerust eens in de console om de inhoud ervan te bekijken.
   2. Voorzie de prop `onClick` en geef de event handler functie mee.
 
-<!-- TODO: hier verder nalezen -->
-
 ## State toevoegen
 
-Wanneer we klikken op de verwijder knop dient de place te worden verwijderd uit de lijst van plaatsen. Dus de lijst van plaatsen kan veranderen en dient dus in `state` te worden bijgehouden. Dit doen we aan de hand van de `useState` hook.
+Wanneer we klikken op de verwijderknop dient de place te worden verwijderd uit de lijst van plaatsen. Dus de lijst van plaatsen kan veranderen en dient dus in `state` te worden bijgehouden. Dit doen we aan de hand van de `useState` hook.
 
 Neem de tutorial [Updating the screen](https://react.dev/learn#updating-the-screen) door.
 
@@ -300,7 +298,7 @@ De [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook wordt
 
 ### Toevoegen van state aan de PlacesList component
 
-We starten met het bijhouden van de state in de `PlacesList` component. Indien een plaats verwijderd wordt, dan moet de state in de `PlacesList` component worden aangepast. Deze component zal dan ook een methode bevatten om de plaats uit de state te verwijderen. Deze geven we samen met de overige props door aan de child components. De component waar de interactiviteit plaatsvindt, kan dan deze methode aanroepen, die vervolgens de state zal wijzigen in de parent component.
+We starten met het bijhouden van de state in de `PlacesList` component. Indien een plaats verwijderd wordt, dan moet de state in de `PlacesList` component worden aangepast. Deze component zal dan ook een functie bevatten om de plaats uit de state te verwijderen. Deze geven we samen met de overige props door aan de child components. De component waar de interactiviteit plaatsvindt, kan dan deze functie aanroepen, die vervolgens de state zal wijzigen in de parent component.
 
 ```jsx
 // src/components/places/PlacesList.jsx
@@ -340,7 +338,7 @@ export default PlacesList;
 ```
 
 1. Importeer de `useState` hook uit het `react` package.
-2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier noemen we deze variabele `places`. De `useState` functie neemt de initiële state ( PLACES_DATA) als parameter en geeft een array terug. Deze array bevat:
+2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier noemen we deze variabele `places`. De `useState` functie neemt de initiële state (`PLACES_DATA`) als parameter en geeft een array terug. Deze array bevat:
 
    - als eerste element de **state-variabele**, deze bevat de huidige waarde.
    - als tweede element de functie om de waarde van de state-variabele bij te werken, een zogezegde **setter**. Hierdoor zal de component opnieuw gerenderd worden.
@@ -349,9 +347,9 @@ Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de 
 
 <!-- markdownlint-disable ol-prefix -->
 
-3. Als de gebruiker op verwijder klikt, dient de methode `handleDeletePlace` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `handleDeletePlace` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onDelete` toe.
+3. Als de gebruiker op verwijder klikt, dient de functie `handleDeletePlace` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `handleDeletePlace` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onDelete` toe.
 
-_Om gegevens vanuit een kindcomponent naar de oudercomponent te sturen, kan de oudercomponent een functie (callback) via props aan de kindcomponent doorgeven. Wanneer de kindcomponent een actie uitvoert (zoals een knopklik), kan het die callback-functie aanroepen, die vervolgens een state-wijziging in de oudercomponent kan initiëren._
+Om gegevens vanuit een kindcomponent naar de oudercomponent te sturen, kan de oudercomponent een functie (callback) via props aan de kindcomponent doorgeven. Wanneer de kindcomponent een actie uitvoert (zoals klikken op een knop), kan het die callback-functie aanroepen, die vervolgens een state-wijziging in de oudercomponent kan initiëren.
 
 De `Place` component moet ook worden aangepast:
 
@@ -380,7 +378,7 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
 export default Place;
 ```
 
-1. Props worden doorgegeven van de parent aan de child component. We voegen een `onDelete` prop toe aan de `Place` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
+1. Props worden doorgegeven van de parent aan de child component. We voegen een `onDelete` prop toe aan de `Place` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet. Deze retourneert gewoon het argument die het ontvangen heeft.
 2. `handleDelete` zal het verwijderen van de plaats afhandelen. We geven het id van de plaats mee.
 3. Nu moet deze functie opgeroepen worden als de gebruiker op de verwijder knop klikt. Hierdoor zal de parent zijn state aanpassen. De parent zal opnieuw gerenderd worden!
 
@@ -396,10 +394,10 @@ Alvorens de componenten getoond worden op het scherm moeten ze gerenderd worden 
 
 Er zijn 2 redenen voor een component om te renderen
 
-1. De initiële render (veroorzaakt in main.jsx door de `render` )
-2. De state van de component of 1 van zijn parents is aangepast (veroorzaakt door een set functie)
+1. De initiële render (veroorzaakt in main.jsx door de `render` functie)
+2. De state van de component of één van zijn parents is aangepast (veroorzaakt door een `setState` functie)
 
-I.g.v. een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de functionele component aan wiens state werd aangepast. Dit proces is recursief. De render-fase is puur en alleen verantwoordelijk voor het berekenen van de nieuwe Virtual DOM.
+In het geval van een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de function component aan wiens state werd aangepast. Dit proces is recursief. De render-fase is enkel en alleen verantwoordelijk voor het berekenen van de nieuwe Virtual DOM. Tijdens de render fase worden kort gezegd alle function components aangeroepen en wordt de nieuwe Virtual DOM berekend.
 
 In de commit fase werkt React de echte DOM bij. Bij een initïele render gebruikt React de `appendChild() DOM API` om alle DOM-knooppunten die het heeft gemaakt op het scherm te zetten. Voor re-renders zal React de minimaal noodzakelijke bewerkingen toepassen (berekend tijdens het renderen!) om de DOM te laten overeenkomen met de nieuwste rendering-uitvoer.
 
@@ -409,27 +407,27 @@ Lees [Render and commit](https://react.dev/learn/render-and-commit) en bekijk ee
 
 Lees [State as a snapshot](https://react.dev/learn/state-as-a-snapshot)
 
-Samengevat
+#### Samengevat
 
 Een state snapshot verwijst naar de huidige "momentopname" van de state in een React-component op een specifiek moment tijdens de render-cyclus.
 
 1. Initial State: Bij het initiëren van een component met _useState_, wordt een eerste snapshot van de state opgeslagen. Dit is de oorspronkelijke waarde van de state.
    `const [number, setNumber] = useState(0); // de initiële state snapshot van number is 0`
 2. State Update: Het bijwerken van de state vraagt om een nieuwe render en een nieuwe state snapshot wordt gemaakt die pas gebruikt wordt tijdens de volgende render.
-   `setNumber(number + 1); //nieuwe state snapshot met waarde 1 voor number`.
-   De waarde van een statusvariabele verandert nooit binnen een render. Dus de waarde van de variabele _number_ verandert in de bestaande render niet. De component blijft renderen met de vorige waarde van number totdat de volgende render plaatsvindt. In 1 eventhandler 3 maal `setNumber(number + 1)` aanroepen zal het _number_ maar met 1 verhogen!
+   `setNumber(number + 1); // nieuwe state snapshot met waarde 1 voor number`.
+   De waarde van een statusvariabele verandert nooit binnen een render. Dus de waarde van de variabele _number_ verandert in de bestaande render niet. De component blijft renderen met de vorige waarde van number totdat de volgende render plaatsvindt. In een eventhandler 3 maal `setNumber(number + 1)` aanroepen zal het _number_ slechts met 1 verhogen!
 3. Render-fase: "Rendering" betekent dat React de component, die een functie is, aanroept. Wanneer React de component opnieuw rendert, wordt de component opnieuw opgebouwd met de laatst bekende snapshot van de state.
 
-React slaat de state op buiten de component, het 'leeft' in React! Variabelen en eventhandlers `overleven` geen re-render. Elke render heeft zijn eigen eventhandlers.
+React slaat de state op buiten de component, het 'leeft' in React! Variabelen en eventhandlers `overleven` geen re-render. Dat is ook zo bij "gewone" functies: variabelen in een functie zijn verdwenen nadat ze is uitgevoerd. Elke render heeft zijn eigen eventhandlers.
 ![state overview](./images/reactstate.jpg ":size=70%")
 
 Lees [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
 
-Samengevat
+#### Samengevat
 
-- Het instellen van de status verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render.
-- React verwerkt statusupdates NADAT alle eventhandlers zijn uitgevoerd. Dit wordt `batching` genoemd.
-- Om een ​​bepaalde status meerdere keren in één gebeurtenis bij te werken, kan je de updaterfunctie setNumber(n => n + 1) gebruiken.
+- Het instellen van de state verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render.
+- React verwerkt state updates NADAT alle eventhandlers zijn uitgevoerd. Dit wordt `batching` genoemd.
+- Om een ​​bepaalde state meerdere keren in één gebeurtenis bij te werken, kan je de updaterfunctie setNumber(n => n + 1) gebruiken.
 
 ## StarRating component
 
@@ -442,7 +440,7 @@ export default function StarRating() {
 }
 ```
 
-Voor de weergave van de sterren maken we gebruik van [react-icons](https://react-icons.github.io/react-icons/). Dit is een npm package met honderden svg's onder de vorm van componenten. We maken gebruik van de Ionicons 5.
+Voor de weergave van de sterren maken we gebruik van [react-icons](https://react-icons.github.io/react-icons/). Dit is een npm package met honderden svg's onder de vorm van componenten. We maken gebruik van de library [Ionicons 5](https://react-icons.github.io/react-icons/icons/io5/).
 
 ```bash
 yarn add react-icons
@@ -470,9 +468,9 @@ export default function StarRating() {
 }
 ```
 
-1. We maken gebruik van het `IoStarSharp` icon uit de Ionicons-collectie
+1. We maken gebruik van het `IoStarSharp` icon uit de Ionicons-collectie.
 2. De `Star` component retourneert één gele ster.
-3. De `StarRating` component retourneert vijf sterren. We creëren een array met vijf elementen en mappen elk element naar een `Star` component. We voegen ook een key attribuut toe, hier gebruiken we de index.
+3. De `StarRating` component retourneert vijf sterren. We creëren een array met vijf elementen en mappen elk element naar een `Star` component. We voegen ook een `key` attribuut toe, hier gebruiken we de index.
 4. React-components mogen maar één element retourneren. We wrappen de elementen in een lege tag. Dit genereert geen extra DOM element, enkel een virtuele knoop in de virtual DOM.
 
 ### Oefening 2 - StarRating in Place component
@@ -510,7 +508,7 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 
 ### Een variabel aantal sterren
 
-Vervolgens willen het aantal sterren in de rating variabel maken. Dit doen we d.m.v. een prop, zodat de Rating component herbruikbaar is.
+Vervolgens willen we het aantal sterren in de rating variabel maken. Dit doen we d.m.v. een prop, zodat de Rating component herbruikbaar is.
 
 ```jsx
 // src/components/places/StarRating.jsx
@@ -519,7 +517,7 @@ import { IoStarSharp } from "react-icons/io5";
 const Star = () => <IoStarSharp color="yellow" />;
 
 export default function StarRating({ totalStars = 5 }) {
-  // 👈 1
+  // 👆 1
 
   const stars = [...new Array(totalStars)]; // 👈 2
   return (
@@ -537,7 +535,7 @@ export default function StarRating({ totalStars = 5 }) {
 
 ### De kleur van de sterren kan verschillen
 
-Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `selected` prop toe.
+Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `selected` prop toe en passen we de kleur aan op basis van deze prop.
 
 ```jsx
 // src/components/places/StarRating.jsx
@@ -547,7 +545,6 @@ import { IoStarSharp } from "react-icons/io5";
 const Star = ({ selected = false }) => (
   <IoStarSharp color={selected ? "yellow" : "grey"} />
 );
-// 👆
 
 export default function StarRating({ totalStars = 5 }) {
   const stars = [...new Array(totalStars)];
@@ -592,7 +589,7 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
 export default Place;
 ```
 
-1. Importeer de StarRating component, indien dit nog niet is gebeurd
+1. Importeer de StarRating component, indien dit nog niet is gebeurd.
 2. Via de prop `selectedStars` wordt de informatie doorgegeven aan de `StarRating` component.
 
 De `StarRating` component zal die informatie via de prop `selected` doorgeven aan de `Star` component:
@@ -606,7 +603,7 @@ const Star = ({ selected = false }) => (
 );
 
 export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
-  // 👈 1
+  // 👆 1
   const stars = [...new Array(totalStars)];
   return (
     <>
@@ -628,7 +625,7 @@ export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
 
 Bekijk het resultaat!
 
-## Interactiviteit toevoegen
+## Aanpassen van de rating
 
 ### Oefening 3 - Event handler toevoegen
 
@@ -673,7 +670,7 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
 
 ### De rating aanpassen
 
-Wanneer we klikken op een ster moet de rating van de plaats worden aangepast. De rating van een plaats wordt bijgehouden in de state `places` in de `PlacesList` component. We voorzien hiervoor de functie `handleRatePlace`. Deze methode geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
+Wanneer we klikken op een ster moet de rating van de plaats worden aangepast. De rating van een plaats wordt bijgehouden in de state `places` in de `PlacesList` component. We voorzien hiervoor de functie `handleRatePlace`. Deze functie geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
 ```jsx
 import { useState } from "react";
@@ -721,8 +718,8 @@ const PlacesList = () => {
 export default PlacesList;
 ```
 
-1. Deze methode past de rating van een plaats aan. We gaan door de bestaande plaatsen en passen de rating van de plaats met het opgegeven id aan. Je vindt hierover meer op [Updating Objects in state](https://react.dev/learn/updating-objects-in-state). Als we `setPlaces` aanroepen, wordt de state variabele `places` aangepast en zal de UI tree gerenderd worden met de nieuwe data.
-2. We geven deze methode door aan de kinderen via de prop `onRate`. Zo kunnen de kinderen de rating van de plaats aanpassen wanneer op een ster geklikt wordt.
+1. Deze functie past de rating van een plaats aan. We gaan door de bestaande plaatsen en passen de rating van de plaats met het opgegeven id aan. Je vindt hierover meer op [Updating Objects in state](https://react.dev/learn/updating-objects-in-state). Als we `setPlaces` aanroepen, wordt de state variabele `places` aangepast en zal de UI tree gerenderd worden met de nieuwe data.
+2. We geven deze functie door aan de kinderen via de prop `onRate`. Zo kunnen de kinderen de rating van de plaats aanpassen wanneer op een ster geklikt wordt.
 
 De `Place` component moet ook worden aangepast:
 
@@ -731,8 +728,7 @@ De `Place` component moet ook worden aangepast:
 import StarRating from "./StarRating"; // 👈 1
 
 const Place = ({ id, name, rating, onDelete, onRate }) => {
-  // 👈 1
-  // 👇 2
+  // 👆 1 👇 2
   const handleRate = (newRating) => {
     onRate(id, newRating);
   };
@@ -759,8 +755,8 @@ export default Place;
 ```
 
 1. Place krijgt nu ook een prop `onRate`.
-2. `handleRate` zal het instellen van een nieuwe rating afhandelen. De nieuwe rating is hier al gekend. De StarRating component zal de waarde doorgeven bij aanroep van de methode. We geven ook het id van de plaats mee.
-3. Het klikken op een ster worden lager in de boom afgehandeld. Dus moeten we deze methode doorgeven aan de `StarRating` component via een event handler prop `onRate`.
+2. `handleRate` zal het instellen van een nieuwe rating afhandelen. De nieuwe rating is hier al gekend. De StarRating component zal de waarde doorgeven bij aanroep van de functie. We geven ook het id van de plaats mee.
+3. Het klikken op een ster wordt lager in de boom afgehandeld. Dus moeten we deze functie doorgeven aan de `StarRating` component via een event handler prop `onRate`.
 
 De `StarRating`component en `Star` component worden:
 
@@ -769,10 +765,10 @@ De `StarRating`component en `Star` component worden:
 import { IoStarSharp } from "react-icons/io5";
 
 const Star = ({ index, selected = false, onSelect = (f) => f }) => {
-  // 👈 3 en 4
+  // 👆 3 👇 4
   const handleSelect = () => {
     onSelect(index + 1);
-  }; // 👈 4
+  };
 
   return (
     <IoStarSharp color={selected ? "yellow" : "grey"} onClick={handleSelect} />
@@ -805,7 +801,7 @@ export default function StarRating({
 ```
 
 1. `onRate` wordt via de props doorgegeven, samen met de andere props.
-2. Geef de methode door in de event handler prop `onSelect` van de `Star` component.
+2. Geef de functie door in de event handler prop `onSelect` van de `Star` component.
 3. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. Dit is een functie met standaardwaarde `f => f`. Dit is een nepfunctie die niets doet, het retourneert gewoon het argument dat het ontvangen heeft.
 4. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven. We moeten de index dus ook doorgeven als prop.
 
@@ -851,6 +847,8 @@ export default App;
 
 1. Importeer `TransactionList` en verwijder de andere niet gebruikte imports
 2. Het aanmaken van de lijst gebeurt nu door de `TransactionList` component
+
+<!-- TODO: hier verder nalezen -->
 
 ## Input velden toevoegen a.d.h.v. controlled components
 
