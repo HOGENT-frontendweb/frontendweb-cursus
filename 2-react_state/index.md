@@ -993,6 +993,116 @@ De `useMemo` hook verwacht twee parameters:
 
 Bij elke volgende render vergelijkt React de dependencies met de dependencies die je tijdens de laatste render hebt doorgegeven. Als geen van de dependencies is gewijzigd, retourneert `useMemo` de waarde die al eerder werd berekend. Anders zal React de berekening opnieuw uitvoeren en de nieuwe waarde retourneren.
 
+### Weergave tabel met transacties
+
+We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft.
+
+```jsx
+// src/components/transactions/TransactionsTable.jsx
+import Transaction from './Transaction';
+
+function TransactionsTable({
+  transactions, 
+}) {
+  if (transactions.length === 0) {
+    return (
+      <div className="alert alert-info">
+        There are no transactions yet.
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <table className='table table-hover table-responsive'>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Place</th>
+            <th className="text-end">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((transaction) => (
+            <Transaction key={transaction.id} {...transaction} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default TransactionsTable;
+```
+
+Pas TransactionsList aan
+```jsx
+// src/components/transactions/TransactionList.jsx
+import { useState, useMemo } from 'react'; 
+import TransactionsTable from '../../components/transactions/TransactionsTable';
+import { TRANSACTION_DATA } from '../../api/mock_data';
+
+export default function TransactionList() {
+  const [text, setText] = useState(''); 
+  const [search, setSearch] = useState(''); 
+
+  const filteredTransactions = useMemo(
+    () =>
+      TRANSACTION_DATA.filter((t) => {
+        console.log('filtering...');
+        return t.place.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    [search],
+  );
+
+  return (
+    <>
+      <h1>Transactions</h1>
+      <div className='input-group mb-3 w-50'>
+        <input
+          type='search'
+          id='search'
+          className='form-control rounded'
+          placeholder='Search'
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button
+          type='button'
+          className='btn btn-outline-primary'
+          onClick={() => setSearch(text)}
+        >
+          Search
+        </button>
+      </div>
+
+      <div className="mt-4">
+        <TransactionsTable transactions={filteredTransactions} />
+      </div>
+    </>
+  );
+}
+```
+
+Pas zelf de Transaction component aan zodat de transacties als rij in de tabel worden weergegeven. Maak gebruik van onderstaande functies voor de weergave van de datum en het bedrag. Deze functies plaatsen we boven de definitie van de component zodat ze niet bij elke rerender opnieuw dienen te worden aangemaakt.
+
+```jsx
+// kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
+const dateFormat = new Intl.DateTimeFormat('nl-BE', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+});
+
+const amountFormat = new Intl.NumberFormat('nl-BE', {
+  currency: 'EUR',
+  style: 'currency',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 2,
+});
+```
+
 ## useReducer hook
 
 Mocht je nood hebben aan een meer complexe state in een component, dan kan je gebruik maken van de `useReducer` hook. Dit is in feite een alternatief voor `useState`. Met een reducer kan je een complexe state aanpassen o.b.v. een **reducer-functie** die een bepaalde actie ontvangt. Wat die actie is, kies je zelf. Typisch is dit een object van de vorm `{ action: string; payload: any; }`.
