@@ -4,7 +4,7 @@
 
 Dit olod behoort tot het keuzepakket `Development`, zoals je hieronder kan zien:
 
-![Dit olod in de keuzepakketten](./images/MT_olods.png ':size=70%')
+![Dit olod in de keuzepakketten](./images/MT_olods.png ":size=70%")
 
 ## Wat gaan we doen?
 
@@ -16,11 +16,9 @@ Wij hebben gekozen voor React. Waarom? Het wordt veel gebruikt (zie <https://202
 
 Programmeren leer je enkel door het te doen, niet door onze cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-> TODO: links naar Chamilo updaten
+Voor dit olod is er een [examenopdracht](0-intro/examenopdracht.md). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je, indien van toepassing, in het olod Web Services.
 
-Voor dit olod is er een examenopdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=58955&tool=Document&browser=Table&tool_action=Viewer&publication=2201057). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je in het olod Web Services (indien van toepassing).
-
-De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?application=Chamilo%5CApplication%5CWeblcms&go=CourseViewer&course=58955). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examenopdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=64499). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examenopdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
@@ -37,17 +35,18 @@ Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers.
 - Chat-applicatie (met WebSockets)
 - Beheer van verzamelingen (zeldzame strips, antiek...)
 - Websites om te zoeken/luisteren naar podcasts
+- Quiz-applicatie
 - Website voor een vereniging of het bedrijf van een vriend(in), familielid...
 
 ## Cursus?
 
-Het cursusmateriaal wordt op GitHub gehost: <https://hogent-web.github.io/frontendweb-cursus>.
+Het cursusmateriaal wordt op GitHub gehost: <https://web-iv.github.io/frontendweb-cursus>.
 
-Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/hogent-web/frontendweb-budget>.
+Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/Web-IV/frontendweb-budget>.
 
-De bijhorende back-end is te vinden op: <https://github.com/hogent-web/webservices-budget>.
+De bijhorende back-end is te vinden op: <https://github.com/Web-IV/webservices-budget>.
 
-> Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/hogent-web/frontendweb-cursus>.
+> Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/Web-IV/frontendweb-cursus>.
 
 ## Planning
 
