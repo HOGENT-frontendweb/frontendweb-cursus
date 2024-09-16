@@ -999,22 +999,18 @@ We refactoren de `TransactionList` component zodat die nu een tabel met transact
 
 ```jsx
 // src/components/transactions/TransactionsTable.jsx
-import Transaction from './Transaction';
+import Transaction from "./Transaction";
 
-function TransactionsTable({
-  transactions, 
-}) {
+function TransactionsTable({ transactions }) {
   if (transactions.length === 0) {
     return (
-      <div className="alert alert-info">
-        There are no transactions yet.
-      </div>
+      <div className="alert alert-info">There are no transactions yet.</div>
     );
   }
 
   return (
     <div>
-      <table className='table table-hover table-responsive'>
+      <table className="table table-hover table-responsive">
         <thead>
           <tr>
             <th>Date</th>
@@ -1036,41 +1032,42 @@ function TransactionsTable({
 export default TransactionsTable;
 ```
 
-Pas TransactionsList aan
+Pas de `TransactionsList` component aan:
+
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState, useMemo } from 'react'; 
-import TransactionsTable from '../../components/transactions/TransactionsTable';
-import { TRANSACTION_DATA } from '../../api/mock_data';
+import { useState, useMemo } from "react";
+import TransactionsTable from "../../components/transactions/TransactionsTable";
+import { TRANSACTION_DATA } from "../../api/mock_data";
 
 export default function TransactionList() {
-  const [text, setText] = useState(''); 
-  const [search, setSearch] = useState(''); 
+  const [text, setText] = useState("");
+  const [search, setSearch] = useState("");
 
   const filteredTransactions = useMemo(
     () =>
       TRANSACTION_DATA.filter((t) => {
-        console.log('filtering...');
+        console.log("filtering...");
         return t.place.name.toLowerCase().includes(search.toLowerCase());
       }),
-    [search],
+    [search]
   );
 
   return (
     <>
       <h1>Transactions</h1>
-      <div className='input-group mb-3 w-50'>
+      <div className="input-group mb-3 w-50">
         <input
-          type='search'
-          id='search'
-          className='form-control rounded'
-          placeholder='Search'
+          type="search"
+          id="search"
+          className="form-control rounded"
+          placeholder="Search"
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button
-          type='button'
-          className='btn btn-outline-primary'
+          type="button"
+          className="btn btn-outline-primary"
           onClick={() => setSearch(text)}
         >
           Search
@@ -1085,23 +1082,60 @@ export default function TransactionList() {
 }
 ```
 
-Pas zelf de Transaction component aan zodat de transacties als rij in de tabel worden weergegeven. Maak gebruik van onderstaande functies voor de weergave van de datum en het bedrag. Deze functies plaatsen we boven de definitie van de component zodat ze niet bij elke rerender opnieuw dienen te worden aangemaakt.
+Pas zelf de `Transaction` component aan zodat de transacties als een rij in de tabel worden weergegeven. Maak gebruik van onderstaande functies voor de weergave van de datum en het bedrag. Deze functies plaatsen we boven de definitie van de component zodat ze niet bij elke render opnieuw aangemaakt worden.
 
-```jsx
+```js
 // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
-const dateFormat = new Intl.DateTimeFormat('nl-BE', {
-  day: '2-digit',
-  month: '2-digit',
-  year: 'numeric',
+const dateFormat = new Intl.DateTimeFormat("nl-BE", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
 });
 
-const amountFormat = new Intl.NumberFormat('nl-BE', {
-  currency: 'EUR',
-  style: 'currency',
+const amountFormat = new Intl.NumberFormat("nl-BE", {
+  currency: "EUR",
+  style: "currency",
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
 });
 ```
+
+<br />
+
+- Oplossing +
+
+  TODO: @Karin: kijk eens na?
+
+  ```jsx
+  // src/components/transactions/Transaction.jsx
+  import { useCallback } from "react";
+  import { IoTrashOutline, IoPencil } from "react-icons/io5";
+
+  // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
+  const dateFormat = new Intl.DateTimeFormat("nl-BE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+
+  const amountFormat = new Intl.NumberFormat("nl-BE", {
+    currency: "EUR",
+    style: "currency",
+    maximumFractionDigits: 2,
+    minimumFractionDigits: 2,
+  });
+
+  export default function Transaction({ id, date, amount, user, place }) {
+    return (
+      <tr>
+        <td>{dateFormat.format(new Date(date))}</td>
+        <td>{user.name}</td>
+        <td>{place.name}</td>
+        <td>{amountFormat.format(amount)}</td>
+      </tr>
+    );
+  }
+  ```
 
 ## useReducer hook
 
