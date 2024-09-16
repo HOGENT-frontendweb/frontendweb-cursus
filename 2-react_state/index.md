@@ -1104,12 +1104,8 @@ const amountFormat = new Intl.NumberFormat("nl-BE", {
 
 - Oplossing +
 
-  TODO: @Karin: kijk eens na?
-
   ```jsx
   // src/components/transactions/Transaction.jsx
-  import { useCallback } from "react";
-  import { IoTrashOutline, IoPencil } from "react-icons/io5";
 
   // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
   const dateFormat = new Intl.DateTimeFormat("nl-BE", {
