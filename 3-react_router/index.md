@@ -1,5 +1,7 @@
 # React Router
 
+<!-- TODO: startpunt en oplossing toevoegen -->
+
 l> fe start 4331ea1 les3
 
 Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door Vite gegenereerde scripts en stylesheets geïnjecteerd.

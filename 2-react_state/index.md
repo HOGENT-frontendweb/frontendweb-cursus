@@ -1,5 +1,7 @@
 # React state management
 
+<!-- TODO: startpunt en oplossing toevoegen -->
+
 l> fe start 4331ea1 les2
 
 ## Props en state
