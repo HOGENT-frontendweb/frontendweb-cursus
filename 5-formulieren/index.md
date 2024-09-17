@@ -14,10 +14,10 @@ We maken een component voor het toevoegen en wijzigen van een transactie.
 
 Voorzie volgende bijkomende routes in de budget-applicatie:
 
-`/transactions/add`: 
+`/transactions/add`:
 een nieuwe transactie toevoegen, via de AddOrEditTransaction component
 
-`/transactions/edit/:id`: 
+`/transactions/edit/:id`:
 een transactie bewerken, via de AddOrEditTransaction component
 
 - Oplossing +
@@ -44,58 +44,60 @@ een transactie bewerken, via de AddOrEditTransaction component
   ```
 
 ### Oefening 2
+
 Voorzie een knop "Add Transaction" naast de search bar en een potloodknop in de lijst voor elke transactie.
 
 - Oplossing +
 
   In `TransactionList.jsx`voeg je onderstaande toe
+
   ```jsx
-   <div className="clearfix">
-        <Link to="/transactions/add" className="btn btn-primary float-end">
-          Add transaction
-        </Link>
-    </div>
+  <div className='clearfix'>
+    <Link to='/transactions/add' className='btn btn-primary float-end'>
+      Add transaction
+    </Link>
+  </div>
   ```
 
   In `Transaction.jsx`
+
   ```jsx
   import { IoTrashOutline, IoPencilOutline } from 'react-icons/io5';
-   <Link data-cy="transaction_edit_btn" to={`/transactions/edit/${id}`} className="btn btn-light">
-       <IoPencilOutline />
-    </Link>
+  <Link
+    data-cy='transaction_edit_btn'
+    to={`/transactions/edit/${id}`}
+    className='btn btn-light'
+  >
+    <IoPencilOutline />
+  </Link>;
   ```
 
 ## Het formulier
-Maak een bestand `AddOrEditTransaction.jsx` aan in de map `src\pages\transactions`. Deze pagina gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen daar de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren.
 
+Maak een bestand `AddOrEditTransaction.jsx` aan in de map `src\pages\transactions`. Deze pagina gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen daar de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren.
 
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.jsx
-import useSWR from 'swr';// 👈 1
-import {  getAll } from '../../api';// 👈 1
-import TransactionForm from '../../components/transactions/TransactionForm';// 👈 2
-import AsyncData from '../../components/AsyncData';// 👈 3
+import useSWR from 'swr'; // 👈 1
+import { getAll } from '../../api'; // 👈 1
+import TransactionForm from '../../components/transactions/TransactionForm'; // 👈 2
+import AsyncData from '../../components/AsyncData'; // 👈 3
 
 export default function AddOrEditTransaction() {
   const {
     data: places = [],
     error: placesError,
     isLoading: placesLoading,
-  } = useSWR('places', getAll);// 👈 1
+  } = useSWR('places', getAll); // 👈 1
 
   return (
     <>
-      <h1>
-        Add transaction
-      </h1>
+      <h1>Add transaction</h1>
 
-      <AsyncData
-        error={ placesError}
-        loading={placesLoading}
-      >{/* 👈 3 */}
-        <TransactionForm
-          places={places}
-        />{/* 👈 2 */}
+      <AsyncData error={placesError} loading={placesLoading}>
+        {/* 👈 3 */}
+        <TransactionForm places={places} />
+        {/* 👈 2 */}
       </AsyncData>
     </>
   );
@@ -110,7 +112,7 @@ Maak een bestand `TransactionForm.jsx` aan in de map `src\components\transaction
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
-export default function TransactionForm({places}) {
+export default function TransactionForm({ places }) {
   return (
     <>
       <h2>Add transaction</h2>
@@ -176,6 +178,7 @@ export default function TransactionForm({places}) {
 In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaans hun eigen state bij. Ze werken deze bij op basis van gebruikersinvoer. Formulierelementen in React zijn read-only. Door state toe te voegen, kan de component zich aanpassen. In het vorige hoofdstuk hebben we een eenvoudig voorbeeld van een formulier behandeld maar validatie, foutafhandeling, formArrays... ontbreken nog. Je kan dit allemaal zelf implementeren of je kan gebruik maken van een package, zoals bv. [react-hook-form](https://react-hook-form.com/).
 
 ### React-hook-form
+
 Voeg dit package toe aan het project:
 
 ```bash
@@ -187,8 +190,7 @@ We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
 import { useForm } from 'react-hook-form'; // 👈 1
-export default function TransactionForm({places}) {
-
+export default function TransactionForm({ places }) {
   const { register, handleSubmit, reset } = useForm(); // 👈 2, 5 en 7
 
   // 👇 6
@@ -197,59 +199,73 @@ export default function TransactionForm({places}) {
     //Nieuwe transactie moet nog worden opgeslaan
     reset(); // 👈 7
   };
-  
+
   return (
     <>
       <h2>Add transaction</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className='w-50 mb-3'> {/*👈 5*/}
+      <form onSubmit={handleSubmit(onSubmit)} className='w-50 mb-3'>
+        {' '}
+        {/*👈 5*/}
         <div className='mb-3'>
           <label htmlFor='user' className='form-label'>
             User Id
           </label>
           <input
-            {...register('user')} 
-            defaultValue='' 
+            {...register('user')}
+            defaultValue=''
             id='user'
             type='number'
             className='form-control'
             placeholder='userid'
             required
-          />{/* 👈 3 en 4 */}
+          />
+          {/* 👈 3 en 4 */}
         </div>
         <div className='mb-3'>
           <label htmlFor='date' className='form-label'>
             Date
           </label>
           <input
-            {...register('date')} 
+            {...register('date')}
             id='date'
             type='date'
             className='form-control'
             placeholder='date'
-          />{/* 👈 3 */}
+          />
+          {/* 👈 3 */}
         </div>
-
         <div className='mb-3'>
           <label htmlFor='places' className='form-label'>
             Place
           </label>
-          <select {...register('place')} id='places' className='form-select' required>
+          <select
+            {...register('place')}
+            id='places'
+            className='form-select'
+            required
+          >
             <option defaultChecked>-- Select a place --</option>
             {places.map(({ id, name }) => (
               <option key={id} value={id}>
                 {name}
               </option>
             ))}
-          </select>{/* 👈 3 */}
+          </select>
+          {/* 👈 3 */}
         </div>
-
         <div className='mb-3'>
           <label htmlFor='amount' className='form-label'>
             Amount
           </label>
-          <input {...register('amount')} id='amount' type='number' className='form-control' required />{/* 👈 3 */}
+          <input
+            {...register('amount')}
+            id='amount'
+            type='number'
+            className='form-control'
+            required
+          />
+          {/* 👈 3 */}
         </div>
-
         <div className='clearfix'>
           <div className='btn-group float-end'>
             <button type='submit' className='btn btn-primary'>
@@ -265,7 +281,7 @@ export default function TransactionForm({places}) {
 
 1. `useForm` is een **custom hook** om forms te beheren. Het geeft allerlei nuttige functies en andere info over het formulier terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/api/useform/).
 2. [register](https://react-hook-form.com/api/useform/register): met deze functie registreer je velden in het formulier en geef je een naam mee voor het veld. De waarden van de velden kunnen zo gebruikt worden voor zowel formuliervalidatie als het verzenden van het formulier. We hoeven zelf geen state bij te houden. (Achterliggend wordt [React.ref](https://react.dev/learn/referencing-values-with-refs) gebruikt)
-3. Registreer de formuliervelden in de `useForm` hook. 
+3. Registreer de formuliervelden in de `useForm` hook.
 4. Je kan ook een standaardwaarde opgeven.
 5. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier. Je geeft aan deze functie een functie mee die opgeroepen moet worden als het formulier verzonden wordt.
 6. De `onSubmit` functie logt de verstuurde waarden naar de console. `data` bevat de ingevulde waarden per formulierveld: `register('user')` wordt doorgegeven als `{ user:'value' }`.
@@ -279,13 +295,13 @@ We geven een voorbeeld voor het inputveld van de gebruiker, dit is vrij gelijkaa
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
-import { useForm } from 'react-hook-form'; 
+import { useForm } from 'react-hook-form';
 
 const validationRules = {
   user: {
     required: 'User is required',
     min: { value: 1, message: 'min 1' },
-  },  
+  },
 }; // 👈 1
 
 export default function TransactionForm({places}) {
@@ -308,11 +324,10 @@ export default function TransactionForm({places}) {
 ```
 
 1. Als tweede parameter van de `register` functie kan je de validatieregels meegeven (required, min, max, minLength, maxLength, pattern, validate). Je kan ook de bijhorende foutmelding opgeven. Hiervoor definiëren we een constante validationRules. Gebruik geen constante object literals/arrays in de component, bv. validatieregels. Plaats deze buiten de component. Waarom?
-React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](<https://react-hook-form.com/api/useform/register>. Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
+   React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](<https://react-hook-form.com/api/useform/register>. Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
 2. Voor de weergave van de fouten maken we gebruik van het `errors` object. Aan de hand van het `type` property kan je het type van de fout opvragen (bv. `errors.user.type === 'required'`). Merk op dat we hier gebruik maken van `&&`, dit wordt wel eens gezien als een anti-pattern in React. Het is eigenlijk beter om de ternary operator (`voorwaarde ? true : false`) te gebruiken. Dit wordt dus `{errors.user ? <p className="form-text text-danger">{errors.user.message}</p> : null}`.
 
 Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfde code moeten schrijven, zouden we een aparte component moeten maken. Deze component zal gebruik moeten maken van [useFormContext](https://react-hook-form.com/api/useformcontext). Dit komt op het einde van dit hoofdstuk aan bod.
-
 
 ## POST /api/transactions
 
@@ -321,7 +336,8 @@ De volgende stap van de CRUD operaties is de 'C', een nieuwe transactie aanmaken
 Pas `index.js` in de map `api` aan:
 
 ```jsx
-export const save = async (url, { arg: body }) => { // 👈 1
+export const save = async (url, { arg: body }) => {
+  // 👈 1
   await axios.post(`${baseUrl}/${url}`, body); // 👈 2
 };
 ```
@@ -338,27 +354,25 @@ import useSWRMutation from 'swr/mutation'; // 👈 1
 import { save } from '../../api'; // 👈 1
 
 export default function AddOrEditTransaction() {
-
   const {
     data: transaction,
     error: transactionError,
     isLoading: transactionLoading,
-  } = useSWR(id ? `transactions/${id}` : null, getById);// 👈 2
-
+  } = useSWR(id ? `transactions/${id}` : null, getById); // 👈 2
 
   // ...
   return (
     <>
       <h1>Add transaction</h1>
-      <AsyncData
-        error={saveError || placesError}
-        loading={placesLoading}
-      > {/* 👈 4 */}
+      <AsyncData error={saveError || placesError} loading={placesLoading}>
+        {' '}
+        {/* 👈 4 */}
         <TransactionForm
           places={places}
           transaction={transaction}
           onSave={saveTransaction}
-        />{/* 👈 3 */}
+        />
+        {/* 👈 3 */}
       </AsyncData>
       {/* ... */}
     </>
@@ -371,29 +385,31 @@ export default function AddOrEditTransaction() {
    - `trigger`: een functie die we kunnen aanroepen om het request effectief uit te voeren en dus de data te verwijderen. Deze functie ontvangt de `transaction` als argument. We hernoemen dit naar `saveTransaction`.
    - `error`: een eventuele fout die zich voordoet bij het opslaan van de transactie. We hernoemen deze naar `saveError`.
 3. Geef de callback functie door aan `TransactionForm`component
-4. We tonen een eventuele fout na het opslaan 
+4. We tonen een eventuele fout na het opslaan
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
 // ...
-export default function TransactionForm({places, onSave}) { // 👈 1
+export default function TransactionForm({ places, onSave }) {
+  // 👈 1
   // ...
 
-  const onSubmit = async (data) => { 
+  const onSubmit = async (data) => {
     const { user, place, amount, date } = data;
     await onSave({
-      userId: user, 
-      placeId: place, 
+      userId: user,
+      placeId: place,
       amount: parseInt(amount),
-      date: new Date(date) }); 
+      date: new Date(date),
+    });
     reset();
-  } // 👈 2
+  }; // 👈 2
   // ...
-
 }
 ```
+
 1. Voeg `onSave` toe aan de props
-3. Wijzig de `onSubmit` zodat `onSave` aangeroepen wordt. We geven de `userId`, `placeId`, `amount` en `date` mee als argumenten als **object** . **Let op:** de functie is `async`, dus we moeten `await` gebruiken.
+2. Wijzig de `onSubmit` zodat `onSave` aangeroepen wordt. We geven de `userId`, `placeId`, `amount` en `date` mee als argumenten als **object** . **Let op:** de functie is `async`, dus we moeten `await` gebruiken.
 
 Later verwijderen we het user-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee.
 
@@ -420,11 +436,10 @@ Wat de eigenlijk moeten doen is:
 We geven via een param in de url mee welke transactie moet worden aangepast en dan halen we de transactie op. In het formulier bekijken we via een `useEffect` bij elke render of er een huidige transactie is ingesteld en indien nodig tonen we de bijhorende gegevens in alle formuliervelden.
 
 In de API hebben we een functie nodig om de aan te passen transactie op te halen en up te daten.
+
 ```jsx
 export const getById = async (url) => {
-  const {
-    data,
-  } = await axios.get(`${baseUrl}/${url}`);
+  const { data } = await axios.get(`${baseUrl}/${url}`);
 
   return data;
 };
@@ -459,46 +474,47 @@ Als we in de `Transaction` component klikken op de potlood-knop, navigeren we na
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.jsx
 import { useParams } from 'react-router-dom'; // 👈 1
-import {  getAll, getById } from '../../api';// 👈 3
+import { getAll, getById } from '../../api'; // 👈 3
 //andere imports
 
 export default function AddOrEditTransaction() {
-  const { id } = useParams();// 👈 2
+  const { id } = useParams(); // 👈 2
 
   const {
     data: transaction,
     error: transactionError,
     isLoading: transactionLoading,
-  } = useSWR(id ? `transactions/${id}` : null, getById);// 👈 3
+  } = useSWR(id ? `transactions/${id}` : null, getById); // 👈 3
 
   //...
 
   return (
     <>
-      <h1>
-        Add transaction
-      </h1>
+      <h1>Add transaction</h1>
 
       <AsyncData
         error={transactionError || placesError || saveError}
         loading={transactionLoading || placesLoading}
-      > {/* 👈 5 */}
+      >
+        {' '}
+        {/* 👈 5 */}
         <TransactionForm
           places={places}
           transaction={transaction}
           onSave={saveTransaction}
-        />{/* 👈 4 */}
+        />
+        {/* 👈 4 */}
       </AsyncData>
     </>
   );
 }
 ```
-1. Importeer useParams 
+
+1. Importeer useParams
 2. Extraheer de id uit de url
 3. Maak gebruik van useSWR om de aan te passen transactie op te halen. Indien geen id parameter werd meegegeven wordt null teruggegeven.
 4. Geef de aan te passen transactie door aan `TransactionForm`
 5. Zorg voor foutafhandeling en laadindicator
-
 
 In het `TransactionForm` voegen we de `useEffect` toe zodat bij elke render het volgende gecontroleerd wordt: als `transaction` is ingevuld dan gaat het om een update, anders om een create.
 
@@ -524,7 +540,7 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
   const {
     trigger: saveTransaction,
     error: saveError,
-  } = useSWRMutation('transactions', save); 
+  } = useSWRMutation('transactions', save);
 
   const { register, handleSubmit, reset, formState: { errors } , setValue} = useForm(); // 👈 2
 
@@ -532,8 +548,8 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
   const onSubmit = async (data) => {
     const { user, place, amount, date } = data;
     await onSave({
-      userId: user, 
-      placeId: place, 
+      userId: user,
+      placeId: place,
       amount: parseInt(amount),
       date: new Date(date),
       id: transaction?.id,
@@ -575,7 +591,7 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
 
 1. Ontvang `transaction` door als prop.
 2. Controleer bij elke render of `transaction` is ingevuld.
-   - Indien ingevuld, plaats de waarden in het formulier. Maak hiervoor gebruik van `setValue` uit de `useForm` hook. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component. 
+   - Indien ingevuld, plaats de waarden in het formulier. Maak hiervoor gebruik van `setValue` uit de `useForm` hook. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component.
    - Indien niet ingevuld, maak het formulier leeg.
 3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
 4. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
@@ -583,12 +599,10 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
 Je kan er ook voor zorgen dat de inputvelden en knoppen in het formulier _disabled_ worden als het formulier gesubmit wordt.
 `useForm` geeft een boolean [isSubmitting](https://react-hook-form.com/api/useform/formstate) terug die `true` is als het formulier gesubmit wordt en `false` bij een reset.
 
-
-
-
-
 TODO hooks
+
 ## Inleiding
+
 **Componenten** zijn functies die de UI renderen. Het renderen gebeurt wanneer de app voor het eerst geladen wordt en wanneer state waarden wijzigen. Renderen van code moet "[puur](https://react.dev/learn/keeping-components-pure)" zijn. Componenten mogen enkel 'hun' JSX retourneren en mogen objecten of variabelen die bestaan voor de rendering niet wijzigen (bv. geen nieuwe waarde toekennen aan props). Gegeven dezelfde input, dient het dezelfde output te retourneren. Net als een wiskundige formule zou het alleen het resultaat moeten berekenen, maar niets anders doen.
 
 Een veel gemaakte denkfout is dat alle waarden (i.e. variabelen) in een component bewaard blijven, dat is **niet waar**. Een component is een functie, en functies hebben lokale variabelen. Eens de component zijn JSX geretourneerd heeft, zijn alle lokale variabelen weg. Je hebt nood aan de magie van React Hooks om waarden te bewaren tussen renders.
@@ -612,6 +626,7 @@ Hooks maken gebruik van closures, let dus op voor stale closures! [Zie hier voor
 In dit hoofdstuk gaan we vaak gebruik maken van hooks
 
 TODO Context
+
 ```jsx
 //..
 function LabelInput({ label, name, type, ...rest }) {
@@ -714,12 +729,11 @@ Implementeer een willekeurige PUT uit je eigen project (liefst dezelfde entiteit
 
 Doe hetzelfde voor `PlacesSelect`, disable dit veld tijdens het verzenden van het formulier. Verwijder vervolgens de mock data uit het project, dit hebben we niet meer nodig.
 
-
 ### Oefening 2 - Cat breeds
 
 Als we surfen naar <https://api.thecatapi.com/v1/breeds> dan krijgen we JSON met alle kattenrassen. Maak een pagina waar de gebruiker een ras kan selecteren, en waar de details van het ras getoond worden.
 
-- Gebruik dit bestand met mock data: [mock_data.js](https://raw.githubusercontent.com/HOGENT-Web/frontend-ch3-exercise-solution/main/src/api/mock_data.js).
+- Gebruik dit bestand met mock data: [mock_data.js](https://raw.githubusercontent.com/HOGENT-frontendweb/frontend-ch3-exercise-solution/main/src/api/mock_data.js).
 - Hou alle rassen bij in een state variabele.
 - Hou de geselecteerde ras ook bij in state.
 - Maak een formulier om een nieuw ras toe te voegen. Voeg deze toe aan de bijgehouden rassen. Alle velden met uitzondering van de `description` en `imageUrl` zijn verplicht in te vullen.
@@ -734,12 +748,13 @@ yarn remove eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-r
 ![Voorbeeld van de kattenrassen-applicatie](./images/cats.PNG)
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `4db7f21`
+- Oplossing +
+
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution> in commit `4db7f21`
 
   ```bash
-  git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  git clone https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution.git
   cd frontend-ch3-exercise-solution
   git checkout -b oplossing 4db7f21
   yarn install
@@ -781,14 +796,10 @@ import Transaction from './Transaction';
 import TransactionForm from './TransactionForm';
 import { TRANSACTION_DATA } from '../../api/mock_data';
 
-function TransactionTable({
-  transactions
-}) {
+function TransactionTable({ transactions }) {
   if (transactions.length === 0) {
     return (
-      <div className="alert alert-info">
-        There are no transactions yet.
-      </div>
+      <div className='alert alert-info'>There are no transactions yet.</div>
     );
   }
 
@@ -819,35 +830,52 @@ export default function TransactionList() {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
 
-  const filteredTransactions = useMemo(() => transactions.filter((t) => {
-    return t.place.toLowerCase().includes(search.toLowerCase());
-  }), [search, transactions])
+  const filteredTransactions = useMemo(
+    () =>
+      transactions.filter((t) => {
+        return t.place.toLowerCase().includes(search.toLowerCase());
+      }),
+    [search, transactions],
+  );
 
-  const createTransaction = useCallback((user, place, amount, date) => {
-    const newTransactions = [
-      {
-        user, place, amount, date: new Date(date),
-      },
-      ...transactions,
-    ]; // newest first
-    setTransactions(newTransactions);
-  }, [transactions]);
+  const createTransaction = useCallback(
+    (user, place, amount, date) => {
+      const newTransactions = [
+        {
+          user,
+          place,
+          amount,
+          date: new Date(date),
+        },
+        ...transactions,
+      ]; // newest first
+      setTransactions(newTransactions);
+    },
+    [transactions],
+  );
 
   return (
     <>
       <h1>Transactions</h1>
       <TransactionForm onSaveTransaction={createTransaction} />
-      <div className="input-group mb-3 w-50">
+      <div className='input-group mb-3 w-50'>
         <input
-          type="search"
-          id="search"
-          className="form-control rounded"
-          placeholder="Search"
+          type='search'
+          id='search'
+          className='form-control rounded'
+          placeholder='Search'
           value={text}
-          onChange={(e) => setText(e.target.value)} />
-        <button type="button" className="btn btn-outline-primary" onClick={() => setSearch(text)}>Search</button>
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button
+          type='button'
+          className='btn btn-outline-primary'
+          onClick={() => setSearch(text)}
+        >
+          Search
+        </button>
       </div>
-      <div className="mt-4">
+      <div className='mt-4'>
         <TransactionTable transactions={filteredTransactions} />
       </div>
     </>
@@ -889,13 +917,15 @@ Voeg toe in `App.jsx`:
 // src/App.jsx
 import TransactionList from './components/transactions/TransactionList';
 import PlacesList from './components/places/PlacesList';
-import {createContext} from 'react';
+import { createContext } from 'react';
 
 export const ThemeContext = createContext();
 
 function App() {
   return (
-    <ThemeContext.Provider value={{ theme:'dark' }}> {/* 👈 */}
+    <ThemeContext.Provider value={{ theme: 'dark' }}>
+      {' '}
+      {/* 👈 */}
       <div>
         <TransactionList />
         <PlacesList />
@@ -920,22 +950,19 @@ import { useState, useMemo, useCallback, useContext } from 'react'; // 👈 1
 import { ThemeContext } from '../../App';
 //...
 
-function TransactionTable({
-  transactions
-}) {
+function TransactionTable({ transactions }) {
   const { theme } = useContext(ThemeContext); // 👈 1
 
   if (transactions.length === 0) {
     return (
-      <div className="alert alert-info">
-        There are no transactions yet.
-      </div>
+      <div className='alert alert-info'>There are no transactions yet.</div>
     );
   }
 
   return (
     <div>
-      <table className={`table table-hover table-responsive table-${theme}`}>{/* 👈 */}
+      <table className={`table table-hover table-responsive table-${theme}`}>
+        {/* 👈 */}
         <thead>
           <tr>
             <th>Date</th>
@@ -947,7 +974,12 @@ function TransactionTable({
         </thead>
         <tbody>
           {transactions.map((transaction, index) => (
-            <Transaction key={index} {...transaction} onDelete={onDelete} onEdit={onEdit} />
+            <Transaction
+              key={index}
+              {...transaction}
+              onDelete={onDelete}
+              onEdit={onEdit}
+            />
           ))}
         </tbody>
       </table>
@@ -966,17 +998,17 @@ Maak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.co
 
 ```jsx
 // src/contexts/Theme.context.jsx
-import { createContext} from 'react'; // 👈 1
+import { createContext } from 'react'; // 👈 1
 
 export const ThemeContext = createContext(); // 👈 1
 
-export const ThemeProvider = ({ // 👈 2
-  children
+export const ThemeProvider = ({
+  // 👈 2
+  children,
 }) => {
-  return ( // 👈 2
-    <ThemeContext.Provider>
-      {children}
-    </ThemeContext.Provider>
+  return (
+    // 👈 2
+    <ThemeContext.Provider>{children}</ThemeContext.Provider>
   );
 };
 ```
@@ -989,35 +1021,33 @@ De `ThemeProvider` beheert de state en functies, en stelt deze ter beschikking a
 
 ```jsx
 // src/contexts/Theme.context.jsx
-import {
-  createContext,
-  useState,
-  useCallback,
-  useMemo
-} from 'react';
+import { createContext, useState, useCallback, useMemo } from 'react';
 
-export const themes = { // 👈 1
-  dark: "dark",
-  light: "light"
-}
+export const themes = {
+  // 👈 1
+  dark: 'dark',
+  light: 'light',
+};
 
 export const ThemeContext = createContext();
 
-export const ThemeProvider = ({
-  children
-}) => {
-  const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark); // 👈 2
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState(
+    sessionStorage.getItem('themeMode') || themes.dark,
+  ); // 👈 2
 
-  const toggleTheme = useCallback(() => { // 👈 3
+  const toggleTheme = useCallback(() => {
+    // 👈 3
     const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
     setTheme(newThemeValue);
     sessionStorage.setItem('themeMode', newThemeValue);
   }, [theme]);
 
-  const value = useMemo (()=> ({ theme, toggleTheme}), [theme, toggleTheme]); // 👈 4
+  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]); // 👈 4
 
   return (
-    <ThemeContext.Provider value={value}>{/* 👈 5 */}
+    <ThemeContext.Provider value={value}>
+      {/* 👈 5 */}
       {children}
     </ThemeContext.Provider>
   );
@@ -1036,24 +1066,19 @@ Het thema zal gebruikt worden om de achtergrondkleur in te stellen, maar soms di
 
 ```jsx
 // src/contexts/Theme.context.jsx
-import {
-  createContext,
-  useState,
-  useCallback,
-  useMemo
-} from 'react';
+import { createContext, useState, useCallback, useMemo } from 'react';
 
 export const themes = {
-  dark:"dark",
-  light:"light"
-}
+  dark: 'dark',
+  light: 'light',
+};
 
 export const ThemeContext = createContext();
 
-export const ThemeProvider = ({
-  children
-}) => {
-  const [theme, setTheme] = useState(sessionStorage.getItem('themeMode') || themes.dark);
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState(
+    sessionStorage.getItem('themeMode') || themes.dark,
+  );
 
   const toggleTheme = useCallback(() => {
     const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
@@ -1061,14 +1086,18 @@ export const ThemeProvider = ({
     sessionStorage.setItem('themeMode', newThemeValue);
   }, [theme]);
 
-  const oppositeTheme = useMemo(() => theme === themes.dark ? themes.light : themes.dark, [theme]); // 👈 1
+  const oppositeTheme = useMemo(
+    () => (theme === themes.dark ? themes.light : themes.dark),
+    [theme],
+  ); // 👈 1
 
-  const value = useMemo(()=> ({ theme, oppositeTheme, toggleTheme }), [theme, oppositeTheme, toggleTheme]); // 👈 2
+  const value = useMemo(
+    () => ({ theme, oppositeTheme, toggleTheme }),
+    [theme, oppositeTheme, toggleTheme],
+  ); // 👈 2
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
   );
 };
 ```
@@ -1090,10 +1119,12 @@ import { ThemeProvider } from './contexts/Theme.context';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider>{/* 👈 */}
+    <ThemeProvider>
+      {/* 👈 */}
       <App />
-    </ThemeProvider>{/* 👈 */}
-  </React.StrictMode>
+    </ThemeProvider>
+    {/* 👈 */}
+  </React.StrictMode>,
 );
 ```
 
@@ -1113,8 +1144,10 @@ function App() {
   const { theme, oppositeTheme, toggleTheme } = useContext(ThemeContext); // 👈 2
 
   return (
-    <div className={`container-xl bg-${theme} text-${oppositeTheme}`}>{/* 👈 3 */}
-      <button type="button" onClick={toggleTheme}>{/* 👈 4 */}
+    <div className={`container-xl bg-${theme} text-${oppositeTheme}`}>
+      {/* 👈 3 */}
+      <button type='button' onClick={toggleTheme}>
+        {/* 👈 4 */}
         {theme === themes.dark ? <IoMoonSharp /> : <IoSunny />}
       </button>
       <TransactionList />
@@ -1163,13 +1196,13 @@ import {
   useState,
   useCallback,
   useMemo,
-  useContext
+  useContext,
 } from 'react'; // 👈 1
 
 export const themes = {
-  dark: "dark",
-  light: "light"
-}
+  dark: 'dark',
+  light: 'light',
+};
 
 export const ThemeContext = createContext();
 
@@ -1238,7 +1271,8 @@ Er zitten een paar anti-patterns in ons formulier:
 // src/components/transactions/TransactionForm.jsx
 //...
 
-const validationRules = { // 👈 1
+const validationRules = {
+  // 👈 1
   user: {
     required: 'User is required',
     minLength: { value: 2, message: 'Min length is 2' },
@@ -1250,7 +1284,7 @@ const validationRules = { // 👈 1
     required: 'Amount is required',
     min: { value: 1, message: 'min 1' },
     max: { value: 5000, message: 'max 5000' },
-  }
+  },
 };
 
 //...
@@ -1260,29 +1294,31 @@ export default memo(function TransactionForm({ onSaveTransaction }) {
 
   return (
     <>
-      <h2>
-        Add transaction
-      </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3">
-        <div className="mb-3">
-          <label htmlFor="user" className="form-label">Who</label>
+      <h2>Add transaction</h2>
+      <form onSubmit={handleSubmit(onSubmit)} className='w-50 mb-3'>
+        <div className='mb-3'>
+          <label htmlFor='user' className='form-label'>
+            Who
+          </label>
           <input
-            {...register('user', validationRules.user)}//👈2
+            {...register('user', validationRules.user)} //👈2
             defaultValue=''
-            id="user"
-            type="text"
-            className="form-control"
-            placeholder="user" required
+            id='user'
+            type='text'
+            className='form-control'
+            placeholder='user'
+            required
           />
-          {errors.user && <p className="form-text text-danger">{errors.user.message}</p>}
+          {errors.user && (
+            <p className='form-text text-danger'>{errors.user.message}</p>
+          )}
         </div>
 
         {/* Pas zelf de andere validatieregels aan */}
       </form>
     </>
   );
-})
-
+});
 ```
 
 1. `validationRules` bevat per formulierveld de validatieregels. We definiëren dit buiten de component, anders wordt dit bij elke render opnieuw aangemaakt.
@@ -1298,18 +1334,22 @@ Componenten mag je niet definiëren binnen een andere component. Maak een functi
 // src/components/transactions/TransactionForm.jsx
 function LabelInput() {
   return (
-    <div className="mb-3">
-      <label htmlFor="user" className="form-label">Who</label>
+    <div className='mb-3'>
+      <label htmlFor='user' className='form-label'>
+        Who
+      </label>
       <input
         {...register('user', validationRules.user)}
         defaultValue=''
-        id="user"
-        type="text"
-        className="form-control"
-        placeholder="user"
+        id='user'
+        type='text'
+        className='form-control'
+        placeholder='user'
         required
       />
-      {errors.user && <p className="form-text text-danger">{errors.user.message}</p>}
+      {errors.user && (
+        <p className='form-text text-danger'>{errors.user.message}</p>
+      )}
     </div>
   );
 }
@@ -1323,21 +1363,19 @@ function LabelInput({ label, name, type, validationRules, ...rest }) {
   const hasError = name in errors;
 
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+    <div className='mb-3'>
+      <label htmlFor={name} className='form-label'>
         {label}
       </label>
       <input
         {...register(name, validationRules)}
         id={name}
         type={type}
-        className="form-control"
+        className='form-control'
         {...rest}
       />
       {hasError ? (
-        <div className="form-text text-danger">
-          {errors[name].message}
-        </div>
+        <div className='form-text text-danger'>{errors[name].message}</div>
       ) : null}
     </div>
   );
@@ -1360,29 +1398,25 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form'; // 👈
 // ...
 
 function LabelInput({ label, name, type, validationRules, ...rest }) {
-  const {
-    register,
-    errors,
-  } = useFormContext(); // 👈 2
+  const { register, errors } = useFormContext(); // 👈 2
 
   const hasError = name in errors;
 
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+    <div className='mb-3'>
+      <label htmlFor={name} className='form-label'>
         {label}
       </label>
       <input
         {...register(name, validationRules)}
         id={name}
         type={type}
-        className="form-control"
+        className='form-control'
         {...rest}
-      />{/* 👈 3 */}
+      />
+      {/* 👈 3 */}
       {hasError ? (
-        <div className="form-text text-danger">
-            {errors[name].message}
-        </div>
+        <div className='form-text text-danger'>{errors[name].message}</div>
       ) : null}
     </div>
   );
@@ -1392,15 +1426,22 @@ export default function TransactionForm() {
   // ...
 
   return (
-    <FormProvider handleSubmit={handleSubmit} errors={errors} register={register}> {/* 👈 1 */}
-      <form onSubmit={handleSubmit(onSubmit)} className="m-5">
+    <FormProvider
+      handleSubmit={handleSubmit}
+      errors={errors}
+      register={register}
+    >
+      {' '}
+      {/* 👈 1 */}
+      <form onSubmit={handleSubmit(onSubmit)} className='m-5'>
         <LabelInput
-          label="User"
-          name="user"
-          type="user"
-          validationRules={validationRules.user} /> {/* 👈 3 */}
-
-          {/* Herhaal dit voor de overige input fields */}
+          label='User'
+          name='user'
+          type='user'
+          validationRules={validationRules.user}
+        />{' '}
+        {/* 👈 3 */}
+        {/* Herhaal dit voor de overige input fields */}
       </form>
     </FormProvider>
   );
@@ -1422,12 +1463,13 @@ Mocht je later nog een `select` tag nodig hebben, kan je nog altijd een generiek
 Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan worden. Refactor eventuele anti-patterns in de applicatie.
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `9181134`
+- Oplossing +
+
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution> in commit `9181134`
 
   ```bash
-  git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  git clone https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution.git
   cd frontend-ch3-exercise-solution
   git checkout -b oplossing 9181134
   yarn install

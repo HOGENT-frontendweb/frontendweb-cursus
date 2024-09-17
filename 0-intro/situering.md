@@ -4,7 +4,7 @@
 
 Dit olod behoort tot het keuzepakket `Development`, zoals je hieronder kan zien:
 
-![Dit olod in de keuzepakketten](./images/MT_olods.png ":size=70%")
+![Dit olod in de keuzepakketten](./images/MT_olods.png ':size=70%')
 
 ## Wat gaan we doen?
 
@@ -40,13 +40,13 @@ Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers.
 
 ## Cursus?
 
-Het cursusmateriaal wordt op GitHub gehost: <https://web-iv.github.io/frontendweb-cursus>.
+Het cursusmateriaal wordt op GitHub gehost: <https://HOGENT-frontendweb.github.io/frontendweb-cursus>.
 
-Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/Web-IV/frontendweb-budget>.
+Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <https://github.com/HOGENT-frontendweb/frontendweb-budget>.
 
-De bijhorende back-end is te vinden op: <https://github.com/Web-IV/webservices-budget>.
+De bijhorende back-end is te vinden op: <https://github.com/HOGENT-frontendweb/webservices-budget>.
 
-> Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/Web-IV/frontendweb-cursus>.
+> Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/HOGENT-frontendweb/frontendweb-cursus>.
 
 ## Planning
 

@@ -10,7 +10,7 @@ l> fe start 4331ea1 les2
 
 Stel je voor dat we een component renderen waarbij een stuk state initieel een lege array is (bv. een lege lijst van transacties). Later wordt deze array gevuld met gegevens (we voegen bv. een transactie toe). Dit wordt een **state change** genoemd. Telkens wanneer we een React-component vertellen om zijn state te wijzigen (via een `setState` functie), zal de component zichzelf automatisch opnieuw renderen. De state kan ingesteld worden door de component zelf of een ander stukje code buiten de component. Het proces wordt hier gevisualiseerd:
 
-![State change visualisatie](./images/statechange.webp ":size=60%")
+![State change visualisatie](./images/statechange.webp ':size=60%')
 
 State en props zijn verschillend, maar ze werken samen om de UI dynamisch en interactief te maken. Een oudercomponent houdt vaak data in state bij die op zijn beurt doorgegeven kan worden als props naar de kindcomponenten. Bij elke wijziging van de state in de ouder, zal elk kind nieuwe props krijgen en opnieuw renderen.
 
@@ -22,7 +22,7 @@ Het **Document Object Model (DOM)** is de in het geheugen opgeslagen boomstructu
 
 React gebruikt een **Virtual DOM (VDOM)** als een extra abstractielaag bovenop het DOM. Het is een lokale en vereenvoudigde kopie van de browser DOM en staat los van de browser-specifieke implementatie. React houdt deze virtuele DOM gesynchroniseerd met de browser DOM, waardoor echte DOM-updates worden verminderd.
 
-![Virtual DOM voorstelling](./images/VDOM.webp ":size=60%")
+![Virtual DOM voorstelling](./images/VDOM.webp ':size=60%')
 
 Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toegepast op de VDOM. De React DOM-library wordt gebruikt om efficiënt te controleren welke delen van de UI echt visueel moeten worden bijgewerkt in de echte DOM. Het is nl. niet altijd zo dat een state-wijziging ervoor zorgt dat elk kind gewijzigd is. Dit proces wordt [**reconciliation**](https://reactjs.org/docs/reconciliation.html) genoemd en is gebaseerd op deze stappen:
 
@@ -30,7 +30,7 @@ Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toeg
 2. De nieuwe VDOM wordt vergeleken met een eerdere VDOM-snapshot (= **diffing**).
 3. Enkel de gewijzigde delen van de echte DOM worden bijgewerkt. Er is geen DOM-update als er niets is veranderd.
 
-![Reconciliation visualisatie](./images/reconciliation.png ":size=60%")
+![Reconciliation visualisatie](./images/reconciliation.png ':size=60%')
 
 React volgt een batch-updatemechanisme om de browser DOM bij te werken. Dit betekent dat React state-wijzigingen bundelt en ze dan samen doorvoert in één enkele rendering cyclus, in plaats van updates te verzenden voor elke afzonderlijke state-wijziging. Dit leidt tot logischerwijs betere prestaties.
 
@@ -68,7 +68,7 @@ Transaction ||-- "user" User
 
 We gaan een component ontwerpen die een lijst van plaatsen zal tonen. Elke plaats bevat een naam en een rating. De rating kan worden aangepast door te klikken op een ster. Een plaats kan verwijderd worden. De UI ziet er als volgt uit:
 
-![Places overview](./images/places.png ":size=100%")
+![Places overview](./images/places.png ':size=100%')
 
 We voegen een beetje mock data voor de plaatsen toe aan `mock_data.js` in de `api` folder:
 
@@ -99,7 +99,7 @@ Wat moet er nu nog aangepast worden?
 
   ```jsx
   // src/App.jsx
-  import { TRANSACTION_DATA } from "./api/mock_data";
+  import { TRANSACTION_DATA } from './api/mock_data';
   ```
 
 Het opdelen van een React-applicatie in componenten is een essentieel onderdeel van het maken van herbruikbare, leesbare en onderhoudbare code. Neem hiervoor eerst [Thinking in React: start with the mockup (step 1, 3 en 4)](https://react.dev/learn/thinking-in-react) door.
@@ -147,10 +147,10 @@ We implementeren de `Place` component, voorlopig nog zonder rating. Deze compone
 // src/components/places/Place.jsx
 const Place = ({ id, name, rating }) => {
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <button className="btn btn-primary">Verwijder</button>
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <button className='btn btn-primary'>Verwijder</button>
       </div>
     </div>
   );
@@ -165,20 +165,20 @@ Maak een bestand `PlacesList.jsx` aan in de map `src\components\places`. Deze co
 
 ```jsx
 // src/components/places/PlacesList.jsx
-import { PLACE_DATA } from "../../api/mock_data";
-import Place from "./Place";
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
 
 const PlacesList = () => {
   const places = PLACE_DATA;
   return (
-    <div className="grid mt-3">
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+    <div className='grid mt-3'>
+      <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
         {places
           .sort((a, b) =>
-            a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
           )
           .map((p) => (
-            <div className="col" key={p.id}>
+            <div className='col' key={p.id}>
               <Place {...p} />
             </div>
           ))}
@@ -196,9 +196,9 @@ Voeg de `PlacesList` component toe aan `App.jsx` en bekijk het resultaat.
 
 ```jsx
 // src/App.jsx
-import Transaction from "./components/transactions/Transaction";
-import { TRANSACTION_DATA } from "./api/mock_data";
-import PlacesList from "./components/places/PlacesList"; // 👈
+import Transaction from './components/transactions/Transaction';
+import { TRANSACTION_DATA } from './api/mock_data';
+import PlacesList from './components/places/PlacesList'; // 👈
 
 function App() {
   return (
@@ -261,13 +261,13 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   const Place = ({ id, name, rating }) => {
     // 👇 1
     const handleClick = (e) => {
-      console.log("you clicked the remove button");
+      console.log('you clicked the remove button');
     };
     return (
-      <div className="card bg-light border-dark mb-4">
-        <div className="card-body">
-          <h5 className="card-title">{name}</h5>
-          <button className="btn btn-primary" onClick={handleClick}>
+      <div className='card bg-light border-dark mb-4'>
+        <div className='card-body'>
+          <h5 className='card-title'>{name}</h5>
+          <button className='btn btn-primary' onClick={handleClick}>
             {/* 👆 2 */}
             Verwijder
           </button>
@@ -302,9 +302,9 @@ We starten met het bijhouden van de state in de `PlacesList` component. Indien e
 
 ```jsx
 // src/components/places/PlacesList.jsx
-import { useState } from "react"; // 👈 1
-import { PLACE_DATA } from "../../api/mock_data";
-import Place from "./Place";
+import { useState } from 'react'; // 👈 1
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
 
 const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA); // 👈 2
@@ -317,14 +317,14 @@ const PlacesList = () => {
   return (
     <>
       <h1>Places</h1>
-      <div className="grid mt-3">
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+      <div className='grid mt-3'>
+        <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
           {places
             .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
             )
             .map((p) => (
-              <div className="col" key={p.id}>
+              <div className='col' key={p.id}>
                 <Place {...p} onDelete={handleDeletePlace} /> {/* 👈 3 */}
               </div>
             ))}
@@ -363,10 +363,10 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   };
 
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <button className="btn btn-primary" onClick={handleDelete}>
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <button className='btn btn-primary' onClick={handleDelete}>
           Verwijder
         </button>
         {/* 👈 3 */}
@@ -419,7 +419,7 @@ Een state snapshot verwijst naar de huidige "momentopname" van de state in een R
 3. Render-fase: "Rendering" betekent dat React de component, die een functie is, aanroept. Wanneer React de component opnieuw rendert, wordt de component opnieuw opgebouwd met de laatst bekende snapshot van de state.
 
 React slaat de state op buiten de component, het 'leeft' in React! Variabelen en eventhandlers `overleven` geen re-render. Dat is ook zo bij "gewone" functies: variabelen in een functie zijn verdwenen nadat ze is uitgevoerd. Elke render heeft zijn eigen eventhandlers.
-![state overview](./images/reactstate.jpg ":size=70%")
+![state overview](./images/reactstate.jpg ':size=70%')
 
 Lees [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
 
@@ -450,9 +450,9 @@ Implementeer de `StarRating` component als volgt:
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5"; // 👈 1
+import { IoStarSharp } from 'react-icons/io5'; // 👈 1
 
-const Star = () => <IoStarSharp color="yellow" />; // 👈 2
+const Star = () => <IoStarSharp color='yellow' />; // 👈 2
 
 export default function StarRating() {
   const stars = [...new Array(5)];
@@ -481,7 +481,7 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 
   ```jsx
   // src/components/places/Place.jsx
-  import StarRating from "./StarRating";
+  import StarRating from './StarRating';
 
   const Place = ({ id, name, rating, onDelete = (f) => f }) => {
     const handleDelete = () => {
@@ -489,13 +489,13 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
     };
 
     return (
-      <div className="card bg-light border-dark mb-4">
-        <div className="card-body">
-          <h5 className="card-title">{name}</h5>
-          <div className="card-text">
+      <div className='card bg-light border-dark mb-4'>
+        <div className='card-body'>
+          <h5 className='card-title'>{name}</h5>
+          <div className='card-text'>
             <StarRating />
           </div>
-          <button className="btn btn-primary" onClick={handleDelete}>
+          <button className='btn btn-primary' onClick={handleDelete}>
             Verwijder
           </button>
         </div>
@@ -512,9 +512,9 @@ Vervolgens willen we het aantal sterren in de rating variabel maken. Dit doen we
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
-const Star = () => <IoStarSharp color="yellow" />;
+const Star = () => <IoStarSharp color='yellow' />;
 
 export default function StarRating({ totalStars = 5 }) {
   // 👆 1
@@ -539,11 +539,11 @@ Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `selected` prop
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 // 👇
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? "yellow" : "grey"} />
+  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
 );
 
 export default function StarRating({ totalStars = 5 }) {
@@ -564,7 +564,7 @@ De `Place` component krijgt via een prop de `rating` door van de parent en zal d
 
 ```jsx
 // src/components/places/Place.jsx
-import StarRating from "./StarRating"; // 👈 1
+import StarRating from './StarRating'; // 👈 1
 
 const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   const handleDelete = () => {
@@ -572,13 +572,13 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   };
 
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <div className="card-text">
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <div className='card-text'>
           <StarRating selectedStars={rating} /> {/* 👈 2*/}
         </div>
-        <button className="btn btn-primary" onClick={handleDelete}>
+        <button className='btn btn-primary' onClick={handleDelete}>
           Verwijder
         </button>
       </div>
@@ -596,10 +596,10 @@ De `StarRating` component zal die informatie via de prop `selected` doorgeven aa
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? "yellow" : "grey"} />
+  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
 );
 
 export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
@@ -673,9 +673,9 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
 Wanneer we klikken op een ster moet de rating van de plaats worden aangepast. De rating van een plaats wordt bijgehouden in de state `places` in de `PlacesList` component. We voorzien hiervoor de functie `handleRatePlace`. Deze functie geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
 ```jsx
-import { useState } from "react";
-import { PLACE_DATA } from "../../api/mock_data";
-import Place from "./Place";
+import { useState } from 'react';
+import { PLACE_DATA } from '../../api/mock_data';
+import Place from './Place';
 
 const PlacesList = () => {
   const [places, setPlaces] = useState(PLACE_DATA);
@@ -693,14 +693,14 @@ const PlacesList = () => {
   return (
     <>
       <h1>Places</h1>
-      <div className="grid mt-3">
-        <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3">
+      <div className='grid mt-3'>
+        <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
           {places
             .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase())
+              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
             )
             .map((p) => (
-              <div className="col" key={p.id}>
+              <div className='col' key={p.id}>
                 <Place
                   {...p}
                   onDelete={handleDeletePlace}
@@ -725,7 +725,7 @@ De `Place` component moet ook worden aangepast:
 
 ```jsx
 // src/components/places/Place.jsx
-import StarRating from "./StarRating"; // 👈 1
+import StarRating from './StarRating'; // 👈 1
 
 const Place = ({ id, name, rating, onDelete, onRate }) => {
   // 👆 1 👇 2
@@ -737,13 +737,13 @@ const Place = ({ id, name, rating, onDelete, onRate }) => {
   };
 
   return (
-    <div className="card bg-light border-dark mb-4">
-      <div className="card-body">
-        <h5 className="card-title">{name}</h5>
-        <div className="card-text">
+    <div className='card bg-light border-dark mb-4'>
+      <div className='card-body'>
+        <h5 className='card-title'>{name}</h5>
+        <div className='card-text'>
           <StarRating selectedStars={rating} onRate={handleRate} /> {/* 👈 3*/}
         </div>
-        <button className="btn btn-primary" onClick={handleDelete}>
+        <button className='btn btn-primary' onClick={handleDelete}>
           Verwijder
         </button>
       </div>
@@ -762,7 +762,7 @@ De `StarRating`component en `Star` component worden:
 
 ```jsx
 // src/components/places/StarRating.jsx
-import { IoStarSharp } from "react-icons/io5";
+import { IoStarSharp } from 'react-icons/io5';
 
 const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   // 👆 3 👇 4
@@ -771,7 +771,7 @@ const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   };
 
   return (
-    <IoStarSharp color={selected ? "yellow" : "grey"} onClick={handleSelect} />
+    <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleSelect} />
   );
 };
 
@@ -813,8 +813,8 @@ Maak een bestand `TransactionList.jsx` aan in de map `src/components/transaction
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import Transaction from "./Transaction";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import Transaction from './Transaction';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
   return (
@@ -831,8 +831,8 @@ export default function TransactionList() {
 Gebruik vervolgens deze component in `App.jsx`.
 
 ```jsx
-import TransactionList from "./components/transactions/TransactionList"; // 👈 1
-import PlacesList from "./components/places/PlacesList";
+import TransactionList from './components/transactions/TransactionList'; // 👈 1
+import PlacesList from './components/places/PlacesList';
 
 function App() {
   return (
@@ -858,22 +858,22 @@ In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filt
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import Transaction from "./Transaction";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import Transaction from './Transaction';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
   return (
     <>
       <h1>Transactions</h1>
       {/* 👇 */}
-      <div className="input-group mb-3 w-50">
+      <div className='input-group mb-3 w-50'>
         <input
-          type="search"
-          id="search"
-          className="form-control rounded"
-          placeholder="Search"
+          type='search'
+          id='search'
+          className='form-control rounded'
+          placeholder='Search'
         />
-        <button type="button" className="btn btn-outline-primary">
+        <button type='button' className='btn btn-outline-primary'>
           Search
         </button>
       </div>
@@ -890,36 +890,36 @@ Formulierelementen in React zijn read-only. Door state toe te voegen, kan de com
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState } from "react"; // 👈 1
-import Transaction from "./Transaction";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import { useState } from 'react'; // 👈 1
+import Transaction from './Transaction';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
-  const [text, setText] = useState(""); // 👈 1
-  const [search, setSearch] = useState(""); // 👈 1
+  const [text, setText] = useState(''); // 👈 1
+  const [search, setSearch] = useState(''); // 👈 1
 
   // 👇 5
   const filteredTransactions = TRANSACTION_DATA.filter((t) => {
-    console.log("filtering...");
+    console.log('filtering...');
     return t.place.name.toLowerCase().includes(search.toLowerCase());
   });
 
   return (
     <>
       <h1>Transactions</h1>
-      <div className="input-group mb-3 w-50">
+      <div className='input-group mb-3 w-50'>
         <input
-          type="search"
-          id="search"
-          className="form-control rounded"
-          placeholder="Search"
+          type='search'
+          id='search'
+          className='form-control rounded'
+          placeholder='Search'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         {/* 👆 2 en 3 */}
         <button
-          type="button"
-          className="btn btn-outline-primary"
+          type='button'
+          className='btn btn-outline-primary'
           onClick={() => setSearch(text)}
         >
           Search
@@ -969,7 +969,7 @@ Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze f
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState, useMemo } from "react"; // 👈
+import { useState, useMemo } from 'react'; // 👈
 
 //...
 
@@ -977,10 +977,10 @@ import { useState, useMemo } from "react"; // 👈
 const filteredTransactions = useMemo(
   () =>
     TRANSACTION_DATA.filter((t) => {
-      console.log("filtering...");
+      console.log('filtering...');
       return t.place.toLowerCase().includes(search.toLowerCase());
     }),
-  [search]
+  [search],
 );
 
 //...
@@ -999,24 +999,24 @@ We refactoren de `TransactionList` component zodat die nu een tabel met transact
 
 ```jsx
 // src/components/transactions/TransactionsTable.jsx
-import Transaction from "./Transaction";
+import Transaction from './Transaction';
 
 function TransactionsTable({ transactions }) {
   if (transactions.length === 0) {
     return (
-      <div className="alert alert-info">There are no transactions yet.</div>
+      <div className='alert alert-info'>There are no transactions yet.</div>
     );
   }
 
   return (
     <div>
-      <table className="table table-hover table-responsive">
+      <table className='table table-hover table-responsive'>
         <thead>
           <tr>
             <th>Date</th>
             <th>User</th>
             <th>Place</th>
-            <th className="text-end">Amount</th>
+            <th className='text-end'>Amount</th>
           </tr>
         </thead>
         <tbody>
@@ -1036,45 +1036,45 @@ Pas de `TransactionsList` component aan:
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState, useMemo } from "react";
-import TransactionsTable from "../../components/transactions/TransactionsTable";
-import { TRANSACTION_DATA } from "../../api/mock_data";
+import { useState, useMemo } from 'react';
+import TransactionsTable from '../../components/transactions/TransactionsTable';
+import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
-  const [text, setText] = useState("");
-  const [search, setSearch] = useState("");
+  const [text, setText] = useState('');
+  const [search, setSearch] = useState('');
 
   const filteredTransactions = useMemo(
     () =>
       TRANSACTION_DATA.filter((t) => {
-        console.log("filtering...");
+        console.log('filtering...');
         return t.place.name.toLowerCase().includes(search.toLowerCase());
       }),
-    [search]
+    [search],
   );
 
   return (
     <>
       <h1>Transactions</h1>
-      <div className="input-group mb-3 w-50">
+      <div className='input-group mb-3 w-50'>
         <input
-          type="search"
-          id="search"
-          className="form-control rounded"
-          placeholder="Search"
+          type='search'
+          id='search'
+          className='form-control rounded'
+          placeholder='Search'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         <button
-          type="button"
-          className="btn btn-outline-primary"
+          type='button'
+          className='btn btn-outline-primary'
           onClick={() => setSearch(text)}
         >
           Search
         </button>
       </div>
 
-      <div className="mt-4">
+      <div className='mt-4'>
         <TransactionsTable transactions={filteredTransactions} />
       </div>
     </>
@@ -1086,15 +1086,15 @@ Pas zelf de `Transaction` component aan zodat de transacties als een rij in de t
 
 ```js
 // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
-const dateFormat = new Intl.DateTimeFormat("nl-BE", {
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric",
+const dateFormat = new Intl.DateTimeFormat('nl-BE', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
 });
 
-const amountFormat = new Intl.NumberFormat("nl-BE", {
-  currency: "EUR",
-  style: "currency",
+const amountFormat = new Intl.NumberFormat('nl-BE', {
+  currency: 'EUR',
+  style: 'currency',
   maximumFractionDigits: 2,
   minimumFractionDigits: 2,
 });
@@ -1108,15 +1108,15 @@ const amountFormat = new Intl.NumberFormat("nl-BE", {
   // src/components/transactions/Transaction.jsx
 
   // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
-  const dateFormat = new Intl.DateTimeFormat("nl-BE", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
+  const dateFormat = new Intl.DateTimeFormat('nl-BE', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
   });
 
-  const amountFormat = new Intl.NumberFormat("nl-BE", {
-    currency: "EUR",
-    style: "currency",
+  const amountFormat = new Intl.NumberFormat('nl-BE', {
+    currency: 'EUR',
+    style: 'currency',
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   });
@@ -1170,7 +1170,7 @@ Als alle dobbelstenen één oog bevatten, dan heb je "snake eyes". Er verschijnt
 
 Dit zijn alle mogelijke uitkomsten van het spel:
 
-![SnakeEyes mogelijke uitkomsten](./images/SnakeEyes.png ":size=80%")
+![SnakeEyes mogelijke uitkomsten](./images/SnakeEyes.png ':size=80%')
 
 Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je ontwerpt en hoe je deze implementeert.
 
@@ -1178,7 +1178,7 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 
 - Oplossing +
 
-  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/Web-IV/SnakeEyes>.
+  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/SnakeEyes>.
 
 ## Mogelijke extra's voor de examenopdracht
 
