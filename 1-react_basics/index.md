@@ -267,7 +267,6 @@ export default [
         },
       ],
       '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
-      '@stylistic/linebreak-style': ['error', 'unix'],
       '@stylistic/quotes': ['error', 'single'],
       '@stylistic/semi': ['error', 'always'],
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
