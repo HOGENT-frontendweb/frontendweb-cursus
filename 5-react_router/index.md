@@ -3,7 +3,7 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les4 bbc6743
 > yarn install
@@ -51,7 +51,7 @@ Voor dit hoofdstuk maken we een simpele voorbeeldapplicatie, los van onze budget
 - Contact (`/contact`)
 - 404 Not Found (alle andere)
 
-In wat volgt, bouwen we deze voorbeeldapplicatie stap voor stap. Je kan ook het project vanop <https://github.com/HOGENT-Web/RoutingDemoStarter> clonen om zo alle basiscomponenten reeds te hebben. In dat geval kan je onderstaande commando's overslaan, alsook het aanmaken van de meeste componenten.
+In wat volgt, bouwen we deze voorbeeldapplicatie stap voor stap. Je kan ook het project vanop <https://github.com/HOGENT-frontendweb/RoutingDemoStarter> clonen om zo alle basiscomponenten reeds te hebben. In dat geval kan je onderstaande commando's overslaan, alsook het aanmaken van de meeste componenten.
 
 Als eerste maak je een nieuw project:
 
@@ -782,7 +782,7 @@ nav a.active {
 
 ## Oplossing mini-voorbeeldapplicatie
 
-De oplossing van deze mini-voorbeeldapplicatie is te vinden op <https://github.com/HOGENT-Web/RoutingDemo>.
+De oplossing van deze mini-voorbeeldapplicatie is te vinden op <https://github.com/HOGENT-frontendweb/RoutingDemo>.
 
 ### Oefeningen
 
@@ -813,10 +813,10 @@ Maak voor elke route een nieuwe component aan die de pagina voorstelt. Deze comp
 
 ### Oplossing oefeningen
 
-Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in commit `50e2881`:
+Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in commit `50e2881`:
 
 ```bash
-git clone https://github.com/hogent-web/frontendweb-budget.git
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 cd frontendweb-budget
 git checkout -b oplossing-les5 50e2881
 yarn install

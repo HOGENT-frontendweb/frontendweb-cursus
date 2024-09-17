@@ -1,11 +1,11 @@
 # Data ophalen uit een REST API
 
-!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-Web/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen als je zonder databank werkt). Maak ook een .env aan, bekijk de README.md voor meer informatie.
+!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen als je zonder databank werkt). Maak ook een .env aan, bekijk de README.md voor meer informatie.
 
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les4 b3b27e0
 > yarn install
@@ -1282,10 +1282,10 @@ Doe hetzelfde voor `PlacesSelect`, disable dit veld tijdens het verzenden van he
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontendweb-budget> in commit `1daa903`.
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in commit `1daa903`.
 
   ```bash
-  git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+  git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
   git checkout -b oplossing 1daa903
   yarn install
