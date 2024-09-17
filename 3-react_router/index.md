@@ -25,7 +25,7 @@ We hebben volgende dependencies nodig om met React Router aan de slag te kunnen 
 
 Installeer beide dependencies
 
-```bash
+```terminal
 yarn add react-router@~6.26.0 react-router-dom@~6.26.0
 ```
 
@@ -110,7 +110,7 @@ Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf
 
 Installeer dit package:
 
-```bash
+```terminal
 yarn add react-lorem-ipsum
 ```
 

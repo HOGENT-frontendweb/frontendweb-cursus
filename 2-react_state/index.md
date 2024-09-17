@@ -442,7 +442,7 @@ export default function StarRating() {
 
 Voor de weergave van de sterren maken we gebruik van [react-icons](https://react-icons.github.io/react-icons/). Dit is een npm package met honderden svg's onder de vorm van componenten. We maken gebruik van de library [Ionicons 5](https://react-icons.github.io/react-icons/icons/io5/).
 
-```bash
+```terminal
 yarn add react-icons
 ```
 

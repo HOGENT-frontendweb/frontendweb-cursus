@@ -80,7 +80,7 @@ Lees hierover meer in de [Vite documentatie](https://vitejs.dev/guide/why.html).
 
 Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/). Een nieuwe React-applicatie maken is zo simpel als:
 
-```bash
+```terminal
 yarn create vite budget --template react-swc
 ```
 
@@ -732,13 +732,13 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 
 Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Clone jouw Git repository uit de GitHub classroom:
 
-```bash
+```terminal
 git clone <JOUW_GIT_REPOSITORY_URL>
 ```
 
 Maak een nieuwe Vite React-applicatie aan met de naam van je project in de map van je Git repository. Gebruik een zinnige naam zodat duidelijk is in welke map jouw front-end zich bevindt (bv. suffix `-frontend`).
 
-```bash
+```terminal
 yarn create vite <PROJECTNAAM> --template react-swc
 ```
 
@@ -755,7 +755,7 @@ Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
 
 Commit vervolgens de lege React-applicatie:
 
-```bash
+```terminal
 git add .
 git commit -m "✨ Add empty React app ✨"
 git push

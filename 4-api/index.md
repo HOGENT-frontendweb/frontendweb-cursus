@@ -1,16 +1,8 @@
 # Data ophalen uit een REST API
 
-!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>.<br />Als je zonder MySQL-databank wil werken, check uit op commit `f6afd9b`. Op de laatste commit is een lokale MySQL-server vereist en is de data-structuur licht aangepast (sommige voorbeelden kunnen dus afwijkende code vereisen als je zonder databank werkt). Maak ook een .env aan, bekijk de README.md voor meer informatie.
+!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>. Op de laatste commit is een lokale MySQL-server vereist. Maak ook een `.env` aan, bekijk de `README.md` voor meer informatie.
 
-> **Startpunt voorbeeldapplicatie**
->
-> ```bash
-> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-> cd frontendweb-budget
-> git checkout -b les4 b3b27e0
-> yarn install
-> yarn dev
-> ```
+l> fe start b3b27e0 les4
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
@@ -24,32 +16,31 @@ Naast SWR hebben we ook [axios](https://www.npmjs.com/package/axios) nodig, een 
 
 Installeer alvast `axios` en `swr`:
 
-```bash
-yarn add axios
-yarn add swr
+```terminal
+yarn add axios swr
 ```
 
 ## useEffect
 
 `swr` verbergt namelijk heel wat van de complexiteit omtrent API calls. Daarom tonen we eerst hoe je zonder externe libraries een HTTP request kan uitvoeren. Hiervoor maken we gebruik van de `useEffect` hook.
 
-Effecten worden gebruikt om uit je React-code te stappen en te synchroniseren met een extern systeem. Dit omvat  Ze voeren een **side-effect** uit. Neveneffecten zijn acties die buiten het renderproces van React vallen, zoals het ophalen van gegevens, het aanroepen van browser API's, widgets van derden, netwerken... Tegenwoordig wordt afgeraden om `useEffect` te gebruiken aangezien veel developers de hook gebruiken waarvoor hij niet gemaakt is (zie <https://www.youtube.com/watch?v=bGzanfKVFeU>).
+Effecten worden gebruikt om uit je React-code te stappen en te synchroniseren met een extern systeem. Ze voeren een **side-effect** uit. Neveneffecten zijn acties die buiten het renderproces van React vallen, zoals het ophalen van gegevens, het aanroepen van browser API's, widgets van derden, netwerken... Tegenwoordig wordt afgeraden om `useEffect` te gebruiken aangezien veel developers de hook gebruiken waarvoor die niet gemaakt is (zie <https://www.youtube.com/watch?v=bGzanfKVFeU>).
 
 In deze sectie werken we richting een voorbeeld van data fetching m.b.v. `useEffect`. Het uiteindelijke doel is om `useEffect` te vervangen door een library (hier dus `swr`) die specifiek ontworpen is voor data fetching, net zoals de [React docs aanbevelen](https://react.dev/reference/react/useEffect#fetching-data-with-effects).
 
-`useEffect` is een functie die asynchroon wordt uitgevoerd na de render, en die zichzelf optioneel kan opruimen (= **cleanup**) Het opruimen gebeurt voordat het effect opnieuw wordt uitgevoerd en voor de **unmounting** (= het vernietigen van de component). React onthoudt de functie die je hebt doorgegeven ​​(we noemen dit ons "effect") en roept deze later aan, na het uitvoeren van de DOM-updates.
+`useEffect` is een functie die asynchroon wordt uitgevoerd na de render, en die zichzelf optioneel kan opruimen (= **cleanup**). Het opruimen gebeurt voordat het effect opnieuw wordt uitgevoerd en voor de **unmounting** (= het vernietigen van de component). React onthoudt de functie die je hebt doorgegeven ​​(we noemen dit ons "effect") en roept deze later aan, na het uitvoeren van de DOM-updates.
 
-In onderstaand voorbeeld wordt een boodschap naar de console gelogd als de `TransactionList` gerenderd is. Deze instructie zouden we na de return kunnen plaatsen, maar die code wordt niet uitgevoerd. `useEffect` is hier de oplossing.
+In onderstaand voorbeeld wordt een boodschap naar de console gelogd nadat de `TransactionList` gerenderd is. Deze instructie zouden we na de return kunnen plaatsen, maar die code wordt niet uitgevoerd. `useEffect` is hier de oplossing.
 
 ```jsx
 // src/pages/transactions/TransactionList.jsx
-import { useState, useMemo, useEffect} from 'react'; // 👈 1
+import { useState, useMemo, useEffect } from 'react'; // 👈 1
 import TransactionsTable from '../../components/transactions/TransactionsTable';
 import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
-  const [text, setText] = useState(''); 
-  const [search, setSearch] = useState(''); 
+  const [text, setText] = useState('');
+  const [search, setSearch] = useState('');
 
   // 👇 2
   useEffect(() => {
@@ -85,13 +76,12 @@ export default function TransactionList() {
         </button>
       </div>
 
-      <div className="mt-4">
+      <div className='mt-4'>
         <TransactionsTable transactions={filteredTransactions} />
       </div>
     </>
   );
 }
-
 ```
 
 1. We importeren `useEffect`.
@@ -112,15 +102,15 @@ Aan de hand van een **dependency array** kan je het uitvoeren van een `useEffect
 ```jsx
 useEffect(() => {
   console.log('transactions after the initial render');
-}, [])
+}, []);
 ```
 
-- **[transactions]**: `useEffect` wordt bij de initiële render en telkens de waarde van de variabele `search` wijzigt uitgevoerd. React zal het effect overslaan als `search` dezelfde waarde heeft als tijdens de laatste render.
+- **[search]**: `useEffect` wordt bij de initiële render en telkens de waarde van de variabele `search` wijzigt uitgevoerd. React zal het effect overslaan als `search` dezelfde waarde heeft als tijdens de laatste render.
 
 ```jsx
 useEffect(() => {
   console.log('transactions after initial render or transaction added');
-}, [search])
+}, [search]);
 ```
 
 - **meerdere dependencies**: React zal het opnieuw uitvoeren van het effect alleen overslaan als alle dependencies die je opgeeft exact dezelfde waarden hebben als tijdens de vorige render.
@@ -128,11 +118,14 @@ useEffect(() => {
 Stel dat de user via een prop wordt doorgegeven aan de `TransactionList` en ook naar de console gelogd dient te worden.
 
 ```jsx
-export default function TransactionList({ user = 'Louis' }){ // 👈 de prop user
+export default function TransactionList({ user = 'Louis' }) {
+  // 👆 de prop user
 
   useEffect(() => {
-      console.log(`Hi  ${user}, transactions after initial render or search changed`); // 👈 maakt gebruik van user
-  }, [search])// Warning: React Hook useEffect has a missing dependency
+    console.log(
+      `Hi  ${user}, transactions after initial render or search changed`,
+    ); // 👆 maakt gebruik van user
+  }, [search]); // Warning: React Hook useEffect has a missing dependency
 
   //...
 }
@@ -176,7 +169,7 @@ Er zijn een aantal opmerkingen om rekening mee te houden bij het gebruik van `us
 - Gebruik `useEffect` niet voor het aanbrengen van DOM-wijzigingen die zichtbaar zijn voor de gebruiker. Een `useEffect` wordt pas geactiveerd nadat de browser klaar is met de lay-out en het tekenen. Dit is dus te laat als je een visuele wijziging wilde aanbrengen. Voor die gevallen biedt React de hook `useLayoutEffect` die op dezelfde manier werken als `useEffect`. Ze verschillen enkel in het moment van 'afvuren'.
 - Beperk het gebruik van `useEffect`, in de meeste gevallen heb je deze hook niet nodig. Je hebt het enkel nodig als je "uit de React code" wil stappen, bv. synchronisatie met een systeem in de cloud, synchronisatie met een niet-React DOM element... Probeer dus eerst je probleem op te lossen met andere hooks voor je terugvalt op `useEffect`, of gebruik een library die specifiek ontworpen is voor jouw probleem.
   - Voor extra uitleg en voorbeelden: [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects)
-- `useEffect` laat NIET toe om het keyword `async` toe te voegen in de callback function. Dit kan opgelost worden door in de effect-code een `async` functie te maken en die vervolgens aan te roepen. Dit is trouwens nog een reden waarom je best een library gebruikt voor het ophalen van data.
+- `useEffect` laat **niet** toe om het keyword `async` toe te voegen in de callback function. Dit kan opgelost worden door in de effect-code een `async` functie te maken en die vervolgens aan te roepen. Dit is trouwens nog een reden waarom je best een library gebruikt voor het ophalen van data.
 
 ## GET /api/transactions (useEffect)
 
@@ -209,7 +202,8 @@ import * as transactionsApi from '../../api/transactions'; // 👈 2
 export default function TransactionList() {
   // state
 
-  useEffect(() => { // 👈 3
+  // 👇 3
+  useEffect(() => {
     // 👇 4
     const fetchTransactions = async () => {
       const data = await transactionsApi.getAll();
@@ -253,9 +247,7 @@ import axios from 'axios';
 const baseUrl = 'http://localhost:9000/api/transactions';
 
 export const getAll = async () => {
-  const {
-    data,
-  } = await axios.get(baseUrl); // 👈 1
+  const { data } = await axios.get(baseUrl); // 👈 1
 
   return data.items; // 👈 2
 };
@@ -267,51 +259,57 @@ export const getAll = async () => {
 De `TransactionList` component wordt daardoor:
 
 ```jsx
-//...
-
 // src/pages/transactions/TransactionList.jsx
 //...
+
 export default function TransactionList() {
-  const [transactions, setTransactions] = useState([]); // 👈 2
+  const [transactions, setTransactions] = useState([]); // 👈 1
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      const data = await transactionsApi.getAll(); // 👈 3
-      setTransactions(data); // 👈 4
+      const data = await transactionsApi.getAll(); // 👈 2
+      setTransactions(data); // 👈 3
     };
 
     fetchTransactions();
   }, []);
 
-  const filteredTransactions = useMemo(() => transactions.filter((t) => { // 👈 5
-    return t.place.name.toLowerCase().includes(search.toLowerCase());
-  }), [search, transactions]);
+  const filteredTransactions = useMemo(
+    () =>
+      // 👇 4
+      transactions.filter((t) => {
+        return t.place.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    [search, transactions],
+  );
   //...
 }
 ```
 
-1. We maken niet langer gebruik van mock data.
-2. We voegen state toe. De initiële state is een lege array. Als de data asynchroon is opgehaald dient de lijst te worden getoond (rerender)
-3. Haal de data asynchroon op. Omwille van performantieredenen kan je eventueel het aantal records beperken (server side). Dat laten we hier achterwege.
-4. Pas de state aan nadat je de lijst terugkrijgt van de API.
-5. Om te filteren gebruiken we nu de opgehaalde transacties
+1. We maken niet langer gebruik van mock data, we bewaren onze transacties in state. De initiële state is een lege array. Als de data asynchroon is opgehaald dient de lijst te worden getoond (rerender)
+2. Haal de data asynchroon op. Omwille van performantieredenen kan je eventueel het aantal records beperken (server side). Dat laten we hier achterwege.
+3. Pas de state aan nadat je de lijst terugkrijgt van de API.
+   - Een effect met een `setState` is vaak de trigger van een oneindige lus. Dit is niet het geval hier, omdat de `useEffect` enkel bij de initiële render wordt uitgevoerd. De state wordt enkel aangepast bij de initiële render.
+   - `setState` gebruiken in een `useEffect` zou een belletje moeten doen rinkelen om te zoeken naar een betere oplossing!
+4. Om te filteren gebruiken we nu de opgehaalde transacties
 
 Start de applicatie en bekijk het resultaat.
 
 ## Laadindicator en foutafhandeling
 
-Je merkt misschien dat je heel kort de melding krijgt dat er geen transacties zijn en dat vervolgens de lijst van transacties wordt weergegeven. Dit komt omdat de API call asynchroon is. We kunnen dit oplossen door een laadindicator toe te voegen. Daarnaast voegen we ook meteen een foutafhandeling toe, want we gaan er niet vanuit dat alles altijd goed gaat!
+Je merkt misschien dat je heel kort de melding krijgt dat er geen transacties zijn en dat vervolgens de lijst van transacties wordt weergegeven. Dit komt omdat de API call asynchroon is en omdat het effect na de render uitgevoerd wordt. We kunnen dit oplossen door een laadindicator toe te voegen. Daarnaast voegen we ook meteen foutafhandeling toe, want we gaan er niet vanuit dat alles altijd goed gaat!
 
-Omdat we de laadindicator en foutafhandeling in meerdere componenten nodig hebben, maken we hiervoor een aparte component `Loader` aan in een nieuw bestand `components/Loader.jsx`:
+Omdat we de laadindicator in meerdere componenten nodig hebben, maken we hiervoor een aparte component `Loader` aan in een nieuw bestand `components/Loader.jsx`:
 
 ```jsx
+// src/components/Loader.jsx
 export default function Loader() {
   return (
-    <div className="d-flex flex-column align-items-center">
-      <div className="spinner-border">
-        <span className="visually-hidden">Loading...</span>
+    <div className='d-flex flex-column align-items-center'>
+      <div className='spinner-border'>
+        <span className='visually-hidden'>Loading...</span>
       </div>
     </div>
   );
@@ -323,17 +321,19 @@ Deze `Loader` component toont een simpele loading indicator van Bootstrap.
 Ook zullen we foutafhandeling in meerdere componenten nodig hebben. Daarom maken we hiervoor een aparte component `Error` aan in een nieuw bestand `components/Error.jsx`:
 
 ```jsx
+// src/components/Error.jsx
 import { isAxiosError } from 'axios';
 
-export default function Error({ error }) { // 👈 1
-  if (isAxiosError(error)) { // 👈 2
+export default function Error({ error }) {
+  // 👆 1 👇 2
+  if (isAxiosError(error)) {
     return (
-      <div className="alert alert-danger">
-        <h4 className="alert-heading">Oops, something went wrong</h4>
+      <div className='alert alert-danger'>
+        <h4 className='alert-heading'>Oops, something went wrong</h4>
         <p>
           {/* 👇 3 */}
-          {error.response?.data?.message || error.message}
-          {error.response?.data?.details && (
+          {error?.response?.data?.message || error.message}
+          {error?.response?.data?.details && (
             <>
               :
               <br />
@@ -348,8 +348,8 @@ export default function Error({ error }) { // 👈 1
   // 👇 4
   if (error) {
     return (
-      <div className="alert alert-danger">
-        <h4 className="alert-heading">An unexpected error occured</h4>
+      <div className='alert alert-danger'>
+        <h4 className='alert-heading'>An unexpected error occured</h4>
         {error.message || JSON.stringify(error)}
       </div>
     );
@@ -360,20 +360,21 @@ export default function Error({ error }) { // 👈 1
 ```
 
 1. We geven de `error` prop mee aan de component.
-2. We controleren of de `error` een `AxiosError` is. Dit is een specifiek type van error dat Axios gebruikt. We gebruiken de `isAxiosError` functie om dit te controleren.
+2. We controleren of de `error` een `AxiosError` is. Dit is een specifiek type error dat Axios gebruikt. We gebruiken de `isAxiosError` functie om dit te controleren.
 3. In dat geval geven we de foutmelding weer. We controleren eerst of er een `message` is in de response data. Zo niet, dan geven we de `message` van de error weer. Als er een `details` object is, dan geven we dit ook weer. Dit `details` object voegen we in het hoofdstuk van validatie toe in de bijbehorende back-end, dus dit zal nu nog niet voorkomen.
 4. Als er geen `AxiosError` is, dan geven we de `error` weer. We controleren eerst of er een `message` is. Zo niet, dan geven we de `error` zelf weer in JSON formaat.
-5. Als er geen `error` is, dan geven we `null` terug.
+5. Als er geen `error` is, dan geven we `null` terug. Zo ziet de gebruiker niets.
 
 Als laatste definiëren we een `AsyncData` component in een nieuw bestand `components/AsyncData.jsx`:
 
 ```jsx
+// src/components/AsyncData.jsx
 import Loader from './Loader'; // 👈 1
 import Error from './Error'; // 👈 1
 
 export default function AsyncData({
-  loading,  // 👈 2
-  error,    // 👈 3
+  loading, // 👈 2
+  error, // 👈 3
   children, // 👈 4
 }) {
   // 👇 2
@@ -391,17 +392,17 @@ export default function AsyncData({
 ```
 
 1. Importeer de `Loader` en `Error` componenten.
-2. We verwachten een `loading` prop. Als `loading` `true` is, dan geven we de `Loader` weer.
-3. Daarnaast verwachten we een `error` prop. Geef een eventuele fout weer. Deze component zal `null` retourneren als er geen `error` is.
+2. We verwachten een `loading` prop. Als `loading` gelijk is aan `true`, dan geven we de `Loader` weer.
+3. Daarnaast verwachten we een `error` prop. Die geven we mee aan de `Error` component. Als er geen `error` is, dan toont deze component niets.
 4. Als laatste verwachten we een `children` prop. Dit is de JSX die we willen weergeven als de data niet aan het laden is.
 
 Pas dan volgende onderdelen van de `TransactionList` verder aan:
 
 ```jsx
 // src/pages/transactions/TransactionList.jsx
-import { useState, useMemo, useEffect} from 'react'; 
+import { useState, useMemo, useEffect } from 'react';
 import TransactionsTable from '../../components/transactions/TransactionsTable';
-import * as transactionsApi from '../../api/transactions'; 
+import * as transactionsApi from '../../api/transactions';
 import AsyncData from '../../components/AsyncData'; // 👈 5
 
 export default function TransactionList() {
@@ -413,15 +414,18 @@ export default function TransactionList() {
 
   useEffect(() => {
     const fetchTransactions = async () => {
-      try { // 👈 2
+      // 👇 2
+      try {
         setLoading(true); // 👈 3
         setError(null); // 👈 3
         const data = await transactionsApi.getAll();
         setTransactions(data);
-      } catch (error) { // 👈 4
+      } catch (error) {
+        // 👇 4
         console.error(error);
         setError(error);
-      } finally { // 👈 5
+      } finally {
+        // 👇 5
         setLoading(false);
       }
     };
@@ -429,9 +433,13 @@ export default function TransactionList() {
     fetchTransactions();
   }, []);
 
-  const filteredTransactions = useMemo(() => transactions.filter((t) => { 
-    return t.place.name.toLowerCase().includes(search.toLowerCase());
-  }), [search, transactions]);
+  const filteredTransactions = useMemo(
+    () =>
+      transactions.filter((t) => {
+        return t.place.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    [search, transactions],
+  );
 
   return (
     <>
@@ -454,9 +462,13 @@ export default function TransactionList() {
         </button>
       </div>
 
-      <div className="mt-4">
-        <AsyncData loading={loading} error={error}> {/* 👈 6 */}
-          {!error ? <TransactionsTable transactions={filteredTransactions} /> : null} {/* 👈 7 */}
+      <div className='mt-4'>
+        {/* 👇 6 */}
+        <AsyncData loading={loading} error={error}>
+          {/* 👇 7 */}
+          {!error ? (
+            <TransactionsTable transactions={filteredTransactions} />
+          ) : null}
         </AsyncData>
       </div>
     </>
@@ -472,7 +484,7 @@ export default function TransactionList() {
 6. We gebruiken de `AsyncData` component om de `loading` en `error` verder af te handelen.
 7. Geef de transacties weer als er zich geen fout heeft voorgedaan.
 
-Bekijk het resultaat in de applicatie. 
+Bekijk het resultaat in de applicatie.
 
 ## GET /api/transactions (swr)
 
@@ -500,10 +512,9 @@ import axios from 'axios';
 
 const baseUrl = 'http://localhost:9000/api'; // 👈 1
 
-export async function getAll(url) { // 👈 2
-  const {
-    data,
-  } = await axios.get(`${baseUrl}/${url}`); // 👈 3
+export async function getAll(url) {
+  // 👈 2
+  const { data } = await axios.get(`${baseUrl}/${url}`); // 👈 3
 
   return data.items;
 }
@@ -516,9 +527,9 @@ export async function getAll(url) { // 👈 2
 Vervolgens gebruiken we de `useSWR` hook om onze transacties op te halen:
 
 ```jsx
-import { useState, useMemo} from 'react'; 
+import { useState, useMemo } from 'react';
 import TransactionsTable from '../../components/transactions/TransactionsTable';
-import AsyncData from '../../components/AsyncData'; 
+import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr'; // 👈 1
 import { getAll } from '../../api'; // 👈 2
 
@@ -530,11 +541,15 @@ export default function TransactionList() {
     data: transactions = [],
     isLoading,
     error,
-  } = useSWR('transactions', getAll);// 👈 3
+  } = useSWR('transactions', getAll); // 👈 3
 
-  const filteredTransactions = useMemo(() => transactions.filter((t) => { 
-    return t.place.name.toLowerCase().includes(search.toLowerCase());
-  }), [search, transactions]);
+  const filteredTransactions = useMemo(
+    () =>
+      transactions.filter((t) => {
+        return t.place.name.toLowerCase().includes(search.toLowerCase());
+      }),
+    [search, transactions],
+  );
 
   return (
     <>
@@ -557,7 +572,7 @@ export default function TransactionList() {
         </button>
       </div>
 
-      <div className="mt-4">
+      <div className='mt-4'>
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error}>
           <TransactionsTable transactions={filteredTransactions} />
@@ -593,7 +608,8 @@ De volgende stap van de CRUD operaties is de 'D', een transactie verwijderen. En
 Voeg een `deleteById` functie toe in `index.js` in de map `api`:
 
 ```jsx
-export const deleteById = async (url, { arg: id }) => { // 👈 1
+export const deleteById = async (url, { arg: id }) => {
+  // 👈 1
   await axios.delete(`${baseUrl}/${url}/${id}`); // 👈 2
 };
 ```
@@ -640,14 +656,11 @@ We breiden de `TransactionTable` uit met een `onDelete` prop die we meteen doorg
 ```jsx
 import Transaction from './Transaction';
 
-function TransactionsTable({
-  transactions, onDelete,
-}) {// 👈
+function TransactionsTable({ transactions, onDelete }) {
+  // 👈
   if (transactions.length === 0) {
     return (
-      <div className="alert alert-info">
-        There are no transactions yet.
-      </div>
+      <div className='alert alert-info'>There are no transactions yet.</div>
     );
   }
 
@@ -659,15 +672,19 @@ function TransactionsTable({
             <th>Date</th>
             <th>User</th>
             <th>Place</th>
-            <th className="text-end">Amount</th>
+            <th className='text-end'>Amount</th>
             {/* 👇 */}
-            <th></th> 
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {/* 👇 */}
           {transactions.map((transaction) => (
-            <Transaction key={transaction.id} onDelete={onDelete} {...transaction} />
+            <Transaction
+              key={transaction.id}
+              onDelete={onDelete}
+              {...transaction}
+            />
           ))}
         </tbody>
       </table>
@@ -690,9 +707,16 @@ import { getAll, deleteById } from '../../api'; // 👈 1
 export default function TransactionList() {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
-  const { data: transactions = [], isLoading, error } = useSWR('transactions', getAll);
+  const {
+    data: transactions = [],
+    isLoading,
+    error,
+  } = useSWR('transactions', getAll);
   // 👇 2
-  const { trigger: deleteTransaction, error: deleteError } = useSWRMutation('transactions', deleteById);
+  const { trigger: deleteTransaction, error: deleteError } = useSWRMutation(
+    'transactions',
+    deleteById,
+  );
 
   // ...
 
@@ -721,7 +745,12 @@ export default function TransactionList() {
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error || deleteError}>
           {/* 👇 3 */}
-          {!error ? <TransactionsTable transactions={filteredTransactions} onDelete={deleteTransaction} /> : null}
+          {!error ? (
+            <TransactionsTable
+              transactions={filteredTransactions}
+              onDelete={deleteTransaction}
+            />
+          ) : null}
         </AsyncData>
       </div>
     </>
@@ -748,15 +777,13 @@ Implementeer een willekeurige DELETE uit je eigen project (liefst dezelfde entit
 - Gebruik de `useSWRMutation` hook om de data te verwijderen.
 - Zorg ervoor dat je de data kan verwijderen uit jouw lijst-component.
 
-
-
-
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in commit `1daa903`.
 
-  ```bash
+  ```terminal
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
   git checkout -b oplossing 1daa903
