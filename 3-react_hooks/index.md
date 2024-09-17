@@ -3,7 +3,7 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les3 e842183
 > yarn install
@@ -407,7 +407,7 @@ Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfd
 
 Als we surfen naar <https://api.thecatapi.com/v1/breeds> dan krijgen we JSON met alle kattenrassen. Maak een pagina waar de gebruiker een ras kan selecteren, en waar de details van het ras getoond worden.
 
-- Gebruik dit bestand met mock data: [mock_data.js](https://raw.githubusercontent.com/HOGENT-Web/frontend-ch3-exercise-solution/main/src/api/mock_data.js).
+- Gebruik dit bestand met mock data: [mock_data.js](https://raw.githubusercontent.com/HOGENT-frontendweb/frontend-ch3-exercise-solution/main/src/api/mock_data.js).
 - Hou alle rassen bij in een state variabele.
 - Hou de geselecteerde ras ook bij in state.
 - Maak een formulier om een nieuw ras toe te voegen. Voeg deze toe aan de bijgehouden rassen. Alle velden met uitzondering van de `description` en `imageUrl` zijn verplicht in te vullen.
@@ -424,10 +424,10 @@ yarn remove eslint eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-r
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `4db7f21`
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution> in commit `4db7f21`
 
   ```bash
-  git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  git clone https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution.git
   cd frontend-ch3-exercise-solution
   git checkout -b oplossing 4db7f21
   yarn install
@@ -1112,10 +1112,10 @@ Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan 
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-Web/frontend-ch3-exercise-solution> in commit `9181134`
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution> in commit `9181134`
 
   ```bash
-  git clone https://github.com/HOGENT-Web/frontend-ch3-exercise-solution.git
+  git clone https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution.git
   cd frontend-ch3-exercise-solution
   git checkout -b oplossing 9181134
   yarn install

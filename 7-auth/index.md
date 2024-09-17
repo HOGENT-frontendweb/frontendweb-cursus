@@ -5,14 +5,14 @@
 > Het volstaat om uit te checken op de `main` branch
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les7
 > yarn install
 > yarn dev
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
+> **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
 
 ## API calls voor login
 
@@ -771,10 +771,10 @@ Maak een `Register` component op de URL `/register`.
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie` op commit `14016d2`:
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie` op commit `14016d2`:
 
   ```bash
-  git clone https://github.com/hogent-web/frontendweb-budget.git
+  git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
   git checkout -b oplossing-les7 14016d2
   yarn install

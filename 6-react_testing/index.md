@@ -3,14 +3,14 @@
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les6 50e2881
 > yarn install
 > yarn dev
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien.**
+> **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien.**
 
 <!-- TODO: cypress linting toevoegen: https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md -->
 
@@ -522,10 +522,10 @@ Als de backend fouten geeft bij het ophalen van de transacties, dan zijn er geen
 
 ### Oplossing
 
-Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in commit `8539c87`:
+Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in commit `8539c87`:
 
 ```bash
-git clone https://github.com/hogent-web/frontendweb-budget.git
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 cd frontendweb-budget
 git checkout -b oplossing-les5 8539c87
 yarn install

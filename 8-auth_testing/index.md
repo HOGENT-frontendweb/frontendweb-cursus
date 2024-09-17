@@ -5,7 +5,7 @@
 > Het volstaat om uit te checken op de `authenticatie` branch en op commit `f4bab5c`
 >
 > ```bash
-> git clone https://github.com/HOGENT-Web/frontendweb-budget.git
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout origin/authenticatie
 > git checkout -b les8 f4bab5c
@@ -13,7 +13,7 @@
 > yarn start
 > ```
 >
-> **De [REST API](https://github.com/HOGENT-Web/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
+> **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
 
 Momenteel moet je voor elke pagina in onze budget applicatie aangemeld zijn (behalve de `/login` en `/logout`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze een voor een falen.
 
@@ -129,14 +129,14 @@ Voer de testen opnieuw uit, enkel de test van het zoeken naar de transacties van
 <!-- markdownlint-disable-next-line -->
 + Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/hogent-web/frontendweb-budget> in de branch `authenticatie`
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie`
 
   ```bash
-  git clone https://github.com/hogent-web/frontendweb-budget.git
+  git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
   git checkout -b oplossing-les8 origin/authenticatie
   yarn install
   yarn dev
   ```
 
-  Je zal een gelijknamige branch vinden in de [back-end repository](https://github.com/hogent-web/webservices-budget).
+  Je zal een gelijknamige branch vinden in de [back-end repository](https://github.com/HOGENT-frontendweb/webservices-budget).
