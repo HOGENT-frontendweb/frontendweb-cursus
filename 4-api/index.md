@@ -1,5 +1,7 @@
 # Data ophalen uit een REST API
 
+<!-- TODO: startpunt en oplossing toevoegen -->
+
 !> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>. Op de laatste commit is een lokale MySQL-server vereist. Maak ook een `.env` aan, bekijk de `README.md` voor meer informatie.
 
 l> fe start b3b27e0 les4
@@ -608,8 +610,8 @@ De volgende stap van de CRUD operaties is de 'D', een transactie verwijderen. En
 Voeg een `deleteById` functie toe in `index.js` in de map `api`:
 
 ```jsx
+// 👇 1
 export const deleteById = async (url, { arg: id }) => {
-  // 👈 1
   await axios.delete(`${baseUrl}/${url}/${id}`); // 👈 2
 };
 ```
@@ -617,11 +619,12 @@ export const deleteById = async (url, { arg: id }) => {
 1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook het `id` mee als argument, we halen dit uit de `arg` optie die we van `swr` krijgen.
 2. We bouwen de url (`/api/transactions/:id`) op en voeren de `DELETE` uit. Net zoals `axios.get()` kan je ook `axios.delete()` uitvoeren. Het antwoord is de HTTP status code 204. Bijgevolg is de HTTP response body ook leeg (m.a.w. `{}` in JavaScript). We negeren dat antwoord hier.
 
-De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. We voegen een verwijderknop toe aan deze component:
+De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. Echter is het niet zijn verantwoordelijkheid om de effectieve API call uit te voeren, die is voor de `TransactionList`. We voegen een verwijderknop toe aan deze component:
 
 ```jsx
 import { IoTrashOutline } from 'react-icons/io5'; // 👈 1
 // ...
+
 function Transaction({ id, user, date, amount, place, onDelete }) { // 👈 3
   // 👇 2
   const handleDelete = () => {
@@ -656,8 +659,8 @@ We breiden de `TransactionTable` uit met een `onDelete` prop die we meteen doorg
 ```jsx
 import Transaction from './Transaction';
 
+// 👇
 function TransactionsTable({ transactions, onDelete }) {
-  // 👈
   if (transactions.length === 0) {
     return (
       <div className='alert alert-info'>There are no transactions yet.</div>
@@ -777,20 +780,6 @@ Implementeer een willekeurige DELETE uit je eigen project (liefst dezelfde entit
 - Gebruik de `useSWRMutation` hook om de data te verwijderen.
 - Zorg ervoor dat je de data kan verwijderen uit jouw lijst-component.
 
-<!-- markdownlint-disable-next-line -->
-
-- Oplossing +
-
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in commit `1daa903`.
-
-  ```terminal
-  git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-  cd frontendweb-budget
-  git checkout -b oplossing 1daa903
-  yarn install
-  yarn dev
-  ```
-
 ## Het .env bestand
 
 Je kan omgevingsvariabelen definiëren in het `.env` bestand. De omgevingsvariabelen moeten beginnen met `VITE_`, alle andere variabelen behalve `NODE_ENV` worden genegeerd. Als je omgevingsvariabelen wijzigt, moet je de applicatie _niet_ opnieuw starten. Vite zal de wijzigingen automatisch detecteren en het nodige doen.
@@ -818,6 +807,8 @@ Over environment variables in React & Vite vind je meer op <https://vitejs.dev/g
 ## Oefening 7 - PlacesList via API
 
 Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API.
+
+l> fe oplossing b3b27e0 les4-opl
 
 ## Must reads
 
