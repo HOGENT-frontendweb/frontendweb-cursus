@@ -67,30 +67,31 @@ Naast deze twee types zijn er nog andere beschikbaar, [lees meer in de documenta
 De voorbeeldapplicatie zal gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerste route. We doen dit in `main.jsx`, het startpunt van de app:
 
 ```jsx
-/* eslint-disable @stylistic/comma-dangle */
 // src/main.jsx
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom"; // 👈
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // 👈
 
 // 👇
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
   },
 ]);
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 ```
 
 [createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router) creëert een `RemixRouter` die zal functioneren als een `BrowserRouter`. Deze waarde moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/en/main/routers/router-provider). De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL (`path`) aan een component (`element`).
+
+In dit voorbeeld configureren we een enkele route die de `App` component toont wanneer de URL `/` is. We zullen later meer routes toevoegen.
 
 Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`, deze moet dus de root-component zijn van de applicatie.
 
@@ -98,33 +99,32 @@ Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`,
 
 We voorzien volgende basis routes in de voorbeeldapplicatie
 
-- `/`: de home page (App.jsx) met links naar de andere pagina's (later voegen we een navigatiebalk toe)
+- `/`: de home page (`App.jsx`) met links naar de andere pagina's (later voegen we een navigatiebalk toe)
 - `/transactions`: een lijst van transacties
 - `/places`: een lijst van places
 - `/about`: over ons pagina
 
-Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie plaatsen we in de folder `pages`. Maak een folder `pages` aan met de subfolders `places` en `transactions`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste folder. Pas eventueel de paden in de component aan.
+Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie plaatsen we in de `pages` map. Maak een map `pages` aan met daarin de mappen `places` en `transactions`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan.
 
-Voeg ook een `Over ons` en `NotFound` page toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `react-lorem-ipsum`.
+Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `react-lorem-ipsum`.
 
-Installeer dit package (met een extra dependency ervan):
+Installeer dit package:
 
 ```bash
 yarn add react-lorem-ipsum
 ```
 
-Maak de About page aan:
+Maak de `About` page aan:
 
 ```jsx
 // src/pages/about/About.jsx
-import { loremIpsum } from "react-lorem-ipsum";
+import { LoremIpsum } from 'react-lorem-ipsum';
+
 const About = () => (
   <div>
     <h1>Over ons</h1>
     <div>
-      {loremIpsum({ p: 2 }).map((t, i) => (
-        <p key={i}>{t}</p>
-      ))}
+      <LoremIpsum p={2} />
     </div>
   </div>
 );
@@ -132,7 +132,7 @@ const About = () => (
 export default About;
 ```
 
-Maak de NotFound page aan
+Maak de `NotFound` page aan
 
 ```jsx
 // src/pages/NotFound.jsx
@@ -144,39 +144,39 @@ const NotFound = () => {
     </div>
   );
 };
+
 export default NotFound;
 ```
 
 Nu we de nodige pagina's hebben, hoeven we enkel nog de routes te configureren. Hiervoor gaan we naar de `main.jsx` en voegen de extra routes toe.
 
 ```jsx
-/* eslint-disable @stylistic/comma-dangle */
 // src/main.jsx
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TransactionList from "./pages/transactions/TransactionList"; // 👈 1
-import PlacesList from "./pages/places/PlacesList"; // 👈 1
-import NotFound from "./pages/NotFound"; // 👈 1
-import About from "./pages/about/About.jsx"; // 👈 1
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import TransactionList from './pages/transactions/TransactionList'; // 👈 1
+import PlacesList from './pages/places/PlacesList'; // 👈 1
+import NotFound from './pages/NotFound'; // 👈 1
+import About from './pages/about/About.jsx'; // 👈 1
 
 // 👇
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
   },
-  { path: "transactions", element: <TransactionList /> }, // 👈 2
-  { path: "places", element: <PlacesList /> }, // 👈 2
-  { path: "about", element: <About /> }, // 👈 2
-  { path: "*", element: <NotFound /> }, // 👈 3
+  { path: 'transactions', element: <TransactionList /> }, // 👈 2
+  { path: 'places', element: <PlacesList /> }, // 👈 2
+  { path: 'about', element: <About /> }, // 👈 2
+  { path: '*', element: <NotFound /> }, // 👈 3
 ]);
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 ```
 
@@ -187,7 +187,7 @@ createRoot(document.getElementById("root")).render(
 
 Uit de route voor de `NotFound` component blijkt dat je ook reguliere expressies kan meegeven aan de `path` optie.
 
-![How to regex](./images/how-to-regex.jpg ":size=50%")
+![How to regex](./images/how-to-regex.jpg ':size=50%')
 
 ## Navigeren tussen pagina's
 
@@ -195,7 +195,7 @@ Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component.
 
 ```jsx
 // src/App.jsx
-import { Link } from "react-router-dom"; // 👈
+import { Link } from 'react-router-dom'; // 👈
 
 function App() {
   return (
@@ -204,13 +204,13 @@ function App() {
       <p>Kies één van de volgende links:</p>
       <ul>
         <li>
-          <Link to="/transactions">Transacties</Link> {/* 👈 */}
+          <Link to='/transactions'>Transacties</Link> {/* 👈 */}
         </li>
         <li>
-          <Link to="/places">Plaatsen</Link> {/* 👈 */}
+          <Link to='/places'>Plaatsen</Link> {/* 👈 */}
         </li>
         <li>
-          <Link to="/about">Over ons</Link> {/* 👈 */}
+          <Link to='/about'>Over ons</Link> {/* 👈 */}
         </li>
       </ul>
     </div>
@@ -227,7 +227,7 @@ Om eigenschappen over de huidige route op te vragen bestaat de hook `useLocation
 
 ```jsx
 // src/pages/NotFound.jsx
-import { useLocation } from "react-router-dom"; // 👈
+import { useLocation } from 'react-router-dom'; // 👈
 
 const NotFound = () => {
   const { pathname } = useLocation(); // 👈
@@ -247,16 +247,16 @@ Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 - [useLocation](https://reactrouter.com/en/main/hooks/use-location)
 - [Location interface van history package](https://github.com/remix-run/history/blob/main/docs/api-reference.md#location)
 
-![How to use docs](./images/how-to-docs.jpg ":size=50%")
+![How to use docs](./images/how-to-docs.jpg ':size=50%')
 
 ## Routes nesten
 
-Je kunt geneste routes creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
+Je kan geneste routes creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
 
 ```jsx
 // src/pages/about/About.jsx
-import { LoremIpsum } from "react-lorem-ipsum";
-import { Link } from "react-router-dom"; // 👈
+import { LoremIpsum } from 'react-lorem-ipsum';
+import { Link } from 'react-router-dom'; // 👈
 
 const About = () => (
   <div>
@@ -266,13 +266,13 @@ const About = () => (
 
       <ul>
         <li>
-          <Link to="/about/services">Onze diensten</Link> {/* 👈 */}
+          <Link to='/about/services'>Onze diensten</Link> {/* 👈 */}
         </li>
         <li>
-          <Link to="/about/history">Geschiedenis</Link> {/* 👈 */}
+          <Link to='/about/history'>Geschiedenis</Link> {/* 👈 */}
         </li>
         <li>
-          <Link to="/about/location">Locatie</Link> {/* 👈 */}
+          <Link to='/about/location'>Locatie</Link> {/* 👈 */}
         </li>
       </ul>
     </div>
@@ -310,49 +310,48 @@ export const Location = () => (
 Daarna passen we de definitie van `/about` aan, de drie nieuwe routes dienen als kind van de `/about` route te worden aangemaakt (vergeet de nodige imports niet):
 
 ```jsx
-/* eslint-disable @stylistic/comma-dangle */
 // src/main.jsx
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.jsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TransactionList from "./pages/transactions/TransactionList";
-import PlacesList from "./pages/places/PlacesList";
-import NotFound from "./pages/NotFound";
-import About, { Services, History, Location } from "./pages/about/About.jsx"; // 👈
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App.jsx';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import TransactionList from './pages/transactions/TransactionList';
+import PlacesList from './pages/places/PlacesList';
+import NotFound from './pages/NotFound';
+import About, { Services, History, Location } from './pages/about/About.jsx'; // 👈
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
   },
-  { path: "transactions", element: <TransactionList /> },
-  { path: "places", element: <PlacesList /> },
+  { path: 'transactions', element: <TransactionList /> },
+  { path: 'places', element: <PlacesList /> },
   {
-    path: "about",
+    path: 'about',
     element: <About />,
     children: [
       {
-        path: "services",
+        path: 'services',
         element: <Services />,
       },
       {
-        path: "history",
+        path: 'history',
         element: <History />,
       },
       {
-        path: "location",
+        path: 'location',
         element: <Location />,
       },
     ], // 👆
   },
-  { path: "*", element: <NotFound /> },
+  { path: '*', element: <NotFound /> },
 ]);
 
-createRoot(document.getElementById("root")).render(
+createRoot(document.getElementById('root')).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 ```
 
@@ -362,19 +361,18 @@ Voeg onderaan de `About` component de `Outlet` toe:
 
 ```jsx
 // src/about/About.jsx
-import { Outlet, Link } from "react-router-dom"; // 👈
-{
-  /* de rest */
-}
+import { Outlet, Link } from 'react-router-dom'; // 👈
+
+// ...
+
 const About = () => (
   <div>
-    {/* de rest */}
+    {/* ... */}
     <Outlet /> {/* 👈 */}
   </div>
 );
-{
-  /* de rest */
-}
+
+// ...
 ```
 
 ## Redirects
@@ -382,19 +380,26 @@ const About = () => (
 Stel we willen dat gebruikers die naar `/services` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.jsx`:
 
 ```jsx
-import {Navigate} from 'react-router-dom';
-...
-{
-  path: 'services',
-  element: <Navigate to='/about/services' replace />
-}
+import { Navigate } from 'react-router-dom';
+// ...
+
+const router = createBrowserRouter([
+  // ...
+  {
+    path: 'services',
+    element: <Navigate to='/about/services' replace />,
+  },
+  { path: '*', element: <NotFound /> },
+]);
+
+// ...
 ```
 
 Deze route rendert de `Navigate` component wanneer de gebruiker naar `/services` navigeert. Deze component is onderdeel van React Router en zal naar de URL in de `to` prop navigeren. De `replace` prop zorgt ervoor dat de URL `/services` vervangen wordt en bijgevolg verwijderd wordt uit de geschiedenis. Daarom kunnen we dus niet meer terugkeren naar `/services`, gebruikmakend van de terugknop van de browser.
 
 ## URL parameters
 
-In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam clickable te zijn zodat we naar de detail van een plaats kunnen navigeren.
+In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. De URL `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam aanklikbaar te zijn zodat we naar de detail van een plaats kunnen navigeren.
 
 Definieer de nieuwe route in `main.jsx`:
 
@@ -437,7 +442,7 @@ Wanneer we navigeren naar `/places/263`, dan zal de `PlaceDetail` component geto
 
 ```js
 {
-  id: "263";
+  id: '263',
 }
 ```
 
@@ -446,11 +451,11 @@ Wanneer we navigeren naar `/posts/2021/1`, dan zal de `Posts` component getoond 
 ```js
 {
   year: '2021',
-  month: '1'
+  month: '1',
 }
 ```
 
-> Merk op dat elke value een string is en niet een number in dit geval. We zullen de string dus zelf nog moeten parsen via de Number-functie.
+> Merk op dat elke value een `string` is en geen `number` in dit geval. We zullen de `string` dus zelf nog moeten parsen via de `Number`-functie.
 
 ### Details van een place
 
@@ -458,8 +463,8 @@ We moeten nog enkel de `PlaceDetail` component implementeren zodat we de details
 
 ```jsx
 // src/pages/places/PlaceDetail.jsx
-import { useParams } from "react-router-dom";
-import { PLACE_DATA } from "../../api/mock_data";
+import { useParams } from 'react-router-dom';
+import { PLACE_DATA } from '../../api/mock_data';
 
 const PlaceDetail = () => {
   const { id } = useParams();
@@ -487,36 +492,36 @@ const PlaceDetail = () => {
 export default PlaceDetail;
 ```
 
-Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`. Daarna zoekt het een place met het opgegeven id. Indien dit place niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de place-informatie getoond.
+Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`. Daarna zoekt het een plaats met het opgegeven id. Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
 
 ### Oefening 1 - Navigeren naar een place
 
 Zorg ervoor dat je op de `Place` pagina kan navigeren naar de detailpagina van een place door te klikken op de naam van een place.
 
-Pas de code in de component `Place` hiervoor aan.
+Pas hiervoor de code in de component `Place` aan.
 
 - Oplossing +
 
+  We moeten enkel de naam van de place omvormen naar een link. Dit doen we met de `Link` component van React Router.
+
   ```jsx
-  // de rest
-  <h5 className="card-title">
+  <h5 className='card-title'>
     <Link to={`/places/${id}`}>{name}</Link>
   </h5>
-  //de rest
   ```
 
 ## De Layout component
 
-Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk komt op elke pagina voor. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/components` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de kind-routes.
+Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk wordt getoond op elke pagina. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/components` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de onderliggende routes.
 
 ```jsx
 // src/components/Layout.jsx
-import { Outlet } from "react-router-dom";
-import Navbar from "./Navbar";
+import { Outlet } from 'react-router-dom';
+import Navbar from './Navbar';
 
 export default function Layout() {
   return (
-    <div className="container-xl">
+    <div className='container-xl'>
       <Navbar />
       <Outlet />
     </div>
@@ -524,32 +529,32 @@ export default function Layout() {
 }
 ```
 
-De NavBar component voorziet in het menu.
+De `Navbar` component voorziet in het menu.
 
 ```jsx
 // src/components/Navbar.jsx
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <nav className="navbar sticky-top mb-4 navbar-light bg-light">
-      <div className="container-fluid flex-column flex-sm-row align-items-start align-items-sm-center">
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <Link className="nav-link" to="/">
+    <nav className='navbar sticky-top mb-4 navbar-light bg-light'>
+      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <Link className='nav-link' to='/'>
             Transactions
           </Link>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <Link className="nav-link" to="/places">
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <Link className='nav-link' to='/places'>
             Places
           </Link>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <Link className="nav-link" to="/about">
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <Link className='nav-link' to='/about'>
             Over ons
           </Link>
         </div>
-        <div className="flex-grow-1"></div>
+        <div className='flex-grow-1'></div>
       </div>
     </nav>
   );
@@ -562,52 +567,52 @@ Pas `main.jsx` aan, alle paden zijn nu kinderen van de `Layout` component:
 const router = createBrowserRouter([
   {
     element: <Layout />, // 👈
+    // 👇
     children: [
-      // 👈
       {
-        path: "/",
-        element: <Navigate replace to="/transactions" />,
+        path: '/',
+        element: <Navigate replace to='/transactions' />,
       },
       {
-        path: "/transactions",
+        path: '/transactions',
         element: <TransactionList />,
       },
       {
-        path: "/places",
+        path: '/places',
         children: [
           {
             index: true,
             element: <PlacesList />,
           },
           {
-            path: ":id",
+            path: ':id',
             element: <PlaceDetail />,
           },
         ],
       },
       {
-        path: "about",
+        path: 'about',
         element: <About />,
         children: [
           {
-            path: "services",
+            path: 'services',
             element: <Services />,
           },
           {
-            path: "history",
+            path: 'history',
             element: <History />,
           },
           {
-            path: "location",
+            path: 'location',
             element: <Location />,
           },
         ],
       },
       {
-        path: "services",
-        element: <Navigate to="/about/services" replace />,
+        path: 'services',
+        element: <Navigate to='/about/services' replace />,
       },
-      { path: "*", element: <NotFound /> },
+      { path: '*', element: <NotFound /> },
     ],
   },
 ]);
@@ -615,16 +620,16 @@ const router = createBrowserRouter([
 
 ## Scroll restoration
 
-Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser. Indien gewenst, moet je hier zelf voor zorgen. Maak hiervoor gebruik van de `ScrollRestoration` component. Elke keer als de URL wijzigt, vraagt deze de browser om naar boven te scrollen. Pas hiervoor de `Root` component aan.
+Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser. Indien gewenst, moet je hier zelf voor zorgen. Maak hiervoor gebruik van de `ScrollRestoration` component. Elke keer als de URL wijzigt, vraagt deze de browser om naar boven te scrollen. Pas hiervoor de `Layout` component aan.
 
 ```jsx
 // src/components/Layout.jsx
-import { Outlet, ScrollRestoration } from "react-router-dom"; // 👈
-import Navbar from "./Navbar";
+import { Outlet, ScrollRestoration } from 'react-router-dom'; // 👈
+import Navbar from './Navbar';
 
 export default function Layout() {
   return (
-    <div className="container-xl">
+    <div className='container-xl'>
       <Navbar />
       <Outlet />
       <ScrollRestoration /> {/* 👈 */}
@@ -641,7 +646,7 @@ Als voorbeeld gaan we onderaan de NotFound pagina een knop zetten waarmee we ter
 
 ```jsx
 // src/pages/NotFound.jsx
-import { useLocation, useNavigate } from "react-router-dom"; // 👈
+import { useLocation, useNavigate } from 'react-router-dom'; // 👈
 
 const NotFound = () => {
   const navigate = useNavigate(); // 👈
@@ -649,17 +654,15 @@ const NotFound = () => {
 
   // 👇
   const handleGoHome = () => {
-    navigate("/", { replace: true });
+    navigate('/', { replace: true });
   };
 
   return (
     <div>
       <h1>Pagina niet gevonden</h1>
-      <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p> <button
-        onClick={handleGoHome}
-      >
-        Go home!
-      </button> {/* 👈 */}
+      <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p>
+      {/* 👇 */}
+      <button onClick={handleGoHome}>Go home!</button>
     </div>
   );
 };
@@ -672,39 +675,41 @@ Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React 
 Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
 
 ```jsx
-<Link to="/" replace className="alert-link">
-  go back home
+<Link to='/' replace className='alert-link'>
+  Go home!
 </Link>
 ```
 
+?> Het is aangeraden om zoveel mogelijk gebruik te maken van de `Link` component. Dit zorgt ervoor dat de gebruiker meer controle heeft over links, zoals het openen in een nieuw tabblad.
+
 ## Aanduiden van de actieve link in de navigatie
 
-Maak hiervoor gebruik van de `NavLink` component. De actieve link maak je op in css met de `active` class. Pas de `NavBar` component aan:
+Maak hiervoor gebruik van de `NavLink` component. De actieve link maak je op in CSS met de `active` class. Pas de `Navbar` component aan:
 
 ```jsx
 // src/components/Navbar.jsx
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <nav className="navbar sticky-top mb-4 navbar-light bg-light">
-      <div className="container-fluid flex-column flex-sm-row align-items-start align-items-sm-center">
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <NavLink className="nav-link" to="/">
+    <nav className='navbar sticky-top mb-4 navbar-light bg-light'>
+      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <NavLink className='nav-link' to='/'>
             Transactions
           </NavLink>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <NavLink className="nav-link" to="/places">
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <NavLink className='nav-link' to='/places'>
             Places
           </NavLink>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <NavLink className="nav-link" to="/about">
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <NavLink className='nav-link' to='/about'>
             Over ons
           </NavLink>
         </div>
-        <div className="flex-grow-1"></div>
+        <div className='flex-grow-1'></div>
       </div>
     </nav>
   );
@@ -719,10 +724,10 @@ nav a.active {
 }
 ```
 
-Zorg ervoor dat je in `main.jsx` refereert naar de css
+Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
 
 ```jsx
-import "./index.css";
+import './index.css';
 ```
 
 l> fe oplossing 4331ea1 les3
