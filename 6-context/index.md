@@ -558,8 +558,6 @@ export default function TransactionForm({ places, transaction, onSave }) {
   const {
     register,
     handleSubmit,
-    reset,
-    setValue,
     formState: { errors, isSubmitting }, // 👈 1
     isSubmitting,
   } = useForm();

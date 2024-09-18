@@ -450,8 +450,6 @@ We moeten op een manier een transactie kunnen doorgeven van onze `Transaction` n
 
 Wat de eigenlijk moeten doen is:
 
-<!-- TODO: dit moet niet via useEffect, dit kan meteen via useForm (zie oplossing in BudgetBackEnd). Dit is eigenlijk een slecht gebruikt van useEffect -->
-
 We geven via een parameter in de url mee welke transactie moet worden aangepast en dan halen we de transactie op. In het formulier bekijken we via een `useEffect` bij elke render of er een huidige transactie is ingesteld en indien nodig tonen we de bijhorende gegevens in alle formuliervelden.
 
 In de API hebben we een functie nodig om de aan te passen transactie op te halen en up te daten.
@@ -537,7 +535,7 @@ export default function AddOrEditTransaction() {
 In het `TransactionForm` voegen we de `useEffect` toe zodat bij elke render het volgende gecontroleerd wordt: als `transaction` is ingevuld dan gaat het om een update, anders om een create.
 
 ```jsx
-import { useEffect, navigate } from 'react'; // 👈 2 en 4
+import { useNavigate } from 'react-router-dom';// 👈 4
 //..
 // 👇 2
 const toDateInputString = (date) => {
@@ -555,12 +553,28 @@ const toDateInputString = (date) => {
 };
 
 export default function TransactionForm({places, transaction, onSave}) {  // 👈 1
-  const {
-    trigger: saveTransaction,
-    error: saveError,
-  } = useSWRMutation('transactions', save);
+  const navigate = useNavigate(); // 👈 4
 
-  const { register, handleSubmit, reset, formState: { errors } , setValue} = useForm(); // 👈 2
+  // 👇 2
+  const getDefaultValues = () => {
+    if (
+      // check on non-empty object
+      transaction &&
+      (Object.keys(transaction).length !== 0 ||
+        transaction.constructor !== Object)
+    ) {
+      return ({
+        user: transaction.user.id,
+        place: transaction.place.id,
+        amount: transaction.amount,
+        date: toDateInputString(new Date(transaction.date)),
+      });
+    } else {
+      return ({ user: '', place: '', amount: '', date: toDateInputString(new Date()) });
+    }
+  };
+
+  const { register, handleSubmit, formState: { errors } } = useForm(); // 👈 2
 
   // 👇 4
   const onSubmit = async (data) => {
@@ -572,26 +586,8 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
       date: new Date(date),
       id: transaction?.id,
     });
-    navigate('/transactions');
+    navigate('/transactions'); 
   };
-
-  // 👇 2
-  useEffect(() => {
-    if (
-      // check on non-empty object
-      transaction &&
-      (Object.keys(transaction).length !== 0 ||
-          transaction.constructor !== Object)
-    ) {
-      const dateAsString = toDateInputString(new Date(transaction.date));
-      setValue('date', dateAsString);
-      setValue('user', transaction.user.id);
-      setValue('place', transaction.place.id);
-      setValue('amount', transaction.amount);
-    } else {
-      reset();
-    }
-  }, [transaction, setValue, reset]);
 
   //..
   return (
@@ -608,9 +604,9 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
 ```
 
 1. Ontvang `transaction` door als prop.
-2. Controleer bij elke render of `transaction` is ingevuld.
-   - Indien ingevuld, plaats de waarden in het formulier. Maak hiervoor gebruik van `setValue` uit de `useForm` hook. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component.
-   - Indien niet ingevuld, maak het formulier leeg.
+2. De `defaultValues` prop van `useForm` is een object dat wordt gebruikt om de initiële waarden in te stellen voor de formuliervelden. We zoepen hiervoor de functie getDefaultValues aan
+   - Indien `transaction` is ingevuld, plaats de waarden in het formulier. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component.
+   - Indien `transaction` null is, voorzie defaultwaarden.
 3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
 4. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
 
