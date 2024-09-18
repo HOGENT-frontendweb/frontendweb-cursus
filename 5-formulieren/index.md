@@ -594,7 +594,21 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
 4. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
 
 
-## Hooks
+## Verbeteren van de performantie
+
+In een React applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
+
+Een oplossing voor dit probleem is **memoization**. 
+
+React biedt een paar vormen van memoization:
+
+- `memo`: creatie van pure componenten (let op: dit is **geen** hook)
+- `useMemo`: retourneert een memoized **waarde**
+- `useCallback`: retourneert een memoized **functie**
+
+We hebben reeds `useMemo` gebruikt. Nu komen de andere vormen aan bod.
+
+### hooks
 
 **Componenten** zijn functies die de UI renderen. Het renderen gebeurt wanneer de app voor het eerst geladen wordt en wanneer state waarden wijzigen. Renderen van code moet "[puur](https://react.dev/learn/keeping-components-pure)" zijn. Componenten mogen enkel 'hun' JSX retourneren en mogen objecten of variabelen die bestaan voor de rendering niet wijzigen (bv. geen nieuwe waarde toekennen aan props). Gegeven dezelfde input, dient het dezelfde output te retourneren. Net als een wiskundige formule zou het alleen het resultaat moeten berekenen, maar niets anders doen.
 
@@ -602,11 +616,11 @@ Een veel gemaakte denkfout is dat alle waarden (i.e. variabelen) in een componen
 
 **Events** zijn functies binnen de component die worden uitgevoerd als reactie op een actie van een gebruiker. Een event handler kan state aanpassen, bv. een HTTP post request uitvoeren om een transactie toe te voegen. Event handlers bevatten **side-effects** veroorzaakt door een interactie. React biedt daarnaast ook de mogelijkheid voor side-effects na bv. een state-wijziging. Hierover in een volgend hoofdstuk meer.
 
-In het vorige hoofdstuk hebben we kennis gemaakt met de `useState` en `useReducer` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
+In het vorige hoofdstuk hebben we kennis gemaakt met de `useState` en `useReducer` en `useMemo` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
 
 Hooks hebben ervoor gezorgd dat je met function components hetzelfde kan bereiken als met class components. Toch kan het zijn alsof hooks vreemd aanvoelen, alsof React de bal mis geslagen heeft in vergelijking met andere frameworks als [Solid.js](https://www.solidjs.com/) (zie <https://jakelazaroff.com/words/were-react-hooks-a-mistake/>).
 
-## Regels voor hooks
+### Regels voor hooks
 
 Hooks zijn niet meer dan JavaScript functies. Echter moet je twee regels volgen wanneer je er gebruik van maakt. Je kan hiervoor een linter plugin installeren, dit gebeurt automatisch bij het gebruik van `vite`.
 
@@ -616,6 +630,81 @@ Hooks zijn niet meer dan JavaScript functies. Echter moet je twee regels volgen 
 
 Hooks maken gebruik van closures, let dus op voor stale closures! [Zie hier voor enkele voorbeelden](https://dmitripavlutin.com/react-hooks-stale-closures/)
 
+### React.memo en pure functions
+
+Voeg een `console.log` instructie toe voor elke `return` in onderstaande componenten:
+
+```jsx
+// src/pages/transactions/TransactionList.jsx
+export default function TransactionList() {
+  ...
+  console.log('Rendering transactionlist...');
+  return (...);
+}
+
+// src/components/transactions/Transaction.jsx
+export default function Transaction(props) {
+  ...
+  console.log('Rendering transaction...');
+  return (...);
+}
+```
+
+Telkens als we een letter ingeven in het zoekveld worden alle componenten gererenderd, hoewel er niets wijzigt aan de output van de component. De `Transaction` component heeft als prop een transaction en deze blijft ongewijzigd als de gebruiker een letter ingeeft in het zoekveld. Toch wordt de component gererenderd.
+
+Een **pure component** is een component die gegeven dezelfde props dezelfde output genereert. `Transaction` is een pure component. Gegeven dezelfde props, wordt dezelfde output gegenereerd. We willen een pure component niet opnieuw renderen als de properties niet gewijzigd zijn. De `memo` functie wordt gebruikt om een component te creëren die enkel zal rerenderen als de props wijzigen.
+
+```jsx
+// src/components/transactions/Transaction.jsx
+import { memo } from 'react'; // 👈
+
+const TransactionMemoized = memo(function Transaction({ id, user, date, amount, place , onDelete}) { // 👈
+  //...
+});
+export default TransactionMemoized;
+```
+
+Start de app en bekijk de console. 
+
+
+### useCallback hook
+
+Pas de `TransactionList` aan en voeg onderstaande methode toe. Geef deze door als property `onDelete` aan de `TransactionTable`component.
+
+```jsx
+  const handleDelete = async (id)=> {
+    await deleteTransaction(id);
+    alert ('Transaction is removed');
+  };
+
+   {!error ? <TransactionsTable transactions={filteredTransactions} onDelete={handleDelete} /> : null}
+```
+Van zodra we een letter ingeven in de search bar worden alle Transacties toch opnieuw gerenderd.
+
+`TransactionTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDelete` is de event handler functie. Javascript gaat er vanuit dat de functie `handleDelete` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
+
+Pas de code van de functie in de `TransactionList` component aan:
+
+```jsx
+// src/components/transactions/TransactionList.jsx
+import { useState, useMemo, useCallback } from 'react'; // 👈
+
+  const handleDelete = (async (id)=> {
+    await deleteTransaction(id);
+    alert ('Transaction is removed');
+  }, [deleteTransaction]); // 👈
+```
+Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr dit ook doet.
+
+### Oefening 3 - Memoization 
+
+Ook `Place` is een pure componenten en dient enkel gererenderd te worden als zijn state wordt aangepast.
+
+Voeg `useCallback`toe waar nodig.
+
+
+### Oefening 4 - Memoization in je eigen project
+Pas memoization toe in je eigen project.
 
 ## Mogelijke extra's voor de examenopdracht
 

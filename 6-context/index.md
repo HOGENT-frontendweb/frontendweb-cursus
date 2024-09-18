@@ -103,7 +103,7 @@ function TransactionTable({ transactions }) {
 
 De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om om te schakelen van dark naar light mode of omgekeerd, dienen we een aparte component aan te maken.
 
-### ThemeContext en Provider
+## ThemeContext en Provider
 
 Maak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.context.jsx`:
 
@@ -603,38 +603,3 @@ export default function TransactionForm({places, transaction, onSave}) {
 Controleer je project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
 
-### Oefening 4 - Cat breeds 2.0
-
-Pas de Cat Breeds applicatie aan zodat ook hier met de twee thema's gewerkt kan worden. Refactor eventuele anti-patterns in de applicatie.
-
-<!-- markdownlint-disable-next-line -->
-
-- Oplossing +
-
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution> in commit `9181134`
-
-  ```bash
-  git clone https://github.com/HOGENT-frontendweb/frontend-ch3-exercise-solution.git
-  cd frontend-ch3-exercise-solution
-  git checkout -b oplossing 9181134
-  yarn install
-  yarn dev
-  ```
-
-
-## Mogelijke extra's voor de examenopdracht
-
-- Maak gebruik van custom hooks uit:
-  - <https://nikgraf.github.io/react-hooks/>
-  - <https://github.com/streamich/react-use>
-  - Zelf custom hooks schrijven is **geen** extra
-
-## Must reads
-
-- [Collection of React Hooks](https://nikgraf.github.io/react-hooks/)
-- [react-use: Collection of essential React Hooks.](https://github.com/streamich/react-use)
-- [Are You Making This React State Mistake?](https://www.youtube.com/watch?v=NZqMVUEiDIw)
-- [useState: Asynchronous or what?](https://youtu.be/RAJD4KpX8LA)
-- [3 React Mistakes, 1 App Killer](https://youtu.be/QuLfCUh-iwI)
-- [Were React Hooks a Mistake?](https://jakelazaroff.com/words/were-react-hooks-a-mistake/)
-- [How React 18 Improves Application Performance](https://vercel.com/blog/how-react-18-improves-application-performance)
