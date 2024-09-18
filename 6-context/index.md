@@ -107,8 +107,6 @@ function TransactionTable({ transactions }) {
 
 De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om te wisselen van dark naar light mode of omgekeerd? Dan moeten we een aparte component aan te maken.
 
-<!-- TODO: hier verder nalezen -->
-
 ## ThemeContext en Provider
 
 Maak een map `contexts` aan in de map `src` met daarbinnen het bestand `Theme.context.jsx`:
@@ -119,19 +117,15 @@ import { createContext } from 'react'; // 👈 1
 
 export const ThemeContext = createContext(); // 👈 1
 
-export const ThemeProvider = ({
-  // 👈 2
-  children,
-}) => {
-  return (
-    // 👈 2
-    <ThemeContext.Provider>{children}</ThemeContext.Provider>
-  );
+// 👇 2
+export const ThemeProvider = ({ children }) => {
+  // 👇 3
+  return <ThemeContext.Provider>{children}</ThemeContext.Provider>;
 };
 ```
 
 1. Importeer `createContext` en maak de context aan
-2. Maak een stateful component genaamd `ThemeProvider` die de `children` als prop ontvangt. `children` bevat de component tree waarrond de Provider geplaatst wordt. `ThemeProvider` beheert de data en stelt het ter beschikking van deze children.
+2. Maak een stateful component genaamd `ThemeProvider` die de `children` als prop ontvangt. `children` bevat de component tree waarrond de `ThemeProvider` geplaatst wordt. `ThemeProvider` beheert de data en stelt het ter beschikking van deze children.
 3. De component `ThemeProvider` rendert de context provider die de consumers als children zal hebben.
 
 De `ThemeProvider` beheert de state en functies, en stelt deze ter beschikking aan de children. Hou hier als state het thema bij en een functie om te wisselen van thema.
@@ -140,8 +134,8 @@ De `ThemeProvider` beheert de state en functies, en stelt deze ter beschikking a
 // src/contexts/Theme.context.jsx
 import { createContext, useState, useCallback, useMemo } from 'react';
 
+// 👇 1
 export const themes = {
-  // 👈 1
   dark: 'dark',
   light: 'light',
 };
@@ -149,12 +143,13 @@ export const themes = {
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
+  // 👇 2
   const [theme, setTheme] = useState(
     sessionStorage.getItem('themeMode') || themes.dark,
-  ); // 👈 2
+  );
 
+  // 👇 3
   const toggleTheme = useCallback(() => {
-    // 👈 3
     const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
     setTheme(newThemeValue);
     sessionStorage.setItem('themeMode', newThemeValue);
@@ -163,8 +158,8 @@ export const ThemeProvider = ({ children }) => {
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]); // 👈 4
 
   return (
+    {/* 👇 5 */}
     <ThemeContext.Provider value={value}>
-      {/* 👈 5 */}
       {children}
     </ThemeContext.Provider>
   );
@@ -182,7 +177,7 @@ export const ThemeProvider = ({ children }) => {
 Het thema zal gebruikt worden om de achtergrondkleur in te stellen, maar soms dient ook de kleur van de tekst of van een rand te worden ingesteld (de tegengestelde kleur). Dus we voorzien een extra berekende waarde en maken ook deze waarde beschikbaar.
 
 ```jsx
-// src/contexts/
+// src/contexts/Theme.context.jsx
 import { createContext, useState, useCallback, useMemo } from 'react';
 
 export const themes = {
@@ -203,15 +198,17 @@ export const ThemeProvider = ({ children }) => {
     sessionStorage.setItem('themeMode', newThemeValue);
   }, [theme]);
 
+  // 👇 1
   const oppositeTheme = useMemo(
     () => (theme === themes.dark ? themes.light : themes.dark),
     [theme],
-  ); // 👈 1
+  );
 
+  // 👇 2
   const value = useMemo(
     () => ({ theme, oppositeTheme, toggleTheme }),
     [theme, oppositeTheme, toggleTheme],
-  ); // 👈 2
+  );
 
   return (
     <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
@@ -219,7 +216,9 @@ export const ThemeProvider = ({ children }) => {
 };
 ```
 
-1. Voeg de berekende waarde`oppositeTheme` toe.
+<!-- TODO: ik zou hier oppositeTheme meteen in die ene useMemo zetten, dit leert hen een verkeerd patroon -->
+
+1. Voeg de berekende waarde `oppositeTheme` toe.
 2. Maak `oppositeTheme` beschikbaar voor de children. Merk op: je kan ook meteen `oppositeTheme` berekenen in de `useMemo` die `value` bepaald.
 
 ### Providing ThemeContext
@@ -231,16 +230,15 @@ Stel in `main.jsx` de `ThemeProvider` ter beschikking aan alle children.
 // ... imports
 import { ThemeProvider } from './contexts/Theme.context'; // 👈
 
-//...
+// ...
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    {/* 👇 */}
     <ThemeProvider>
-      {' '}
-      {/* 👈 */}
       <RouterProvider router={router} />
-    </ThemeProvider>{' '}
-    {/* 👈 */}
+    </ThemeProvider>
+    {/* 👆 */}
   </StrictMode>,
 );
 ```
@@ -260,9 +258,8 @@ export default function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext); // 👈 2
 
   return (
+    {/* 👇 3 */}
     <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}>
-      {' '}
-      {/* 👈 3 */}
       <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
         <div className='nav-item my-2 mx-sm-3 my-sm-0'>
           <NavLink className='nav-link' to='/'>
@@ -280,13 +277,14 @@ export default function Navbar() {
           </NavLink>
         </div>
         <div className='flex-grow-1'></div>
+        {/* 👇 4 */}
         <button
           className='btn btn-secondary'
           type='button'
           onClick={toggleTheme}
         >
           {theme === 'dark' ? <IoMoonSharp /> : <IoSunny />}
-        </button> {/* 👈 4 */}
+        </button>
       </div>
     </nav>
   );
@@ -304,7 +302,7 @@ De `TransactionTable` component blijft behouden. De `ThemeContext` komt nu wel n
 import { ThemeContext } from '../../contexts/Theme.context';
 ```
 
-Verwijder de context uit `Layout.jsx`
+Verwijder de context uit `Layout.jsx`.
 
 ### Oefening 1 - ThemeContext
 
@@ -312,7 +310,7 @@ Pas de andere componenten aan.
 
 ## Custom hooks
 
-Een custom hook is een JavaScript functie die begint met `use` en die andere hooks kan aanroepen. Custom hooks laten toe om logica te delen tussen componenten. Je kan zelf custom hooks schrijven of eens zoeken naar bestaande custom hooks via bv. <https://nikgraf.github.io/react-hooks/>.
+Een custom hook is een JavaScript functie die begint met `use` en die andere hooks kan aanroepen. Custom hooks laten toe om logica te delen tussen componenten. Je kan zelf custom hooks schrijven of zoeken naar bestaande custom hooks via bv. <https://nikgraf.github.io/react-hooks/>.
 
 In elke component die gebruik maakt van de context dienen we volgende code te schrijven:
 
@@ -355,7 +353,7 @@ export const useThemeColors = () => {
 ```
 
 1. Deze hook retourneert de drie waarden `theme`, `oppositeTheme` en `toggleTheme`.
-2. Deze hook retourneert enkel het `theme` en `oppositeTheme` retourneert.
+2. Deze hook retourneert enkel het `theme` en `oppositeTheme`.
 
 Zo kan de code in `Navbar.jsx` als volgt aangepast worden:
 
@@ -371,25 +369,27 @@ export default function Navbar() {
   const { theme, toggleTheme } = useTheme(); // 👈 2
 
   return (
-
-    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}> {/* 👈 2 */}
-  //...
+    {/* 👇 2 */}
+    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}>
+    {/* ... */}
+  );
+}
 ```
 
 1. Verwijder de import `useContext`, `ThemeContext`, en importeer `useTheme`.
 2. Destructure de waarden die in deze component gebruikt worden.
 
-### Oefening 2 - custom hooks
+### Oefening 2 - Custom hooks
 
 Pas de andere componenten aan.
 
 ## Anti-patterns
 
-Er zitten een paar anti-patterns in ons formulier. Maak hier ook gebruik van in je eigen project!
+Er zitten een paar anti-patterns in ons formulier. Waarschijnlijk zijn deze ook aanwezig in jouw eigen project.
 
-1. Gebruik geen constante object literals/arrays in de component, bv. validatieregels. Plaats deze buiten de component.
-2. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen), bv. `toDateInputString`. Plaats deze buiten de component.
-3. Definieer geen componenten inline in een andere component, bv. `LabelInput`(zie verder) Plaats deze buiten de component.
+1. Gebruik geen constante object literals/arrays binnen de component, bv. validatieregels. Plaats deze buiten de component.
+2. Definieer geen pure functies binnen de component (functies zonder afhankelijkheden van variabelen), bv. `toDateInputString`. Plaats deze buiten de component.
+3. Definieer geen componenten inline in een andere component, bv. `LabelInput` (zie verder). Plaats deze buiten de component.
 4. Gebruik een id als waarde voor de `key` prop in lijsten, gebruik geen index.
 
 ### Duplicate code
@@ -423,7 +423,7 @@ function LabelInput() {
 }
 ```
 
-Definieer de props van deze component:
+Definieer de props van deze component en pas de hardgecodeerde waarden aan:
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
@@ -482,7 +482,7 @@ function LabelInput({ label, name, type, validationRules, ...rest }) {
         className='form-control'
         {...rest}
       />
-      {/* 👈 3 */}
+      {/* 👇 2 */}
       {hasError ? (
         <div className='form-text text-danger'>{errors[name].message}</div>
       ) : null}
@@ -494,26 +494,28 @@ export default function TransactionForm({ places, transaction, onSave }) {
   // ...
 
   return (
+    {/* 👇 1 */}
     <FormProvider
       handleSubmit={handleSubmit}
       errors={errors}
       register={register}
     >
-      {/* 👈 1 */}
       <form onSubmit={handleSubmit(onSubmit)} className='m-5'>
+        {/* 👇 3 */}
         <LabelInput
           label='User'
           name='user'
           type='user'
           validationRules={validationRules.user}
         />
-        {/* 👈 3 */}
         {/* Herhaal dit voor de overige input fields */}
       </form>
     </FormProvider>
   );
 }
 ```
+
+<!-- TODO: hierboven moeten we alles wat we van useForm (methods) terug krijgen doorgeven aan FormProvider via {...methods}, dit was vorig jaar fout in de cursus. Dit is normaal ook aangepast in BudgetFrontEnd. De volgende code zal dan ook veel eenvoudiger worden. -->
 
 1. Importeer de `FormProvider` en plaats de `FormProvider` rond het formulier om de `useFormContext` correct te laten werken.
 2. Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik van `register` en `errors`.
@@ -565,8 +567,8 @@ export default function TransactionForm({ places, transaction, onSave }) {
   const onSubmit = useCallback(
     async (data) => {
       const { user, place, amount, date } = data;
+      // 👇 5
       try {
-        // 👈 5
         await onSave({
           userId: user,
           placeId: place,
@@ -612,5 +614,5 @@ export default function TransactionForm({ places, transaction, onSave }) {
 
 ### Oefening 3 je eigen project
 
-Controleer je project op anti-patterns, duplicate code en refactor.
+Controleer je eigen project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
