@@ -1,8 +1,6 @@
 # React state management
 
-<!-- TODO: startpunt en oplossing toevoegen -->
-
-l> fe start 4331ea1 les2
+l> fe start c122351 les2
 
 ## Props en state
 
@@ -938,7 +936,7 @@ export default function TransactionList() {
 ```
 
 1. Voeg state toe voor het inputveld. De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld (vandaar de twee state variabelen).
-2. Verbind de inputelementen met de component state via de `value` prop.
+2. Verbind het inputelement met de component state via de `value` prop.
 3. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen.
 4. Nu kunnen we bij het klikken op de zoekknop de `search` tekst instellen, waardoor de component gererenderd wordt en de gefilterde transacties getoond moeten worden.
 5. We maken een functie voor het filteren van de transacties.
@@ -946,7 +944,7 @@ export default function TransactionList() {
 
 ## Verbeteren van de performantie
 
-Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
+Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools, zie de logging 'filtering...'), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
 
 In een React applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
 
@@ -997,7 +995,7 @@ Bij elke volgende render vergelijkt React de dependencies met de dependencies di
 
 ### Weergave tabel met transacties
 
-We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft.
+We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft. Maak een nieuwe component `TransactionsTable`in de `src/components/transactions` folder.
 
 ```jsx
 // src/components/transactions/TransactionsTable.jsx
@@ -1039,7 +1037,7 @@ Pas de `TransactionsList` component aan:
 ```jsx
 // src/components/transactions/TransactionList.jsx
 import { useState, useMemo } from 'react';
-import TransactionsTable from '../../components/transactions/TransactionsTable';
+import TransactionsTable from './TransactionsTable'; // 👈 
 import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
@@ -1077,7 +1075,7 @@ export default function TransactionList() {
       </div>
 
       <div className='mt-4'>
-        <TransactionsTable transactions={filteredTransactions} />
+        <TransactionsTable transactions={filteredTransactions} />{/* 👈 */}
       </div>
     </>
   );
@@ -1129,11 +1127,13 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
         <td>{dateFormat.format(new Date(date))}</td>
         <td>{user.name}</td>
         <td>{place.name}</td>
-        <td>{amountFormat.format(amount)}</td>
+        <td className='text-end'>{amountFormat.format(amount)}</td>
       </tr>
     );
   }
   ```
+
+l> fe oplossing 2e1eb31 les2-opl
 
 ## useReducer hook
 
@@ -1153,6 +1153,7 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 - geel: vaak
 - groen: af en toe
 - blauw: zelden
+
 
 ## Oefening 4
 

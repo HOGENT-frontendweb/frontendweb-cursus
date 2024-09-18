@@ -728,6 +728,8 @@ Het zou handig zijn als we in VS Code konden debuggen... Uiteraard kan dit ook. 
 
 Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de `return` in de `App` component. Als je nu naar de browser gaat, zou de debugger moeten stoppen op het breakpoint. Hoera, we kunnen degelijk debuggen!
 
+l> fe oplossing c122351 les1
+
 ## Oefening 1 - Je eigen project
 
 Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Clone jouw Git repository uit de GitHub classroom:
