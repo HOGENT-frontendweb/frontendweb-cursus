@@ -806,7 +806,7 @@ Over environment variables in React & Vite vind je meer op <https://vitejs.dev/g
 
 ## Oefening 7 - PlacesList via API
 
-Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API.
+Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API. Voorzie in de `src/components/places` folder de component `PlacesCards.jsx` die de lijst van PlacesCard weergeeft. `PlacesList.jsx` communiceert met de API en geeft de data door via props aan `PlacesCards.jsx`.
 
 l> fe oplossing b3b27e0 les4-opl
 
