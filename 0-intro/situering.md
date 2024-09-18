@@ -50,18 +50,16 @@ De bijhorende back-end is te vinden op: <https://github.com/HOGENT-frontendweb/w
 
 ## Planning
 
-> TODO: planning updaten
-
 Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
-| week 2  | React Basics, useState                        |
-| week 3  | useState, useContext                          |
-| week 4  | useContext, formulieren                       |
-| week 5  | Data ophalen van een back-end, useEffect      |
-| week 6  | React Router                                  |
+| week 2  | UseState en useMemo                           |
+| week 3  | React router                                  |
+| week 4  | Data ophalen van een back-end, useEffect      |
+| week 5  | Formulieren, memo en useCallback              |
+| week 6  | Context API                                   |
 | week 7  | Testen en linting                             |
 | week 8  | (geen nieuwe theorie, aan de opdracht werken) |
 | week 9  | authenticatie / autorisatie                   |
