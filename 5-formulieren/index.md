@@ -752,6 +752,8 @@ Pas memoization toe in je eigen project. Let wel op het volgende:
 
 Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de React DevTools om te achterhalen welke component (te) vaak renderen en pas daar memoization toe.
 
+<!-- TODO: eindpunt toevoegen -->
+
 ## Mogelijke extra's voor de examenopdracht
 
 - [Formik](https://www.npmjs.com/package/formik)

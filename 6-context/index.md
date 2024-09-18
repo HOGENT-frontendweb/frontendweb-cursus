@@ -1,12 +1,12 @@
 # Context API
 
-## Inleiding
+<!-- TODO: startpunt toevoegen -->
 
 We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
 
 De **Context API** laat toe om data globaal bij te houden en door te geven aan child components, zonder dat we via props de data tot in deze kinderen moeten doorgeven. Dus Context API is een alternatief voor het doorgeven van props.
 
-**Let op**, de Context API wordt vaak ten onrechte gebruikt als oplossing. Gebruik het enkel en alleen als de state echt globaal moet zijn. Gebruik de context ook zo laag mogelijk in de component tree.
+**Let op**, de Context API wordt vaak ten onrechte gebruikt als oplossing. Gebruik het enkel en alleen als de state echt globaal moet zijn. Gebruik de context ook zo laag mogelijk in de component tree. Alle componenten onder de context worden nl. opnieuw gerenderd als de waarde in de context wijzigt!
 
 Een aantal use cases voor context zijn o.a. theming, taalkeuze, huidige gebruiker...
 
@@ -14,7 +14,9 @@ De Context API bestaat uit drie bouwstenen:
 
 1. Een **Context Object**, aangemaakt door de factory functie `createContext`
 2. Een **Context Provider**: voorziet de onderliggende componenten van data
-3. Meerdere **Context Consumers** : ontvangen de data van de context
+3. Meerdere **Context Consumers** : ontvangen de data van de context (= onze eigen componenten)
+
+## Licht of donker thema
 
 Om de werking van de React Context API te demonstreren kan de gebruiker van onze budgetapplicatie een licht of donker thema kiezen. We gaan hiervoor een context gebruiken aangezien het thema van de website door alle componenten gekend moet zijn om bv. de kleuren aan te passen.
 
@@ -26,22 +28,22 @@ Het aanmaken van een context gebeurt typisch in 3 stappen:
 
 ### Stap 1: Creëer de context
 
-In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de  `main` component, de root component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
+In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `main` component, de root component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
 // src/main.jsx
-import { Outlet, ScrollRestoration } from 'react-router-dom'; // 👈
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import Navbar from './Navbar';
-import { createContext } from 'react'; //
+import { createContext } from 'react'; // 👈
 
 export const ThemeContext = createContext(); // 👈
 
 export default function Layout() {
   return (
-    <div className="container-xl">
+    <div className='container-xl'>
       <Navbar />
       <Outlet />
-      <ScrollRestoration /> {/* 👈 */}
+      <ScrollRestoration />
     </div>
   );
 }
@@ -53,26 +55,26 @@ Voeg toe in `Layout.jsx`:
 
 ```jsx
 // src/components/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router-dom'; 
+import { Outlet, ScrollRestoration } from 'react-router-dom';
 import Navbar from './Navbar';
-import { createContext } from 'react'; //
+import { createContext } from 'react';
 
-export const ThemeContext = createContext(); 
+export const ThemeContext = createContext();
 
 export default function Layout() {
   return (
-    <ThemeContext.Provider value={{ theme: 'dark' }}>
-      <div className="container-xl">
+    <ThemeContext.Provider value={{ theme: 'dark' }}> {/* 👈 */}
+      <div className='container-xl'>
         <Navbar />
         <Outlet />
-        <ScrollRestoration /> 
+        <ScrollRestoration />
       </div>
-    </ThemeContext.Provider> // 👈
+    </ThemeContext.Provider> {/* 👈 */}
   );
 }
 ```
 
-Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. Geef een object door (vandaar `{{}}`). Alle kinderen die afstammen van de provider zullen opnieuw renderen wanneer de waarde van de Provider verandert.
+Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. Geef een object door (vandaar `{{}}`). Alle kinderen die afstammen van de provider zullen opnieuw renderen wanneer de waarde van de `Provider` verandert.
 
 > Het is niet verplicht om een context steeds in de App component te zetten, je zet hem zo laag mogelijk zodat de nodige child componenten aan de data kunnen.
 
@@ -83,25 +85,29 @@ De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. het thema
 ```jsx
 // src/components/transactions/TransactionList.jsx
 import { useContext } from 'react'; // 👈 1
-import { ThemeContext } from '../../App';// 👈 1
-//...
+import { ThemeContext } from '../../App'; // 👈 1
+// ...
 
 function TransactionTable({ transactions }) {
   const { theme } = useContext(ThemeContext); // 👈 1
 
- //...
+  // ...
 
   return (
     <div>
+      {/* 👇 2 */}
       <table className={`table table-hover table-responsive table-${theme}`}>
-        {/* 👈 */}
-       //...
-  )
+    {/* ... */}
+  );
+}
 ```
 
 1. De `useContext` hook wordt gebruikt om met de context te connecteren en heeft als parameter een context object `ThemeContext`. Het retourneert de `value` van de huidige context (zie value property van de context provider).
+2. In onze context zit momenteel enkel een variable `theme`. Die voegen we toe aan het attribuut className van de `table` tag. Bootstrap heeft twee klassen voor een lichte en donkere table: `table-light` en `table-dark`.
 
-De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om om te schakelen van dark naar light mode of omgekeerd, dienen we een aparte component aan te maken.
+De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om te wisselen van dark naar light mode of omgekeerd? Dan moeten we een aparte component aan te maken.
+
+<!-- TODO: hier verder nalezen -->
 
 ## ThemeContext en Provider
 
@@ -176,7 +182,7 @@ export const ThemeProvider = ({ children }) => {
 Het thema zal gebruikt worden om de achtergrondkleur in te stellen, maar soms dient ook de kleur van de tekst of van een rand te worden ingesteld (de tegengestelde kleur). Dus we voorzien een extra berekende waarde en maken ook deze waarde beschikbaar.
 
 ```jsx
-// src/contexts/                                          
+// src/contexts/
 import { createContext, useState, useCallback, useMemo } from 'react';
 
 export const themes = {
@@ -229,10 +235,13 @@ import { ThemeProvider } from './contexts/Theme.context'; // 👈
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ThemeProvider>    {/* 👈 */}
+    <ThemeProvider>
+      {' '}
+      {/* 👈 */}
       <RouterProvider router={router} />
-    </ThemeProvider>    {/* 👈 */}
-  </StrictMode>
+    </ThemeProvider>{' '}
+    {/* 👈 */}
+  </StrictMode>,
 );
 ```
 
@@ -245,31 +254,38 @@ Voeg in `Navbar.jsx` een knop toe om van thema te wisselen:
 import { NavLink } from 'react-router-dom';
 import { useContext } from 'react'; //👈 1
 import { ThemeContext } from '../contexts/Theme.context'; // 👈 1
-import { IoMoonSharp, IoSunny } from 'react-icons/io5';// 👈 4
+import { IoMoonSharp, IoSunny } from 'react-icons/io5'; // 👈 4
 
 export default function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext); // 👈 2
 
   return (
-
-    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}> {/* 👈 3 */}
-      <div className="container-fluid flex-column flex-sm-row align-items-start align-items-sm-center">
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <NavLink className="nav-link" to="/">Transactions</NavLink>
+    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}>
+      {' '}
+      {/* 👈 3 */}
+      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <NavLink className='nav-link' to='/'>
+            Transactions
+          </NavLink>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <NavLink className="nav-link" to="/places">Places</NavLink>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <NavLink className='nav-link' to='/places'>
+            Places
+          </NavLink>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <NavLink className="nav-link" to="/about">Over ons</NavLink>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <NavLink className='nav-link' to='/about'>
+            Over ons
+          </NavLink>
         </div>
-        <div className="flex-grow-1"></div>
-        <button className="btn btn-secondary" type="button" onClick={toggleTheme}>
-          {
-            theme==='dark'
-              ? <IoMoonSharp />
-              : <IoSunny />
-          }
+        <div className='flex-grow-1'></div>
+        <button
+          className='btn btn-secondary'
+          type='button'
+          onClick={toggleTheme}
+        >
+          {theme === 'dark' ? <IoMoonSharp /> : <IoSunny />}
         </button> {/* 👈 4 */}
       </div>
     </nav>
@@ -287,8 +303,8 @@ De `TransactionTable` component blijft behouden. De `ThemeContext` komt nu wel n
 ```jsx
 import { ThemeContext } from '../../contexts/Theme.context';
 ```
-Verwijder de context uit `Layout.jsx`
 
+Verwijder de context uit `Layout.jsx`
 
 ### Oefening 1 - ThemeContext
 
@@ -375,7 +391,6 @@ Er zitten een paar anti-patterns in ons formulier. Maak hier ook gebruik van in 
 2. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen), bv. `toDateInputString`. Plaats deze buiten de component.
 3. Definieer geen componenten inline in een andere component, bv. `LabelInput`(zie verder) Plaats deze buiten de component.
 4. Gebruik een id als waarde voor de `key` prop in lijsten, gebruik geen index.
-
 
 ### Duplicate code
 
@@ -475,7 +490,7 @@ function LabelInput({ label, name, type, validationRules, ...rest }) {
   );
 }
 
-export default function TransactionForm({places, transaction, onSave}) {
+export default function TransactionForm({ places, transaction, onSave }) {
   // ...
 
   return (
@@ -484,7 +499,7 @@ export default function TransactionForm({places, transaction, onSave}) {
       errors={errors}
       register={register}
     >
-       {/* 👈 1 */}
+      {/* 👈 1 */}
       <form onSubmit={handleSubmit(onSubmit)} className='m-5'>
         <LabelInput
           label='User'
@@ -513,14 +528,14 @@ function LabelInput({ label, name, type, ...rest }) {
   const {
     register,
     errors,
-    isSubmitting // 👈 4
+    isSubmitting, // 👈 4
   } = useFormContext();
 
   const hasError = name in errors;
 
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+    <div className='mb-3'>
+      <label htmlFor={name} className='form-label'>
         {label}
       </label>
       <input
@@ -528,20 +543,18 @@ function LabelInput({ label, name, type, ...rest }) {
         id={name}
         type={type}
         disabled={isSubmitting} // 👈 4
-        className="form-control"
+        className='form-control'
         {...rest}
       />
       {hasError ? (
-        <div className="form-text text-danger">
-          {errors[name].message}
-        </div>
+        <div className='form-text text-danger'>{errors[name].message}</div>
       ) : null}
     </div>
   );
 }
 //..
 
-export default function TransactionForm({places, transaction, onSave}) {
+export default function TransactionForm({ places, transaction, onSave }) {
   const {
     register,
     handleSubmit,
@@ -551,22 +564,25 @@ export default function TransactionForm({places, transaction, onSave}) {
     isSubmitting,
   } = useForm();
   //...
- const onSubmit = useCallback(async (data) => {
-    const { user, place, amount, date } = data;
-    try{ // 👈 5
-      await onSave({
-        userId: user, 
-        placeId: place, 
-        amount: parseInt(amount),
-        date: new Date(date),
-        id: transaction?.id,
-      });
-      navigate('/transactions/');
-    }
-    catch(error){
-      console.log(error)
-    }
-  }, [onSave]);
+  const onSubmit = useCallback(
+    async (data) => {
+      const { user, place, amount, date } = data;
+      try {
+        // 👈 5
+        await onSave({
+          userId: user,
+          placeId: place,
+          amount: parseInt(amount),
+          date: new Date(date),
+          id: transaction?.id,
+        });
+        navigate('/transactions/');
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [onSave],
+  );
   //...
   return (
     <FormProvider
@@ -581,9 +597,7 @@ export default function TransactionForm({places, transaction, onSave}) {
         className='btn btn-primary'
         disabled={isSubmitting} // 👈 3
       >
-        {currentTransaction?.id
-          ? "Save transaction"
-          : "Add transaction"}
+        {currentTransaction?.id ? 'Save transaction' : 'Add transaction'}
       </button>
       {/* ... */}
     </FormProvider>
@@ -602,4 +616,3 @@ export default function TransactionForm({places, transaction, onSave}) {
 
 Controleer je project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
-
