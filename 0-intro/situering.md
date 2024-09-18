@@ -55,7 +55,7 @@ Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
-| week 2  | UseState en useMemo                           |
+| week 2  | useState en useMemo                           |
 | week 3  | React router                                  |
 | week 4  | Data ophalen van een back-end, useEffect      |
 | week 5  | Formulieren, memo en useCallback              |
