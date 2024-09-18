@@ -1,8 +1,6 @@
 # React Router
 
-<!-- TODO: startpunt en oplossing toevoegen -->
-
-l> fe start 4331ea1 les3
+l> fe start 2e1eb31 les3
 
 Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door Vite gegenereerde scripts en stylesheets geïnjecteerd.
 
@@ -86,12 +84,12 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <RouterProvider router={router} />{/* 👈 */}
   </StrictMode>,
 );
 ```
 
-[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router) creëert een `RemixRouter` die zal functioneren als een `BrowserRouter`. Deze waarde moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/en/main/routers/router-provider). De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL (`path`) aan een component (`element`).
+[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router) creëert een `RemixRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL (`path`) aan een component (`element`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/en/main/routers/router-provider).
 
 In dit voorbeeld configureren we een enkele route die de `App` component toont wanneer de URL `/` is. We zullen later meer routes toevoegen.
 
@@ -253,7 +251,7 @@ Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
 ## Routes nesten
 
-Je kan geneste routes creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
+Je kan [geneste routes](https://reactrouter.com/en/main/start/overview#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
 
 ```jsx
 // src/pages/about/About.jsx
@@ -403,6 +401,8 @@ Deze route rendert de `Navigate` component wanneer de gebruiker naar `/services`
 
 In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. De URL `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam aanklikbaar te zijn zodat we naar de detail van een plaats kunnen navigeren.
 
+Maak een component `PlaceDetail.jsx` aan in de folder `/src/pages/places`.
+
 Definieer de nieuwe route in `main.jsx`:
 
 ```jsx
@@ -461,7 +461,7 @@ Wanneer we navigeren naar `/posts/2021/1`, dan zal de `Posts` component getoond 
 
 ### Details van een place
 
-We moeten nog enkel de `PlaceDetail` component implementeren zodat we de details van een place kunnen tonen (later halen we ook de bijhorende transacties op). Maak een nieuwe component in `src/pages/places/PlaceDetail.jsx`:
+We moeten nog enkel de `PlaceDetail` component implementeren zodat we de details van een place kunnen tonen (later halen we ook de bijhorende transacties op). 
 
 ```jsx
 // src/pages/places/PlaceDetail.jsx
@@ -514,10 +514,10 @@ Pas hiervoor de code in de component `Place` aan.
 
 ## De Layout component
 
-Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk wordt getoond op elke pagina. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/components` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de onderliggende routes.
+Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk wordt getoond op elke pagina. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/pages` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de onderliggende routes.
 
 ```jsx
-// src/components/Layout.jsx
+// src/pages/Layout.jsx
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
 
@@ -625,7 +625,7 @@ const router = createBrowserRouter([
 Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser. Indien gewenst, moet je hier zelf voor zorgen. Maak hiervoor gebruik van de `ScrollRestoration` component. Elke keer als de URL wijzigt, vraagt deze de browser om naar boven te scrollen. Pas hiervoor de `Layout` component aan.
 
 ```jsx
-// src/components/Layout.jsx
+// src/pages/Layout.jsx
 import { Outlet, ScrollRestoration } from 'react-router-dom'; // 👈
 import Navbar from './Navbar';
 
@@ -732,7 +732,7 @@ Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
 import './index.css';
 ```
 
-l> fe oplossing 4331ea1 les3
+l> fe oplossing 8bfa897 les3-opl
 
 ## Oefening
 
