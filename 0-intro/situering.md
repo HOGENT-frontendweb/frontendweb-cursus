@@ -16,11 +16,9 @@ Wij hebben gekozen voor React. Waarom? Het wordt veel gebruikt (zie <https://202
 
 Programmeren leer je enkel door het te doen, niet door onze cursus te lezen. Je zal bijgevolg merken dat in het cursusmateriaal enkel het absolute minimum staat.
 
-> TODO: links naar Chamilo updaten
+Voor dit olod is er een [examenopdracht](0-intro/examenopdracht.md). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je, indien van toepassing, in het olod Web Services.
 
-Voor dit olod is er een examenopdracht: [opdracht op Chamilo](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=58955&tool=Document&browser=Table&tool_action=Viewer&publication=2201057). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je in het olod Web Services (indien van toepassing).
-
-De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?application=Chamilo%5CApplication%5CWeblcms&go=CourseViewer&course=58955). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examenopdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=64499). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examenopdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
@@ -37,6 +35,7 @@ Naar goeie traditie schrijven we hier enkele voorbeelden van jullie voorgangers.
 - Chat-applicatie (met WebSockets)
 - Beheer van verzamelingen (zeldzame strips, antiek...)
 - Websites om te zoeken/luisteren naar podcasts
+- Quiz-applicatie
 - Website voor een vereniging of het bedrijf van een vriend(in), familielid...
 
 ## Cursus?
@@ -51,18 +50,16 @@ De bijhorende back-end is te vinden op: <https://github.com/HOGENT-frontendweb/w
 
 ## Planning
 
-> TODO: planning updaten
-
 Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
-| week 2  | React Basics, useState                        |
-| week 3  | useState, useContext                          |
-| week 4  | useContext, formulieren                       |
-| week 5  | Data ophalen van een back-end, useEffect      |
-| week 6  | React Router                                  |
+| week 2  | useState en useMemo                           |
+| week 3  | React router                                  |
+| week 4  | Data ophalen van een back-end, useEffect      |
+| week 5  | Formulieren, memo en useCallback              |
+| week 6  | Context API                                   |
 | week 7  | Testen en linting                             |
 | week 8  | (geen nieuwe theorie, aan de opdracht werken) |
 | week 9  | authenticatie / autorisatie                   |

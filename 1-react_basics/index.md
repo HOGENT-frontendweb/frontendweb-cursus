@@ -104,13 +104,13 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 Het project gebruikt standaard Yarn v1. Dit passen we aan naar Yarn v2, naar analogie bij Web Services. Alvorens je Yarn v2 kan gebruiken, moet je eerst [Corepack](https://nodejs.org/api/corepack.html) inschakelen. Op Windows moet je hiervoor een terminal openen als administrator.
 
-```terminal
+```bash
 corepack enable
 ```
 
 Vervolgens kiezen we de laatste versie van Yarn:
 
-```terminal
+```bash
 yarn set version berry
 ```
 
@@ -211,7 +211,7 @@ Je kan de linting starten met het commando `yarn lint`. Deze print vervolgens al
 
 Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
 
-```terminal
+```bash
 yarn add -D @stylistic/eslint-plugin
 ```
 
@@ -726,6 +726,8 @@ Uiteraard heb je ook het [`debugger`](https://developer.mozilla.org/en-US/docs/W
 Het zou handig zijn als we in VS Code konden debuggen... Uiteraard kan dit ook. [Lees in deze tutorial hoe je dit opzet](https://profy.dev/article/debug-react-vscode ':ignore'). Tip: onze webapplicatie draait op `http://localhost:5173`.
 
 Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de `return` in de `App` component. Als je nu naar de browser gaat, zou de debugger moeten stoppen op het breakpoint. Hoera, we kunnen degelijk debuggen!
+
+l> fe oplossing c122351 les1
 
 ## Oefening 1 - Je eigen project
 
