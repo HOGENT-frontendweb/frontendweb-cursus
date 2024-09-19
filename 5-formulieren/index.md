@@ -120,19 +120,20 @@ Maak een bestand `TransactionForm.jsx` aan in de map `src\components\transaction
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
-export default function TransactionForm({ places }) {
+export default function TransactionForm({ places=[] }) {
   return (
     <>
       <form className='w-50 mb-3'>
         <div className='mb-3'>
-          <label htmlFor='user' className='form-label'>
+          <label htmlFor='userId' className='form-label'>
             User id
           </label>
           <input
-            id='user'
+            id='userId'
+            name='userId'
             type='number'
             className='form-control'
-            placeholder='user'
+            placeholder='userid'
             required
           />
         </div>
@@ -142,6 +143,7 @@ export default function TransactionForm({ places }) {
           </label>
           <input
             id='date'
+            name='date'
             type='date'
             className='form-control'
             placeholder='date'
@@ -152,7 +154,7 @@ export default function TransactionForm({ places }) {
           <label htmlFor='places' className='form-label'>
             Place
           </label>
-          <select id='places' className='form-select' required>
+          <select id='placeId' name='placeId' className='form-select' required>
             <option defaultChecked>-- Select a place --</option>
             {places.map(({ id, name }) => (
               <option key={id} value={id}>
@@ -166,7 +168,7 @@ export default function TransactionForm({ places }) {
           <label htmlFor='amount' className='form-label'>
             Amount
           </label>
-          <input id='amount' type='number' className='form-control' required />
+          <input id='amount' name='amount' type='number' className='form-control' required />
         </div>
 
         <div className='clearfix'>
@@ -199,29 +201,28 @@ We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
 import { useForm } from 'react-hook-form'; // 👈 1
-export default function TransactionForm({ places }) {
-  const { register, handleSubmit, reset } = useForm(); // 👈 2, 5 en 7
+export default function TransactionForm({ places =[]}) {
+  const { register, handleSubmit, reset } = useForm(); // 👈 2, 4 en 6
 
-  // 👇 6
-  const onSubmit = (data) => {
-    console.log(JSON.stringify(data));
+  // 👇 5
+  const onSubmit = (values) => {
+    console.log(JSON.stringify(values));
     //Nieuwe transactie moet nog worden opgeslaan
-    reset(); // 👈 7
+    reset(); // 👈 6
   };
 
   return (
     <>
-      {/* 👇 5*/}
+      {/* 👇 4*/}
       <form onSubmit={handleSubmit(onSubmit)} className='w-50 mb-3'>
         <div className='mb-3'>
-          <label htmlFor='user' className='form-label'>
+          <label htmlFor='userId' className='form-label'>
             User Id
           </label>
-          {/* 👇 3 en 4 */}
+          {/* 👇 3 */}
           <input
-            {...register('user')}
-            defaultValue=''
-            id='user'
+            {...register('userId')}
+            id='userId'
             type='number'
             className='form-control'
             placeholder='userid'
@@ -247,7 +248,7 @@ export default function TransactionForm({ places }) {
           </label>
           {/* 👇 3 */}
           <select
-            {...register('place')}
+            {...register('placeId')}
             id='places'
             className='form-select'
             required
@@ -289,10 +290,63 @@ export default function TransactionForm({ places }) {
 1. `useForm` is een **custom hook** om forms te beheren. Het geeft allerlei nuttige functies en andere info over het formulier terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/api/useform/).
 2. [register](https://react-hook-form.com/api/useform/register): met deze functie registreer je velden in het formulier en geef je een naam mee voor het veld. De waarden van de velden kunnen zo gebruikt worden voor zowel formuliervalidatie als het verzenden van het formulier. We hoeven zelf geen state bij te houden. Achterliggend wordt [React.ref](https://react.dev/learn/referencing-values-with-refs) gebruikt.
 3. Registreer de formuliervelden in de `useForm` hook.
-4. Je kan ook een standaardwaarde opgeven.
-5. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier. Je geeft aan deze functie een functie mee die opgeroepen moet worden als het formulier verzonden wordt.
-6. De `onSubmit` functie logt de verstuurde waarden naar de console. `data` bevat de ingevulde waarden per formulierveld: `register('user')` wordt doorgegeven als `{ user:'value' }`.
-7. [reset](https://react-hook-form.com/api/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
+4. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier 
+5. De `onSubmit` functie logt de verstuurde waarden naar de console. `values` bevat de ingevulde waarden per formulierveld: `register('userId')` wordt doorgegeven als `{ userId:'value' }`.
+6. [reset](https://react-hook-form.com/api/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
+
+### Defaultvalues
+De useForm hook heeft 1 optioneel argument, een object met o.a. de property defaultValue
+```jsx
+//...
+const EMPTY_TRANSACTION = {
+  id: undefined,
+  amount: 0,
+  date: new Date(),
+  user: {
+    id: '',
+    name: '',
+  },
+  place: {
+    id: '',
+    name: '',
+  },
+};// 👈 1
+
+// 👇 2
+const toDateInputString = (date) => {
+  // ISO String without the trailing 'Z' is fine 🙄
+  // (toISOString returns something like 2020-12-05T14:15:74Z,
+  // datetime-local HTML5 input elements expect 2020-12-05T14:15:74, without the (timezone) Z)
+  //
+  // the best thing about standards is that we have so many to chose from!
+  if (!date) return null;
+  if (typeof date !== Object) {
+    date = new Date(date);
+  }
+  let asString = date.toISOString();
+  return asString.substring(0, asString.indexOf('T'));
+};
+
+export default function TransactionForm({ places = []}) { 
+  
+  const transaction=EMPTY_TRANSACTION;// 👈 2
+
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues:  {
+      date: toDateInputString(transaction?.date),
+      placeId: transaction?.place.id,
+      amount: transaction?.amount,
+      userId: transaction?.user.id,
+    },
+  }); // 👈 3
+  //...
+}
+```
+
+1. Definieer een leeg transaction object. Plaats dit buiten de component!
+2. Definieer een constante transaction en stel gelijk aan EMPTY_TRANSACTION. Bij de edit zullen we dit vervangen door een prop.
+3. Geef dit mee als defaultwaarde aan de useForm hook. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component.
+
 
 ### Validatie
 
@@ -306,14 +360,30 @@ import { useForm } from 'react-hook-form';
 
 // 👇 1
 const validationRules = {
-  user: {
+  userId: {
     required: 'User is required',
     min: { value: 1, message: 'min 1' },
   },
 };
 
-export default function TransactionForm({places}) {
+export default function TransactionForm({places = []}) {
   // ...
+
+  const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
+    defaultValues:  {
+      date: toDateInputString(transaction?.date),
+      placeId: transaction?.place.id,
+      amount: transaction?.amount,
+      userId: transaction?.user.id,
+    },
+  });// 👈 2 en 3
+
+  const onSubmit = (values) => {
+    if (!isValid) return; //  👈 3
+    console.log(JSON.stringify(values));
+    //Nieuwe transactie moet nog worden opgeslaan
+    reset(); // 👈 7
+  };
 
   return (
     <>
@@ -322,16 +392,15 @@ export default function TransactionForm({places}) {
           <label htmlFor="user" className="form-label">User id</label>
           {/* 👇 1 */}
           <input
-            {...register('user', validationRules.user)}
-            defaultValue=''
+            {...register('userId', validationRules.userId)}
             id="user"
             type="number"
             className="form-control"
-            placeholder="user"
+            placeholder="userid"
             required
           />
           {/* 👇 2 */}
-          {errors.user && <p className="form-text text-danger">{errors.user.message}</p> }
+          {errors.userId && <p className="form-text text-danger">{errors.userId.message}</p> }
         </div>
         {/** ... */}
       </form>
@@ -340,10 +409,39 @@ export default function TransactionForm({places}) {
 ```
 
 1. Als tweede parameter van de `register` functie kan je de validatieregels meegeven (required, min, max, minLength, maxLength, pattern, validate). Je kan ook de bijhorende foutmelding opgeven. Hiervoor definiëren we een constante validationRules. Gebruik geen constante object literals/arrays in de component, bv. validatieregels. Plaats deze buiten de component. Anders wordt dit bij elke render opnieuw aangemaakt. Bovendien maakt het `input` field hiervan gebruik en wordt er geen nieuw object aangemaakt bij elke render.
-   React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](https://react-hook-form.com/api/useform/register). Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
-2. Voor de weergave van de fouten maken we gebruik van het `errors` object. Aan de hand van het `type` property kan je het type van de fout opvragen (bv. `errors.user.type === 'required'`). Merk op dat we hier gebruik maken van `&&`, dit wordt wel eens gezien als een anti-pattern in React. Het is eigenlijk beter om de ternary operator (`voorwaarde ? true : false`) te gebruiken. Dit wordt dus: `{errors.user ? <p className="form-text text-danger">{errors.user.message}</p> : null}`.
+React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](https://react-hook-form.com/api/useform/register). Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
+2. Voor de weergave van de fouten maken we gebruik van het `errors` object. Aan de hand van het `type` property kan je het type van de fout opvragen (bv. `errors.userId.type === 'required'`). Merk op dat we hier gebruik maken van `&&`, dit wordt wel eens gezien als een anti-pattern in React. Het is eigenlijk beter om de ternary operator (`voorwaarde ? true : false`) te gebruiken. Dit wordt dus: `{errors.userId ? <p className="form-text text-danger">{errors.userId.message}</p> : null}`.
+3. Als het formulier niet valid is beëindigen we het afhandelen van de submit
 
-Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfde code moeten schrijven, zouden we een aparte component moeten maken. Deze component zal gebruik moeten maken van [useFormContext](https://react-hook-form.com/api/useformcontext). Dit komt op het einde van dit hoofdstuk aan bod.
+### Oefening
+Definieer de validatieregels voor de andere inputvelden
+
++ oplossing -
+```jsx
+  const validationRules = {
+    userId: {
+      required: 'User is required',
+      min: { value: 1, message: 'min 1' },
+    },
+    date: {
+      required: 'Date is required',
+      valueAsDate: true,
+    },
+    placeId: {
+      required: 'Place is required',
+    },
+    amount: {
+      required: 'Amount is required',
+      valueAsNumber: true,
+      validate: (value) => {
+        if (value === 0) return '0 is not a valid amount';
+        return null;
+      },
+    },
+  };
+```
+
+Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfde code moeten schrijven, zouden we een aparte component moeten maken. Deze component zal gebruik moeten maken van [useFormContext](https://react-hook-form.com/api/useformcontext). Dit komt op het einde van van volgend hoofdstuk aan bod.
 
 ## POST /api/transactions
 
@@ -367,14 +465,13 @@ De creatie van een transactie gebeurt in de `AddOrEditTransaction` component. De
 // src/pages/transactions/AddOrEditTransaction.jsx
 // imports...
 import useSWRMutation from 'swr/mutation'; // 👈 1
-import { save } from '../../api'; // 👈 1
+import { getAll, save } from '../../api'; // 👈 1
 
 export default function AddOrEditTransaction() {
   const {
-    data: transaction,
-    error: transactionError,
-    isLoading: transactionLoading,
-  } = useSWR(id ? `transactions/${id}` : null, getById); // 👈 2
+    trigger: saveTransaction,
+    error: saveError,
+  } = useSWRMutation('transactions', save);// 👈 2
 
   // ...
   return (
@@ -384,8 +481,7 @@ export default function AddOrEditTransaction() {
       <AsyncData error={saveError || placesError} loading={placesLoading}>
         <TransactionForm
           places={places}
-          transaction={transaction}
-          onSave={saveTransaction}
+          saveTransaction={saveTransaction}
         />
         {/* 👆 3 */}
       </AsyncData>
@@ -406,29 +502,26 @@ export default function AddOrEditTransaction() {
 // src/components/transactions/TransactionForm.jsx
 // ...
 
-export default function TransactionForm({ places, onSave }) {
+export default function TransactionForm({ places = [], saveTransaction }) {
   // 👆 1
-  // ...
+ 
 
-  const onSubmit = async (data) => {
-    const { user, place, amount, date } = data;
-    // 👇 2
-    await onSave({
-      userId: user,
-      placeId: place,
-      amount: parseInt(amount),
-      date: new Date(date),
+  const onSubmit = async (values) => {
+    if (!isValid) return;
+
+    await saveTransaction(values, {
+      throwOnError: false,
+      onSuccess: () => reset(),
     });
-    reset();
   };
   // ...
 }
 ```
 
-1. Voeg `onSave` toe aan de props
-2. Wijzig de `onSubmit` zodat `onSave` aangeroepen wordt. We geven de `userId`, `placeId`, `amount` en `date` mee als argumenten als **object** . **Let op:** de functie is `async`, dus we moeten `await` gebruiken.
+1. Voeg `saveTransaction` toe aan de props
+2. Wijzig de `onSubmit` zodat `saveTransaction` aangeroepen wordt. We geven de values mee als argument . **Let op:** de functie is `async`, dus we moeten `await` gebruiken. Het optioneel 2de argument definieert dat `throw error`niet moet worden aangeroepen als de update faalt, en bij succes wordt het formulier gereset.
 
-Later verwijderen we het user-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee.
+Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee.
 
 ### Oefening 3 - POST in je eigen project
 
@@ -443,14 +536,6 @@ Implementeer een willekeurige POST uit je eigen project (liefst dezelfde entitei
 Dan rest nog de 'U' van CRUD, maar die is een beetje speciaal. De API call zelf is geen probleem, dit is basically hetzelfde als 'Create' maar met een extra `id` parameter.
 
 Maar we willen natuurlijk niet dat een gebruiker een volledig object juist moet invoeren om het aan te passen. We willen dat hij ergens op 'bewerk' kan klikken bij een bestaand element.
-
-In ons geval willen we dat de "potlood-knop" in de lijst deze data in het formulier ingeeft. De gebruiker past vervolgens aan en doet een update. Maar om dat te doen werken moeten er een paar dingen gebeuren.
-
-We moeten op een manier een transactie kunnen doorgeven van onze `Transaction` naar onze `TransactionForm` component. Daarnaast moeten we in `TransactionsForm` het onderscheid kunnen maken tussen een bestaande transactie updaten, of een nieuwe toevoegen.
-
-Wat de eigenlijk moeten doen is:
-
-We geven via een parameter in de url mee welke transactie moet worden aangepast en dan halen we de transactie op. In het formulier bekijken we via een `useEffect` bij elke render of er een huidige transactie is ingesteld en indien nodig tonen we de bijhorende gegevens in alle formuliervelden.
 
 In de API hebben we een functie nodig om de aan te passen transactie op te halen en up te daten.
 
@@ -474,24 +559,27 @@ export const updateById = async (url, { arg: body }) => {
 Of we kunnen de `save` functie aanpassen:
 
 ```jsx
-export const save = async (url, { arg: body }) => {
-  const { id, ...values } = body;
+export async function save(url, {
+  arg: {
+    id, ...data 
+  }, 
+}) {
   await axios({
     method: id ? 'PUT' : 'POST',
     url: `${baseUrl}/${url}/${id ?? ''}`,
-    data: values,
+    data,
   });
-};
+}
 ```
 
 Wij kiezen voor de laatste (compacte) oplossing.
 
-Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat. In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`.
+Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we null door.
 
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.jsx
 import { useParams } from 'react-router-dom'; // 👈 1
-import { getAll, getById } from '../../api'; // 👈 3
+import { getAll, save, getById } from '../../api'; // 👈 3
 //andere imports
 
 export default function AddOrEditTransaction() {
@@ -518,7 +606,7 @@ export default function AddOrEditTransaction() {
         <TransactionForm
           places={places}
           transaction={transaction}
-          onSave={saveTransaction}
+          saveTransaction={saveTransaction}
         />
       </AsyncData>
     </>
@@ -532,62 +620,42 @@ export default function AddOrEditTransaction() {
 4. Geef de aan te passen transactie door aan `TransactionForm`
 5. Zorg voor foutafhandeling en laadindicator
 
-In het `TransactionForm` voegen we de `useEffect` toe zodat bij elke render het volgende gecontroleerd wordt: als `transaction` is ingevuld dan gaat het om een update, anders om een create.
+In het `TransactionForm` voorzien we de prop `transaction` met defaultwaarde EMPTY_TRANSACTION en passen we de code verder aan.
 
 ```jsx
 import { useNavigate } from 'react-router-dom';// 👈 4
 //..
-// 👇 2
-const toDateInputString = (date) => {
-  // ISO String without the trailing 'Z' is fine 🙄
-  // (toISOString returns something like 2020-12-05T14:15:74Z,
-  // datetime-local HTML5 input elements expect 2020-12-05T14:15:74, without the (timezone) Z)
-  //
-  // the best thing about standards is that we have so many to chose from!
-  if (!date) return null;
-  if (typeof date !== Object) {
-    date = new Date(date);
-  }
-  let asString = date.toISOString();
-  return asString.substring(0, asString.indexOf('T'));
-};
 
-export default function TransactionForm({places, transaction, onSave}) {  // 👈 1
+export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION, saveTransaction}) {  // 👈 1
   const navigate = useNavigate(); // 👈 4
 
-  // 👇 2
-  const getDefaultValues = () => {
-    if (
-      // check on non-empty object
-      transaction &&
-      (Object.keys(transaction).length !== 0 ||
-        transaction.constructor !== Object)
-    ) {
-      return ({
-        user: transaction.user.id,
-        place: transaction.place.id,
-        amount: transaction.amount,
-        date: toDateInputString(new Date(transaction.date)),
-      });
-    } else {
-      return ({ user: '', place: '', amount: '', date: toDateInputString(new Date()) });
-    }
-  };
-
-  const { register, handleSubmit, formState: { errors } } = useForm(); // 👈 2
+ const { register, handleSubmit, formState: { errors, isValid } } = useForm( {
+    mode: 'onBlur',
+    defaultValues: {
+      date: toDateInputString(transaction?.date),
+      placeId: transaction?.place.id,
+      amount: transaction?.amount,
+    },
+    values: transaction ? {
+      date: toDateInputString(transaction.date),
+      placeId: transaction.place.id,
+      amount: transaction.amount,
+    } : {},
+  }); // 👈 2
 
   // 👇 4
-  const onSubmit = async (data) => {
-    const { user, place, amount, date } = data;
-    await onSave({
-      userId: user,
-      placeId: place,
-      amount: parseInt(amount),
-      date: new Date(date),
+   const onSubmit = async (values) => {
+    if (!isValid) return;
+
+    await saveTransaction({
       id: transaction?.id,
+      ...values,
+    }, {
+      throwOnError: false,
+      onSuccess: () => navigate('/transactions'),
     });
-    navigate('/transactions');
   };
+
 
   //..
   return (
@@ -603,10 +671,14 @@ export default function TransactionForm({places, transaction, onSave}) {  // �
 }
 ```
 
-1. Ontvang `transaction` door als prop.
-2. De `defaultValues` prop van `useForm` is een object dat wordt gebruikt om de initiële waarden in te stellen voor de formuliervelden. We zoepen hiervoor de functie getDefaultValues aan
-   - Indien `transaction` is ingevuld, plaats de waarden in het formulier. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component.
-   - Indien `transaction` null is, voorzie defaultwaarden.
+1. Ontvang `transaction` door als prop. Stel de default waarde in op  `EMPTY_TRANSACTION`. Verwijder de constante `transaction`
+2. useForm heeft een optioneel object als argument.
+    - mode: validatie strategie alvorens submit. `onBlur`validatie wordt getriggert bij het blur event.
+    - defaultValues: initiële waarden voor de formuliervelden
+
+  > TODO is dit wel nodig, ik heb een timeput toegevoegd in de api en er wordt dan een loader getoond. Er wordt geen formulier getoond.
+
+    - values: reageert op wijzigingen en past dan de formuliervelden aan (zinvol want ophalen transactie s async)
 3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
 4. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
 
