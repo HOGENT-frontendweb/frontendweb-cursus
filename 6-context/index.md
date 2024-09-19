@@ -1,6 +1,6 @@
 # Context API
 
-<!-- TODO: startpunt toevoegen -->
+<!-- TODO: startpunt en oplossing toevoegen -->
 
 We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
 
@@ -184,8 +184,10 @@ export const themes = {
   dark: 'dark',
   light: 'light',
 };
+
 // 👇 1
-const switchTheme = (theme) => theme === themes.dark ? themes.light : themes.dark;
+const switchTheme = (theme) =>
+  theme === themes.dark ? themes.light : themes.dark;
 
 export const ThemeContext = createContext();
 
@@ -195,18 +197,15 @@ export const ThemeProvider = ({ children }) => {
   );
 
   const toggleTheme = useCallback(() => {
-    const newThemeValue = switchTheme(theme);//👈 2
+    const newThemeValue = switchTheme(theme); // 👈 2
     setTheme(newThemeValue);
     sessionStorage.setItem('themeMode', newThemeValue);
   }, [theme, setTheme]);
 
   // 👇 3
-  const textTheme = useMemo (()=> switchTheme(theme), [theme]);
-
-  // 👇 4
   const value = useMemo(
-    () => ({ theme, textTheme, toggleTheme }),
-    [theme, textTheme, toggleTheme],
+    () => ({ theme, textTheme: switchTheme(theme), toggleTheme }),
+    [theme, toggleTheme],
   );
 
   return (
@@ -215,12 +214,9 @@ export const ThemeProvider = ({ children }) => {
 };
 ```
 
-<!-- TODO: ik zou hier textTheme meteen in die ene useMemo zetten, dit leert hen een verkeerd patroon -->
-
-1. Maak een methode om de kleur om te wisselen
-2. Pas toggleTheme aan
-2. Voeg de berekende waarde `textTheme` toe.
-2. Maak `textTheme` beschikbaar voor de children. 
+1. Maak een functie om de kleur om te wisselen.
+2. Pas de functie `toggleTheme` aan.
+3. Maak `textTheme` beschikbaar voor de children.
 
 ### Providing ThemeContext
 
@@ -401,7 +397,13 @@ Componenten mag je niet definiëren binnen een andere component. Maak een functi
 
 ```jsx
 // src/components/LabelInput.jsx
-export default function LabelInput({ label, name, type, validationRules, ...rest }) {
+export default function LabelInput({
+  label,
+  name,
+  type,
+  validationRules,
+  ...rest
+}) {
   const hasError = name in errors;
 
   return (
@@ -423,15 +425,19 @@ export default function LabelInput({ label, name, type, validationRules, ...rest
   );
 }
 ```
-We krijgen nog fouten. Zie verder. Importeer eerst de `LabelInput` component in `TransactionForm` component en pas de invoervelden aan. De code voor het userId inputveld wordt:
+
+We krijgen nog fouten. Zie verder. Importeer eerst de `LabelInput` component in `TransactionForm` component en pas de invoervelden aan. De code voor het `userId` inputveld wordt:
+
 ```jsx
-  <LabelInput
-          label='User Id'
-          name='userId'
-          type='number'
-          validationRules={validationRules.userId}
-  />
-  {/* Herhaal dit voor de overige input fields */}
+<LabelInput
+  label='User Id'
+  name='userId'
+  type='number'
+  validationRules={validationRules.userId}
+/>;
+{
+  /* Herhaal dit voor de overige input fields */
+}
 ```
 
 We krijgen de fouten: `register and errors not defined`. Oplossing: `useFormContext` en `FormProvider`. Definitie van `useFormContext` uit de documentatie:
@@ -446,12 +452,13 @@ In de documentatie lezen we ook het volgende over de `FormProvider`:
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
-import { FormProvider, useForm } from 'react-hook-form'; // 👈 1 
+import { FormProvider, useForm } from 'react-hook-form'; // 👈 1
 // ...
 
 export default function TransactionForm({ places=[], transaction=EMPTY_TRANSACTION, saveTransaction }) {
   // ...
-  const methods = useForm({ 
+  // 👇 2
+  const methods = useForm({
     mode: 'onBlur',
     defaultValues: {
       date: toDateInputString(transaction?.date),
@@ -463,95 +470,102 @@ export default function TransactionForm({ places=[], transaction=EMPTY_TRANSACTI
       placeId: transaction.place.id,
       amount: transaction.amount,
     } : {},
-  });// 👈 2 
+  });
 
+  // 👇 3
   const {
     handleSubmit,
     formState: { isValid },
-  } = methods;// 👈 3 
+  } = methods;
 
   return (
       {/* 👇 4 */}
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
-         
+
       </form>
     </FormProvider>
   );
 }
 ```
+
 Plaats eventjes de selectlijst in commentaar. Verder wordt dit ook een aparte component.
 
-1. Importeer de `FormProvider`. 
-2. Verzamel alles uit de `useForm` hook in een object en deze zullen we doorgeven aan de `FormProvider` met de spread operator. 
-3. We moeten vervolgens enkel in deze component destructuren wat we nodig hebben. Zo kunnen we ook niets vergeten door te geven aan de Provider.
-4. Plaats de `FormProvider` rond het formulier en geef alles door om de `useFormContext` correct te laten werken voor gebruik in `LabelInput` en `SelectList`
+1. Importeer de `FormProvider`.
+2. Verzamel alles uit de `useForm` hook in een object en deze zullen we doorgeven aan de `FormProvider` met de spread operator.
+3. We moeten vervolgens enkel in deze component destructuren wat we nodig hebben. Zo kunnen we ook niets vergeten door te geven aan de `FormProvider`.
+4. Plaats de `FormProvider` rond het formulier en geef alles door om de `useFormContext` correct te laten werken voor gebruik in `LabelInput` en `SelectList`.
 
 Pas nu ook de `LabelInput` component aan
+
 ```jsx
-import { useFormContext } from 'react-hook-form';// 👈  
+import { useFormContext } from 'react-hook-form'; // 👈
 
 export default function LabelInput({
-  label, name, type, validationRules, ...rest
+  label,
+  name,
+  type,
+  validationRules,
+  ...rest
 }) {
   const {
     register,
-    formState: {
-      errors,
-    },
-  } = useFormContext();// 👈
+    formState: { errors },
+  } = useFormContext(); // 👈
 
   const hasError = name in errors;
 
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+    <div className='mb-3'>
+      <label htmlFor={name} className='form-label'>
         {label}
       </label>
       <input
         {...register(name, validationRules)}
         id={name}
         type={type}
-        className="form-control"
+        className='form-control'
         {...rest}
       />
       {hasError ? (
-        <div className="form-text text-danger">
-          {errors[name].message}
-        </div>
+        <div className='form-text text-danger'>{errors[name].message}</div>
       ) : null}
     </div>
   );
 }
 ```
+
 Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik van `register` en `errors`.
 
 ### Oefening 2
-Maak een `SelectList`component aan.
 
+Maak een `SelectList` component aan.
 
 ### Disablen inputvelden bij submit
+
 Je kan er ook voor zorgen dat de inputvelden en knoppen in het formulier _disabled_ worden als het formulier gesubmit wordt.
 `useForm` geeft een boolean [isSubmitting](https://react-hook-form.com/api/useform/formstate) terug die `true` is als het formulier gesubmit wordt en `false` bij een reset.
 
 ```jsx
-import { useFormContext } from 'react-hook-form';  
+import { useFormContext } from 'react-hook-form';
 
 export default function LabelInput({
-  label, name, type, validationRules, ...rest
+  label,
+  name,
+  type,
+  validationRules,
+  ...rest
 }) {
   const {
     register,
-    formState: {
-      errors, isSubmitting
-    },
-  } = useFormContext();// 👈
+    formState: { errors, isSubmitting },
+  } = useFormContext(); // 👆
 
   const hasError = name in errors;
 
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+    <div className='mb-3'>
+      <label htmlFor={name} className='form-label'>
         {label}
       </label>
       <input
@@ -559,49 +573,57 @@ export default function LabelInput({
         id={name}
         type={type}
         disabled={submitting}
-        className="form-control"
+        className='form-control'
         {...rest}
-      /> {/* 👈 */}
+      /> {/* 👆 */}
       {hasError ? (
-        <div className="form-text text-danger">
-          {errors[name].message}
-        </div>
+        <div className='form-text text-danger'>{errors[name].message}</div>
       ) : null}
     </div>
   );
 }
 ```
+
 Disable het inputveld tijdens submit, doe hetzelfde voor de `SelectList` component.
 
 ```jsx
-export default function TransactionForm({ places=[], transaction=EMPTY_TRANSACTION, saveTransaction }) {
-    //...
-    const {
+export default function TransactionForm({
+  places = [],
+  transaction = EMPTY_TRANSACTION,
+  saveTransaction,
+}) {
+  // ...
+  const {
     handleSubmit,
     formState: { isSubmitting, isValid },
-  } = methods;// 👈 1
- 
-  //..
-          <div className="clearfix">
-            <div className="btn-group float-end">
-              <button
-                type="submit"
-                disabled={isSubmitting || !isValid}
-                className="btn btn-primary"
-              >
-                {transaction?.id ? 'Save transaction' : 'Add transaction'}
-              </button>
+  } = methods; // 👆
 
-              <Link
-                disabled={isSubmitting}
-                className="btn btn-light"
-                to="/transactions"
-              >
-                Cancel
-              </Link>
-            </div>
+  // ...
+  return (
+    <>
+      <FormProvider {...methods}>
+        {/* ... */}
+        <div className='clearfix'>
+          <div className='btn-group float-end'>
+            <button
+              type='submit'
+              disabled={isSubmitting || !isValid}
+              className='btn btn-primary'
+            >
+              {transaction?.id ? 'Save transaction' : 'Add transaction'}
+            </button>
+
+            {/* 👇 */}
+            <Link
+              disabled={isSubmitting}
+              className='btn btn-light'
+              to='/transactions'
+            >
+              Cancel
+            </Link>
           </div>
-        </form>
+        </div>
+        {/* ... */}
       </FormProvider>
     </>
   );
