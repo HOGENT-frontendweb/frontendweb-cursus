@@ -442,7 +442,7 @@ export default function StarRating() {
 
 Voor de weergave van de sterren maken we gebruik van [react-icons](https://react-icons.github.io/react-icons/). Dit is een npm package met honderden svg's onder de vorm van componenten. We maken gebruik van de library [Ionicons 5](https://react-icons.github.io/react-icons/icons/io5/).
 
-```terminal
+```bash
 yarn add react-icons
 ```
 
@@ -1037,7 +1037,7 @@ Pas de `TransactionsList` component aan:
 ```jsx
 // src/components/transactions/TransactionList.jsx
 import { useState, useMemo } from 'react';
-import TransactionsTable from './TransactionsTable'; // 👈 
+import TransactionsTable from './TransactionsTable'; // 👈
 import { TRANSACTION_DATA } from '../../api/mock_data';
 
 export default function TransactionList() {
@@ -1075,7 +1075,8 @@ export default function TransactionList() {
       </div>
 
       <div className='mt-4'>
-        <TransactionsTable transactions={filteredTransactions} />{/* 👈 */}
+        <TransactionsTable transactions={filteredTransactions} />
+        {/* 👈 */}
       </div>
     </>
   );
@@ -1153,7 +1154,6 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 - geel: vaak
 - groen: af en toe
 - blauw: zelden
-
 
 ## Oefening 4
 

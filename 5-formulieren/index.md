@@ -190,7 +190,7 @@ In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaan
 
 Voeg dit package toe aan het project:
 
-```terminal
+```bash
 yarn add react-hook-form
 ```
 
@@ -586,7 +586,7 @@ export default function TransactionForm({places, transaction, onSave}) {  // ðŸ‘
       date: new Date(date),
       id: transaction?.id,
     });
-    navigate('/transactions'); 
+    navigate('/transactions');
   };
 
   //..

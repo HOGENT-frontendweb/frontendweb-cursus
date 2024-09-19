@@ -18,7 +18,7 @@ Naast SWR hebben we ook [axios](https://www.npmjs.com/package/axios) nodig, een 
 
 Installeer alvast `axios` en `swr`:
 
-```terminal
+```bash
 yarn add axios swr
 ```
 

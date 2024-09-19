@@ -80,7 +80,7 @@ Lees hierover meer in de [Vite documentatie](https://vitejs.dev/guide/why.html).
 
 Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/). Een nieuwe React-applicatie maken is zo simpel als:
 
-```terminal
+```bash
 yarn create vite budget --template react-swc
 ```
 
@@ -104,13 +104,13 @@ Deze map bevat onder andere volgende bestanden/mappen:
 
 Het project gebruikt standaard Yarn v1. Dit passen we aan naar Yarn v2, naar analogie bij Web Services. Alvorens je Yarn v2 kan gebruiken, moet je eerst [Corepack](https://nodejs.org/api/corepack.html) inschakelen. Op Windows moet je hiervoor een terminal openen als administrator.
 
-```terminal
+```bash
 corepack enable
 ```
 
 Vervolgens kiezen we de laatste versie van Yarn:
 
-```terminal
+```bash
 yarn set version berry
 ```
 
@@ -211,7 +211,7 @@ Je kan de linting starten met het commando `yarn lint`. Deze print vervolgens al
 
 Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
 
-```terminal
+```bash
 yarn add -D @stylistic/eslint-plugin
 ```
 
@@ -734,13 +734,13 @@ l> fe oplossing c122351 les1
 
 Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Clone jouw Git repository uit de GitHub classroom:
 
-```terminal
+```bash
 git clone <JOUW_GIT_REPOSITORY_URL>
 ```
 
 Maak een nieuwe Vite React-applicatie aan met de naam van je project in de map van je Git repository. Gebruik een zinnige naam zodat duidelijk is in welke map jouw front-end zich bevindt (bv. suffix `-frontend`).
 
-```terminal
+```bash
 yarn create vite <PROJECTNAAM> --template react-swc
 ```
 
@@ -757,7 +757,7 @@ Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
 
 Commit vervolgens de lege React-applicatie:
 
-```terminal
+```bash
 git add .
 git commit -m "✨ Add empty React app ✨"
 git push
