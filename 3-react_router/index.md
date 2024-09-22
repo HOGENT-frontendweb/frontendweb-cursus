@@ -733,7 +733,7 @@ Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
 import './index.css';
 ```
 
-l> fe oplossing 8bfa897 les3-opl
+l> fe oplossing 75b3f6d les3-opl
 
 ## Oefening
 

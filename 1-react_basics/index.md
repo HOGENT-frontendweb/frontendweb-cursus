@@ -53,7 +53,7 @@ De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**
 
 Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
-- **Native ES modules**: Vite maakt gebruik van native ES modserviceules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundel-stap tijdens de ontwikkeling.
+- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundel-stap tijdens de ontwikkeling.
 
   ![Vite - native ES Modules](./images/vite_ESModules.webp ':size=80%')
 

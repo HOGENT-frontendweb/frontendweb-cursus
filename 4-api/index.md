@@ -1,10 +1,8 @@
 # Data ophalen uit een REST API
 
-<!-- TODO: startpunt en oplossing toevoegen -->
-
 !> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>. Op de laatste commit is een lokale MySQL-server vereist. Maak ook een `.env` aan, bekijk de `README.md` voor meer informatie.
 
-l> fe start b3b27e0 les4
+l> fe start 75b3f6d les4
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
@@ -529,7 +527,7 @@ export async function getAll(url) {
 Vervolgens gebruiken we de `useSWR` hook om onze transacties op te halen:
 
 ```jsx
-import { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';// 👈 1
 import TransactionsTable from '../../components/transactions/TransactionsTable';
 import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr'; // 👈 1
@@ -538,6 +536,9 @@ import { getAll } from '../../api'; // 👈 2
 export default function TransactionList() {
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
+  // const [transactions, setTransactions] = useState([]);// 👈 3
+  // const [loading, setLoading] = useState(true);// 👈 3
+  // const [error, setError] = useState(null);// 👈 3
 
   const {
     data: transactions = [],
@@ -577,6 +578,7 @@ export default function TransactionList() {
       <div className='mt-4'>
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error}>
+          {/* 👇 5 */}
           <TransactionsTable transactions={filteredTransactions} />
         </AsyncData>
       </div>
@@ -585,13 +587,15 @@ export default function TransactionList() {
 }
 ```
 
-1. Importeer de `useSWR` hook.
+1. Importeer de `useSWR` hook en verwijder de import van `useEffect`
 2. Importeer de `getAll` functie uit de `api/index.js`. Als je de naam van een map opgeeft, zal de `index.js` in die map geïmporteerd worden.
 3. We gebruiken de `useSWR` hook met `transactions` als key en de `getAll` functie als `fetcher`. De `useSWR` hook retourneert een object met volgende properties:
    - `data`: de data die we ophalen. Dit is `undefined` als de data nog niet is opgehaald. We hernoemen deze property naar `transactions` en zetten de default waarde op een lege array.
    - `error`: de error die we ontvangen. Dit is `undefined` als er geen error is.
    - `isLoading`: een boolean die aangeeft of de data aan het ophalen is.
-4. We gebruiken de `AsyncData` component om de `loading` en `error` verder af te handelen. We geven de `transactions` mee als `children`. We moeten hier enkel de naam van de variabele in de `loading` prop aanpassen naar `isLoading`.
+   We hoeven niet langer zelf state bij te houden voor de transactions, error en loading. Deze lijnen code mag je schrappen
+4. We gebruiken de `AsyncData` component om de `loading` en `error` verder af te handelen. We geven de `transactions` mee als `children`. We moeten hier enkel de naam van de variabele in de `loading` prop aanpassen naar `isLoading`. 
+5. We testen niet langer of er zich een fout heeft voorgedaan, swr retourneert dan [].
 
 ### Oefening 2 - GET all in je eigen project
 
@@ -748,12 +752,10 @@ export default function TransactionList() {
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error || deleteError}>
           {/* 👇 3 */}
-          {!error ? (
-            <TransactionsTable
+          <TransactionsTable
               transactions={filteredTransactions}
               onDelete={deleteTransaction}
-            />
-          ) : null}
+          />
         </AsyncData>
       </div>
     </>
@@ -806,11 +808,11 @@ Over environment variables in React & Vite vind je meer op <https://vitejs.dev/g
 
 ## Oefening 7 - PlacesList via API
 
-Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API. Voorzie in de `src/components/places` folder de component `PlacesCards.jsx` die de lijst van `PlacesCard` weergeeft. `PlacesList.jsx` communiceert met de API en geeft de data door via props aan `PlacesCards.jsx`.
+Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.jsx` die de lijst van `Places` weergeeft. `PlacesList.jsx` communiceert met de API en geeft de data door via props aan `PlacesCards.jsx`.
 
 Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer.
 
-l> fe oplossing b3b27e0 les4-opl
+l> fe oplossing a669cd4 les4-opl
 
 ## Must reads
 
