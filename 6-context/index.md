@@ -622,7 +622,7 @@ export default function TransactionForm({
           <div className='btn-group float-end'>
             <button
               type='submit'
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting}
               className='btn btn-primary'
             >
               {transaction?.id ? 'Save transaction' : 'Add transaction'}
