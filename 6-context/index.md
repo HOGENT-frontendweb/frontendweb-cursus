@@ -484,12 +484,7 @@ export default function TransactionForm({ places=[], transaction=EMPTY_TRANSACTI
       date: toDateInputString(transaction?.date),
       placeId: transaction?.place.id,
       amount: transaction?.amount,
-    },
-    values: transaction ? {
-      date: toDateInputString(transaction.date),
-      placeId: transaction.place.id,
-      amount: transaction.amount,
-    } : {},
+    }
   });
 
   // 👇 3
