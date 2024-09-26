@@ -475,13 +475,14 @@ export default function StarRating() {
 
 ### Oefening 2 - StarRating in Place component
 
-Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
+Voeg de StarRating component toe aan de Place component en bekijk het resultaat. Maak ook in de Place component gebruik van IoTrashOutline voor de verwijder knop.
 
 - Oplossing +
 
   ```jsx
   // src/components/places/Place.jsx
   import StarRating from './StarRating';
+  import { IoTrashOutline } from 'react-icons/io5';
 
   const Place = ({ id, name, rating, onDelete = (f) => f }) => {
     const handleDelete = () => {
@@ -496,7 +497,7 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
             <StarRating />
           </div>
           <button className='btn btn-primary' onClick={handleDelete}>
-            Verwijder
+            <IoTrashOutline />
           </button>
         </div>
       </div>
@@ -565,6 +566,7 @@ De `Place` component krijgt via een prop de `rating` door van de parent en zal d
 ```jsx
 // src/components/places/Place.jsx
 import StarRating from './StarRating'; // 👈 1
+import { IoTrashOutline } from 'react-icons/io5';
 
 const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   const handleDelete = () => {
@@ -579,7 +581,7 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
           <StarRating selectedStars={rating} /> {/* 👈 2*/}
         </div>
         <button className='btn btn-primary' onClick={handleDelete}>
-          Verwijder
+          <IoTrashOutline />
         </button>
       </div>
     </div>
@@ -726,6 +728,7 @@ De `Place` component moet ook worden aangepast:
 ```jsx
 // src/components/places/Place.jsx
 import StarRating from './StarRating'; // 👈 1
+import { IoTrashOutline } from 'react-icons/io5';
 
 const Place = ({ id, name, rating, onDelete, onRate }) => {
   // 👆 1 👇 2
@@ -744,7 +747,7 @@ const Place = ({ id, name, rating, onDelete, onRate }) => {
           <StarRating selectedStars={rating} onRate={handleRate} /> {/* 👈 3*/}
         </div>
         <button className='btn btn-primary' onClick={handleDelete}>
-          Verwijder
+          <IoTrashOutline />
         </button>
       </div>
     </div>

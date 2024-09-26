@@ -554,7 +554,7 @@ export default function Navbar() {
         </div>
         <div className='nav-item my-2 mx-sm-3 my-sm-0'>
           <Link className='nav-link' to='/about'>
-            Over ons
+            About us
           </Link>
         </div>
         <div className='flex-grow-1'></div>
@@ -709,7 +709,7 @@ export default function Navbar() {
         </div>
         <div className='nav-item my-2 mx-sm-3 my-sm-0'>
           <NavLink className='nav-link' to='/about'>
-            Over ons
+            About us
           </NavLink>
         </div>
         <div className='flex-grow-1'></div>
