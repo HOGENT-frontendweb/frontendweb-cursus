@@ -352,6 +352,26 @@ export const useThemeColors = () => {
 1. Deze hook retourneert de drie waarden `theme`, `textTheme` en `toggleTheme`.
 2. Deze hook retourneert enkel het `theme` en `textTheme`.
 
+We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuwe file 'Theme.js' aan in de `contexts` folder en plaats alle exports die geen component zijn in deze file. Pas eventueel de verwijzingen aan.
+
+```js
+import {useContext} from 'react';
+import { ThemeContext } from './Theme.context';
+
+export const themes = {
+  dark: 'dark',
+  light: 'light',
+};
+
+export const useTheme = () => useContext(ThemeContext);
+
+export const useThemeColors = () => {
+  const { theme, oppositeTheme } = useContext(ThemeContext);
+  return { theme, oppositeTheme };
+};
+```
+
+
 Zo kan de code in `Navbar.jsx` als volgt aangepast worden:
 
 ```jsx
@@ -359,7 +379,7 @@ Zo kan de code in `Navbar.jsx` als volgt aangepast worden:
 import { NavLink } from 'react-router-dom';
 //import { useContext } from 'react'; // 👈 1
 //import { ThemeContext } from '../contexts/Theme.context'; // 👈 1
-import { useTheme } from '../contexts/Theme.context'; // 👈 1
+import { useTheme } from '../contexts/Theme'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5';
 
 export default function Navbar() {
