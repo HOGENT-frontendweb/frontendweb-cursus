@@ -12,8 +12,6 @@
 >
 > **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien.**
 
-<!-- TODO: cypress linting toevoegen: https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md -->
-
 Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Cypress](https://www.cypress.io/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten, dit m.b.v. [Jest](https://jestjs.io/). Maar deze testen vallen buiten de scope van deze cursus.
 
 ## Cypress
@@ -24,6 +22,23 @@ Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev depend
 
 ```bash
 yarn add cypress --dev
+```
+
+We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md) toe.
+
+```bash
+yarn add eslint-plugin-cypress --dev
+```
+
+Pas vervolgens de configuratie van ESLint aan. Importeer de plugin, voeg deze toe aan de plugins en voeg ook de recommended rules en globals toe.
+
+```js
+import pluginCypress from 'eslint-plugin-cypress/flat';
+//...
+  export default [
+  pluginCypress.configs.recommended,
+  pluginCypress.configs.globals,
+  //...
 ```
 
 Vervolgens kan je Cypress openen met onderstaand commando:
@@ -129,20 +144,6 @@ describe("mijn eerste test", () => {
 - [get()](https://docs.cypress.io/api/commands/get) wordt gebruikt om een element te selecteren, hier op basis van de tagnaam.
 - [should()](https://docs.cypress.io/api/commands/should) is een assertion. In de documentatie lezen we: "Assertions describe the desired state of your elements, your objects, and your application.".
 
-> **Opmerking**
->
-> Als je een ESlint melding krijgt voor het `cy` object, voeg dan een `.eslintrc.cjs` bestand toe aan de `cypress` map met onderstaande inhoud:
->
-> ```js
-> module.exports = {
->   "extends": [
->     "plugin:cypress/recommended"
->   ]
-> };
-> ```
->
-> Installeer vervolgens de noodzakelijke ESLint plugin: `yarn add --dev eslint-plugin-cypress`
-
 Neem de documentatie [Introduction to Cypress](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress) door.
 
 ## Anatomie van een UI test
@@ -226,7 +227,14 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
     validationRules={validationRules.date}
     data-cy="date_input" />{/* 👈 1 */}
 
-  <PlacesSelect data-cy="place_input" />{/* 👈 1 */}
+  <SelectList
+    label="Place"
+    name="placeId"
+    placeholder="-- Select a place --"
+    items={places}
+    validationRules={validationRules.placeId}
+    data-cy="place_input"
+  />{/* 👈 1 */}
 
   <LabelInput
     label="Amount"
@@ -235,20 +243,26 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
     validationRules={validationRules.amount}
     data-cy="amount_input" />{/* 👈 1 */}
 
-  <div className="clearfix">
-    <div className="btn-group float-end">
-      <button
-        type="submit"
-        className="btn btn-primary"
-        disabled={isSubmitting}
-        data-cy="submit_transaction"
-      >{/* 👆 2 */}
-        {transaction?.id
-          ? "Save transaction"
-          : "Add transaction"}
+   <div className='clearfix'>
+      <div className='btn-group float-end'>
+        <button
+          type='submit'
+          disabled={isSubmitting || !isValid}
+          className='btn btn-primary'
+          data-cy="submit_transaction"
+        >
+          {transaction?.id ? 'Save transaction' : 'Add transaction'}
         </button>
+        {/* 👆 2 */}
+        <Link
+          disabled={isSubmitting}
+          className='btn btn-light'
+          to='/transactions'
+        >
+          Cancel
+        </Link>
+      </div>
     </div>
-  </div>
 </form>
 ```
 
@@ -260,7 +274,9 @@ Op een gelijkaardige manier passen we `Transaction` aan zodat we nadien kunnen c
 ```jsx
 import { memo, useCallback } from 'react';
 // ...
-export default memo(function Transaction({ id, user, amount, place, date, onDelete }) {
+
+const TransactionMemoized = memo(function Transaction({ id, user, date, amount, place, onDelete }) {
+
   const handleDelete = useCallback(() => {
     onDelete(id);
   }, [id, onDelete]);
@@ -272,42 +288,43 @@ export default memo(function Transaction({ id, user, amount, place, date, onDele
       </td>
       <td data-cy="transaction_user">{user.name}</td>{/* 👈 */}
       <td data-cy="transaction_place">{place.name}</td>{/* 👈 */}
-      <td data-cy="transaction_amount">{amountFormat.format(amount)}</td>{/* 👈 */}
+      <td data-cy="transaction_amount" className="text-end">{amountFormat.format(amount)}</td>{/* 👈 */}
       <td>
-        <div className="btn-group float-end">
-          <Link data-cy="transaction_edit_btn" to={`/transactions/edit/${id}`} className="btn btn-light">{/* 👈 */}
+        {onDelete ? <>
+          <Link to={`/transactions/edit/${id}`} className="btn btn-primary" data-cy="transaction_edit_btn">{/* 👈 */}
             <IoPencilOutline />
           </Link>
-          <button data-cy="transaction_remove_btn" className="btn btn-danger" onClick={handleDelete}>{/* 👈 */}
+          <button className='btn btn-danger' onClick={handleDelete} data-cy="transaction_remove_btn">{/* 👈 */}
             <IoTrashOutline />
-          </button>
-        </div>
+          </button></> : null}
       </td>
     </tr>
   );
-})
+});
+
+export default TransactionMemoized;
 ```
 
 Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypress/e2e/addTransaction.cy.js` toe.
 
 ```js
 describe('Add transaction', () => {
-  it("should add a transaction", () => {
-    cy.visit("http://localhost:5173/transactions/add"); // 👈 1
+  it('should add a transaction', () => {
+    cy.visit('http://localhost:5173/transactions/add'); // 👈 1
 
-    cy.get("[data-cy=user_input]").type("2"); // 👈 2
-    cy.get("[data-cy=date_input]").type("2021-11-01"); // 👈 2
-    cy.get("[data-cy=place_input]").select("Irish Pub"); // 👈 2
-    cy.get("[data-cy=amount_input]").type("200"); // 👈 2
-    cy.get("[data-cy=submit_transaction]").click(); // 👈 3
+    cy.get('[data-cy=user_input]').type('2'); // 👈 2
+    cy.get('[data-cy=date_input]').type('2021-11-01'); // 👈 2
+    cy.get('[data-cy=place_input]').select('Irish Pub'); // 👈 2
+    cy.get('[data-cy=amount_input]').type('200'); // 👈 2
+    cy.get('[data-cy=submit_transaction]').click(); // 👈 3
 
-    cy.get("[data-cy=transaction_user]").eq(9).contains("Pieter"); // 👈 4
-    cy.get("[data-cy=transaction_amount]").each((el, idx) => { // 👈 5
+    cy.get('[data-cy=transaction_user]').eq(9).contains('Pieter'); // 👈 4
+    cy.get('[data-cy=transaction_amount]').each((el, idx) => { // 👈 5
       if (idx === 9) {
         expect(Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.'))).to.equal(200);
       }
     });
-    cy.get("[data-cy=transaction]").should("have.length", 10); // 👈 6
+    cy.get('[data-cy=transaction]').should('have.length', 10); // 👈 6
   });
 });
 ```
@@ -349,10 +366,10 @@ describe('Add transaction', () => {
 
   // ...
 
-  it("should remove the transaction", () => {
-    cy.visit("http://localhost:5173/transactions/"); // 👈 1
-    cy.get("[data-cy=transaction_remove_btn]").eq(9).click(); // 👈 2
-    cy.get("[data-cy=transaction]").should("have.length", 9); // 👈 3
+  it('should remove the transaction', () => {
+    cy.visit('http://localhost:5173/transactions/'); // 👈 1
+    cy.get('[data-cy=transaction_remove_btn]').eq(9).click(); // 👈 2
+    cy.get('[data-cy=transaction]').should('have.length', 9); // 👈 3
   });
 });
 ```
@@ -392,20 +409,21 @@ Neem de documentatie [Network requests](https://docs.cypress.io/guides/guides/ne
 Laat ons een nieuwe test toevoegen die kijkt of de lijst van transacties wel correct getoond wordt. Maak hiervoor een nieuw bestand `cypress/e2e/transactions.cy.js`.
 
 ```js
-describe("Transactions list", () => {
-  it("should show the transactions", () => {
+describe('Transactions list', () => {
+  it('should show the transactions', () => {
     // 👇 1
     cy.intercept(
-      "GET",
-      "http://localhost:9000/api/transactions",
-      '{"items":[{"id":1,"amount":-97,"date":"2021-11-01","user":{"id":1,"name":"Pieter"},"place":{"id":4,"name":"Chinese Restaurant"}}],"count":1}'
+      'GET',
+      'http://localhost:9000/api/transactions',
+      `{"items":[{"id":1,"amount":-97,"date":"2021-11-01","user":{"id":1,"name":"Pieter"},
+      "place":{"id":4,"name":"Chinese Restaurant"}}],"count":1}`,
     );
 
     // 👇 2
-    cy.visit("http://localhost:5173");
-    cy.get("[data-cy=transaction]").should("have.length", 1);
-    cy.get("[data-cy=transaction_place]").eq(0).contains("Chinese Restaurant");
-    cy.get("[data-cy=transaction_date]").eq(0).should("contain", "01/11/2021");
+    cy.visit('http://localhost:5173');
+    cy.get('[data-cy=transaction]').should('have.length', 1);
+    cy.get('[data-cy=transaction_place]').eq(0).contains('Chinese Restaurant');
+    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/11/2021');
   });
 });
 ```
@@ -424,40 +442,40 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 
 ```json
 {
- "items": [
+  "items": [
     {
-      "id":1,
-      "amount":-97,
-      "date":"2021-11-01",
+      "id": 1,
+      "amount": -97,
+      "date": "2021-11-01",
       "user": {
-        "id":2,
-        "name":"Pieter"
+        "id": 2,
+        "name": "Pieter"
       },
       "place": {
-        "id":4,
-        "name":"Chinese Restaurant"
+        "id": 4,
+        "name": "Chinese Restaurant"
       }
     }
   ],
-  "count":1
+  "count": 1
 }
 ```
 
 Pas vervolgens de test aan om deze fixture terug te geven i.p.v. de hardgecodeerde string:
 
 ```js
-describe("Transactions list", () => {
-  it("should show the transactions", () => {
+describe('Transactions list', () => {
+  it('should show the transactions', () => {
     cy.intercept(
-      "GET",
-      "http://localhost:9000/api/transactions",
-      { fixture: 'transactions.json' } // 👈
+      'GET',
+      'http://localhost:9000/api/transactions',
+      { fixture: 'transactions.json' }, // 👈
     );
 
-    cy.visit("http://localhost:5173");
-    cy.get("[data-cy=transaction]").should("have.length", 1);
-    cy.get("[data-cy=transaction_place]").eq(0).contains("Chinese Restaurant");
-    cy.get("[data-cy=transaction_date]").eq(0).should("contain", "01/11/2021");
+    cy.visit('http://localhost:5173');
+    cy.get('[data-cy=transaction]').should('have.length', 1);
+    cy.get('[data-cy=transaction_place]').eq(0).contains('Chinese Restaurant');
+    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/11/2021');
   });
 });
 ```
@@ -475,19 +493,19 @@ describe("Transactions list", () => {
 
   // ...
 
-  it("should show a loading indicator for a very slow response", () => {
-  cy.intercept(
-      "http://localhost:9000/api/transactions", // 👈 1
+   it('should show a loading indicator for a very slow response', () => {
+    cy.intercept(
+      'http://localhost:9000/api/transactions', // 👈 1
       (req) => {
-        req.on("response", (res) => {
+        req.on('response', (res) => {
           res.setDelay(1000);
         }); // 👈 2
-      }
-    ).as("slowResponse"); // 👈 5
-    cy.visit("http://localhost:5173"); // 👈 3
-    cy.get("[data-cy=loader]").should("be.visible"); // 👈 4
-    cy.wait("@slowResponse"); // 👈 6
-    cy.get("[data-cy=loader]").should("not.exist"); // 👈 7
+      },
+    ).as('slowResponse'); // 👈 5
+    cy.visit('http://localhost:5173'); // 👈 3
+    cy.get('[data-cy=loader]').should('be.visible'); // 👈 4
+    cy.wait('@slowResponse'); // 👈 6
+    cy.get('[data-cy=loader]').should('not.exist'); // 👈 7
   });
 });
 ```
@@ -519,6 +537,9 @@ Als er naar 'xyz' gezocht wordt mag er geen enkel element getoond worden. Check 
 ### Fouten in de back-end
 
 Als de backend fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
+
+## Oefening 3
+Pas README.md aan zodat de gebruiker weet hoe de testen te runnen.
 
 ### Oplossing
 

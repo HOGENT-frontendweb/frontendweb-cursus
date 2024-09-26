@@ -157,7 +157,7 @@ export default function TransactionForm({ places = [] }) {
             Place
           </label>
           <select id='placeId' name='placeId' className='form-select' required>
-            <option defaultChecked>-- Select a place --</option>
+            <option value="" disabled>-- Select a place --</option>
             {places.map(({ id, name }) => (
               <option key={id} value={id}>
                 {name}
@@ -261,7 +261,7 @@ export default function TransactionForm({ places = [] }) {
             className='form-select'
             required
           >
-            <option defaultChecked>-- Select a place --</option>
+            <option value="" disabled>-- Select a place --</option>
             {places.map(({ id, name }) => (
               <option key={id} value={id}>
                 {name}
@@ -311,7 +311,7 @@ De useForm hook heeft 1 optioneel argument, een object met o.a. de property defa
 // 👇 1
 const EMPTY_TRANSACTION = {
   id: undefined,
-  amount: 0,
+  amount: undefined,
   date: new Date(),
   user: {
     id: '',
