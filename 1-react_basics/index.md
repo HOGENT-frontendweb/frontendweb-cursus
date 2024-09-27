@@ -801,6 +801,19 @@ end note
 
 l> fe oplossing 4331ea1 les1-opl
 
+## Mogelijke extra's voor de examenopdracht
+
+- UI Component library gebruiken, bv.
+  - [Material-UI](https://mui.com/)
+  - [Chakra UI](https://chakra-ui.com/)
+  - [antd](https://ant.design/)
+  - ...
+- CSS-in-JS library gebruiken, bv.
+  - [styled-components](https://styled-components.com/)
+  - [Emotion](https://emotion.sh/)
+  - [JSS](https://cssinjs.org/)
+  - ...
+
 ## Must read/watch
 
 - [Don't Use JS for That: Moving Features to CSS and HTML by Kilian Valkhof](https://www.youtube.com/watch?v=IP_rtWEMR0o)
