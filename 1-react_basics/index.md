@@ -35,7 +35,7 @@ Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen 
 
 ### JSX
 
-Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript. Let welop: JSX is geen standaard JavaScript en wordt niet begrepeen door de browser. JSX wordt door de compiler omgezet naar JavaScript.
+Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript. Let welop: JSX is geen standaard JavaScript en wordt niet begrepen door de browser. JSX wordt door de compiler omgezet naar JavaScript.
 
 Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waarop je moet letten:
 
