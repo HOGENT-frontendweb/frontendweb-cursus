@@ -30,14 +30,13 @@ We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-pl
 yarn add eslint-plugin-cypress --dev
 ```
 
-Pas vervolgens de configuratie van ESLint aan. Importeer de plugin, voeg deze toe aan de plugins en voeg ook de recommended rules en globals toe.
+Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended rules` . Zonder deze plugin krijgen we een `no-undef` foutmeldingen voor `describe`, `it`,...
 
 ```js
 import pluginCypress from 'eslint-plugin-cypress/flat';
 //...
   export default [
-  pluginCypress.configs.recommended,
-  pluginCypress.configs.globals,
+    pluginCypress.configs.recommended,
   //...
 ```
 
