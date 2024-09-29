@@ -527,7 +527,7 @@ export async function getAll(url) {
 Vervolgens gebruiken we de `useSWR` hook om onze transacties op te halen:
 
 ```jsx
-import { useState, useMemo } from 'react';// 👈 1
+import { useState, useMemo } from 'react'; // 👈 1
 import TransactionsTable from '../../components/transactions/TransactionsTable';
 import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr'; // 👈 1
@@ -593,8 +593,8 @@ export default function TransactionList() {
    - `data`: de data die we ophalen. Dit is `undefined` als de data nog niet is opgehaald. We hernoemen deze property naar `transactions` en zetten de default waarde op een lege array.
    - `error`: de error die we ontvangen. Dit is `undefined` als er geen error is.
    - `isLoading`: een boolean die aangeeft of de data aan het ophalen is.
-   We hoeven niet langer zelf state bij te houden voor de transactions, error en loading. Deze lijnen code mag je schrappen
-4. We gebruiken de `AsyncData` component om de `loading` en `error` verder af te handelen. We geven de `transactions` mee als `children`. We moeten hier enkel de naam van de variabele in de `loading` prop aanpassen naar `isLoading`. 
+     We hoeven niet langer zelf state bij te houden voor de transactions, error en loading. Deze lijnen code mag je schrappen
+4. We gebruiken de `AsyncData` component om de `loading` en `error` verder af te handelen. We geven de `transactions` mee als `children`. We moeten hier enkel de naam van de variabele in de `loading` prop aanpassen naar `isLoading`.
 5. We testen niet langer of er zich een fout heeft voorgedaan, swr retourneert dan [].
 
 ### Oefening 2 - GET all in je eigen project
@@ -753,8 +753,8 @@ export default function TransactionList() {
         <AsyncData loading={isLoading} error={error || deleteError}>
           {/* 👇 3 */}
           <TransactionsTable
-              transactions={filteredTransactions}
-              onDelete={deleteTransaction}
+            transactions={filteredTransactions}
+            onDelete={deleteTransaction}
           />
         </AsyncData>
       </div>

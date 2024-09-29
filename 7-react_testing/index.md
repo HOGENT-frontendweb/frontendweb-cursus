@@ -79,9 +79,9 @@ Dan is het tijd voor onze eerste test. Kies `Create new empty spec`. Behoud de s
 ```jsx
 describe('template spec', () => {
   it('passes', () => {
-    cy.visit('https://example.cypress.io')
-  })
-})
+    cy.visit('https://example.cypress.io');
+  });
+});
 ```
 
 Klik bovenaan op 'x' om het venster te sluiten. De test verschijnt onmiddellijk in de [**Spec Explorer**](https://docs.cypress.io/guides/core-concepts/cypress-app#The-Spec-Explorer) en werd gecreëerd in de `cypress/e2e` map. Cypress controleert de specificatiebestanden op eventuele wijzigingen en geeft automatisch eventuele wijzigingen weer.
@@ -93,8 +93,10 @@ De test draait in de [**Test Runner**](https://docs.cypress.io/guides/core-conce
 We passen de test nu aan. Ga terug naar Visual Studio Code en open het bestand `cypress/e2e/spec.cy.js`
 
 ```js
-describe('mijn eerste test', () => { // 👈 1
-  it('doet niet veel', () => { // 👈 2
+describe('mijn eerste test', () => {
+  // 👈 1
+  it('doet niet veel', () => {
+    // 👈 2
     expect(true).to.equal(true); // 👈 3
   });
 });
@@ -111,8 +113,9 @@ Als je de wijzigingen opslaat, voert de Test Runner een reload uit. De test voer
 We willen natuurlijk onze applicatie testen. Een eerste test nuttige kan zijn om te checken of de applicatie effectief beschikbaar is.
 
 ```js
-describe("mijn eerste test", () => {
-  it("draait de applicatie", () => { // 👈 1
+describe('mijn eerste test', () => {
+  it('draait de applicatie', () => {
+    // 👈 1
     cy.visit('http://localhost:5173'); // 👈 2
   });
 });
@@ -132,10 +135,10 @@ Ga naar de **Test Runner** en voer de test uit:
 Nu controleren we ook of er een `h1` element gevonden kan worden:
 
 ```js
-describe("mijn eerste test", () => {
-  it("draait de applicatie", () => {
+describe('mijn eerste test', () => {
+  it('draait de applicatie', () => {
     cy.visit('http://localhost:5173');
-    cy.get("h1").should("exist"); // 👈
+    cy.get('h1').should('exist'); // 👈
   });
 });
 ```
@@ -154,11 +157,9 @@ In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon ch
 Neem volgende stukje HTML als voorbeeld:
 
 ```html
-<button
-  id="main"
-  class="btn btn-large"
-  name="submission"
-  role="button">Submit</button>
+<button id="main" class="btn btn-large" name="submission" role="button">
+  Submit
+</button>
 ```
 
 Stel dat we deze Submit-button willen terugvinden.
@@ -195,13 +196,17 @@ De beste optie is om gewoon een extra [`data-attribute`](https://developer.mozil
   class="btn btn-large"
   name="submission"
   role="button"
-  data-cy="submit">Submit</button> <!-- 👈 -->
+  data-cy="submit"
+>
+  Submit
+</button>
+<!-- 👈 -->
 ```
 
 In onze test wordt dit dus:
 
 ```js
-cy.get('[data-cy=submit]').click()
+cy.get('[data-cy=submit]').click();
 ```
 
 Kortom, we gaan telkens `data-cy` attributen toevoegen waar nodig.
@@ -211,57 +216,60 @@ Kortom, we gaan telkens `data-cy` attributen toevoegen waar nodig.
 Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral moeten we overal de juiste `data-cy` attributen toevoegen. Dit hoef je natuurlijk maar éénmaal te doen per component waar je testen voor schrijft.
 
 ```jsx
-<form onSubmit={handleSubmit(onSubmit)} className="mb-5">
+<form onSubmit={handleSubmit(onSubmit)} className='mb-5'>
   <LabelInput
-    label="User ID"
-    name="user"
-    type="number"
+    label='User ID'
+    name='user'
+    type='number'
     validationRules={validationRules.user}
-    data-cy="user_input"/> {/* 👈 1 */}
-
+    data-cy='user_input'
+  />{' '}
+  {/* 👈 1 */}
   <LabelInput
-    label="Date"
-    name="date"
-    type="date"
+    label='Date'
+    name='date'
+    type='date'
     validationRules={validationRules.date}
-    data-cy="date_input" />{/* 👈 1 */}
-
+    data-cy='date_input'
+  />
+  {/* 👈 1 */}
   <SelectList
-    label="Place"
-    name="placeId"
-    placeholder="-- Select a place --"
+    label='Place'
+    name='placeId'
+    placeholder='-- Select a place --'
     items={places}
     validationRules={validationRules.placeId}
-    data-cy="place_input"
-  />{/* 👈 1 */}
-
+    data-cy='place_input'
+  />
+  {/* 👈 1 */}
   <LabelInput
-    label="Amount"
-    name="amount"
-    type="number"
+    label='Amount'
+    name='amount'
+    type='number'
     validationRules={validationRules.amount}
-    data-cy="amount_input" />{/* 👈 1 */}
-
-   <div className='clearfix'>
-      <div className='btn-group float-end'>
-        <button
-          type='submit'
-          disabled={isSubmitting || !isValid}
-          className='btn btn-primary'
-          data-cy="submit_transaction"
-        >
-          {transaction?.id ? 'Save transaction' : 'Add transaction'}
-        </button>
-        {/* 👆 2 */}
-        <Link
-          disabled={isSubmitting}
-          className='btn btn-light'
-          to='/transactions'
-        >
-          Cancel
-        </Link>
-      </div>
+    data-cy='amount_input'
+  />
+  {/* 👈 1 */}
+  <div className='clearfix'>
+    <div className='btn-group float-end'>
+      <button
+        type='submit'
+        disabled={isSubmitting || !isValid}
+        className='btn btn-primary'
+        data-cy='submit_transaction'
+      >
+        {transaction?.id ? 'Save transaction' : 'Add transaction'}
+      </button>
+      {/* 👆 2 */}
+      <Link
+        disabled={isSubmitting}
+        className='btn btn-light'
+        to='/transactions'
+      >
+        Cancel
+      </Link>
     </div>
+  </div>
 </form>
 ```
 
@@ -274,28 +282,54 @@ Op een gelijkaardige manier passen we `Transaction` aan zodat we nadien kunnen c
 import { memo, useCallback } from 'react';
 // ...
 
-const TransactionMemoized = memo(function Transaction({ id, user, date, amount, place, onDelete }) {
-
+const TransactionMemoized = memo(function Transaction({
+  id,
+  user,
+  date,
+  amount,
+  place,
+  onDelete,
+}) {
   const handleDelete = useCallback(() => {
     onDelete(id);
   }, [id, onDelete]);
 
   return (
-    <tr data-cy="transaction">{/* 👈 */}
-      <td data-cy="transaction_date">{/* 👈 */}
+    <tr data-cy='transaction'>
+      {/* 👈 */}
+      <td data-cy='transaction_date'>
+        {/* 👈 */}
         {dateFormat.format(new Date(date))}
       </td>
-      <td data-cy="transaction_user">{user.name}</td>{/* 👈 */}
-      <td data-cy="transaction_place">{place.name}</td>{/* 👈 */}
-      <td data-cy="transaction_amount" className="text-end">{amountFormat.format(amount)}</td>{/* 👈 */}
+      <td data-cy='transaction_user'>{user.name}</td>
+      {/* 👈 */}
+      <td data-cy='transaction_place'>{place.name}</td>
+      {/* 👈 */}
+      <td data-cy='transaction_amount' className='text-end'>
+        {amountFormat.format(amount)}
+      </td>
+      {/* 👈 */}
       <td>
-        {onDelete ? <>
-          <Link to={`/transactions/edit/${id}`} className="btn btn-primary" data-cy="transaction_edit_btn">{/* 👈 */}
-            <IoPencilOutline />
-          </Link>
-          <button className='btn btn-danger' onClick={handleDelete} data-cy="transaction_remove_btn">{/* 👈 */}
-            <IoTrashOutline />
-          </button></> : null}
+        {onDelete ? (
+          <>
+            <Link
+              to={`/transactions/edit/${id}`}
+              className='btn btn-primary'
+              data-cy='transaction_edit_btn'
+            >
+              {/* 👈 */}
+              <IoPencilOutline />
+            </Link>
+            <button
+              className='btn btn-danger'
+              onClick={handleDelete}
+              data-cy='transaction_remove_btn'
+            >
+              {/* 👈 */}
+              <IoTrashOutline />
+            </button>
+          </>
+        ) : null}
       </td>
     </tr>
   );
@@ -318,9 +352,12 @@ describe('Add transaction', () => {
     cy.get('[data-cy=submit_transaction]').click(); // 👈 3
 
     cy.get('[data-cy=transaction_user]').eq(9).contains('Pieter'); // 👈 4
-    cy.get('[data-cy=transaction_amount]').each((el, idx) => { // 👈 5
+    cy.get('[data-cy=transaction_amount]').each((el, idx) => {
+      // 👈 5
       if (idx === 9) {
-        expect(Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.'))).to.equal(200);
+        expect(
+          Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.')),
+        ).to.equal(200);
       }
     });
     cy.get('[data-cy=transaction]').should('have.length', 10); // 👈 6
@@ -362,7 +399,6 @@ Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moet
 
 ```js
 describe('Add transaction', () => {
-
   // ...
 
   it('should remove the transaction', () => {
@@ -386,7 +422,8 @@ We hebben getest of ons formulier werkt. Er wordt een transactie toegevoegd als 
 Vaak is het echter minstens even interessant (zo niet interessanter) om alle edge cases te gaan testen. Worden de foutboodschappen wel goed getoond als de gebruiker foutieve informatie ingeeft? Het heeft erg veel zin om hiervoor testen te schrijven. Als alles goed gaat, komen foutieve situaties niet bijzonder vaak voor. Dus je wilt ze opmerken in je testen en niet (te) laat bij de gebruiker.
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   1. Voeg een `data-cy` attribuut aan de tags met foutboodschappen.
   2. Voeg een nieuwe test toe aan het `addTransaction.cy.js` bestand.
@@ -488,11 +525,10 @@ Je kan nog veel meer doen dan simpel antwoorden terugsturen. Neem de documentati
 Als voorbeeld gaan we een request eens sterk vertragen. Dan kunnen we testen of onze loading indicator wel effectief getoond wordt. Voeg deze test toe aan het bestand `cypress/e2e/transactions.cy.js`:
 
 ```js
-describe("Transactions list", () => {
-
+describe('Transactions list', () => {
   // ...
 
-   it('should show a loading indicator for a very slow response', () => {
+  it('should show a loading indicator for a very slow response', () => {
     cy.intercept(
       'http://localhost:9000/api/transactions', // 👈 1
       (req) => {
@@ -538,6 +574,7 @@ Als er naar 'xyz' gezocht wordt mag er geen enkel element getoond worden. Check 
 Als de backend fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
 
 ## Oefening 3
+
 Pas README.md aan zodat de gebruiker weet hoe de testen te runnen.
 
 ### Oplossing

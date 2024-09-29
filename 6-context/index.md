@@ -355,7 +355,7 @@ export const useThemeColors = () => {
 We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuwe file 'Theme.js' aan in de `contexts` folder en plaats alle exports die geen component zijn in deze file. Pas eventueel de verwijzingen aan.
 
 ```js
-import {useContext} from 'react';
+import { useContext } from 'react';
 import { ThemeContext } from './Theme.context';
 
 export const themes = {
@@ -370,7 +370,6 @@ export const useThemeColors = () => {
   return { theme, oppositeTheme };
 };
 ```
-
 
 Zo kan de code in `Navbar.jsx` als volgt aangepast worden:
 
