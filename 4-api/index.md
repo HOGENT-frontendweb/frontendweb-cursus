@@ -812,7 +812,7 @@ Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, 
 
 Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer.
 
-l> fe oplossing a669cd4 les4-opl
+l> fe oplossing 4324cf3 les4-opl
 
 ## Must reads
 

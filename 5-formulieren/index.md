@@ -4,7 +4,7 @@
 
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.
 
-l> fe start 4331ea1 les5
+l> fe start 4324cf3 les5
 
 ## Routing
 
