@@ -161,7 +161,7 @@ export default Place;
 
 ### PlacesList component
 
-Maak een bestand `PlacesList.jsx` aan in de map `src\components\places`. Deze component zorgt voor de weergave van alle plaatsen. We maken reeds gebruik van de `Place` component voor weergave van één plaats.
+Maak een bestand `PlacesList.jsx` aan in de map `src/components/places`. Deze component zorgt voor de weergave van alle plaatsen. We maken reeds gebruik van de `Place` component voor weergave van één plaats.
 
 ```jsx
 // src/components/places/PlacesList.jsx

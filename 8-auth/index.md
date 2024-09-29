@@ -20,9 +20,7 @@ Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we i
 
 ```js
 export const post = async (url, { arg }) => {
-  const {
-    data,
-  } = await axios.post(url, arg);
+  const { data } = await axios.post(url, arg);
 
   return data;
 };
@@ -85,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
     },
-    [doLogin]
+    [doLogin],
   );
 
   // 👇 11
@@ -107,15 +105,11 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
     }),
-    [token, user, error, loading, login, logout]
+    [token, user, error, loading, login, logout],
   );
 
   // 👇 3
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 ```
 
@@ -146,14 +140,15 @@ createRoot(document.getElementById('root')).render(
         <RouterProvider router={router} />
       </ThemeProvider>
     </AuthProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
 ```
 
 Als we de app opstarten, krijgen we een `HTTP 401` want de server verwacht een token voor o.a. `GET /api/transactions`. Wat is de oorzaak van dit probleem?
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   Axios voegt ons token nog niet toe aan elk request.
 
@@ -213,27 +208,28 @@ useEffect(() => {
 
 Om te kunnen aanmelden hebben we een `Login` component op de URL `/login` nodig. Deze component bevat een formulier met twee velden: `email` en `password`, beide zijn verplicht. Onderaan het formulier staan ook twee knoppen: "Sign in" en "Cancel". Deze knoppen implementeren we straks.
 
-Vermits we hier de `LabelInput` component uit de `TransactionForm` kunnen hergebruiken, plaatsen we deze eerst in een aparte module `src\components\LabelInput.jsx`:
+Vermits we hier de `LabelInput` component uit de `TransactionForm` kunnen hergebruiken, plaatsen we deze eerst in een aparte module `src/components\LabelInput.jsx`:
 
 ```jsx
 import { useFormContext } from 'react-hook-form';
 
 export default function LabelInput({
-  label, name, type, validationRules, ...rest
+  label,
+  name,
+  type,
+  validationRules,
+  ...rest
 }) {
   const {
     register,
-    formState: {
-      errors,
-      isSubmitting,
-    },
+    formState: { errors, isSubmitting },
   } = useFormContext();
 
   const hasError = name in errors;
 
   return (
-    <div className="mb-3">
-      <label htmlFor={name} className="form-label">
+    <div className='mb-3'>
+      <label htmlFor={name} className='form-label'>
         {label}
       </label>
       <input
@@ -241,11 +237,11 @@ export default function LabelInput({
         id={name}
         type={type}
         disabled={isSubmitting}
-        className="form-control"
+        className='form-control'
         {...rest}
       />
       {hasError ? (
-        <div className="form-text text-danger" data-cy="label_input_error">
+        <div className='form-text text-danger' data-cy='label_input_error'>
           {errors[name]}
         </div>
       ) : null}
@@ -270,14 +266,12 @@ const validationRules = {
 };
 
 export default function Login() {
-
   const methods = useForm();
 
   return (
     <FormProvider {...methods}>
       <div className='container'>
-        <form
-          className='d-flex flex-column'>
+        <form className='d-flex flex-column'>
           <h1>Sign in</h1>
 
           <LabelInput
@@ -297,17 +291,11 @@ export default function Login() {
 
           <div className='clearfix'>
             <div className='btn-group float-end'>
-              <button
-                type='submit'
-                className='btn btn-primary'
-              >
+              <button type='submit' className='btn btn-primary'>
                 Sign in
               </button>
 
-              <button
-                type='button'
-                className='btn btn-light'
-              >
+              <button type='button' className='btn btn-light'>
                 Cancel
               </button>
             </div>
@@ -375,9 +363,9 @@ export default function Login() {
           pathname: '/',
           replace: true,
         });
-      }// 👈 3
+      } // 👈 3
     },
-    [login, navigate] // 👈 2 en 3
+    [login, navigate], // 👈 2 en 3
   );
 
   return (
@@ -386,11 +374,11 @@ export default function Login() {
         <form
           className='d-flex flex-column'
           onSubmit={handleSubmit(handleLogin)}
-        >  {/* 👆 1 */}
+        >
+          {' '}
+          {/* 👆 1 */}
           <h1>Sign in</h1>
-
           <Error error={error} /> {/* 👈 5 */}
-
           <LabelInput
             label='email'
             type='text'
@@ -398,21 +386,20 @@ export default function Login() {
             placeholder='your@email.com'
             validationRules={validationRules.email}
           />
-
           <LabelInput
             label='password'
             type='password'
             name='password'
             validationRules={validationRules.password}
           />
-
           <div className='clearfix'>
             <div className='btn-group float-end'>
               <button
                 type='submit'
                 className='btn btn-primary'
                 disabled={loading}
-              >{/* 👆 4 */}
+              >
+                {/* 👆 4 */}
                 Sign in
               </button>
 
@@ -420,7 +407,8 @@ export default function Login() {
                 type='button'
                 className='btn btn-light'
                 onClick={handleCancel}
-              >{/* 👆 6*/}
+              >
+                {/* 👆 6*/}
                 Cancel
               </button>
             </div>
@@ -478,7 +466,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
     }),
-    [token, user, error, ready, loading, isAuthed, login, logout]
+    [token, user, error, ready, loading, isAuthed, login, logout],
   );
 
   // ...
@@ -517,7 +505,7 @@ export default function PrivateRoute() {
     return <Outlet />;
   }
 
-  return <Navigate replace to="/login" />; // 👈 4
+  return <Navigate replace to='/login' />; // 👈 4
 }
 ```
 
@@ -547,7 +535,8 @@ const router = createBrowserRouter([
       {
         path: '/transactions',
         element: <PrivateRoute />, // 👈
-        children: [ // 👈
+        children: [
+          // 👈
           {
             index: true,
             element: <TransactionsList />,
@@ -565,7 +554,8 @@ const router = createBrowserRouter([
       {
         path: '/places',
         element: <PrivateRoute />, // 👈
-        children: [ // 👈
+        children: [
+          // 👈
           {
             index: true,
             element: <PlacesList />,
@@ -636,35 +626,45 @@ export default function Navbar() {
 
   return (
     <nav className={`navbar sticky-top bg-${theme} mb-4`}>
-      <div className="container-fluid flex-column flex-sm-row align-items-start align-items-sm-center">
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <Link className="nav-link" to="/">Transactions</Link>
+      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <Link className='nav-link' to='/'>
+            Transactions
+          </Link>
         </div>
-        <div className="nav-item my-2 mx-sm-3 my-sm-0">
-          <Link className="nav-link" to="/places">Places</Link>
+        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+          <Link className='nav-link' to='/places'>
+            Places
+          </Link>
         </div>
-        <div className="flex-grow-1"></div>{/* 👈 1*/}
+        <div className='flex-grow-1'></div>
+        {/* 👈 1*/}
 
-        {// 👇 3
-          isAuthed
-            ? (// 👇 4
-              <div className="nav-item my-2 mx-sm-3 my-sm-0">
-                <Link className="nav-link" to="/logout">Logout</Link>
-              </div>
-            )
-            : (// 👇 5
-              <div className="nav-item my-2 mx-sm-3 my-sm-0">
-                <Link className="nav-link" to="/login">Login</Link>
-              </div>
-            )
+        {
+          // 👇 3
+          isAuthed ? (
+            // 👇 4
+            <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+              <Link className='nav-link' to='/logout'>
+                Logout
+              </Link>
+            </div>
+          ) : (
+            // 👇 5
+            <div className='nav-item my-2 mx-sm-3 my-sm-0'>
+              <Link className='nav-link' to='/login'>
+                Login
+              </Link>
+            </div>
+          )
         }
 
-        <button className="btn btn-secondary" type="button" onClick={toggleTheme}>
-          {
-            theme==='dark'
-              ? <IoMoonSharp />
-              : <IoSunny />
-          }
+        <button
+          className='btn btn-secondary'
+          type='button'
+          onClick={toggleTheme}
+        >
+          {theme === 'dark' ? <IoMoonSharp /> : <IoSunny />}
         </button>
       </div>
     </nav>
@@ -736,7 +736,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate replace to="/transactions" />,
+        element: <Navigate replace to='/transactions' />,
       },
       {
         path: '/login',
@@ -747,8 +747,8 @@ const router = createBrowserRouter([
         element: <Logout />,
       },
       // ...
-    ]
-  }
+    ],
+  },
   // ...
 ]);
 ```
@@ -769,7 +769,8 @@ Maak een `Register` component op de URL `/register`.
 - Als de gebruiker reeds aangemeld is, moet deze pagina hem doorsturen naar de `/` route.
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie` op commit `14016d2`:
 
