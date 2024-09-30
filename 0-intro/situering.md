@@ -60,7 +60,7 @@ Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 | week 4  | Data ophalen van een back-end, useEffect      |
 | week 5  | Formulieren, memo en useCallback              |
 | week 6  | Context API                                   |
-| week 7  | Testen en linting                             |
+| week 7  | Testen                                        |
 | week 8  | (geen nieuwe theorie, aan de opdracht werken) |
 | week 9  | authenticatie / autorisatie                   |
 | week 10 | testen met authenticatie / autorisatie        |
