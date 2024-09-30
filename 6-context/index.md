@@ -6,9 +6,7 @@ We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de r
 
 De **Context API** laat toe om data globaal bij te houden en door te geven aan child components, zonder dat we via props de data tot in deze kinderen moeten doorgeven. Dus Context API is een alternatief voor het doorgeven van props.
 
-**Let op**, de Context API wordt vaak ten onrechte gebruikt als oplossing. Gebruik het enkel en alleen als de state echt globaal moet zijn. Gebruik de context ook zo laag mogelijk in de component tree. Alle componenten onder de context worden nl. opnieuw gerenderd als de waarde in de context wijzigt!
-
-Een aantal use cases voor context zijn o.a. theming, taalkeuze, huidige gebruiker...
+**Let op**: de Context API wordt vaak ten onrechte gebruikt als oplossing. Gebruik het enkel en alleen als de state echt globaal moet zijn. Gebruik de context ook zo laag mogelijk in de component tree. Alle componenten onder de context worden nl. opnieuw gerenderd als de waarde in de context wijzigt! Een aantal use cases voor context zijn o.a. theming, taalkeuze, huidige gebruiker...
 
 De Context API bestaat uit drie bouwstenen:
 
@@ -28,7 +26,7 @@ Het aanmaken van een context gebeurt typisch in 3 stappen:
 
 ### Stap 1: Creëer de context
 
-In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `main` component, de root component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
+In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `main` component, de `Layout` component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
 // src/main.jsx
@@ -74,9 +72,9 @@ export default function Layout() {
 }
 ```
 
-Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. Geef een object door (vandaar `{{}}`). Alle kinderen die afstammen van de provider zullen opnieuw renderen wanneer de waarde van de `Provider` verandert.
+Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. Geef een object door (vandaar `{{}}`). Alle kinderen onder de provider zullen opnieuw renderen wanneer de waarde van de `Provider` verandert.
 
-> Het is niet verplicht om een context steeds in de App component te zetten, je zet hem zo laag mogelijk zodat de nodige child componenten aan de data kunnen.
+> Het is niet verplicht om een context steeds in de hoogste component uit de component tree te zetten, je zet hem zo laag mogelijk zodat de nodige child componenten aan de data kunnen.
 
 ### Stap 3: Consume de context
 
@@ -200,7 +198,7 @@ export const ThemeProvider = ({ children }) => {
     const newThemeValue = switchTheme(theme); // 👈 2
     setTheme(newThemeValue);
     sessionStorage.setItem('themeMode', newThemeValue);
-  }, [theme, setTheme]);
+  }, [theme]);
 
   // 👇 3
   const value = useMemo(
@@ -304,6 +302,8 @@ Verwijder de context uit `Layout.jsx`.
 ### Oefening 1 - ThemeContext
 
 Pas de andere componenten aan.
+
+<!-- TODO: vanaf hier verder nalezen -->
 
 ## Custom hooks
 
