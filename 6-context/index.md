@@ -303,11 +303,9 @@ Verwijder de context uit `Layout.jsx`.
 
 Pas de andere componenten aan.
 
-<!-- TODO: vanaf hier verder nalezen -->
-
 ## Custom hooks
 
-Een custom hook is een JavaScript functie die begint met `use` en die andere hooks kan aanroepen. Custom hooks laten toe om logica te delen tussen componenten. Je kan zelf custom hooks schrijven of zoeken naar bestaande custom hooks via bv. <https://nikgraf.github.io/react-hooks/>.
+Een custom hook is een JavaScript functie die begint met `use` en die andere hooks kan aanroepen. Custom hooks laten toe om logica te delen tussen componenten. Je kan zelf custom hooks schrijven of zoeken naar bestaande custom hooks via bv. <https://nikgraf.github.io/react-hooks/> of <https://npmjs.com>.
 
 In elke component die gebruik maakt van de context dienen we volgende code te schrijven:
 
@@ -329,7 +327,7 @@ import {
   useCallback,
   useMemo,
   useContext,
-} from 'react'; // 👈 1
+} from 'react';
 
 export const themes = {
   dark: 'dark',
@@ -338,7 +336,8 @@ export const themes = {
 
 export const ThemeContext = createContext();
 
-export const useTheme = () => useContext(ThemeContext); // 👈 1
+// 👇 1
+export const useTheme = () => useContext(ThemeContext);
 
 // 👇 2
 export const useThemeColors = () => {
@@ -352,7 +351,7 @@ export const useThemeColors = () => {
 1. Deze hook retourneert de drie waarden `theme`, `textTheme` en `toggleTheme`.
 2. Deze hook retourneert enkel het `theme` en `textTheme`.
 
-We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuwe file 'Theme.js' aan in de `contexts` folder en plaats alle exports die geen component zijn in deze file. Pas eventueel de verwijzingen aan.
+We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuw bestand `Theme.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
 
 ```js
 import { useContext } from 'react';
@@ -407,12 +406,13 @@ Er zitten een paar anti-patterns in ons formulier. Waarschijnlijk zijn deze ook 
 2. Definieer geen pure functies binnen de component (functies zonder afhankelijkheden van variabelen), bv. `toDateInputString`. Plaats deze buiten de component.
 3. Definieer geen componenten inline in een andere component, bv. `LabelInput` (zie verder). Plaats deze buiten de component.
 4. Gebruik een id als waarde voor de `key` prop in lijsten, gebruik geen index.
+   - Deze fout hebben we reeds opgelost in hoofdstuk 1.
 
 ### Duplicate code
 
 De combinatie `label` en `input` tag komen vaak voor. Kunnen we hier aparte component van maken?
 
-Componenten mag je niet definiëren binnen een andere component. Maak een functiecomponent `LabelInput` in het bestand van het formulier of als aparte component i.g.v. hergebruik. We kiezen voor de 2de optie. Plaats de code van het invoerveld van de gebruiker hierin en maak van de hardgecodeerde waarden props:
+Componenten mag je niet definiëren binnen een andere component. Ofwel maak je een functiecomponent `LabelInput` in het bestand van het formulier ofwel als aparte component als je deze wil hergebruiken. We kiezen voor de 2de optie. Plaats de code van het invoerveld van de gebruiker hierin en maak van de hardgecodeerde waarden props:
 
 ```jsx
 // src/components/LabelInput.jsx
@@ -445,7 +445,7 @@ export default function LabelInput({
 }
 ```
 
-We krijgen nog fouten. Zie verder. Importeer eerst de `LabelInput` component in `TransactionForm` component en pas de invoervelden aan. De code voor het `userId` inputveld wordt:
+We krijgen nog fouten (zie verder). Importeer eerst de `LabelInput` component in `TransactionForm` component en pas de invoervelden aan. De code voor het `userId` inputveld wordt:
 
 ```jsx
 <LabelInput
@@ -493,24 +493,24 @@ export default function TransactionForm({ places=[], transaction=EMPTY_TRANSACTI
   } = methods;
 
   return (
-      {/* 👇 4 */}
-      <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-
+    {/* 👇 4 */}
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* ... */}
       </form>
     </FormProvider>
   );
 }
 ```
 
-Plaats eventjes de selectlijst in commentaar. Verder wordt dit ook een aparte component.
+Plaats eventjes de `select` lijst in commentaar. Verderop wordt dit ook een aparte component.
 
 1. Importeer de `FormProvider`.
 2. Verzamel alles uit de `useForm` hook in een object en deze zullen we doorgeven aan de `FormProvider` met de spread operator.
 3. We moeten vervolgens enkel in deze component destructuren wat we nodig hebben. Zo kunnen we ook niets vergeten door te geven aan de `FormProvider`.
 4. Plaats de `FormProvider` rond het formulier en geef alles door om de `useFormContext` correct te laten werken voor gebruik in `LabelInput` en `SelectList`.
 
-Pas nu ook de `LabelInput` component aan
+Pas nu ook de `LabelInput` component aan:
 
 ```jsx
 import { useFormContext } from 'react-hook-form'; // 👈
@@ -551,11 +551,11 @@ export default function LabelInput({
 
 Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik van `register` en `errors`.
 
-### Oefening 2
+### Oefening 3 - SelectList
 
 Maak een `SelectList` component aan.
 
-### Disablen inputvelden bij submit
+### Uitschakelen inputvelden bij submit
 
 Je kan er ook voor zorgen dat de inputvelden en knoppen in het formulier _disabled_ worden als het formulier gesubmit wordt.
 `useForm` geeft een boolean [isSubmitting](https://react-hook-form.com/api/useform/formstate) terug die `true` is als het formulier gesubmit wordt en `false` bij een reset.
@@ -644,7 +644,7 @@ export default function TransactionForm({
 }
 ```
 
-### Oefening 3 je eigen project
+### Oefening 4 - Je eigen project
 
 Controleer je eigen project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.

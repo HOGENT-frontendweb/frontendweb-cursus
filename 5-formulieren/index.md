@@ -811,7 +811,7 @@ Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr
 
 Ook `Place` is een pure componenten en dient enkel gererenderd te worden als zijn state wordt aangepast. Gebruik `memo` om de `Place` component te memoizen.
 
-Voeg in de budget-applcatie `useCallback` toe waar nodig.
+Voeg in de budget-applicatie `useCallback` toe waar nodig.
 
 ### Oefening 4 - Memoization in je eigen project
 

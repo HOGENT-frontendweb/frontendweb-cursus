@@ -35,7 +35,7 @@ Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen 
 
 ### JSX
 
-Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript. Let welop: JSX is geen standaard JavaScript en wordt niet begrepen door de browser. JSX wordt door de compiler omgezet naar JavaScript.
+Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript. Let wel op: JSX is geen standaard JavaScript en wordt niet begrepen door de browser. JSX wordt door de compiler omgezet naar JavaScript.
 
 Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waarop je moet letten:
 
@@ -201,7 +201,7 @@ De configuratie is gebaseerd op de aanbevolen regels van volgende plugins:
 
 - [eslint-plugin-react](https://npmjs.com/package/eslint-plugin-react): regels voor React
 - [eslint-plugin-react-hooks](https://npmjs.com/package/eslint-plugin-react-hooks): regels voor React hooks (bv. checken of ze correct gebruikt worden)
-- [eslint-plugin-react-refresh](https://npmjs.com/package/eslint-plugin-react-refresh): regels om te controleren of componenten kunnen vervest worden met fast refresh
+- [eslint-plugin-react-refresh](https://npmjs.com/package/eslint-plugin-react-refresh): regels om te controleren of componenten kunnen ververst worden met fast refresh
 
 ESLint gebruikt sinds v9 [flat configuration files](https://eslint.org/blog/2022/08/new-config-system-part-2/). Deze syntax zorgt ervoor dat je geen `extends` meer moet gebruiken, dat je plugins simpelweg kan importeren via `import` i.p.v. een vaste string te gebruiken en dat je de regels rechtstreeks en eenvoudiger kan instellen.
 
@@ -438,7 +438,7 @@ We zien dat JSON een comma-separated key-value lijst is. De keys zijn hierbij al
 
 De data zal meestal ergens in een databank leven. Via één of andere API kunnen we deze data aanspreken en eventueel wijzigen. Dit leer je allemaal uitgebreid in het olod Web Services.
 
-Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met _mock object_ werken. We steken wat JSON data hardgecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
+Uiteraard kunnen we niet alles tegelijk maken. Daarom gaan we eerst met _mock object_ werken. We steken wat JSON data hard gecodeerd in een bestand. Vervolgens importeren en gebruiken we die data om onze componenten op te bouwen.
 
 Later, als we een back-end hebben, kunnen we dan makkelijk 'echte' data ophalen en tonen. Daarbij dienen we enkel die import te vervangen door een echte API call en hoeven we niet onze volledige component te herschrijven.
 
@@ -579,7 +579,7 @@ export default App;
 1. Importeer de constante `TRANSACTION_DATA`.
 2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen.
 
-Pas ook de `Transaction` component aan zodat je de naam van de gebuiker en de plaats ziet. Je kan altijd eens kijken welke foutmeldingen je krijgt in de console indien je `user` of `place` rechtstreeks probeert te gebruiken.
+Pas ook de `Transaction` component aan zodat je de naam van de gebruiker en de plaats ziet. Je kan altijd eens kijken welke foutmeldingen je krijgt in de console indien je `user` of `place` rechtstreeks probeert te gebruiken.
 
 ```jsx
 // src/components/transaction/Transaction.jsx
