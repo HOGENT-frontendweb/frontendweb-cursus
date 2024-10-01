@@ -823,6 +823,7 @@ l> fe oplossing 4324cf3 les4-opl
 - [JavaScript Visualized: Promise Execution](https://lydiahallie.framer.website/blog/promise-execution)
 - [SOLID principles in React](https://konstantinlebedev.com/solid-in-react/)
 - [Good advice on JSX conditionals](https://blog.thoughtspile.tech/2022/01/17/jsx-conditionals/)
+- [Component Composition is great btw](https://tkdodo.eu/blog/component-composition-is-great-btw)
 
 ## Mogelijke extra's voor de examenopdracht
 
