@@ -102,7 +102,7 @@ Wat moet er nu nog aangepast worden?
   import { TRANSACTION_DATA } from './api/mock_data';
   ```
 
-Het opdelen van een React-applicatie in componenten is een essentieel onderdeel van het maken van herbruikbare, leesbare en onderhoudbare code. Neem hiervoor eerst [Thinking in React: start with the mockup (step 1, 3 en 4)](https://react.dev/learn/thinking-in-react) door.
+Het opdelen van een React-applicatie in componenten is een essentieel onderdeel van het maken van herbruikbare, leesbare en onderhoudbare code. Neem hiervoor eerst [Thinking in React: start with the mockup (step 1, 3, 4 en 5)](https://react.dev/learn/thinking-in-react) door.
 
 Beantwoord daarna onderstaande vragen voor de ontwikkeling van bovenstaande UI. Hou componenten klein, herbruikbaar en geef de verantwoordelijkheid voor statebeheer aan de juiste componenten.
 
@@ -1162,7 +1162,11 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 
 Probeer de challenges op [https://react.dev/learn/keeping-components-pure](https://react.dev/learn/keeping-components-pure).
 
-## Oefening 5 - SnakeEyes
+## Oefening 5 - To do app
+
+Zorg ervoor dat de checkbox in de To do app (zie oefening2 vorige les) aan en uit gevinkt kan worden.
+
+## Oefening 6 - SnakeEyes
 
 SnakeEyes is het resultaat van het gooien van twee dobbelstenen. Als op beide dobbelstenen één oog staat heb je "snake eyes". Bij de aanvang van het spel worden twee dobbelstenen getoond met de waarde 6. Het aantal dobbelstenen is standaard 2, maar kan ook meer zijn. Telkens wanneer de gebruiker op een dobbelsteen klikt, wordt een willekeurig getal gegenereerd.
 
