@@ -1,18 +1,8 @@
 # Testing
 
-> **Startpunt voorbeeldapplicatie**
->
-> ```bash
-> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-> cd frontendweb-budget
-> git checkout -b les6 50e2881
-> yarn install
-> yarn dev
-> ```
->
-> **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien.**
+<!-- TODO: startpunt en oplossing toevoegen -->
 
-Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Cypress](https://www.cypress.io/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten, dit m.b.v. [Jest](https://jestjs.io/). Maar deze testen vallen buiten de scope van deze cursus.
+Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Cypress](https://www.cypress.io/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten (m.b.v. [Jest](https://jestjs.io/)), maar deze testen vallen buiten de scope van deze cursus.
 
 ## Cypress
 
@@ -21,38 +11,41 @@ Cypress draait in een browser en niet via een WebDriver. Dus het draait (zo goed
 Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev dependency:
 
 ```bash
-yarn add cypress --dev
+yarn add --dev cypress
 ```
 
 We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md) toe.
 
 ```bash
-yarn add eslint-plugin-cypress --dev
+yarn add --dev eslint-plugin-cypress
 ```
 
-Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended rules` . Zonder deze plugin krijgen we een `no-undef` foutmeldingen voor `describe`, `it`,...
+Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended rules` . Zonder deze plugin krijgen we een `no-undef` foutmeldingen voor `describe`, `it`...
 
 ```js
 import pluginCypress from 'eslint-plugin-cypress/flat';
+
 //...
-  export default [
-    pluginCypress.configs.recommended,
+
+export default [
+  pluginCypress.configs.recommended,
   //...
+];
+```
+
+Voeg vervolgens een nieuw commando toe aan de `package.json`:
+
+```json
+"scripts": {
+  "test": "cypress open"
+}
 ```
 
 Vervolgens kan je Cypress openen met onderstaand commando:
 
 ```bash
-yarn cypress open
+yarn test
 ```
-
-> Tip: je kan hiervoor ook een `test` script maken in de `package.json`:
->
-> ```json
-> "scripts": {
->   "test": "cypress open"
-> }
-> ```
 
 Wanneer je Cypress voor de eerste keer opent in een project, dien je een wizard te doorlopen om Cypress te configureren. Sla een eventuele melding van de nieuwtjes in Cypress over.
 
@@ -88,16 +81,19 @@ Klik bovenaan op 'x' om het venster te sluiten. De test verschijnt onmiddellijk 
 
 Klik op het bestand `spec.cy.js` om de spec uit te voeren.
 
-De test draait in de [**Test Runner**](https://docs.cypress.io/guides/core-concepts/cypress-app#Project-Runs) in een browser, tegen een website die bezocht wordt door de browser. M.a.w. je kan niet enkel een site die in ontwikkeling is testen, maar ook om het even welke site die ergens draait. Hier is dit dus [https://example.cypress.io](https://example.cypress.io). Indien je kiest voor `Scaffold example specs`, dan draaien deze voorbeelden tegen [https://example.cypress.io/todo](https://example.cypress.io/todo).
+De test draait in de [**Test Runner**](https://docs.cypress.io/guides/core-concepts/cypress-app#Project-Runs) in een browser, tegen een website die bezocht wordt door de browser. M.a.w. je kan niet enkel een site die in ontwikkeling is testen, maar ook om het even welke site die ergens draait. Hier wordt dus [https://example.cypress.io](https://example.cypress.io) getest. Indien je kiest voor `Scaffold example specs`, dan draaien deze voorbeelden tegen [https://example.cypress.io/todo](https://example.cypress.io/todo).
 
 We passen de test nu aan. Ga terug naar Visual Studio Code en open het bestand `cypress/e2e/spec.cy.js`
 
 ```js
+// cypress/e2e/spec.cy.js
+
+// 👇 1
 describe('mijn eerste test', () => {
-  // 👈 1
+  // 👇 2
   it('doet niet veel', () => {
-    // 👈 2
-    expect(true).to.equal(true); // 👈 3
+    // 👇 3
+    expect(true).to.equal(true);
   });
 });
 ```
@@ -114,8 +110,8 @@ We willen natuurlijk onze applicatie testen. Een eerste test nuttige kan zijn om
 
 ```js
 describe('mijn eerste test', () => {
+  // 👇 1
   it('draait de applicatie', () => {
-    // 👈 1
     cy.visit('http://localhost:5173'); // 👈 2
   });
 });
@@ -124,7 +120,7 @@ describe('mijn eerste test', () => {
 1. Geef een betekenisvolle naam aan de test
 2. Bezoek de website
 
-**Zorg er wel voor dat de front-end én backend draaien**, anders faalt de test.
+**Zorg er wel voor dat de front-end én back-end draaien**, anders faalt de test.
 
 Ga naar de **Test Runner** en voer de test uit:
 
@@ -152,7 +148,7 @@ Neem de documentatie [Introduction to Cypress](https://docs.cypress.io/guides/co
 
 Onze testen zullen vaak een gelijkaardig stramien hebben: een URL bezoeken, interageren met elementen op de pagina (iets typen in een inputveld, op een knop klikken...) en/of kijken of het we het gewenste resultaat te zien krijgen.
 
-In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon checken of er 'een' `h1` aanwezig is, zoals in de vorige test, zal niet volstaan. Als er meerdere inputs, buttons etc. zijn, moeten we zeker zijn dat we met de juiste elementen interageren.
+In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon checken of er 'een' `h1` aanwezig is, zoals in de vorige test, zal niet volstaan. Als er meerdere inputs, buttons, etc. zijn, moeten we zeker zijn dat we met de juiste elementen interageren.
 
 Neem volgende stukje HTML als voorbeeld:
 
@@ -182,7 +178,7 @@ Naar het `id` kijken is al iets beter, het is op zijn minst uniek. Maar bij een 
 cy.get('#main').click();
 ```
 
-Je zou ook naar de inhoud van de tag kunnen kijken. Dit is soms valabel, maar wat met i18n (= vertalingen)?
+Je zou ook naar de inhoud van de tag kunnen kijken. Dit is soms valabel, maar wat met i18n (= internationalization of vertalingen)?
 
 ```js
 cy.contains('Submit').click();
@@ -198,9 +194,9 @@ De beste optie is om gewoon een extra [`data-attribute`](https://developer.mozil
   role="button"
   data-cy="submit"
 >
+  <!-- 👆 -->
   Submit
 </button>
-<!-- 👈 -->
 ```
 
 In onze test wordt dit dus:
@@ -222,45 +218,40 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
     name='user'
     type='number'
     validationRules={validationRules.user}
-    data-cy='user_input'
-  />{' '}
-  {/* 👈 1 */}
+    data-cy='user_input' // 👈 1
+  />
   <LabelInput
     label='Date'
     name='date'
     type='date'
     validationRules={validationRules.date}
-    data-cy='date_input'
+    data-cy='date_input' // 👈 1
   />
-  {/* 👈 1 */}
   <SelectList
     label='Place'
     name='placeId'
     placeholder='-- Select a place --'
     items={places}
     validationRules={validationRules.placeId}
-    data-cy='place_input'
+    data-cy='place_input' // 👈 1
   />
-  {/* 👈 1 */}
   <LabelInput
     label='Amount'
     name='amount'
     type='number'
     validationRules={validationRules.amount}
-    data-cy='amount_input'
+    data-cy='amount_input' // 👈 1
   />
-  {/* 👈 1 */}
   <div className='clearfix'>
     <div className='btn-group float-end'>
       <button
         type='submit'
         disabled={isSubmitting || !isValid}
         className='btn btn-primary'
-        data-cy='submit_transaction'
+        data-cy='submit_transaction' // 👈 2
       >
         {transaction?.id ? 'Save transaction' : 'Add transaction'}
       </button>
-      {/* 👆 2 */}
       <Link
         disabled={isSubmitting}
         className='btn btn-light'
@@ -274,7 +265,7 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
 ```
 
 1. Bij elke `input` zetten we een `data-cy` attribuut. De `LabelInput` component geeft alle onbekende props door aan het `input` element (via `{...rest}`).
-2. Natuurlijk ook bij de submit button.
+2. Natuurlijk heeft de submit button ook een `data-cy` attribuut nodig.
 
 Op een gelijkaardige manier passen we `Transaction` aan zodat we nadien kunnen checken of de transactie goed toegevoegd is.
 
@@ -295,20 +286,20 @@ const TransactionMemoized = memo(function Transaction({
   }, [id, onDelete]);
 
   return (
+    {/* 👇 */}
     <tr data-cy='transaction'>
-      {/* 👈 */}
+      {/* 👇 */}
       <td data-cy='transaction_date'>
-        {/* 👈 */}
         {dateFormat.format(new Date(date))}
       </td>
+      {/* 👇 */}
       <td data-cy='transaction_user'>{user.name}</td>
-      {/* 👈 */}
+      {/* 👇 */}
       <td data-cy='transaction_place'>{place.name}</td>
-      {/* 👈 */}
+      {/* 👇 */}
       <td data-cy='transaction_amount' className='text-end'>
         {amountFormat.format(amount)}
       </td>
-      {/* 👈 */}
       <td>
         {onDelete ? (
           <>
@@ -317,7 +308,7 @@ const TransactionMemoized = memo(function Transaction({
               className='btn btn-primary'
               data-cy='transaction_edit_btn'
             >
-              {/* 👈 */}
+              {/* 👆 */}
               <IoPencilOutline />
             </Link>
             <button
@@ -325,7 +316,7 @@ const TransactionMemoized = memo(function Transaction({
               onClick={handleDelete}
               data-cy='transaction_remove_btn'
             >
-              {/* 👈 */}
+              {/* 👆 */}
               <IoTrashOutline />
             </button>
           </>
@@ -341,6 +332,7 @@ export default TransactionMemoized;
 Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypress/e2e/addTransaction.cy.js` toe.
 
 ```js
+// cypress/e2e/addTransaction.cy.js
 describe('Add transaction', () => {
   it('should add a transaction', () => {
     cy.visit('http://localhost:5173/transactions/add'); // 👈 1
@@ -352,8 +344,8 @@ describe('Add transaction', () => {
     cy.get('[data-cy=submit_transaction]').click(); // 👈 3
 
     cy.get('[data-cy=transaction_user]').eq(9).contains('Pieter'); // 👈 4
+    // 👇 5
     cy.get('[data-cy=transaction_amount]').each((el, idx) => {
-      // 👈 5
       if (idx === 9) {
         expect(
           Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.')),
@@ -366,7 +358,9 @@ describe('Add transaction', () => {
 ```
 
 1. Om nu het formulier te testen, gaan we eerst naar de juiste pagina.
-2. Dan vragen we alle input fields op en geven we zinvolle data in. Bij text input fields kan je gewoon de [`.type()`](https://docs.cypress.io/api/commands/type) functie gebruiken. Voor select inputs de functie [`.select()`](https://docs.cypress.io/api/commands/select). Hierbij kan de waarde zowel de value als de content zijn, of zelfs de index.
+2. Dan vragen we alle input fields op en geven we zinvolle data in.
+   - Bij text input fields kan je gewoon de [`.type()`](https://docs.cypress.io/api/commands/type) functie gebruiken.
+   - Voor select inputs de functie [`.select()`](https://docs.cypress.io/api/commands/select). Hierbij kan de waarde zowel de value, als de content, of zelfs de index zijn.
 3. Als laatste klikken (m.b.v. [`click()`](https://docs.cypress.io/api/commands/click)) we op de submit button. Submitten zorgt ervoor dat we terug naar onze overzichtspagina gaan, dat gebeurt ook in de testomgeving.
 4. Daar kunnen we kijken of de transactie toegevoegd is. We hebben `data-cy` op elk deel van een Transaction, maar er zijn meerdere transacties, dus we kunnen niet gewoon bv. 'de' `transaction_user` opvragen (`cy.get("[data-cy=transaction_user]")`). Met `eq()` kan je één specifiek element opvragen a.d.h.v. zijn index.
 5. Of je kan een functie meegeven, die voor elk element aangeroepen wordt, en zo je checks doen. `el` is hier een array waar het 1ste element het echte DOM element bevat.
@@ -376,7 +370,7 @@ describe('Add transaction', () => {
 
 ### Page transitions
 
-De test surft naar twee pagina's. Cypress detecteert automatisch een paginaovergangs-gebeurtenis en stopt automatisch met het uitvoeren van opdrachten totdat de volgende pagina is geladen.
+De test surft naar twee pagina's. Cypress detecteert automatisch een paginaovergangsgebeurtenis en stopt automatisch met het uitvoeren van opdrachten totdat de volgende pagina is geladen.
 
 Als de volgende pagina de laadfase niet had voltooid, zou Cypress de test hebben beëindigd en een foutmelding hebben gegeven.
 
@@ -395,7 +389,7 @@ We moeten ervoor zorgen dat onze testen geen blijvende wijzigingen veroorzaken, 
 - niet met de echte databank werken, **mocks** gebruiken (straks meer hierover)
 - alle bewerkingen ook weer 'omkeren' (wij kiezen voor deze optie)
 
-Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen (en dan hebben we direct een verwijder test ook).:
+Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen (en dan hebben we direct een verwijder test ook):
 
 ```js
 describe('Add transaction', () => {
@@ -413,7 +407,7 @@ describe('Add transaction', () => {
 2. We klikken op de verwijder-knop van de net toegevoegde transactie (index 9).
 3. Vervolgens controleren we of er effectief maar 9 transacties meer overblijven.
 
-Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen (mogelijks moet je wel eerst manueel de lijst van transacties herstellen naar wat de test verwacht).
+Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen. Mogelijks moet je wel eerst manueel de lijst van transacties herstellen naar wat de test verwacht.
 
 ## Oefening 1: foutboodschappen
 
@@ -436,7 +430,7 @@ Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan
 
 ## Mocks
 
-Alles op een echte back-end testen heeft zeker zijn nut (om zeker te zijn dat alles wel werkt), maar zo wil je niet alle testen schrijven. Het is relatief traag, altijd alles 'terugzetten' kan knap lastig worden, en het beperkt wat je allemaal kan testen. Hoe zou je testen of de frontend alles juist toont als de backend onbereikbaar is bijvoorbeeld?
+Alles op een echte back-end testen heeft zeker zijn nut (om zeker te zijn dat alles wel werkt), maar zo wil je niet alle testen schrijven. Het is relatief traag, altijd alles 'terugzetten' kan knap lastig worden, en het beperkt wat je allemaal kan testen. Hoe zou je testen of de front-end alles juist toont als de back-end onbereikbaar is bijvoorbeeld?
 
 De oplossing hiervoor heet **mocken**. Hierbij stellen we een fake server op die vóór onze test uitgevoerd wordt en beschrijven hoe die moet reageren op bepaalde API calls. Vervolgens doen we onze testen en kunnen we checken of onze front-end voor die bepaalde back-end alles correct afhandelt.
 
@@ -445,6 +439,7 @@ Neem de documentatie [Network requests](https://docs.cypress.io/guides/guides/ne
 Laat ons een nieuwe test toevoegen die kijkt of de lijst van transacties wel correct getoond wordt. Maak hiervoor een nieuw bestand `cypress/e2e/transactions.cy.js`.
 
 ```js
+// cypress/e2e/transactions.cy.js
 describe('Transactions list', () => {
   it('should show the transactions', () => {
     // 👇 1
@@ -452,13 +447,13 @@ describe('Transactions list', () => {
       'GET',
       'http://localhost:9000/api/transactions',
       `{"items":[{"id":1,"amount":-97,"date":"2021-11-01","user":{"id":1,"name":"Pieter"},
-      "place":{"id":4,"name":"Chinese Restaurant"}}],"count":1}`,
+      "place":{"id":4,"name":"Chinees Restaurant"}}],"count":1}`,
     );
 
     // 👇 2
     cy.visit('http://localhost:5173');
     cy.get('[data-cy=transaction]').should('have.length', 1);
-    cy.get('[data-cy=transaction_place]').eq(0).contains('Chinese Restaurant');
+    cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
     cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/11/2021');
   });
 });
@@ -477,6 +472,7 @@ De data inline plaatsen in een `intercept` is meestal niet zo handig (of leesbaa
 Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 
 ```json
+// fixtures/transactions.json
 {
   "items": [
     {
@@ -489,7 +485,7 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
       },
       "place": {
         "id": 4,
-        "name": "Chinese Restaurant"
+        "name": "Chinees Restaurant"
       }
     }
   ],
@@ -500,6 +496,7 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 Pas vervolgens de test aan om deze fixture terug te geven i.p.v. de hardgecodeerde string:
 
 ```js
+// cypress/e2e/transactions.cy.js
 describe('Transactions list', () => {
   it('should show the transactions', () => {
     cy.intercept(
@@ -510,13 +507,13 @@ describe('Transactions list', () => {
 
     cy.visit('http://localhost:5173');
     cy.get('[data-cy=transaction]').should('have.length', 1);
-    cy.get('[data-cy=transaction_place]').eq(0).contains('Chinese Restaurant');
+    cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
     cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/11/2021');
   });
 });
 ```
 
-Zo kunnen we eenvoudiger dit soort data hergebruiken/aanpassen. Zo'n fixture-bestand is bovendien een pak leesbaarder dan zo'n lange string.
+Zo kunnen we eenvoudiger dit soort data hergebruiken/aanpassen. Zo'n fixture bestand is bovendien een pak leesbaarder dan zo'n lange string.
 
 ## Waiting
 
@@ -525,6 +522,7 @@ Je kan nog veel meer doen dan simpel antwoorden terugsturen. Neem de documentati
 Als voorbeeld gaan we een request eens sterk vertragen. Dan kunnen we testen of onze loading indicator wel effectief getoond wordt. Voeg deze test toe aan het bestand `cypress/e2e/transactions.cy.js`:
 
 ```js
+// cypress/e2e/transactions.cy.js
 describe('Transactions list', () => {
   // ...
 
@@ -555,7 +553,13 @@ describe('Transactions list', () => {
 
 ## Oefening 2: zoekfunctie van transacties
 
-Schrijf volgende testen voor de zoekfunctie van onze transacties: correcte invoer, invoer zonder resultaten en fouten in de back-end. Hieronder worden de testgevallen afzonderlijk uitgelegd.
+Schrijf volgende testen voor de zoekfunctie van onze transacties:
+
+- correcte invoer
+- invoer zonder resultaten
+- fouten in de back-end
+
+Hieronder worden de testgevallen afzonderlijk uitgelegd.
 
 ### Correcte invoer
 
@@ -571,23 +575,15 @@ Als er naar 'xyz' gezocht wordt mag er geen enkel element getoond worden. Check 
 
 ### Fouten in de back-end
 
-Als de backend fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
+Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
 
 ## Oefening 3
 
-Pas README.md aan zodat de gebruiker weet hoe de testen te runnen.
+Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten worden.
 
 ### Oplossing
 
-Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in commit `8539c87`:
-
-```bash
-git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-cd frontendweb-budget
-git checkout -b oplossing-les5 8539c87
-yarn install
-yarn dev
-```
+TODO: voorbeeldoplossing toevoegen
 
 ## Authenticatie
 
