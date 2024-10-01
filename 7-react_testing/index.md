@@ -577,7 +577,7 @@ Als er naar 'xyz' gezocht wordt mag er geen enkel element getoond worden. Check 
 
 Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
 
-## Oefening 3
+## Oefening 3 - README
 
 Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten worden.
 

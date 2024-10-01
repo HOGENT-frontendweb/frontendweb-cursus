@@ -1158,15 +1158,19 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 - groen: af en toe
 - blauw: zelden
 
-## Oefening 4
+## Oefening 4 - README
+
+Pas `README.md` aan zodat de gebruiker weet hoe de dependencies geïnstalleerd moeten worden, en hoe de applicatie gestart moet worden (in development).
+
+## Oefening 5 - Challenges
 
 Probeer de challenges op [https://react.dev/learn/keeping-components-pure](https://react.dev/learn/keeping-components-pure).
 
-## Oefening 5 - To do app
+## Oefening 6 - To do app
 
-Zorg ervoor dat de checkbox in de To do app (zie oefening2 vorige les) aan en uit gevinkt kan worden.
+Zorg ervoor dat de checkbox in de To do app (zie oefening 2 van vorige les) aan en uit gevinkt kan worden.
 
-## Oefening 6 - SnakeEyes
+## Oefening 7 - SnakeEyes
 
 SnakeEyes is het resultaat van het gooien van twee dobbelstenen. Als op beide dobbelstenen één oog staat heb je "snake eyes". Bij de aanvang van het spel worden twee dobbelstenen getoond met de waarde 6. Het aantal dobbelstenen is standaard 2, maar kan ook meer zijn. Telkens wanneer de gebruiker op een dobbelsteen klikt, wordt een willekeurig getal gegenereerd.
 

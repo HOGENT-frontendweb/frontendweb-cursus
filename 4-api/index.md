@@ -806,7 +806,11 @@ const baseUrl = import.meta.env.VITE_API_URL;
 
 Over environment variables in React & Vite vind je meer op <https://vitejs.dev/guide/env-and-mode.html>.
 
-## Oefening 7 - PlacesList via API
+## Oefening 7 - README
+
+Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt moet worden alvorens de applicatie gestart kan worden. Voeg ook een voorbeeld voor het `.env` bestand toe.
+
+## Oefening 8 - PlacesList via API
 
 Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.jsx` die de lijst van `Places` weergeeft. `PlacesList.jsx` communiceert met de API en geeft de data door via props aan `PlacesCards.jsx`.
 
