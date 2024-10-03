@@ -51,19 +51,19 @@ Wanneer je Cypress voor de eerste keer opent in een project, dien je een wizard 
 
 In de eerste stap dien je te kiezen voor **E2E Testing** (= je runt de applicatie en je bezoekt pagina's om ze te testen) of **Component testing** (= je monteert afzonderlijke componenten en test die afzonderlijk). Kies hier voor `E2E Testing`.
 
-![Eerste keer Cypress runnen (stap 1)](./images/6_1_startscherm_cypress.png ':size=80%')
+![Eerste keer Cypress runnen (stap 1)](./images/7_1_startscherm_cypress.png ':size=80%')
 
 In de volgende stap maakt Cypress de nodige configuratiemappen/-bestanden aan en geeft hiervan een overzicht. [Bekijk de documentatie voor de details](https://docs.cypress.io/guides/references/configuration).
 
-![Eerste keer Cypress runnen (stap 2)](./images/6_2_startscherm_cypress.png ':size=80%')
+![Eerste keer Cypress runnen (stap 2)](./images/7_2_startscherm_cypress.png ':size=80%')
 
 Klik op `Continue`, kies vervolgens de browser waarin je de testen wenst te draaien (uit een lijst van browsers die op je machine staan) en klik op `Start E2E testing`.
 
-![Eerste keer Cypress runnen (stap 3)](./images/6_3_startscherm_cypress.png ':size=80%')
+![Eerste keer Cypress runnen (stap 3)](./images/7_3_startscherm_cypress.png ':size=80%')
 
 Cypress opent **The Launchpad** in de browser. The Launchpad is het portaal naar Cypress dat helpt bij onboarding, het kiezen van een testtype en het starten van een browser.
 
-![Eerste keer Cypress runnen (stap 4)](./images/6_4_startscherm_cypress.png ':size=80%')
+![Eerste keer Cypress runnen (stap 4)](./images/7_4_startscherm_cypress.png ':size=80%')
 
 ## De eerste test
 
