@@ -104,12 +104,12 @@ Wat moet er nu nog aangepast worden?
 
 Het opdelen van een React-applicatie in componenten is een essentieel onderdeel van het maken van herbruikbare, leesbare en onderhoudbare code. Neem hiervoor eerst [Thinking in React: start with the mockup (step 1, 3, 4 en 5)](https://react.dev/learn/thinking-in-react) door.
 
-Beantwoord daarna onderstaande vragen voor de ontwikkeling van bovenstaande UI. Hou componenten klein, herbruikbaar en geef de verantwoordelijkheid voor statebeheer aan de juiste componenten.
+Neem een stap door en beantwoord daarna de vraag behorende bij de stap voor de ontwikkeling van bovenstaande UI. Hou componenten klein, herbruikbaar en geef de verantwoordelijkheid voor statebeheer aan de juiste componenten.
 
-- In welke componenten kunnen we de UI opdelen?
-- Welke data heeft je app nodig? Wat is hiervan state?
-- In welke component houden we de state bij? Welke componenten ontvangen hun informatie via props?
-- Welke inverse data flow is er nodig om de state in de parent bij te werken?
+- Step 1: In welke componenten kunnen we de UI opdelen?
+- Step 3: Welke data heeft je app nodig? Wat is hiervan state?
+- Step 4: In welke component houden we de state bij? Welke componenten ontvangen hun informatie via props?
+- Step 5: Welke inverse data flow is er nodig om de state in de parent bij te werken?
 
 <!-- markdownlint-disable-next-line -->
 
@@ -401,7 +401,7 @@ In het geval van een initiële render, zal React de root component aanroepen. Bi
 
 In de commit fase werkt React de echte DOM bij. Bij een initiële render gebruikt React de `appendChild() DOM API` om alle DOM-knooppunten die het heeft gemaakt op het scherm te zetten. Voor re-renders zal React de minimaal noodzakelijke bewerkingen toepassen (berekend tijdens het renderen!) om de DOM te laten overeenkomen met de nieuwste rendering-uitvoer.
 
-Lees [Render and commit](https://react.dev/learn/render-and-commit) en bekijk een visuele weergave: [A Visual Guide to React Rendering - It Always Re-renders](https://alexsidorenko.com/blog/react-render-always-rerenders/)
+Dit kan je nalezen in [Render and commit](https://react.dev/learn/render-and-commit). Bekijk een visuele weergave: [A Visual Guide to React Rendering - It Always Re-renders](https://alexsidorenko.com/blog/react-render-always-rerenders/)
 
 ### State snapshot
 
@@ -631,7 +631,7 @@ Bekijk het resultaat!
 
 ### Oefening 3 - Event handler toevoegen
 
-Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op een ster, geef je `you clicked a star` in de console weer.
+Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster, geef je `you clicked star x` in de console weer, met x de index van de ster.
 
 <!-- markdownlint-disable-next-line -->
 
@@ -641,14 +641,14 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
   // src/components/places/StarRating.jsx
   import { IoStarSharp } from 'react-icons/io5';
 
-  const Star = ({ selected = false }) => {
-    // 👇 1
+  const Star = ({ selected = false, index }) => {     // 👈 1
+    // 👇 2
     const handleClick = (e) => {
-      console.log('you clicked a star');
+      console.log(`you clicked star ${index}`);
     };
 
     return (
-      <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleClick} /> {/* 👈 2 */}
+      <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleClick} /> {/* 👈 3 */}
     );
   };
 
@@ -657,7 +657,7 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
     return (
       <>
         {stars.map((_, i) => (
-          <Star key={i} selected={selectedStars > i} />
+          <Star key={i} selected={selectedStars > i} index={i} />{/* 👈 1 */}
         ))}
         <p>
           {selectedStars} of {totalStars} stars
@@ -667,8 +667,9 @@ Voeg een event handler toe aan de `StarRating` component. Wanneer je klikt op ee
   }
   ```
 
-  1. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event.
-  2. Voorzie de prop `onClick` en geef de event handler functie mee.
+  1. Voeg de `index` van de ster toe
+  2. Definieer een functie `handleClick`, die het `onClick` event zal afhandelen, toe aan de component. Per conventie starten event handlers met `handle` gevolgd door het event.
+  3. Voorzie de prop `onClick` en geef de event handler functie mee.
 
 ### De rating aanpassen
 
