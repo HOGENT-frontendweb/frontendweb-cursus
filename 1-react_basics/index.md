@@ -49,7 +49,7 @@ Bij een React applicatie is er steeds een compilatiestap nodig die de JSX omzet 
 
 Vroeger werd [`create-react-app`](https://create-react-app.dev/) gebruikt om een nieuwe React-applicatie te maken. Dit is een command line tool die een nieuwe React-applicatie opzet met een aantal standaardinstellingen. Het gebruikt achter de schermen [Webpack](https://webpack.js.org/) als bundler.
 
-De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWA's). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
+De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWAs). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
 Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
@@ -527,7 +527,7 @@ export default function Transaction(props) {
 
 1. We geven de data door via de `props` parameter, de React properties. Op die manier kunnen we informatie doorgeven van de ene component aan de andere. Elke React component ontvangt als eerste parameter een object `props` met daarin alle properties die aan de component zijn doorgegeven.
 2. Verwijder de constanten met de hard gecodeerde data. Om niet telkens `props.user`, `props.amount`... te moeten schrijven, maken we gebruik van **object destructuring**.
-   - Je kan natuurlijk ook meteen de properties destructureren in de parameters van de functie.
+   - Je kan natuurlijk ook meteen de properties destructuren in de parameters van de functie.
 
 Hoe krijg je nu de juiste data in de `props` van een component? In `App.js` willen we:
 

@@ -415,10 +415,10 @@ Een state snapshot verwijst naar de huidige "momentopname" van de state in een R
    `const [number, setNumber] = useState(0); // de initiële state snapshot van number is 0`
 2. State Update: Het bijwerken van de state vraagt om een nieuwe render en een nieuwe state snapshot wordt gemaakt die pas gebruikt wordt tijdens de volgende render.
    `setNumber(number + 1); // nieuwe state snapshot met waarde 1 voor number`.
-   De waarde van een statusvariabele verandert nooit binnen een render. Dus de waarde van de variabele _number_ verandert in de bestaande render niet. De component blijft renderen met de vorige waarde van number totdat de volgende render plaatsvindt. In een eventhandler 3 maal `setNumber(number + 1)` aanroepen zal het _number_ slechts met 1 verhogen!
+   De waarde van een statusvariabele verandert nooit binnen een render. Dus de waarde van de variabele _number_ verandert in de bestaande render niet. De component blijft renderen met de vorige waarde van number totdat de volgende render plaatsvindt. In een event handler 3 maal `setNumber(number + 1)` aanroepen zal het _number_ slechts met 1 verhogen!
 3. Render-fase: "Rendering" betekent dat React de component, die een functie is, aanroept. Wanneer React de component opnieuw rendert, wordt de component opnieuw opgebouwd met de laatst bekende snapshot van de state.
 
-React slaat de state op buiten de component, het 'leeft' in React! Variabelen en eventhandlers `overleven` geen re-render. Dat is ook zo bij "gewone" functies: variabelen in een functie zijn verdwenen nadat ze is uitgevoerd. Elke render heeft zijn eigen eventhandlers.
+React slaat de state op buiten de component, het 'leeft' in React! Variabelen en event handlers `overleven` geen re-render. Dat is ook zo bij "gewone" functies: variabelen in een functie zijn verdwenen nadat ze is uitgevoerd. Elke render heeft zijn eigen event handlers.
 ![state overview](./images/reactstate.jpg ':size=70%')
 
 Lees [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-series-of-state-updates)
@@ -426,8 +426,8 @@ Lees [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-ser
 #### Samengevat
 
 - Het instellen van de state verandert de variabele in de bestaande render niet, maar vraagt ​​om een ​​nieuwe render.
-- React verwerkt state updates NADAT alle eventhandlers zijn uitgevoerd. Dit wordt `batching` genoemd.
-- Om een ​​bepaalde state meerdere keren in één gebeurtenis bij te werken, kan je de updaterfunctie setNumber(n => n + 1) gebruiken.
+- React verwerkt state updates NADAT alle event handlers zijn uitgevoerd. Dit wordt `batching` genoemd.
+- Om een ​​bepaalde state meerdere keren in één gebeurtenis bij te werken, kan je de updater functie `setNumber(n => n + 1)` gebruiken.
 
 ## StarRating component
 
