@@ -781,3 +781,9 @@ Maak een `Register` component op de URL `/register`.
   yarn install
   yarn dev
   ```
+
+## Mogelijke extra's voor de examenopdracht
+
+- Gebruik van een externe authenticatieprovider (bv. [Auth0](https://auth0.com/), [Userfront](https://userfront.com/)...)
+- Voeg een wachtwoordsterkte-indicator toe
+  - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
