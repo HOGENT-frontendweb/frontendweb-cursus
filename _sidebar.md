@@ -12,7 +12,7 @@
 - [3. React Router](./3-react_router/index.md)
 - [4. Data ophalen uit een REST API](./4-api/index.md)
 - [5. Formulieren & hooks](./5-formulieren/index.md)
-- [6. Context API (WIP)](./6-context/index.md)
+- [6. Context API](./6-context/index.md)
 - [7. Testing (WIP)](./7-react_testing/index.md)
 - [8. Authenticatie & autorisatie (WIP)](./8-auth/index.md)
 - [9. E2E testen met authenticatie (WIP)](./9-auth_testing/index.md)

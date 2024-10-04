@@ -1,6 +1,15 @@
-# Context API
+> **Startpunt voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les6 69e7baf
+> yarn install
+> yarn dev
+>```
 
-<!-- TODO: startpunt en oplossing toevoegen -->
+
+# Context API
 
 We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
 
@@ -26,10 +35,10 @@ Het aanmaken van een context gebeurt typisch in 3 stappen:
 
 ### Stap 1: Creëer de context
 
-In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `main` component, de `Layout` component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
+In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `Layout` component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
-// src/main.jsx
+// src/components/Layout.jsx
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import Navbar from './Navbar';
 import { createContext } from 'react'; // 👈
@@ -54,7 +63,7 @@ Voeg toe in `Layout.jsx`:
 ```jsx
 // src/components/Layout.jsx
 import { Outlet, ScrollRestoration } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 import { createContext } from 'react';
 
 export const ThemeContext = createContext();
@@ -67,7 +76,7 @@ export default function Layout() {
         <Outlet />
         <ScrollRestoration />
       </div>
-    </ThemeContext.Provider> {/* 👈 */}
+    </ThemeContext.Provider>
   );
 }
 ```
@@ -83,7 +92,7 @@ De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. het thema
 ```jsx
 // src/components/transactions/TransactionList.jsx
 import { useContext } from 'react'; // 👈 1
-import { ThemeContext } from '../../App'; // 👈 1
+import { ThemeContext } from '../../pages/Layout'; // 👈 1
 // ...
 
 function TransactionTable({ transactions }) {
@@ -156,11 +165,10 @@ export const ThemeProvider = ({ children }) => {
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]); // 👈 4
 
   return (
-    {/* 👇 5 */}
     <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
-  );
+  );// 👈 5
 };
 ```
 
@@ -169,6 +177,8 @@ export const ThemeProvider = ({ children }) => {
 3. De `ThemeProvider` voorziet ook in een functie om het thema aan te passen.
 4. De `ThemeProvider` bepaalt wat er gedeeld wordt met de children. Maak hiervoor de constante `value` aan. Vermits het hier om een waarde (en geen functie) gaat, gebruiken we `useMemo`.
 5. De `ThemeProvider` stelt de `value` ter beschikking van de children.
+
+We krijgen echter een eslint fout 'Fast refresh only works when a file only exports components'. Dit lossen we later op.
 
 ### Kleur van de tekst
 
@@ -291,14 +301,31 @@ export default function Navbar() {
 3. Voeg de bootstrap klassen toe voor de achtergrondkleur en de kleur van de tekst.
 4. Voorzie de knop om het thema te kiezen.
 
+Pas `Layout.jsx` aan zodat er met de `ThemeContext` wordt gewerkt.
+
+```jsx
+// src/components/Layout.jsx
+import { Outlet, ScrollRestoration } from 'react-router-dom';
+import Navbar from '../components/Navbar';
+import { useContext } from 'react';
+import { ThemeContext } from '../contexts/Theme.context';// 👈
+
+export default function Layout() {
+  const { theme, textTheme } = useContext(ThemeContext);// 👈
+  return (
+    <div className={`container-xl bg-${theme} text-${textTheme}`}>{/* 👈 */}
+      <Navbar />
+      <Outlet />
+      <ScrollRestoration />
+    </div >
+  );
+}
+```
 De `TransactionTable` component blijft behouden. De `ThemeContext` komt nu wel niet uit `main.jsx` maar `Theme.context.jsx`:
 
 ```jsx
 import { ThemeContext } from '../../contexts/Theme.context';
 ```
-
-Verwijder de context uit `Layout.jsx`.
-
 ### Oefening 1 - ThemeContext
 
 Pas de andere componenten aan.
@@ -327,7 +354,7 @@ import {
   useCallback,
   useMemo,
   useContext,
-} from 'react';
+} from 'react';// 👈
 
 export const themes = {
   dark: 'dark',
@@ -347,11 +374,11 @@ export const useThemeColors = () => {
 
 //...
 ```
-
+Importeer `useContext`.
 1. Deze hook retourneert de drie waarden `theme`, `textTheme` en `toggleTheme`.
 2. Deze hook retourneert enkel het `theme` en `textTheme`.
 
-We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuw bestand `Theme.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
+We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuw bestand `theme.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
 
 ```js
 import { useContext } from 'react';
@@ -365,8 +392,8 @@ export const themes = {
 export const useTheme = () => useContext(ThemeContext);
 
 export const useThemeColors = () => {
-  const { theme, oppositeTheme } = useContext(ThemeContext);
-  return { theme, oppositeTheme };
+  const { theme, textTheme } = useContext(ThemeContext);
+  return { theme, textTheme };
 };
 ```
 
@@ -377,7 +404,7 @@ Zo kan de code in `Navbar.jsx` als volgt aangepast worden:
 import { NavLink } from 'react-router-dom';
 //import { useContext } from 'react'; // 👈 1
 //import { ThemeContext } from '../contexts/Theme.context'; // 👈 1
-import { useTheme } from '../contexts/Theme'; // 👈 1
+import { useTheme } from '../contexts/theme'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5';
 
 export default function Navbar() {
@@ -453,7 +480,7 @@ We krijgen nog fouten (zie verder). Importeer eerst de `LabelInput` component in
   name='userId'
   type='number'
   validationRules={validationRules.userId}
-/>;
+/>
 {
   /* Herhaal dit voor de overige input fields */
 }
@@ -483,6 +510,7 @@ export default function TransactionForm({ places=[], transaction=EMPTY_TRANSACTI
       date: toDateInputString(transaction?.date),
       placeId: transaction?.place.id,
       amount: transaction?.amount,
+      userId: transaction?.user.id,
     }
   });
 
@@ -558,7 +586,53 @@ Maak een `SelectList` component aan.
 ### Uitschakelen inputvelden bij submit
 
 Je kan er ook voor zorgen dat de inputvelden en knoppen in het formulier _disabled_ worden als het formulier gesubmit wordt.
-`useForm` geeft een boolean [isSubmitting](https://react-hook-form.com/api/useform/formstate) terug die `true` is als het formulier gesubmit wordt en `false` bij een reset.
+`useForm` geeft een boolean [isSubmitting](https://react-hook-form.com/api/useform/formstate) terug die `true` is als het formulier gesubmit wordt en `false` bij een reset. Voeg ook een `Cancel`knop toe
+
+```jsx
+export default function TransactionForm({
+  places = [],
+  transaction = EMPTY_TRANSACTION,
+  saveTransaction,
+}) {
+  // ...
+  const {
+    handleSubmit,
+    formState: { isSubmitting, isValid },
+  } = methods; // 👆
+
+  // ...
+  return (
+    <>
+      <FormProvider {...methods}>
+        {/* ... */}
+        <div className='clearfix'>
+          <div className='btn-group float-end'>
+            {/* 👇 */}
+            <button
+              type='submit'
+              disabled={isSubmitting}
+              className='btn btn-primary'
+            >
+              {transaction?.id ? 'Save transaction' : 'Add transaction'}
+            </button>
+            {/* 👇 */}
+            <Link
+              disabled={isSubmitting}
+              className='btn btn-light'
+              to='/transactions'
+            >
+              Cancel
+            </Link>
+          </div>
+        </div>
+        {/* ... */}
+      </FormProvider>
+    </>
+  );
+}
+```
+
+Disable het inputveld tijdens submit, doe hetzelfde voor de `SelectList` component.
 
 ```jsx
 import { useFormContext } from 'react-hook-form';
@@ -597,54 +671,20 @@ export default function LabelInput({
   );
 }
 ```
-
-Disable het inputveld tijdens submit, doe hetzelfde voor de `SelectList` component.
-
-```jsx
-export default function TransactionForm({
-  places = [],
-  transaction = EMPTY_TRANSACTION,
-  saveTransaction,
-}) {
-  // ...
-  const {
-    handleSubmit,
-    formState: { isSubmitting, isValid },
-  } = methods; // 👆
-
-  // ...
-  return (
-    <>
-      <FormProvider {...methods}>
-        {/* ... */}
-        <div className='clearfix'>
-          <div className='btn-group float-end'>
-            <button
-              type='submit'
-              disabled={isSubmitting}
-              className='btn btn-primary'
-            >
-              {transaction?.id ? 'Save transaction' : 'Add transaction'}
-            </button>
-
-            {/* 👇 */}
-            <Link
-              disabled={isSubmitting}
-              className='btn btn-light'
-              to='/transactions'
-            >
-              Cancel
-            </Link>
-          </div>
-        </div>
-        {/* ... */}
-      </FormProvider>
-    </>
-  );
-}
-```
+> **Eindpunt voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b oplossing-les6 7564a38
+> yarn install
+> yarn dev
+>```
 
 ### Oefening 4 - Je eigen project
 
 Controleer je eigen project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
+
+
+
