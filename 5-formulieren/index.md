@@ -36,6 +36,8 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
   ```jsx
   // src/main.jsx
+  import AddOrEditTransaction from './pages/transactions/AddOrEditTransaction.jsx';
+  //...
   {
     path: '/transactions',
     children: [
@@ -57,13 +59,15 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
 ### Oefening 2 - Toevoegen van knoppen
 
-Voorzie een knop "Add Transaction" naast de zoekbalk en een potloodknop in de lijst voor elke transactie.
+Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en een potloodknop in de lijst voor elke transactie (`Transaction.jsx`).
 
 - Oplossing +
 
   In `TransactionList.jsx` voeg je onderstaande code toe:
 
   ```jsx
+  import {Link} from 'react-router-dom';
+  //...
   <div className='clearfix'>
     <Link to='/transactions/add' className='btn btn-primary float-end'>
       Add transaction
@@ -74,12 +78,15 @@ Voorzie een knop "Add Transaction" naast de zoekbalk en een potloodknop in de li
   In `Transaction.jsx` voeg je onderstaande code toe:
 
   ```jsx
+  import { IoTrashOutline, IoPencilOutline } from 'react-icons/io5';
+  import { Link } from 'react-router-dom';
+  //...
   <Link to={`/transactions/edit/${id}`} className='btn btn-light'>
     <IoPencilOutline />
   </Link>
   ```
 
-  Vergeet de import van de `IoPencilOutline` component niet!
+Zorg dat deze link niet getoond wordt als we de detail van een plaats bekijken.
 
 ## Het formulier
 
@@ -163,7 +170,7 @@ In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaan
 
 ?> Voor simpele formulieren zoals bv. een zoekbalk kan je gebruik maken van controlled components. Voor complexere formulieren is het aangeraden om een library te gebruiken zoals `react-hook-form`.
 
-Maak vervolgens een bestand `AddOrEditTransaction.jsx` aan in de map `src/pages/transactions`. Deze pagina gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen aangezien de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren.
+De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen aangezien de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren.
 
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.jsx
@@ -327,7 +334,7 @@ const EMPTY_TRANSACTION = {
   },
 };
 
-// 👇 2
+// 👇 3
 const toDateInputString = (date) => {
   // ISO String without the trailing 'Z' is fine 🙄
   // (toISOString returns something like 2020-12-05T14:15:74Z,
@@ -384,8 +391,9 @@ const validationRules = {
 export default function TransactionForm({places = []}) {
   // ...
 
-  // 👇 2 en 3
+  // 👇 2 en 3 en 4
   const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
+    mode: 'onBlur',
     defaultValues:  {
       date: toDateInputString(transaction?.date),
       placeId: transaction?.place.id,
@@ -428,6 +436,7 @@ export default function TransactionForm({places = []}) {
    - React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](https://react-hook-form.com/api/useform/register). Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
 2. Voor de weergave van de fouten maken we gebruik van het `errors` object. Aan de hand van het `type` property kan je het type van de fout opvragen (bv. `errors.userId.type === 'required'`). Merk op dat we hier gebruik maken van `&&`, dit wordt wel eens gezien als een anti-pattern in React. Het is eigenlijk beter om de ternary operator (`voorwaarde ? true : false`) te gebruiken. Dit wordt dus: `{errors.userId ? <p className="form-text text-danger">{errors.userId.message}</p> : null}`.
 3. Als het formulier niet geldig is beëindigen we het afhandelen van de submit.
+4. `mode`: validatie strategie alvorens submit. onBlur validatie wordt getriggerd bij het blur event.
 
 ### Oefening
 
@@ -476,7 +485,7 @@ export const save = async (url, { arg: body }) => {
 1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook de `transaction` mee als argument, we hernoemen de `arg` optie voor de duidelijkheid.
 2. We voeren een `POST` request uit naar de API. Axios zal de `transaction` automatisch omzetten naar JSON en versturen als body van het HTTP request. Het antwoord heeft als HTTP status code 201 en als response body de nieuw gecreëerde transactie. We negeren dat antwoord hier.
 
-De creatie van een transactie gebeurt in de `AddOrEditTransaction` component. De callback functie wordt doorgegeven aan de `TransactionForm`. De state (= de transacties) wordt bijgehouden in de `TransactionList` component, maar die zal automatisch geüpdatet worden als we dezelfde key doorgeven aan `swr`. We maken een nieuwe mutation in `TransactionForm`:
+De creatie van een transactie gebeurt in de `AddOrEditTransaction` component. De callback functie wordt doorgegeven aan de `TransactionForm`. De state (= de transacties) wordt bijgehouden in de `TransactionList` component, maar die zal automatisch geüpdatet worden als we dezelfde key doorgeven aan `swr`. We maken een nieuwe mutation in `AddOrEditTransaction`:
 
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.jsx
@@ -519,7 +528,7 @@ export default function AddOrEditTransaction() {
 
 // 👇 1
 export default function TransactionForm({ places = [], saveTransaction }) {
-  const onSubmit = async (values) => {
+  const onSubmit = async (values) => { // 👈 2
     if (!isValid) return;
 
     // 👇 2
@@ -539,11 +548,11 @@ Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebr
 
 ### Oefening 3 - POST in je eigen project
 
-Implementeer een willekeurige POST uit je eigen project (liefst dezelfde entiteit als hiervoor):
+Implementeer een formulier om een entiteit te creëren in je eigen project:
 
 - Maak een functie die een POST request uitvoert aan in `api/index.js`.
 - Gebruik de `useSWRMutation` hook om de data toe te voegen.
-- Controleer of je formulier nog steeds een item kan toevoegen.
+- Controleer of je formulier een item kan toevoegen.
 
 ## PUT /api/transactions/:id
 
@@ -557,7 +566,6 @@ In de API hebben we een functie nodig om de aan te passen transactie op te halen
 // src/api/index.js
 export const getById = async (url) => {
   const { data } = await axios.get(`${baseUrl}/${url}`);
-
   return data;
 };
 ```
@@ -584,7 +592,7 @@ export async function save(url, { arg: { id, ...data } }) {
 }
 ```
 
-Wij kiezen voor de laatste (compacte) oplossing.
+Wij kiezen voor de laatste (compacte) oplossing. Pas ook `PlacesList.jsx` aan zodat nu van de `save` methode gebruik gemaakt wordt.
 
 Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we `null` door. Indien swr `null` ontvangt, zal het geen request uitvoeren.
 
@@ -636,10 +644,10 @@ In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `
 
 ```jsx
 // ... (imports)
-import { useNavigate } from 'react-router-dom'; // 👈 4
+import { useNavigate } from 'react-router-dom'; // 👈 3
 
 export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION, saveTransaction}) {  // 👈 1
-  const navigate = useNavigate(); // 👈 4
+  const navigate = useNavigate(); // 👈 3
 
  const { register, handleSubmit, formState: { errors, isValid } } = useForm( {
     mode: 'onBlur',
@@ -647,10 +655,11 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
       date: toDateInputString(transaction?.date),
       placeId: transaction?.place.id,
       amount: transaction?.amount,
+      userId: transaction?.user.id,
     },
-  }); // 👈 2
+  }); // 👈 3
 
-  // 👇 4
+  // 👇 3
   const onSubmit = async (values) => {
     if (!isValid) return;
 
@@ -667,7 +676,7 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
   //..
   return (
     {/* ... */}
-    {/* 👇 3  */}
+    {/* 👇 2  */}
     <button type='submit' className='btn btn-primary'>
       {transaction?.id
         ? "Save transaction"
@@ -679,11 +688,10 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
 ```
 
 1. Ontvang `transaction` als prop. Stel de standaardwaarde in op `EMPTY_TRANSACTION`. Verwijder de constante `transaction`.
-2. `useForm` heeft een optioneel object als argument.
-   - `mode`: validatie strategie alvorens submit. `onBlur` validatie wordt getriggerd bij het blur event.
-   - `defaultValues`: initiële waarden voor de formuliervelden.
-3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
-4. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
+2. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
+3. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
+
+Pas ook de titel `Add transaction` aan in `AddorEditTransaction`.
 
 ## Verbeteren van de performantie
 
@@ -765,10 +773,10 @@ Start de app en bekijk de console. Verwijder nadien de toegevoegd `console.log` 
 
 ### useCallback hook
 
-Pas de `TransactionList` aan en voeg onderstaande functie toe:
+Pas de `TransactionList` aan en voeg onderstaande functie toe. We geven een extra alert als de transactie verwijderd is.
 
 ```js
-const handleDelete = async (id) => {
+const handleDeleteTransaction = async (id) => {
   await deleteTransaction(id);
   alert('Transaction is removed');
 };
@@ -779,13 +787,13 @@ Geef deze door als property `onDelete` aan de `TransactionTable` component:
 ```jsx
 <TransactionsTable
   transactions={filteredTransactions}
-  onDelete={handleDelete}
+  onDelete={handleDeleteTransaction}
 />
 ```
 
 Van zodra we een letter ingeven in de zoekbalk worden alle transacties toch opnieuw gerenderd.
 
-`TransactionTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDelete` is de event handler functie. JavaScript gaat er vanuit dat de functie `handleDelete` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
+`TransactionTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDeleteTransaction` is de event handler functie. JavaScript gaat er vanuit dat de functie `handleDeleteTransaction` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
 
 Pas de code van de functie in de `TransactionList` component aan:
 
@@ -796,7 +804,7 @@ import { useState, useMemo, useCallback } from 'react'; // 👈
 // ...
 
 // 👇
-const handleDelete = useCallback(
+const handleDeleteTransaction = useCallback(
   async (id) => {
     await deleteTransaction(id);
     alert('Transaction is removed');
