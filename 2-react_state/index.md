@@ -1079,8 +1079,8 @@ export default function TransactionList() {
       </div>
 
       <div className='mt-4'>
+        {/* 👇 */}
         <TransactionsTable transactions={filteredTransactions} />
-        {/* 👈 */}
       </div>
     </>
   );
