@@ -1138,8 +1138,6 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
   }
   ```
 
-l> fe oplossing 2e1eb31 les2-opl
-
 ## useReducer hook
 
 Mocht je nood hebben aan een meer complexe state in een component, dan kan je gebruik maken van de `useReducer` hook. Dit is in feite een alternatief voor `useState`. Met een reducer kan je een complexe state aanpassen o.b.v. een **reducer-functie** die een bepaalde actie ontvangt. Wat die actie is, kies je zelf. Typisch is dit een object van de vorm `{ action: string; payload: any; }`.
@@ -1159,6 +1157,8 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 - groen: af en toe
 - blauw: zelden
 
+l> fe oplossing 2e1eb31 les2-opl
+
 ## Oefening 4 - README
 
 Pas `README.md` aan zodat de gebruiker weet hoe de dependencies geïnstalleerd moeten worden, en hoe de applicatie gestart moet worden (in development).
@@ -1170,7 +1170,6 @@ Probeer de challenges op [https://react.dev/learn/keeping-components-pure](https
 ## Oefening 6 - To do app
 
 Zorg ervoor dat de checkbox in de To do app (zie oefening 2 van vorige les) aan en uit gevinkt kan worden.
-
 
 <!-- markdownlint-disable-next-line -->
 
