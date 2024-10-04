@@ -727,7 +727,15 @@ Het zou handig zijn als we in VS Code konden debuggen... Uiteraard kan dit ook. 
 
 Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de `return` in de `App` component. Als je nu naar de browser gaat, zou de debugger moeten stoppen op het breakpoint. Hoera, we kunnen degelijk debuggen!
 
-l> fe oplossing c122351 les1
+## Oplossing voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les1-opl c122351
+yarn install
+yarn dev
+```
 
 ## Oefening 1 - Je eigen project
 
@@ -798,8 +806,6 @@ end note
 - Oplossing +
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>.
-
-l> fe oplossing c122351 les1-opl
 
 ## Mogelijke extra's voor de examenopdracht
 

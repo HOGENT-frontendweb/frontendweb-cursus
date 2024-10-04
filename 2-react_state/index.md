@@ -1,6 +1,14 @@
 # React state management
 
-l> fe start c122351 les2
+## Startpunt voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les2 c122351
+yarn install
+yarn dev
+```
 
 ## Props en state
 
@@ -1157,7 +1165,15 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 - groen: af en toe
 - blauw: zelden
 
-l> fe oplossing 2e1eb31 les2-opl
+## Startpunt voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les2-opl 2e1eb31
+yarn install
+yarn dev
+```
 
 ## Oefening 4 - README
 

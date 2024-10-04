@@ -1,6 +1,14 @@
 # React Router
 
-l> fe start 2e1eb31 les3
+## Startpunt voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les3 2e1eb31
+yarn install
+yarn dev
+```
 
 Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door Vite gegenereerde scripts en stylesheets geïnjecteerd.
 
@@ -733,7 +741,15 @@ Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
 import './index.css';
 ```
 
-l> fe oplossing 75b3f6d les3-opl
+## Oplossing voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les3-opl 75b3f6d
+yarn install
+yarn dev
+```
 
 ## Oefening
 

@@ -4,7 +4,15 @@
 
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.
 
-l> fe start 4324cf3 les5
+## Startpunt voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les5 4324cf3
+yarn install
+yarn dev
+```
 
 ## Routing
 
@@ -66,13 +74,13 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en
   In `TransactionList.jsx` voeg je onderstaande code toe:
 
   ```jsx
-  import {Link} from 'react-router-dom';
+  import { Link } from 'react-router-dom';
   //...
   <div className='clearfix'>
     <Link to='/transactions/add' className='btn btn-primary float-end'>
       Add transaction
     </Link>
-  </div>
+  </div>;
   ```
 
   In `Transaction.jsx` voeg je onderstaande code toe:
@@ -83,7 +91,7 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en
   //...
   <Link to={`/transactions/edit/${id}`} className='btn btn-light'>
     <IoPencilOutline />
-  </Link>
+  </Link>;
   ```
 
 Zorg dat deze link niet getoond wordt als we de detail van een plaats bekijken.
@@ -528,7 +536,8 @@ export default function AddOrEditTransaction() {
 
 // 👇 1
 export default function TransactionForm({ places = [], saveTransaction }) {
-  const onSubmit = async (values) => { // 👈 2
+  // 👇 2
+  const onSubmit = async (values) => {
     if (!isValid) return;
 
     // 👇 2
@@ -829,7 +838,15 @@ Pas memoization toe in je eigen project. Let wel op het volgende:
 
 Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de React DevTools om te achterhalen welke component (te) vaak renderen en pas daar memoization toe.
 
-l> fe oplossing 69e7baf les5-opl
+## Oplossing voorbeeldapplicatie
+
+```bash
+git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+cd frontendweb-budget
+git checkout -b les5-opl 69e7baf
+yarn install
+yarn dev
+```
 
 ## Mogelijke extra's voor de examenopdracht
 
