@@ -1165,7 +1165,7 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 - groen: af en toe
 - blauw: zelden
 
-## Startpunt voorbeeldapplicatie
+## Oplossing voorbeeldapplicatie
 
 ```bash
 git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
