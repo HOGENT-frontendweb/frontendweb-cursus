@@ -730,7 +730,7 @@ export default function Navbar() {
 Voeg onderstaande code toe aan de `index.css`:
 
 ```css
-nav a.active {
+a.nav-link.active {
   color: darkblue;
 }
 ```
