@@ -581,9 +581,15 @@ Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er gee
 
 Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten worden.
 
-### Oplossing
-
-TODO: voorbeeldoplossing toevoegen
+> **Oplossing voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les7-opl TODO:
+> yarn install
+> yarn dev
+> ```
 
 ## Authenticatie
 

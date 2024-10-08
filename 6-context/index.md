@@ -1,3 +1,5 @@
+# Context API
+
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
@@ -6,10 +8,7 @@
 > git checkout -b les6 69e7baf
 > yarn install
 > yarn dev
->```
-
-
-# Context API
+> ```
 
 We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
 
@@ -70,7 +69,9 @@ export const ThemeContext = createContext();
 
 export default function Layout() {
   return (
-    <ThemeContext.Provider value={{ theme: 'dark' }}> {/* 👈 */}
+    <ThemeContext.Provider value={{ theme: 'dark' }}>
+      {' '}
+      {/* 👈 */}
       <div className='container-xl'>
         <Navbar />
         <Outlet />
@@ -165,10 +166,8 @@ export const ThemeProvider = ({ children }) => {
   const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]); // 👈 4
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
-  );// 👈 5
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  ); // 👈 5
 };
 ```
 
@@ -308,24 +307,27 @@ Pas `Layout.jsx` aan zodat er met de `ThemeContext` wordt gewerkt.
 import { Outlet, ScrollRestoration } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useContext } from 'react';
-import { ThemeContext } from '../contexts/Theme.context';// 👈
+import { ThemeContext } from '../contexts/Theme.context'; // 👈
 
 export default function Layout() {
-  const { theme, textTheme } = useContext(ThemeContext);// 👈
+  const { theme, textTheme } = useContext(ThemeContext); // 👈
   return (
-    <div className={`container-xl bg-${theme} text-${textTheme}`}>{/* 👈 */}
+    <div className={`container-xl bg-${theme} text-${textTheme}`}>
+      {/* 👈 */}
       <Navbar />
       <Outlet />
       <ScrollRestoration />
-    </div >
+    </div>
   );
 }
 ```
+
 De `TransactionTable` component blijft behouden. De `ThemeContext` komt nu wel niet uit `main.jsx` maar `Theme.context.jsx`:
 
 ```jsx
 import { ThemeContext } from '../../contexts/Theme.context';
 ```
+
 ### Oefening 1 - ThemeContext
 
 Pas de andere componenten aan.
@@ -354,7 +356,7 @@ import {
   useCallback,
   useMemo,
   useContext,
-} from 'react';// 👈
+} from 'react'; // 👈
 
 export const themes = {
   dark: 'dark',
@@ -374,8 +376,8 @@ export const useThemeColors = () => {
 
 //...
 ```
-Importeer `useContext`.
-1. Deze hook retourneert de drie waarden `theme`, `textTheme` en `toggleTheme`.
+
+1. Importeer `useContext`. Deze hook retourneert de drie waarden `theme`, `textTheme` en `toggleTheme`.
 2. Deze hook retourneert enkel het `theme` en `textTheme`.
 
 We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuw bestand `theme.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
@@ -480,7 +482,7 @@ We krijgen nog fouten (zie verder). Importeer eerst de `LabelInput` component in
   name='userId'
   type='number'
   validationRules={validationRules.userId}
-/>
+/>;
 {
   /* Herhaal dit voor de overige input fields */
 }
@@ -671,7 +673,8 @@ export default function LabelInput({
   );
 }
 ```
-> **Eindpunt voorbeeldapplicatie**
+
+> **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
@@ -679,12 +682,9 @@ export default function LabelInput({
 > git checkout -b oplossing-les6 7564a38
 > yarn install
 > yarn dev
->```
+> ```
 
 ### Oefening 4 - Je eigen project
 
 Controleer je eigen project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
-
-
-

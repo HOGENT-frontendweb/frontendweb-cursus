@@ -2,17 +2,17 @@
 
 <!-- TODO: startpunt en oplossing toevoegen -->
 
+> **Startpunt voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les5 4324cf3
+> yarn install
+> yarn dev
+> ```
+
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.
-
-## Startpunt voorbeeldapplicatie
-
-```bash
-git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-cd frontendweb-budget
-git checkout -b les5 4324cf3
-yarn install
-yarn dev
-```
 
 ## Routing
 
@@ -838,15 +838,15 @@ Pas memoization toe in je eigen project. Let wel op het volgende:
 
 Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de React DevTools om te achterhalen welke component (te) vaak renderen en pas daar memoization toe.
 
-## Oplossing voorbeeldapplicatie
-
-```bash
-git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-cd frontendweb-budget
-git checkout -b les5-opl 69e7baf
-yarn install
-yarn dev
-```
+> **Oplossing voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les5-opl 69e7baf
+> yarn install
+> yarn dev
+> ```
 
 ## Mogelijke extra's voor de examenopdracht
 

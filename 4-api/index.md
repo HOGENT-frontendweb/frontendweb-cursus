@@ -2,15 +2,15 @@
 
 !> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>. Op de laatste commit is een lokale MySQL-server vereist. Maak ook een `.env` aan, bekijk de `README.md` voor meer informatie.
 
-## Startpunt voorbeeldapplicatie
-
-```bash
-git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-cd frontendweb-budget
-git checkout -b les4 75b3f6d
-yarn install
-yarn dev
-```
+> **Startpunt voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les4 75b3f6d
+> yarn install
+> yarn dev
+> ```
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
@@ -824,15 +824,15 @@ Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, 
 
 Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer.
 
-## Oplossing voorbeeldapplicatie
-
-```bash
-git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-cd frontendweb-budget
-git checkout -b les4-opl 4324cf3
-yarn install
-yarn dev
-```
+> **Oplossing voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les4-opl 4324cf3
+> yarn install
+> yarn dev
+> ```
 
 ## Must reads
 
