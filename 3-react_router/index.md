@@ -731,7 +731,7 @@ Voeg onderstaande code toe aan de `index.css`:
 
 ```css
 a.nav-link.active {
-  color: darkblue;
+  color: blue;
 }
 ```
 
