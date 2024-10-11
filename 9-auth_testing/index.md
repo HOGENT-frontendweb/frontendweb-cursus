@@ -10,7 +10,7 @@
 > git checkout origin/authenticatie
 > git checkout -b les8 f4bab5c
 > yarn install
-> yarn start
+> yarn dev
 > ```
 >
 > **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
@@ -28,7 +28,8 @@ We hebben hiervoor een command nodig aangezien Cypress per test de hele browsero
 Maak een nieuw commando aan in het bestand `cypress/support/commands.js`:
 
 ```js
-Cypress.Commands.add('login', (email, password) => { // 👈 1
+Cypress.Commands.add('login', (email, password) => {
+  // 👈 1
   // 👇 5
   Cypress.log({
     displayName: 'login',
@@ -51,14 +52,14 @@ We kunnen dit commando snel even uittesten door een test toe te voegen aan `spec
 
 ```jsx
 // cypress/e2e/spec.cy.js
-describe("mijn eerste test", () => {
-
-  it("draait de applicatie", () => {
+describe('mijn eerste test', () => {
+  it('draait de applicatie', () => {
     cy.visit('http://localhost:5173');
-    cy.get("h1").should("exist");
+    cy.get('h1').should('exist');
   });
 
-  it("should login", () => { // 👈 1
+  it('should login', () => {
+    // 👈 1
     cy.login('thomas.aelbrecht@hogent.be', '12345678'); // 👈 2
   });
 });
@@ -88,9 +89,8 @@ Voeg bovenaan elke test suite een `beforeEach` toe die de testgebruiker aanmeldt
 
 ```js
 describe('...', () => {
-
   beforeEach(() => {
-    cy.login('thomas.aelbrecht@hogent.be', '12345678')
+    cy.login('thomas.aelbrecht@hogent.be', '12345678');
   });
 
   // de testen
@@ -127,7 +127,8 @@ Voer de testen opnieuw uit, enkel de test van het zoeken naar de transacties van
 - Los alle fouten op en zorg dat de testen slagen.
 
 <!-- markdownlint-disable-next-line -->
-+ Oplossing +
+
+- Oplossing +
 
   Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie`
 

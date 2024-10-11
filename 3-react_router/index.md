@@ -528,7 +528,7 @@ Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenv
 ```jsx
 // src/pages/Layout.jsx
 import { Outlet } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 
 export default function Layout() {
   return (
@@ -636,7 +636,7 @@ Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar link
 ```jsx
 // src/pages/Layout.jsx
 import { Outlet, ScrollRestoration } from 'react-router-dom'; // 👈
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 
 export default function Layout() {
   return (
@@ -706,7 +706,7 @@ export default function Navbar() {
     <nav className='navbar sticky-top mb-4 navbar-light bg-light'>
       <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
         <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/'>
+          <NavLink className='nav-link' to='/transactions'>
             Transactions
           </NavLink>
         </div>

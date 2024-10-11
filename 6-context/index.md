@@ -39,7 +39,7 @@ In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de 
 ```jsx
 // src/components/Layout.jsx
 import { Outlet, ScrollRestoration } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 import { createContext } from 'react'; // 👈
 
 export const ThemeContext = createContext(); // 👈
