@@ -572,7 +572,7 @@ export default function Navbar() {
 }
 ```
 
-Pas `main.jsx` aan, alle paden zijn nu kinderen van de `Layout` component:
+Pas `main.jsx` aan, alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
 
 ```jsx
 const router = createBrowserRouter([
@@ -627,7 +627,15 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>,
+);
 ```
+
+In `main.jsx` kan je nu de `App` component verwijderen.
 
 ## Scroll restoration
 
