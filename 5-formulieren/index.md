@@ -178,39 +178,41 @@ In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaan
 
 ?> Voor simpele formulieren zoals bv. een zoekbalk kan je gebruik maken van controlled components. Voor complexere formulieren is het aangeraden om een library te gebruiken zoals `react-hook-form`.
 
-De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen aangezien de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren.
+### Oefening 3 - AddOrEditTransaction
+De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen aangezien de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren. Maak de component aan.
 
-```jsx
-// src/pages/transactions/AddOrEditTransaction.jsx
-import useSWR from 'swr'; // 👈 1
-import { getAll } from '../../api'; // 👈 1
-import TransactionForm from '../../components/transactions/TransactionForm'; // 👈 2
-import AsyncData from '../../components/AsyncData'; // 👈 3
+- Oplossing +
+  ```jsx
+  // src/pages/transactions/AddOrEditTransaction.jsx
+  import useSWR from 'swr'; // 👈 1
+  import { getAll } from '../../api'; // 👈 1
+  import TransactionForm from '../../components/transactions/TransactionForm'; // 👈 2
+  import AsyncData from '../../components/AsyncData'; // 👈 3
 
-export default function AddOrEditTransaction() {
-  const {
-    data: places = [],
-    error: placesError,
-    isLoading: placesLoading,
-  } = useSWR('places', getAll); // 👈 1
+  export default function AddOrEditTransaction() {
+    const {
+      data: places = [],
+      error: placesError,
+      isLoading: placesLoading,
+    } = useSWR('places', getAll); // 👈 1
 
-  return (
-    <>
-      <h1>Add transaction</h1>
+    return (
+      <>
+        <h1>Add transaction</h1>
 
-      {/* 👇 3 */}
-      <AsyncData error={placesError} loading={placesLoading}>
-        {/* 👇 2 */}
-        <TransactionForm places={places} />
-      </AsyncData>
-    </>
-  );
-}
-```
+        {/* 👇 3 */}
+        <AsyncData error={placesError} loading={placesLoading}>
+          {/* 👇 2 */}
+          <TransactionForm places={places} />
+        </AsyncData>
+      </>
+    );
+  }
+  ```
 
-1. We maken gebruik van swr om alle plaatsen op te halen.
-2. De `TransactionForm` component bevat het formulier voor de ingave van een transactie. We geven de plaatsen door.
-3. Zorg voor foutafhandeling en loading indicator.
+  1. We maken gebruik van swr om alle plaatsen op te halen.
+  2. De `TransactionForm` component bevat het formulier voor de ingave van een transactie. We geven de plaatsen door.
+  3. Zorg voor foutafhandeling en loading indicator.
 
 ### React-hook-form
 
@@ -446,7 +448,7 @@ export default function TransactionForm({places = []}) {
 3. Als het formulier niet geldig is beëindigen we het afhandelen van de submit.
 4. `mode`: validatie strategie alvorens submit. onBlur validatie wordt getriggerd bij het blur event.
 
-### Oefening
+### Oefening 4 - validatie
 
 Definieer de validatieregels voor de andere inputvelden
 
@@ -555,7 +557,7 @@ export default function TransactionForm({ places = [], saveTransaction }) {
 
 Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee.
 
-### Oefening 3 - POST in je eigen project
+### Oefening 5 - POST in je eigen project
 
 Implementeer een formulier om een entiteit te creëren in je eigen project:
 
@@ -824,13 +826,13 @@ const handleDeleteTransaction = useCallback(
 
 Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr dit ook doet.
 
-### Oefening 3 - Memoization
+### Oefening 6 - Memoization
 
 Ook `Place` is een pure componenten en dient enkel gererenderd te worden als zijn state wordt aangepast. Gebruik `memo` om de `Place` component te memoizen.
 
 Voeg in de budget-applicatie `useCallback` toe waar nodig.
 
-### Oefening 4 - Memoization in je eigen project
+### Oefening 7 - Memoization in je eigen project
 
 Pas memoization toe in je eigen project. Let wel op het volgende:
 
