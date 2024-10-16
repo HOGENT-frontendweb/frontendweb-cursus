@@ -738,7 +738,6 @@ export default function TransactionList() {
   return (
     <>
       <h1>Transactions</h1>
-      <TransactionForm onSaveTransaction={createTransaction} />
       <div className='input-group mb-3 w-50'>
         <input
           type='search'
@@ -822,7 +821,7 @@ Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt
 
 Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.jsx` die de lijst van `Places` weergeeft. `PlacesList.jsx` communiceert met de API en geeft de data door via props aan `PlacesCards.jsx`.
 
-Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer.
+Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. Maak hiervoor gebruik van de `TransactionTable` component.
 
 > **Oplossing voorbeeldapplicatie**
 >
