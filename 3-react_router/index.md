@@ -759,7 +759,7 @@ import './index.css';
 > yarn dev
 > ```
 
-## Oefening
+## Oefening 2 - Je eigen project
 
 Denk voor je eigen applicatie na over de navigatie en implementeer.
 

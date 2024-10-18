@@ -605,7 +605,7 @@ export default function TransactionList() {
 4. We gebruiken de `AsyncData` component om de `loading` en `error` verder af te handelen. We geven de `transactions` mee als `children`. We moeten hier enkel de naam van de variabele in de `loading` prop aanpassen naar `isLoading`.
 5. We testen niet langer of er zich een fout heeft voorgedaan, swr retourneert dan [].
 
-### Oefening 2 - GET all in je eigen project
+### Oefening 1 - GET all in je eigen project
 
 Implementeer een GET all van een willekeurige entiteit uit je eigen project:
 
@@ -781,7 +781,7 @@ Bekijk het resultaat in de applicatie, je zou een transactie moeten kunnen verwi
 
 Open de console en inspecteer het `Network` tabblad. Je zal zien dat er een `DELETE` request wordt uitgevoerd naar de API en dat meteen daarna de lijst van transacties opnieuw wordt opgehaald. Dit is de `stale-while-revalidate` strategie die `swr` gebruikt. De data wordt eerst uit de cache gehaald (stale), dan wordt de request uitgevoerd (revalidate) en tenslotte wordt de up-to-date data opnieuw geretourneerd. `swr` weet dat er iets gewijzigd is aangezien een mutation uitgevoerd is met dezelfde key als de hook die onze data ophaalt. Handig, he?
 
-### Oefening 3 - DELETE in je eigen project
+### Oefening 2 - DELETE in je eigen project
 
 Implementeer een willekeurige DELETE uit je eigen project (liefst dezelfde entiteit als hiervoor):
 
@@ -813,11 +813,11 @@ const baseUrl = import.meta.env.VITE_API_URL;
 
 Over environment variables in React & Vite vind je meer op <https://vitejs.dev/guide/env-and-mode.html>.
 
-## Oefening 7 - README
+## Oefening 3 - README
 
 Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt moet worden alvorens de applicatie gestart kan worden. Voeg ook een voorbeeld voor het `.env` bestand toe.
 
-## Oefening 8 - PlacesList via API
+## Oefening 4 - PlacesList via API
 
 Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.jsx` die de lijst van `Places` weergeeft. `PlacesList.jsx` communiceert met de API en geeft de data door via props aan `PlacesCards.jsx`.
 
