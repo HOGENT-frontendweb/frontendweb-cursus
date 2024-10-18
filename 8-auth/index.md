@@ -782,6 +782,8 @@ Maak een `Register` component op de URL `/register`.
   yarn dev
   ```
 
+  Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+
 ## Mogelijke extra's voor de examenopdracht
 
 - Gebruik van een externe authenticatieprovider (bv. [Auth0](https://auth0.com/), [Userfront](https://userfront.com/)...)

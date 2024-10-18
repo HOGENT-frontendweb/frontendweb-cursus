@@ -832,6 +832,8 @@ Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. M
 > yarn install
 > yarn dev
 > ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
 ## Must reads
 

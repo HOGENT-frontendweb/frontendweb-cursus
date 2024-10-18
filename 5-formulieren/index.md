@@ -1,7 +1,5 @@
 # Formulieren & hooks
 
-<!-- TODO: startpunt en oplossing toevoegen -->
-
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
@@ -11,6 +9,8 @@
 > yarn install
 > yarn dev
 > ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.
 
@@ -179,9 +179,11 @@ In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaan
 ?> Voor simpele formulieren zoals bv. een zoekbalk kan je gebruik maken van controlled components. Voor complexere formulieren is het aangeraden om een library te gebruiken zoals `react-hook-form`.
 
 ### Oefening 3 - AddOrEditTransaction
+
 De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het formulier zal bevatten om een transactie te creëren en te wijzigen. We dienen alvast de places op te halen aangezien de gebruiker de plaats waar de transactie plaatsvindt zal moeten selecteren. Maak de component aan.
 
 - Oplossing +
+
   ```jsx
   // src/pages/transactions/AddOrEditTransaction.jsx
   import useSWR from 'swr'; // 👈 1
@@ -849,6 +851,8 @@ Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de 
 > yarn install
 > yarn dev
 > ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
 ## Mogelijke extra's voor de examenopdracht
 

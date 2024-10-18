@@ -13,6 +13,8 @@
 > yarn dev
 > ```
 >
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+>
 > **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
 
 Momenteel moet je voor elke pagina in onze budget applicatie aangemeld zijn (behalve de `/login` en `/logout`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze een voor een falen.
@@ -139,5 +141,7 @@ Voer de testen opnieuw uit, enkel de test van het zoeken naar de transacties van
   yarn install
   yarn dev
   ```
+
+  Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
   Je zal een gelijknamige branch vinden in de [back-end repository](https://github.com/HOGENT-frontendweb/webservices-budget).

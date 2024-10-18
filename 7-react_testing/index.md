@@ -590,6 +590,8 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 > yarn install
 > yarn dev
 > ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
 ## Authenticatie
 
