@@ -1,6 +1,5 @@
 {
   "ignorePatterns": [
-    "\\./.*",
-    "https://kroki.io/*"
+    "https://kroki.io/.*"
   ]
 }
