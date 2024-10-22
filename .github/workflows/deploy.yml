@@ -35,6 +35,7 @@ jobs:
       - name: Lint markdown files
         uses: nosborn/github-action-markdown-cli@v3.3.0
         with:
+          folder-path: .
           config_file: .markdownlint.json
           dot: false
 
