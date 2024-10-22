@@ -43,7 +43,7 @@ jobs:
         id: lychee
         uses: lycheeverse/lychee-action@v1
         with:
-          args: "'./**/*.md' --scheme https"
+          args: "'./**/*.md' '*.md' --scheme https"
           fail: true
 
       - name: Check for broken GitHub commit references
