@@ -20,16 +20,17 @@ We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-pl
 yarn add --dev eslint-plugin-cypress
 ```
 
-Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended rules` . Zonder deze plugin krijgen we een `no-undef` foutmeldingen voor `describe`, `it`...
+Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended` rules. Zonder deze plugin krijgen we `no-undef` foutmeldingen voor de functies `describe`, `it`...
 
 ```js
+// eslint.config.js
 import pluginCypress from 'eslint-plugin-cypress/flat';
 
-//...
+// ...
 
 export default [
   pluginCypress.configs.recommended,
-  //...
+  // ...
 ];
 ```
 
@@ -104,7 +105,7 @@ describe('mijn eerste test', () => {
 
 Geef aan `describe` en `it` een degelijke beschrijving mee, dit zal je alleen maar helpen tijdens het debuggen van gefaalde testen.
 
-Als je de wijzigingen opslaat, voert de Test Runner een reload uit. De test voert met success uit. Verander gerust een `true` in `false` om een gefaalde test te bekijken.
+Als je de wijzigingen opslaat, voert de Test Runner een reload uit. De test voert met succes uit. Verander gerust een `true` in `false` om een gefaalde test te bekijken.
 
 We willen natuurlijk onze applicatie testen. Een eerste test nuttige kan zijn om te checken of de applicatie effectief beschikbaar is.
 
@@ -120,11 +121,11 @@ describe('mijn eerste test', () => {
 1. Geef een betekenisvolle naam aan de test
 2. Bezoek de website
 
-**Zorg er wel voor dat de front-end én back-end draaien**, anders faalt de test.
+!> **Zorg er wel voor dat de front-end én back-end draaien**, anders faalt de test.
 
 Ga naar de **Test Runner** en voer de test uit:
 
-1. De Command Log toont de VISIT action. De VISIT toont een blue pending state totdat de pagina geladen is.
+1. De Command Log toont de `VISIT` action. De `VISIT` toont een blauwe pending state totdat de pagina geladen is.
 2. De budget applicatie wordt geladen in het Preview pane.
 3. De test kleurt groen, alhoewel we geen assertions hebben toegevoegd. Dit komt omdat veel van de Cypress opdrachten zijn gebouwd om te mislukken als ze niet vinden wat ze verwachten te vinden. Dit staat bekend als een [default assertion](https://docs.cypress.io/guides/core-concepts/introduction-to-cypress#Default-Assertions).
 
@@ -212,6 +213,7 @@ Kortom, we gaan telkens `data-cy` attributen toevoegen waar nodig.
 Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral moeten we overal de juiste `data-cy` attributen toevoegen. Dit hoef je natuurlijk maar éénmaal te doen per component waar je testen voor schrijft.
 
 ```jsx
+// src/components/transactions/TransactionForm.js
 <form onSubmit={handleSubmit(onSubmit)} className='mb-5'>
   <LabelInput
     label='User ID'
@@ -270,6 +272,7 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
 Op een gelijkaardige manier passen we `Transaction` aan zodat we nadien kunnen checken of de transactie goed toegevoegd is.
 
 ```jsx
+// src/components/transactions/Transaction.js
 import { memo, useCallback } from 'react';
 // ...
 
@@ -392,6 +395,7 @@ We moeten ervoor zorgen dat onze testen geen blijvende wijzigingen veroorzaken, 
 Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen (en dan hebben we direct een verwijder test ook):
 
 ```js
+// cypress/e2e/addTransaction.cy.js
 describe('Add transaction', () => {
   // ...
 
@@ -409,7 +413,7 @@ describe('Add transaction', () => {
 
 Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen. Mogelijks moet je wel eerst manueel de lijst van transacties herstellen naar wat de test verwacht.
 
-## Oefening 1: foutboodschappen
+## Oefening 1 - Foutboodschappen
 
 We hebben getest of ons formulier werkt. Er wordt een transactie toegevoegd als alle input fields een geldige waarde krijgen.
 
@@ -529,10 +533,11 @@ describe('Transactions list', () => {
   it('should show a loading indicator for a very slow response', () => {
     cy.intercept(
       'http://localhost:9000/api/transactions', // 👈 1
+      // 👇 2
       (req) => {
         req.on('response', (res) => {
           res.setDelay(1000);
-        }); // 👈 2
+        });
       },
     ).as('slowResponse'); // 👈 5
     cy.visit('http://localhost:5173'); // 👈 3
@@ -551,7 +556,7 @@ describe('Transactions list', () => {
 6. En wacht iets later op dat request (m.a.w. tot hij afgehandeld is, hoelang de delay ook).
 7. Kijk dan of de loading indicator niet langer voorkomt.
 
-## Oefening 2: zoekfunctie van transacties
+## Oefening 2 - Zoekfunctie van transacties
 
 Schrijf volgende testen voor de zoekfunctie van onze transacties:
 
@@ -563,15 +568,15 @@ Hieronder worden de testgevallen afzonderlijk uitgelegd.
 
 ### Correcte invoer
 
-Als naar 'Ir' gezocht wordt, willen we enkel de transacties van Irish Pub zien.
+Als naar "Ir" gezocht wordt, willen we enkel de transacties van "Irish Pub" zien.
 
 - Voeg `data-cy` attributen toe waar nodig.
 - Check of er drie transacties in de lijst voorkomen.
-- Check of de 3 transacties 'Ir' bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://glebbahmutov.com/cypress-examples/recipes/contains-regular-expression.html>).
+- Check of de 3 transacties "Ir" bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://glebbahmutov.com/cypress-examples/recipes/contains-regular-expression.html>).
 
 ### Invoer zonder resultaten
 
-Als er naar 'xyz' gezocht wordt mag er geen enkel element getoond worden. Check hier ook of er geen fouten getoond worden.
+Als er naar "xyz" gezocht wordt mag er geen enkel element getoond worden. Check hier ook of er geen fouten getoond worden.
 
 ### Fouten in de back-end
 
@@ -592,7 +597,3 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
-
-## Authenticatie
-
-In het volgende hoofdstuk zullen we authenticatie toevoegen aan ons project. Dit zal wijzigen hoe onze testen uitgevoerd moeten worden, dit behandelen we in een later hoofdstuk.
