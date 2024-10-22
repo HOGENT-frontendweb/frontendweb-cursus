@@ -858,9 +858,11 @@ Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de 
 
 - [Formik](https://www.npmjs.com/package/formik)
 - Validatie in [react-hook-form](https://www.npmjs.com/package/react-hook-form) met [Joi](https://www.npmjs.com/package/joi), [Yup](https://npmjs.com/package/yup) of dergelijke
+  - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
 - Maak gebruik van **meerdere** custom hooks uit:
   - <https://nikgraf.github.io/react-hooks/>
   - <https://github.com/streamich/react-use>
+  - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
   - Zelf custom hooks schrijven is **geen** extra
 
 ## Must reads
