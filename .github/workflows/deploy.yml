@@ -35,7 +35,7 @@ jobs:
       - name: Lint markdown files
         uses: nosborn/github-action-markdown-cli@v3.3.0
         with:
-          files: "*.md"
+          files: "**/*.md"
           config_file: .markdownlint.json
           dot: false
 
@@ -43,6 +43,7 @@ jobs:
         uses: gaurav-nelson/github-action-markdown-link-check@v1
         with:
           base-branch: "main"
+          use-verbose-mode: "yes"
 
       - name: Check for broken GitHub commit references
         uses: ./commit-verifier
