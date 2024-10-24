@@ -777,7 +777,7 @@ Maak een `Register` component op de URL `/register`.
   ```bash
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b oplossing-les7 14016d2
+  git checkout -b les7-opl 14016d2
   yarn install
   yarn dev
   ```

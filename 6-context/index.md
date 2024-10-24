@@ -693,7 +693,7 @@ export default function LabelInput({
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b oplossing-les6 7564a38
+> git checkout -b les6-opl 7564a38
 > yarn install
 > yarn dev
 > ```

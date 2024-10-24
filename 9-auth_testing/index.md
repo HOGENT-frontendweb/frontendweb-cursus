@@ -137,7 +137,7 @@ Voer de testen opnieuw uit, enkel de test van het zoeken naar de transacties van
   ```bash
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b oplossing-les8 origin/authenticatie
+  git checkout -b les8-opl origin/authenticatie
   yarn install
   yarn dev
   ```
