@@ -11,6 +11,18 @@
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+>
+> Vanaf nu heb je ook de bijbehorende backend nodig:
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
+> cd webservices-budget
+> git checkout -b les5 ca4119d
+> yarn install
+> yarn start:dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
 
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.
 

@@ -1,7 +1,5 @@
 # Data ophalen uit een REST API
 
-!> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig: <https://github.com/HOGENT-frontendweb/webservices-budget>. Op de laatste commit is een lokale MySQL-server vereist. Maak ook een `.env` aan, bekijk de `README.md` voor meer informatie.
-
 > **Startpunt voorbeeldapplicatie**
 >
 > ```bash
@@ -10,6 +8,22 @@
 > git checkout -b les4 75b3f6d
 > yarn install
 > yarn dev
+> ```
+>
+> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig:
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
+> cd webservices-budget
+> git checkout -b les4 4e63e94
+> yarn install
+> yarn start:dev
+> ```
+>
+> Vergeet niet om een `.env` bestand aan te maken in de root van het back-end project:
+>
+> ```env
+> NODE_ENV=development
 > ```
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
