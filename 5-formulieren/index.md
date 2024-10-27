@@ -19,6 +19,7 @@
 > cd webservices-budget
 > git checkout -b les5 ca4119d
 > yarn install
+> yarn prisma migrate dev
 > yarn start:dev
 > ```
 >

@@ -18,6 +18,7 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les5 ca4119d
+> yarn prisma migrate dev
 > yarn install
 > yarn start:dev
 > ```
