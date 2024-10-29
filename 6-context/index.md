@@ -106,7 +106,7 @@ Elk **context object** wordt beschikbaar gemaakt met een **context provider** co
 De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. het thema in de `TransactionTable` component. De `TransactionsTable` component zal de data consumeren, en is een context consumer.
 
 ```jsx
-// src/components/transactions/TransactionList.jsx
+// src/components/transactions/TransactionTable.jsx
 import { useContext } from 'react'; // 👈 1
 import { ThemeContext } from '../../pages/Layout'; // 👈 1
 // ...
@@ -270,7 +270,7 @@ Voeg in `Navbar.jsx` een knop toe om van thema te wisselen:
 // src/components/Navbar.jsx
 import { NavLink } from 'react-router-dom';
 import { useContext } from 'react'; //👈 1
-import { ThemeContext } from '../contexts/Theme.context'; // 👈 1
+import { ThemeContext, themes } from '../contexts/Theme.context'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5'; // 👈 4
 
 export default function Navbar() {
@@ -302,7 +302,7 @@ export default function Navbar() {
           type='button'
           onClick={toggleTheme}
         >
-          {theme === 'dark' ? <IoMoonSharp /> : <IoSunny />}
+          {theme === themes.dark ? <IoMoonSharp /> : <IoSunny />}
         </button>
       </div>
     </nav>
@@ -677,7 +677,7 @@ export default function LabelInput({
         {...register(name, validationRules)}
         id={name}
         type={type}
-        disabled={submitting}
+        disabled={isSubmitting}
         className='form-control'
         {...rest}
       /> {/* 👆 */}
