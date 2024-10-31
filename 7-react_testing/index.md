@@ -1,6 +1,29 @@
 # Testing
 
-<!-- TODO: startpunt en oplossing toevoegen -->
+> **Startpunt voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les7 7cc828c
+> yarn install
+> yarn dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+>
+> Vanaf nu heb je ook de bijbehorende backend nodig:
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
+> cd webservices-budget
+> git checkout -b les5 ca4119d
+> yarn prisma migrate dev
+> yarn install
+> yarn start:dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
 
 Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Cypress](https://www.cypress.io/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten (m.b.v. [Jest](https://jestjs.io/)), maar deze testen vallen buiten de scope van deze cursus.
 
@@ -217,9 +240,9 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
 <form onSubmit={handleSubmit(onSubmit)} className='mb-5'>
   <LabelInput
     label='User ID'
-    name='user'
+    name='userId'
     type='number'
-    validationRules={validationRules.user}
+    validationRules={validationRules.userId}
     data-cy='user_input' // 👈 1
   />
   <LabelInput
@@ -341,8 +364,8 @@ describe('Add transaction', () => {
     cy.visit('http://localhost:5173/transactions/add'); // 👈 1
 
     cy.get('[data-cy=user_input]').type('2'); // 👈 2
-    cy.get('[data-cy=date_input]').type('2021-11-01'); // 👈 2
-    cy.get('[data-cy=place_input]').select('Irish Pub'); // 👈 2
+    cy.get('[data-cy=date_input]').type('2024-10-01'); // 👈 2
+    cy.get('[data-cy=place_input]').select(3); // 👈 2
     cy.get('[data-cy=amount_input]').type('200'); // 👈 2
     cy.get('[data-cy=submit_transaction]').click(); // 👈 3
 
@@ -421,7 +444,7 @@ Vaak is het echter minstens even interessant (zo niet interessanter) om alle edg
 
 <!-- markdownlint-disable-next-line -->
 
-- Oplossing +
+- Oplossing stappenplan +
 
   1. Voeg een `data-cy` attribuut aan de tags met foutboodschappen.
   2. Voeg een nieuwe test toe aan het `addTransaction.cy.js` bestand.
@@ -431,6 +454,19 @@ Vaak is het echter minstens even interessant (zo niet interessanter) om alle edg
   6. Extra: test zowel niets als een negatief getal invullen en controleer dat in beide gevallen de juiste foutboodschap verschijnt.
 
 Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan je misschien helpen. Bekijk zeker ook de voorbeeldtesten voor inspiratie als je niet verder kan.
+
+- Oplossing +
+```js
+  it("should show the error message for an invalid user id", () => {
+      cy.visit("http://localhost:5173/transactions/add");
+
+      cy.get("[data-cy=user_input]").type("-1");
+      cy.get("[data-cy=submit_transaction]").click();
+
+      cy.get("[data-cy=label_input_error]").contains("min 1");
+    });
+  });
+```
 
 ## Mocks
 
@@ -450,7 +486,7 @@ describe('Transactions list', () => {
     cy.intercept(
       'GET',
       'http://localhost:9000/api/transactions',
-      `{"items":[{"id":1,"amount":-97,"date":"2021-11-01","user":{"id":1,"name":"Pieter"},
+      `{"items":[{"id":1,"amount":-97,"date":"2024-10-01","user":{"id":1,"name":"Pieter"},
       "place":{"id":4,"name":"Chinees Restaurant"}}],"count":1}`,
     );
 
@@ -458,7 +494,7 @@ describe('Transactions list', () => {
     cy.visit('http://localhost:5173');
     cy.get('[data-cy=transaction]').should('have.length', 1);
     cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
-    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/11/2021');
+    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2024');
   });
 });
 ```
@@ -476,13 +512,12 @@ De data inline plaatsen in een `intercept` is meestal niet zo handig (of leesbaa
 Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
 
 ```json
-// fixtures/transactions.json
 {
   "items": [
     {
       "id": 1,
       "amount": -97,
-      "date": "2021-11-01",
+      "date": "2024-10-01",
       "user": {
         "id": 2,
         "name": "Pieter"
@@ -491,9 +526,21 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
         "id": 4,
         "name": "Chinees Restaurant"
       }
+    },
+    {
+      "id": 1,
+      "amount": 100,
+      "date": "2024-10-01",
+      "user": {
+        "id": 2,
+        "name": "Pieter"
+      },
+      "place": {
+        "id": 3,
+        "name": "Irish Pub"
+      }
     }
-  ],
-  "count": 1
+  ]
 }
 ```
 
@@ -510,9 +557,9 @@ describe('Transactions list', () => {
     );
 
     cy.visit('http://localhost:5173');
-    cy.get('[data-cy=transaction]').should('have.length', 1);
+    cy.get('[data-cy=transaction]').should('have.length', 2);
     cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
-    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/11/2021');
+    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2024');
   });
 });
 ```
@@ -571,8 +618,9 @@ Hieronder worden de testgevallen afzonderlijk uitgelegd.
 Als naar "Ir" gezocht wordt, willen we enkel de transacties van "Irish Pub" zien.
 
 - Voeg `data-cy` attributen toe waar nodig.
-- Check of er drie transacties in de lijst voorkomen.
-- Check of de 3 transacties "Ir" bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://glebbahmutov.com/cypress-examples/recipes/contains-regular-expression.html>).
+- Werk met de fixtures
+- Check of er 1 transactie in de lijst voorkomt.
+- Check of die ene transactie "Ir" bevatten. Dit kan je het makkelijkst bereiken door gebruik te maken van een match met regular expressions (zie <https://glebbahmutov.com/cypress-examples/recipes/contains-regular-expression.html>).
 
 ### Invoer zonder resultaten
 
@@ -581,6 +629,48 @@ Als er naar "xyz" gezocht wordt mag er geen enkel element getoond worden. Check 
 ### Fouten in de back-end
 
 Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
+
+- Oplossing +
+```js
+  it('should show all transactions for the Irish pub', () => {
+    cy.visit('http://localhost:5173');
+    cy.intercept(
+      'GET',
+      'http://localhost:9000/api/transactions',
+      { fixture: 'transactions.json' }, // 👈
+    );
+    cy.get('[data-cy=transactions_search_input]').type('Ir');
+    cy.get('[data-cy=transactions_search_btn]').click();
+
+    cy.get('[data-cy=transaction]').should('have.length',1);
+    cy.get('[data-cy=transaction_place]').eq(0).contains(/Irish Pub/);
+  });
+
+  it('should show a message when no transactions are found', () => {
+    cy.visit('http://localhost:5173');
+
+    cy.get('[data-cy=transactions_search_input]').type('xyz');
+    cy.get('[data-cy=transactions_search_btn]').click();
+
+    cy.get('[data-cy=no_transactions_message]').should('exist');
+  });
+
+  it('should show an error if the API call fails', () => {
+    cy.intercept(
+      'GET',
+      'http://localhost:9000/api/transactions',
+      {
+        statusCode: 500,
+        body: {
+          error: 'Internal server error',
+        },
+      },
+    );
+    cy.visit('http://localhost:5173');
+
+    cy.get('[data-cy=axios_error_message').should('exist');
+  });
+```
 
 ## Oefening 3 - README
 
