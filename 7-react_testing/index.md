@@ -379,12 +379,16 @@ describe('Add and remove transaction', () => {
 2. Dan vragen we alle input fields op en geven we zinvolle data in.
    - Bij text input fields kan je gewoon de [`.type()`](https://docs.cypress.io/api/commands/type) functie gebruiken.
    - Voor select inputs de functie [`.select()`](https://docs.cypress.io/api/commands/select). Hierbij kan de waarde zowel de value, als de content, of zelfs de index zijn.
-3. Als laatste klikken (m.b.v. [`click()`](https://docs.cypress.io/api/commands/click)) we op de submit button. Submitten zorgt ervoor dat we terug naar onze overzichtspagina gaan, dat gebeurt ook in de testomgeving.
+3. Als laatste klikken (m.b.v. [`click()`](https://docs.cypress.io/api/commands/click)) we op de submit button. Submitten zorgt ervoor dat we terug naar onze overzichtspagina gaan, dat gebeurt ook in de testomgeving. Maar door de validation mode 'onBlur' gebeurt het cli
 4. Daarna kunnen we kijken of de transactie toegevoegd is. We hebben `data-cy` op elk deel van een Transaction, maar er zijn meerdere transacties, dus we kunnen niet gewoon bv. 'de' `transaction_user` opvragen (`cy.get("[data-cy=transaction_user]")`). Met `eq()` kan je één specifiek element opvragen a.d.h.v. zijn index.
 5. We doen hetzelfde voor de amount.
 6. Of je kan een functie meegeven, die voor elk element aangeroepen wordt, en zo je checks doen. `el` is hier een array waar het 1ste element het echte DOM element bevat.
 7. Vaak is het gewoon al nuttig om te kijken of er effectief één toegevoegd is, los van de inhoud, dat kan natuurlijk ook.
 
+Als we de test nu runnen faalt de test. Cypress klikt niet buiten het amount veld waardoor de validatie nog steeds ongeldig zegt. We hebben de validation mode immers op 'onBlur' ingesteld. Door onderstaande toe te voegen voor het click event slaagt de test
+```jsx
+    cy.get('body').click(0, 0);
+```
 > Merk op: In een e2e test zijn we niet beperkt tot één enkele assertion in een bepaalde test. Veel interacties in een toepassing kunnen zelfs meerdere stappen vereisen en zullen de toepassingsstatus waarschijnlijk op meer dan één manier veranderen.
 
 ### Page transitions
