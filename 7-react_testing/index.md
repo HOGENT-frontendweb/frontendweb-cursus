@@ -368,16 +368,8 @@ describe('Add transaction', () => {
     cy.get('[data-cy=place_input]').select(3); // 👈 2
     cy.get('[data-cy=amount_input]').type('200'); // 👈 2
     cy.get('[data-cy=submit_transaction]').click(); // 👈 3
-
     cy.get('[data-cy=transaction_user]').eq(9).contains('Pieter'); // 👈 4
-    // 👇 5
-    cy.get('[data-cy=transaction_amount]').each((el, idx) => {
-      if (idx === 9) {
-        expect(
-          Number(el[0].textContent.replace(/^\D+/g, '').replace(/,/, '.')),
-        ).to.equal(200);
-      }
-    });
+    cy.get('[data-cy=transaction_amount]').eq(9).contains('200'); // 👈 5
     cy.get('[data-cy=transaction]').should('have.length', 10); // 👈 6
   });
 });
@@ -388,9 +380,10 @@ describe('Add transaction', () => {
    - Bij text input fields kan je gewoon de [`.type()`](https://docs.cypress.io/api/commands/type) functie gebruiken.
    - Voor select inputs de functie [`.select()`](https://docs.cypress.io/api/commands/select). Hierbij kan de waarde zowel de value, als de content, of zelfs de index zijn.
 3. Als laatste klikken (m.b.v. [`click()`](https://docs.cypress.io/api/commands/click)) we op de submit button. Submitten zorgt ervoor dat we terug naar onze overzichtspagina gaan, dat gebeurt ook in de testomgeving.
-4. Daar kunnen we kijken of de transactie toegevoegd is. We hebben `data-cy` op elk deel van een Transaction, maar er zijn meerdere transacties, dus we kunnen niet gewoon bv. 'de' `transaction_user` opvragen (`cy.get("[data-cy=transaction_user]")`). Met `eq()` kan je één specifiek element opvragen a.d.h.v. zijn index.
-5. Of je kan een functie meegeven, die voor elk element aangeroepen wordt, en zo je checks doen. `el` is hier een array waar het 1ste element het echte DOM element bevat.
-6. Vaak is het gewoon al nuttig om te kijken of er effectief één toegevoegd is, los van de inhoud, dat kan natuurlijk ook.
+4. Daarna kunnen we kijken of de transactie toegevoegd is. We hebben `data-cy` op elk deel van een Transaction, maar er zijn meerdere transacties, dus we kunnen niet gewoon bv. 'de' `transaction_user` opvragen (`cy.get("[data-cy=transaction_user]")`). Met `eq()` kan je één specifiek element opvragen a.d.h.v. zijn index.
+5. We doen hetzelfde voor de amount.
+6. Of je kan een functie meegeven, die voor elk element aangeroepen wordt, en zo je checks doen. `el` is hier een array waar het 1ste element het echte DOM element bevat.
+7. Vaak is het gewoon al nuttig om te kijken of er effectief één toegevoegd is, los van de inhoud, dat kan natuurlijk ook.
 
 > Merk op: In een e2e test zijn we niet beperkt tot één enkele assertion in een bepaalde test. Veel interacties in een toepassing kunnen zelfs meerdere stappen vereisen en zullen de toepassingsstatus waarschijnlijk op meer dan één manier veranderen.
 

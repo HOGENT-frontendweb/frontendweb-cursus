@@ -108,7 +108,7 @@ Cypress.Commands.add('login', (email, password) => {
     displayName: 'login',
   });
 
-  cy.intercept('/api/users/login').as('login'); // 👈 1
+  cy.intercept('/api/sessions').as('login'); // 👈 1
   cy.visit('http://localhost:5173/login');
   cy.get('[data-cy=email_input]').clear().type(email);
   cy.get('[data-cy=password_input]').clear().type(password);
