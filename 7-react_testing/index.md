@@ -678,7 +678,7 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7-opl TODO:
+> git checkout -b les7-opl 16e8d25
 > yarn install
 > yarn dev
 > ```
