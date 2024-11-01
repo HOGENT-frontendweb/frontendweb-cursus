@@ -449,6 +449,7 @@ Vaak is het echter minstens even interessant (zo niet interessanter) om alle edg
 Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan je misschien helpen. Bekijk zeker ook de voorbeeldtesten voor inspiratie als je niet verder kan.
 
 - Oplossing +
+
 ```js
   it("should show the error message for an invalid user id", () => {
       cy.visit("http://localhost:5173/transactions/add");
@@ -624,7 +625,8 @@ Als er naar "xyz" gezocht wordt mag er geen enkel element getoond worden. Check 
 Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er geen transacties zichtbaar maar wel een foutboodschap. Maak gebruik van status code in de intercept om dit te bereiken (zie <https://docs.cypress.io/api/commands/intercept#StaticResponse-objects>).
 
 - Oplossing +
-```js
+
+  ```js
   it('should show all transactions for the Irish pub', () => {
     cy.visit('http://localhost:5173');
     cy.intercept(
@@ -635,8 +637,10 @@ Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er gee
     cy.get('[data-cy=transactions_search_input]').type('Ir');
     cy.get('[data-cy=transactions_search_btn]').click();
 
-    cy.get('[data-cy=transaction]').should('have.length',1);
-    cy.get('[data-cy=transaction_place]').eq(0).contains(/Irish Pub/);
+    cy.get('[data-cy=transaction]').should('have.length', 1);
+    cy.get('[data-cy=transaction_place]')
+      .eq(0)
+      .contains(/Irish Pub/);
   });
 
   it('should show a message when no transactions are found', () => {
@@ -649,21 +653,17 @@ Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er gee
   });
 
   it('should show an error if the API call fails', () => {
-    cy.intercept(
-      'GET',
-      'http://localhost:9000/api/transactions',
-      {
-        statusCode: 500,
-        body: {
-          error: 'Internal server error',
-        },
+    cy.intercept('GET', 'http://localhost:9000/api/transactions', {
+      statusCode: 500,
+      body: {
+        error: 'Internal server error',
       },
-    );
+    });
     cy.visit('http://localhost:5173');
 
     cy.get('[data-cy=axios_error_message').should('exist');
   });
-```
+  ```
 
 ## Oefening 3 - README
 
