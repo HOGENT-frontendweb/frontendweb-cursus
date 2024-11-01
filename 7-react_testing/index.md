@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les5 ca4119d
+> git checkout -b les7 ca4119d
 > yarn prisma migrate dev
 > yarn install
 > yarn start:dev
@@ -113,7 +113,7 @@ We passen de test nu aan. Ga terug naar Visual Studio Code en open het bestand `
 // cypress/e2e/spec.cy.js
 
 // 👇 1
-describe('mijn eerste test', () => {
+describe('General', () => {
   // 👇 2
   it('doet niet veel', () => {
     // 👇 3
@@ -133,7 +133,7 @@ Als je de wijzigingen opslaat, voert de Test Runner een reload uit. De test voer
 We willen natuurlijk onze applicatie testen. Een eerste test nuttige kan zijn om te checken of de applicatie effectief beschikbaar is.
 
 ```js
-describe('mijn eerste test', () => {
+describe('General', () => {
   // 👇 1
   it('draait de applicatie', () => {
     cy.visit('http://localhost:5173'); // 👈 2
@@ -155,7 +155,7 @@ Ga naar de **Test Runner** en voer de test uit:
 Nu controleren we ook of er een `h1` element gevonden kan worden:
 
 ```js
-describe('mijn eerste test', () => {
+describe('General', () => {
   it('draait de applicatie', () => {
     cy.visit('http://localhost:5173');
     cy.get('h1').should('exist'); // 👈
@@ -231,7 +231,7 @@ cy.get('[data-cy=submit]').click();
 
 Kortom, we gaan telkens `data-cy` attributen toevoegen waar nodig.
 
-## Add transaction test
+## Add and remove transaction test
 
 Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral moeten we overal de juiste `data-cy` attributen toevoegen. Dit hoef je natuurlijk maar éénmaal te doen per component waar je testen voor schrijft.
 
@@ -359,7 +359,7 @@ Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypr
 
 ```js
 // cypress/e2e/addTransaction.cy.js
-describe('Add transaction', () => {
+describe('Add and remove transaction', () => {
   it('should add a transaction', () => {
     cy.visit('http://localhost:5173/transactions/add'); // 👈 1
 
@@ -408,11 +408,11 @@ We moeten ervoor zorgen dat onze testen geen blijvende wijzigingen veroorzaken, 
 - niet met de echte databank werken, **mocks** gebruiken (straks meer hierover)
 - alle bewerkingen ook weer 'omkeren' (wij kiezen voor deze optie)
 
-Als we onze `add transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen (en dan hebben we direct een verwijder test ook):
+Als we onze `Add and remove transaction test` telkens opnieuw willen kunnen uitvoeren, moeten we de toegevoegde transactie nadien weer verwijderen (en dan hebben we direct een verwijder test ook):
 
 ```js
 // cypress/e2e/addTransaction.cy.js
-describe('Add transaction', () => {
+describe('Add and remove transaction', () => {
   // ...
 
   it('should remove the transaction', () => {
@@ -427,7 +427,7 @@ describe('Add transaction', () => {
 2. We klikken op de verwijder-knop van de net toegevoegde transactie (index 9).
 3. Vervolgens controleren we of er effectief maar 9 transacties meer overblijven.
 
-Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen. Mogelijks moet je wel eerst manueel de lijst van transacties herstellen naar wat de test verwacht.
+Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen. Mogelijks moet je wel eerst manueel de lijst van transacties herstellen naar wat de test verwacht of reset je de database.
 
 ## Oefening 1 - Foutboodschappen
 
