@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7 TODO:
+> git checkout -b les8 16e8d25
 > yarn install
 > yarn dev
 > ```
@@ -17,8 +17,8 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> yarn prisma migrate dev
 > yarn install
+> yarn prisma migrate dev
 > yarn start:dev
 > ```
 >
@@ -48,7 +48,6 @@ import {
   useState, // 👈 4
   useCallback, // 👈 6
   useMemo, // 👈 5
-  useContext, // 👈 5
 } from 'react';
 import useSWRMutation from 'swr/mutation'; // 👈 8
 import * as api from '../api'; // 👈 8
@@ -56,8 +55,6 @@ import useSWR from 'swr';
 
 export const JWT_TOKEN_KEY = 'jwtToken'; // 👈 13
 export const AuthContext = createContext(); // 👈 1
-
-export const useAuth = () => useContext(AuthContext); // 👈 15
 
 // 👇 2
 export const AuthProvider = ({ children }) => {
@@ -74,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     trigger: doLogin,
   } = useSWRMutation('sessions', api.post); // 👈 8
 
-  // 👇 6
+  // 👇 5 en 6
   const login = useCallback(
     async (email, password) => {
       try {
@@ -114,7 +111,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logout,
     }),
-    [token, user, loginError, loginLoading, userError, userLoading, login, logout],
+    [ user, loginError, loginLoading, userError, userLoading, login, logout],
   );
 
   // 👇 3
@@ -126,16 +123,16 @@ export const AuthProvider = ({ children }) => {
 2. Maak een `AuthProvider` aan.
 3. Retourneer reeds de kinderen gewrapped in de `AuthContext.Provider`.
 4. Definieer een state-variabelen om onze JWT bij te houden.
-5. We zetten deze waarden alvast op de context.
-6. We definiëren een functie waarmee we een gebruiker kunnen aanmelden. We wrappen de functie in een `useCallback`.
+5. We definiëren een functie waarmee we een gebruiker kunnen aanmelden.
+6. We wrappen de functie in een `useCallback`.
 7. Roep de API aan om een gebruiker aan te melden. We maken hiervoor gebruik van de `useSWRMutation` hook. Deze hook handelt automatisch de loading (via `isMutating`) en error state voor ons af. Voeg error en loading toe aan de context.
 8. Als alles goed ging, houden we de JWT bij.
 9. Voeg ook deze functie toe aan de context.
 10. We retourneren ook `true` zodat we kunnen weten of het aanmelden gelukt is. Indien iets fout ging, retourneren we `false`.
-11. We voorzien ook een functie om een gebruiker terug uit te loggen. Uitloggen is zo eenvoudig als de token verwijderen en de user op null zetten. Herinner je: een JWT is stateful, de server stateless. M.a.w. een JWT bevat alle nodige informatie, een server valideert deze. Gooien we de JWT weg, dan kunnen we niet meer aan de beveiligde routes.
+11. We voorzien ook een functie om een gebruiker terug uit te loggen. Uitloggen is zo eenvoudig als de token verwijderen. Herinner je: een JWT is stateful, de server stateless. M.a.w. een JWT bevat alle nodige informatie, een server valideert deze. Gooien we de JWT weg, dan kunnen we niet meer aan de beveiligde routes.
 12. We zetten ook deze functie op de context.
-13. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`, evenals de userId. We voegen de huidige token uit localStorage toe als initiële waarde van onze state-variabele. We houden de localStorage key bij in een globale constante.
-14. We halen ook de `user` gegevens op en zetten de waarde op de context. Vervolledig error en loading in de context
+13. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`. We voegen de huidige token uit localStorage toe als initiële waarde van onze state-variabele. We houden de localStorage key bij in een globale constante.
+14. We halen ook de `user` gegevens op en zetten de waarde op de context. Vervolledig error en loading in de context.
 
 Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan onze volledige Context waarde kunnen. Maak een file `auth.js` aan in de `contexts` folder.
 
@@ -197,11 +194,16 @@ axios.interceptors.request.use((config) => {
   return config;
 });
 
+export async function getAll(url) {
+  const { data } = await axios.get(url); // 👈 2
+  return data.items;
+}
+
 // ...
 ```
 
 1. We hernoemen de import van axios naar `axiosRoot` omdat we zelf een constante genaamd `axios` gaan maken en dat zorgt voor een duplicate variabele.
-2. We creëren een nieuwe instantie van axios met een gegeven `baseUrl`. Elke request zal deze `baseUrl` voor de URL plaatsen. Zo hoeven we dit niet handmatig te doen.
+2. We creëren een nieuwe instantie van axios met een gegeven `baseUrl`. Elke request zal deze `baseUrl` voor de URL plaatsen. Zo hoeven we dit niet handmatig te doen. (Pas alle methodes aan, verwijder de baseUrl)
 3. We onderscheppen de uitgaande Http-requests en wijzigen deze alvorens ze naar de server gestuurd wordt. We plaatsen het token, indien aanwezig, in de `Authorization` header met de prefix `Bearer`.
 
 
@@ -382,7 +384,7 @@ export default function Login() {
 
 1. Maak een functie `handleLogin` aan die opgeroepen zal worden als het formulier gesubmit wordt en stel de `onSubmit` van het formulier in.
 2. We proberen in te loggen.
-3. Als het succesvol was, dan keren we terug naar de pagina waarop de gebruiker zat voor de login, tenminste als aanwezig in de url (anders gaan we naar de home page). We gebruiken `navigate` met de `replace` optie aangezien we niet terug naar deze component mogen gaan.`URLSearchParams` haalt de key value paren uit de querystring
+3. Als het succesvol was, dan keren we terug naar de home page. We gebruiken `navigate` met de `replace` optie aangezien we niet terug naar deze component mogen gaan.
 4. We schakelen de submit-knop uit indien ons login-request bezig is.
 5. Ook tonen we een mogelijke error.
 6. We koppelen ook een click handler aan de cancel-knop.
@@ -428,7 +430,7 @@ Nu kunnen we de `PrivateRoute` component aanmaken. Maak een bestand `src/compone
 
 ```jsx
 import { Navigate, Outlet, useLocation } from 'react-router-dom'; // 👈 3 en 4
-import { useAuth } from '../contexts/Auth.context'; // 👈 2
+import { useAuth } from '../contexts/auth'; // 👈 2
 
 // 👇 1
 export default function PrivateRoute() {
@@ -457,7 +459,7 @@ export default function PrivateRoute() {
     return <Outlet />;
   }
 
-  return <Navigate replace to='/login?redirect=${pathname}' />; // 👈 4
+  return <Navigate replace to={`/login?redirect=${pathname}`} />; // 👈 4
 }
 ```
 
@@ -528,6 +530,9 @@ We dienen er ook voor te zorgen dat na het inloggen er geredirect wordt naar de 
 import { useNavigate, useLocation } from 'react-router-dom'; // 👈
 //...
 
+export default function Login() {
+  const { search } = useLocation(); // 👈
+  //...
  const handleLogin = useCallback(
     async ({ email, password }) => {
       const loggedIn = await login(email, password);
@@ -622,7 +627,7 @@ We dienen nog een `Logout` component aan te maken. Maak een nieuw bestand `src/p
 
 ```jsx
 import { useEffect } from 'react'; // 👈 1
-import { useAuth } from '../contexts/Auth.context'; // 👈 1
+import { useAuth } from '../contexts/auth'; // 👈 1
 
 export default function Logout() {
   const { isAuthed, logout } = useAuth(); // 👈 1
@@ -658,7 +663,7 @@ export default function Logout() {
 }
 ```
 
-1. Ook hier maken we gebruik van een `useEffect` voor het uitloggen.
+1. We maken gebruik van een `useEffect` voor het uitloggen.
 2. Als de gebruiker aan het uitloggen is (en dus nog aangemeld is), geven we aan dat we aan het uitloggen zijn.
 3. Als de gebruiker is uitgelogd, geven we een melding weer.
 
@@ -712,16 +717,18 @@ Een gebruiker dient zich te kunnen registreren op de site.
 - Voeg de route naar de Register pagina toe aan `src/main.jsx`
 - Pas ook de NavBar aan. Voorzie naast de `login` ook een `Register` link
 
+Pas de `AddTransaction` component aan zodat de userId niet langer ingegeven dient te worden. In de backend wordt de userId van de aangemelde gebruiker genomen.
+
 <!-- markdownlint-disable-next-line -->
 
 - Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie` op commit `14016d2`:
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie` op commit TODO:
 
   ```bash
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b les7-opl 14016d2
+  git checkout -b les8-opl TODO:
   yarn install
   yarn dev
   ```
