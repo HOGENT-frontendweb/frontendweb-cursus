@@ -18,8 +18,8 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les7 ca4119d
-> yarn prisma migrate dev
 > yarn install
+> yarn prisma migrate dev
 > yarn start:dev
 > ```
 >
@@ -386,9 +386,11 @@ describe('Add and remove transaction', () => {
 7. Vaak is het gewoon al nuttig om te kijken of er effectief één toegevoegd is, los van de inhoud, dat kan natuurlijk ook.
 
 Als we de test nu runnen faalt de test. Cypress klikt niet buiten het amount veld waardoor de validatie nog steeds ongeldig zegt. We hebben de validation mode immers op 'onBlur' ingesteld. Door onderstaande toe te voegen voor het click event slaagt de test
+
 ```jsx
-    cy.get('body').click(0, 0);
+cy.get('body').click(0, 0);
 ```
+
 > Merk op: In een e2e test zijn we niet beperkt tot één enkele assertion in een bepaalde test. Veel interacties in een toepassing kunnen zelfs meerdere stappen vereisen en zullen de toepassingsstatus waarschijnlijk op meer dan één manier veranderen.
 
 ### Page transitions

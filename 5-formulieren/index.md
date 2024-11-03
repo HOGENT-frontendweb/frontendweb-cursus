@@ -717,7 +717,7 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
 2. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
 3. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
 
-Pas ook de titel `Add transaction` aan in `AddorEditTransaction`.
+Pas ook de titel `Add transaction` aan in de `AddOrEditTransaction` component.
 
 ## Verbeteren van de performantie
 
