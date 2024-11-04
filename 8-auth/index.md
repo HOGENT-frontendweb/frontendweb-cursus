@@ -26,8 +26,7 @@
 
 In dit hoofdstuk voegen we authenticatie en autorisatie toe aan onze applicatie. We maken hiervoor gebruik van JSON Web Tokens (JWT). We zullen de gebruiker toelaten om zich aan te melden en uit te loggen, maar ook te registreren. We zullen ook bepaalde routes afschermen voor niet-aangemelde gebruikers.
 
-?> De code die je in de olods Front-end Web Development en Web Services opbouwt, werd vorig jaar door een student gecontroleerd op gebied van security. Een aantal zaken werden reeds dit academiejaar aangepast. Voel je vrij om deze bachelorproef te lezen als inspiratie voor eigen projecten: <br /><br />Vermeersch, J. (2024). Cybersecuritymaatregelen in de opleidingsonderdelen over webapplicatieontwikkeling aan Hogeschool Gent: een analyse en integratie van aanbevelingen in de voorbeeldapplicaties. Gent: s.n.
-Geraadpleegd op 3 november 2024, via <https://catalogus.hogent.be/catalog/hog01:003132172>.
+?> De code die je in de olods Front-end Web Development en Web Services opbouwt, werd vorig jaar door een student gecontroleerd op gebied van security. Een aantal zaken werden reeds dit academiejaar aangepast. Voel je vrij om deze bachelorproef te lezen als inspiratie voor eigen projecten: <br /><br />Vermeersch, J. (2024). Cybersecuritymaatregelen in de opleidingsonderdelen over webapplicatieontwikkeling aan Hogeschool Gent: een analyse en integratie van aanbevelingen in de voorbeeldapplicaties. Gent: s.n. Geraadpleegd op 3 november 2024, via <https://catalogus.hogent.be/catalog/hog01:003132172>.
 
 ## API calls voor login
 
