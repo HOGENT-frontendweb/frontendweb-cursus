@@ -147,8 +147,6 @@ export const AuthProvider = ({ children }) => {
 
 Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan onze volledige Context waarde kunnen. Maak een file `auth.js` aan in de `contexts` folder.
 
-TODO: misschien de hooks in een hooks directory steken?
-
 ```js
 // src/contexts/auth.js
 import { useContext } from 'react';
@@ -745,7 +743,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
   ```bash
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b les8-opl TODO:
+  git checkout -b les8-opl 3686bfe
   yarn install
   yarn dev
   ```
