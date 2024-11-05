@@ -461,6 +461,7 @@ Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan
       cy.visit("http://localhost:5173/transactions/add");
 
       cy.get("[data-cy=user_input]").type("-1");
+       cy.get("[data-cy=user_input]").blur();
       cy.get("[data-cy=submit_transaction]").click();
 
       cy.get("[data-cy=label_input_error]").contains("min 1");
@@ -487,7 +488,7 @@ describe('Transactions list', () => {
       'GET',
       'http://localhost:9000/api/transactions',
       `{"items":[{"id":1,"amount":-97,"date":"2024-10-01","user":{"id":1,"name":"Pieter"},
-      "place":{"id":4,"name":"Chinees Restaurant"}}],"count":1}`,
+      "place":{"id":4,"name":"Chinees Restaurant"}}]}`,
     );
 
     // 👇 2
@@ -557,7 +558,7 @@ describe('Transactions list', () => {
     );
 
     cy.visit('http://localhost:5173');
-    cy.get('[data-cy=transaction]').should('have.length', 2);
+    cy.get('[data-cy=transaction]').should('have.length', 2);// 👈
     cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
     cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2024');
   });
