@@ -8,16 +8,26 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout origin/authenticatie
-> git checkout -b les8 f4bab5c
+> git checkout -b les9 237fcd6
 > yarn install
 > yarn dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 >
-> **De [REST API](https://github.com/HOGENT-frontendweb/webservices-budget/) dient ook te draaien op branch `authenticatie`.**
+> Je hebt ook de bijbehorende backend nodig:
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
+> cd webservices-budget
+> yarn install
+> yarn prisma migrate dev
+> yarn start:dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
 
-Momenteel moet je voor elke pagina in onze budget applicatie aangemeld zijn (behalve de `/login` en `/logout`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze een voor een falen.
+Momenteel moet je voor elke pagina in onze budget applicatie aangemeld zijn (behalve de `/login` en `/logout`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze één voor één falen.
 
 ## Cypress commands
 
@@ -54,7 +64,7 @@ We kunnen dit commando snel even uittesten door een test toe te voegen aan `spec
 
 ```jsx
 // cypress/e2e/spec.cy.js
-describe('mijn eerste test', () => {
+describe('General', () => {
   it('draait de applicatie', () => {
     cy.visit('http://localhost:5173');
     cy.get('h1').should('exist');
@@ -62,7 +72,7 @@ describe('mijn eerste test', () => {
 
   it('should login', () => {
     // 👈 1
-    cy.login('thomas.aelbrecht@hogent.be', '12345678'); // 👈 2
+    cy.login('pieter.vanderhelst@hogent.be', '12345678'); // 👈 2
   });
 });
 ```
@@ -92,7 +102,7 @@ Voeg bovenaan elke test suite een `beforeEach` toe die de testgebruiker aanmeldt
 ```js
 describe('...', () => {
   beforeEach(() => {
-    cy.login('thomas.aelbrecht@hogent.be', '12345678');
+    cy.login('pieter.vanderhelst@hogent.be', '12345678');
   });
 
   // de testen
@@ -120,24 +130,24 @@ Cypress.Commands.add('login', (email, password) => {
 1. Vang elk login-request op en geef dit de naam `login`.
 2. Laat Cypress wachten tot dit request afgerond is.
 
-Voer de testen opnieuw uit, enkel de test van het zoeken naar de transacties van de "Irish pub" faalt. Pas deze test aan zodat deze maar één transactie verwacht. Zonder authenticate waren dit er 3, één voor elke gebruiker. Met authenticatie is dit er maar één.
+Voer de testen opnieuw uit. Bekijk ook de mock-data en ga na of dit nu overeenstemt met de transacties die je terug zou krijgen van de backend voor de aangemelde gebruiker. Je kan ook een versie maken voor de admin en voor de gebruiker.
 
 ## Oefening: add transaction form
 
-- Herhaal hetzelfde voor de testen van het formulier.
 - Deze testen falen om verschillende redenen: bv. user veld is niet editable...
 - Los alle fouten op en zorg dat de testen slagen.
+- De test op een 'invalid user id' vervang je door 'invalid amount'.
 
 <!-- markdownlint-disable-next-line -->
 
 - Oplossing +
 
-  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget> in de branch `authenticatie`
+  Een voorbeeldoplossing is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-budget>
 
   ```bash
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b les8-opl origin/authenticatie
+  git checkout -b les9-opl origin/authenticatie TODO:
   yarn install
   yarn dev
   ```

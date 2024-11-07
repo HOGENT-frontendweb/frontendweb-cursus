@@ -455,18 +455,18 @@ Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan
 
 - Oplossing +
 
-```js
-  it("should show the error message for an invalid user id", () => {
-      cy.visit("http://localhost:5173/transactions/add");
+  ```js
+    it("should show the error message for an invalid user id", () => {
+        cy.visit("http://localhost:5173/transactions/add");
 
-      cy.get("[data-cy=user_input]").type("-1");
-       cy.get("[data-cy=user_input]").blur();
-      cy.get("[data-cy=submit_transaction]").click();
+        cy.get("[data-cy=user_input]").type("-1");
+        cy.get("[data-cy=user_input]").blur();
+        cy.get("[data-cy=submit_transaction]").click();
 
-      cy.get("[data-cy=label_input_error]").contains("min 1");
+        cy.get("[data-cy=label_input_error]").contains("min 1");
+      });
     });
-  });
-```
+  ```
 
 ## Mocks
 

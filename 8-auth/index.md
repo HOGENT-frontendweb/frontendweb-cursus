@@ -742,7 +742,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
   ```bash
   git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
   cd frontendweb-budget
-  git checkout -b les8-opl 3686bfe
+  git checkout -b les8-opl 56dc080
   yarn install
   yarn dev
   ```
