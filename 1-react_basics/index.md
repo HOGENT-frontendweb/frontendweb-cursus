@@ -825,3 +825,5 @@ end note
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
 - [React.js: The Documentary](https://www.youtube.com/watch?v=8pDqJVdNa44)
 - [JavaScript Visualized: Promise Execution](https://lydiahallie.framer.website/blog/promise-execution)
+- [Re-implementing JavaScript's == in JavaScript](https://evanhahn.com/re-implementing-javascript-double-equals-in-javascript/)
+  - Laat duidelijk zien waarom je `===` moet gebruiken i.p.v. `==`.
