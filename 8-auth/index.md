@@ -733,21 +733,19 @@ Een gebruiker dient zich te kunnen registreren op de site.
    - Pas ook de `NavBar` component aan. Voorzie naast de login ook een register link.
 3. Pas de `AddTransaction` component aan zodat de `userId` niet langer ingegeven dient te worden. In de back-end wordt de `userId` van de aangemelde gebruiker genomen (uit de token).
 
-<!-- markdownlint-disable-next-line -->
-
-- Oplossing +
-
-  Een voorbeeldoplossing is te vinden in de voorbeeldapplicatie:
-
-  ```bash
-  git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-  cd frontendweb-budget
-  git checkout -b les8-opl 56dc080
-  yarn install
-  yarn dev
-  ```
-
-  Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+> **Oplossing voorbeeldapplicatie**
+>
+> Een voorbeeldoplossing is te vinden in de voorbeeldapplicatie:
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les8-opl 56dc080
+> yarn install
+> yarn dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
 ## Mogelijke extra's voor de examenopdracht
 

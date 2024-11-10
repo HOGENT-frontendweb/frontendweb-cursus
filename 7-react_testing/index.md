@@ -434,7 +434,7 @@ describe('Add and remove transaction', () => {
 
 Nu kunnen we de testen opnieuw en opnieuw draaien zonder dat ze falen. Mogelijks moet je wel eerst manueel de lijst van transacties herstellen naar wat de test verwacht of reset je de database.
 
-## Oefening 1 - Foutboodschappen
+## Oefening 1 - Foutboodschappen in TransactionForm
 
 We hebben getest of ons formulier werkt. Er wordt een transactie toegevoegd als alle input fields een geldige waarde krijgen.
 
@@ -557,7 +557,7 @@ describe('Transactions list', () => {
     );
 
     cy.visit('http://localhost:5173');
-    cy.get('[data-cy=transaction]').should('have.length', 2);// 👈
+    cy.get('[data-cy=transaction]').should('have.length', 2); // 👈
     cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
     cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2024');
   });
