@@ -824,6 +824,6 @@ end note
 - [Practice React by fixing tests - Check your JSX knowledge!](https://reactpractice.dev/exercise/practice-react-by-fixing-tests-check-your-jsx-knowledge/)
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
 - [React.js: The Documentary](https://www.youtube.com/watch?v=8pDqJVdNa44)
-- [JavaScript Visualized: Promise Execution](https://lydiahallie.framer.website/blog/promise-execution)
+- [JavaScript Visualized: Promises & Async/Await](https://medium.com/@lydiahallie/javascript-visualized-promises-async-await-a3f1aad8a943)
 - [Re-implementing JavaScript's == in JavaScript](https://evanhahn.com/re-implementing-javascript-double-equals-in-javascript/)
   - Laat duidelijk zien waarom je `===` moet gebruiken i.p.v. `==`.
