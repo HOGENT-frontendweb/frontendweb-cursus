@@ -46,8 +46,13 @@ Cypress.Commands.add('login', (email, password) => {
   });
 
   cy.visit('http://localhost:5173/login'); // 👈 2
-  cy.get('[data-cy=email_input]').clear().type(email); // 👈 3
-  cy.get('[data-cy=password_input]').clear().type(password); // 👈 3
+
+  cy.get('[data-cy=email_input]').clear(); // 👈 3
+  cy.get('[data-cy=email_input]').type(email); // 👈 3
+
+  cy.get('[data-cy=password_input]').clear(); // 👈 3
+  cy.get('[data-cy=password_input]').type(password); // 👈 3
+
   cy.get('[data-cy=submit_btn]').click(); // 👈 4
 });
 ```
@@ -128,8 +133,13 @@ Cypress.Commands.add('login', (email, password) => {
 
   cy.intercept('/api/sessions').as('login'); // 👈 1
   cy.visit('http://localhost:5173/login');
-  cy.get('[data-cy=email_input]').clear().type(email);
-  cy.get('[data-cy=password_input]').clear().type(password);
+
+  cy.get('[data-cy=email_input]').clear();
+  cy.get('[data-cy=email_input]').type(email);
+
+  cy.get('[data-cy=password_input]').clear();
+  cy.get('[data-cy=password_input]').type(password);
+
   cy.get('[data-cy=submit_btn]').click();
   cy.wait('@login'); // 👈 2
 });
@@ -142,8 +152,6 @@ Voer de testen opnieuw uit. Bekijk ook de mock-data en ga na of dit nu overeenst
 
 ## Oefening - Foutboodschappen in TransactionForm
 
-<!-- TODO: is er nog een userId veld? -->
-
 - Deze testen falen om verschillende redenen: bv. het `userId` veld is verdwenen.
 - Los alle fouten op en zorg dat de testen slagen.
 - De test op een ongeldige userId vervang je door een test voor een ongeldige amount.
@@ -153,7 +161,7 @@ Voer de testen opnieuw uit. Bekijk ook de mock-data en ga na of dit nu overeenst
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9-opl TODO:
+> git checkout -b les9-opl b9f9671
 > yarn install
 > yarn dev
 > ```

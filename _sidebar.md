@@ -15,5 +15,5 @@
 - [6. Context API](./6-context/index.md)
 - [7. Testing](./7-react_testing/index.md)
 - [8. Authenticatie & autorisatie](./8-auth/index.md)
-- [9. E2E testen met authenticatie (WIP)](./9-auth_testing/index.md)
+- [9. E2E testen met authenticatie](./9-auth_testing/index.md)
 - [10. CI/CD (WIP)](./10-cicd/index.md)
