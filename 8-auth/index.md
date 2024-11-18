@@ -35,7 +35,7 @@ Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we i
 ```js
 // src/api/index.js
 export const post = async (url, { arg }) => {
-  const { data } = await axios.post(url, arg);
+  const { data } = await axios.post(`${baseUrl}/${url}`, arg);
 
   return data;
 };
@@ -76,9 +76,9 @@ export const AuthProvider = ({ children }) => {
   } = useSWR(token ? 'users/me' : null, api.getById);
 
   const {
+    trigger: doLogin,
     isMutating: loginLoading,
     error: loginError,
-    trigger: doLogin,
   } = useSWRMutation('sessions', api.post); // 👈 8
 
   // 👇 5 en 6
