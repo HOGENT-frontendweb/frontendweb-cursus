@@ -1,9 +1,5 @@
 <!-- markdownlint-disable first-line-heading -->
 
-<small>
-  Een aantal hoofdstukken van deze cursus zijn nog niet nagelezen. Deze hoofdstukken worden aangeduid met een "Work In Progress" label: WIP. Deze zullen mogelijks nog wijzigen, het is dus niet de bedoeling dat je deze hoofdstukken reeds doorneemt.
-</small>
-
 - [0. Algemene info](./0-intro/situering.md)
 - [0. Software](./0-intro/software.md)
 - [0. Examenopdracht](./0-intro/examenopdracht.md)
