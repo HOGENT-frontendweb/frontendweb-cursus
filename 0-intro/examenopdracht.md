@@ -130,6 +130,8 @@ Bij het toevoegen van een extra technologie is het belangrijk dat deze ook echt 
 
 Je gebruikt een bestaande (vrij te kiezen) API op het web en bouwt daarvoor een React front-end. Hier vind je een lijst met publieke API’s: <https://github.com/public-apis/public-apis>, maar er zijn er nog veel meer natuurlijk.
 
+Indien je reeds geslaagd bent voor Web Services, mag je die back-end hergebruiken. Voeg de code van de back-end wel toe aan jouw repository (incl. instructies in de README).
+
 Een aantal aandachtspunten:
 
 - Iets toevoegen, bewerken of verwijderen zal met een publieke API niet mogelijk zijn. Je kan dit wel simuleren door de data lokaal op te slaan, te bewerken of te verwijderen (bv. in [Local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)).
