@@ -132,10 +132,10 @@ Je gebruikt een bestaande (vrij te kiezen) API op het web en bouwt daarvoor een 
 
 Een aantal aandachtspunten:
 
-- Iets toevoegen, bewerken of verwijderen zal met een publieke API niet mogelijk zijn. Je kan dit wel simuleren door de data lokaal op te slaan, te bewerken of te verwijderen.
-- Authenticatie en autorisatie zal ook niet mogelijk zijn, of op zijn minst helemaal anders dan in de cursus. Alternatieven zijn: Auth0, Firebase...
+- Iets toevoegen, bewerken of verwijderen zal met een publieke API niet mogelijk zijn. Je kan dit wel simuleren door de data lokaal op te slaan, te bewerken of te verwijderen (bv. in [Local storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)).
+- Authenticatie en autorisatie zal ook niet mogelijk zijn, of op zijn minst helemaal anders dan in de cursus. Alternatieven zijn: [Auth0](https://auth0.com/), [Firebase](https://firebase.google.com/)...
 
-Bespreek dit best even met je lector als je in deze situatie zit en (g)een idee hebt.
+!> Bespreek dit best even met je lector als je in deze situatie zit en (g)een idee hebt.
 
 ## 8. Vragen
 
