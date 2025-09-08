@@ -9,9 +9,8 @@
     "docsify-cli": "^4.4.4"
   },
   "engines": {
-    "npm": ">=9.8.0",
     "node": ">=20.6.0",
-    "yarn": ">=1.22.0"
+    "pnpm": ">=10.0.0"
   },
-  "packageManager": "yarn@4.4.0"
+  "packageManager": "pnpm@10.15.0"
 }
