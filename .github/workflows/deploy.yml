@@ -41,7 +41,7 @@ jobs:
 
       - name: Check links in markdown files
         id: lychee
-        uses: lycheeverse/lychee-action@v2.0.2
+        uses: lycheeverse/lychee-action@v2.6.1
         with:
           args: "'./**/*.md' '*.md' --scheme https"
 
