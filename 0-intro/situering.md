@@ -18,11 +18,11 @@ Programmeren leer je enkel door het te doen, niet door onze cursus te lezen. Je 
 
 Voor dit olod is er een [examenopdracht](0-intro/examenopdracht.md). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je, indien van toepassing, in het olod Web Services.
 
-De Chamilo-cursus vind je [hier](https://chamilo.hogent.be/index.php?go=CourseViewer&application=Chamilo%5CApplication%5CWeblcms&course=64499). Hierin komen alle belangrijke aankondigingen, een link naar de cursus en een uploadmodule voor de examenopdracht. Op de cursus zal je ook een link naar de GitHub-classroom zien verschijnen. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+De Chamilo-cursus voor dit olod zal weinig bevatten. Hierin komen enkel de belangrijke aankondigingen, een link naar deze cursus en een uploadmodule voor de examenopdracht. Op de Chamilo-cursus zal je ook een link naar de GitHub-classroom zien. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
-> Week 13: vrijdag 20 december 2024 om 23u59
+> Week 13: vrijdag 19 december 2025 om 23u59
 
 Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
@@ -50,6 +50,8 @@ De bijhorende back-end is te vinden op: <https://github.com/HOGENT-frontendweb/w
 
 ## Planning
 
+<!-- TODO: planning updaten -->
+
 Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 
 | Week    | Inhoud                                        |
@@ -67,21 +69,51 @@ Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
 | week 11 | CI/CD, online zetten                          |
 | week 12 | (geen nieuwe theorie, aan de opdracht werken) |
 
-## Help, ik zit vast?
+## Help, ik zit vast!
 
-Lees de foutboodschappen, copy-paste ze in Google. Vaak 'helpen' we studenten door de fout te copy-pasten en de eerste link in Google te kopiëren.
+Heb je vragen over de opdracht of loop je vast tijdens de ontwikkeling? Lees de foutboodschappen, copy-paste ze in Google (of een AI tool). Vaak 'helpen' we studenten door de fout te copy-pasten en de eerste link in Google te kopiëren.
 
-### Het werkt niet maar geen error te zien?
+Als dat niets oplevert, kan je op twee manieren hulp krijgen:
 
-- eerst en vooral stappen vinden die het probleem reproduceren
-- dan het probleem proberen isoleren (databank? back-end? front-end?)
-- gebruik een debugger, log statements; denk even na
+**Tijdens de les:**
 
-### Nog altijd vast?
+- Stel je vraag rechtstreeks tijdens de lessen
+- We plannen bewust tijd in om vragen te beantwoorden en hulp te bieden
 
-- maak een GitHub issue op jouw repository
-- vul een van de gegeven templates in
-  - **let op:** dit is NIET een bestand in de map `.github/ISSUE_TEMPLATE` aanpassen, deze laat je gewoon staan!
-  - lees dit: <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>
-- link jouw lector aan dit issue (als assignee en/of getagd)
-  - anders krijgen we geen melding van jouw issue en kunnen we je niet helpen
+**Buiten de les:**
+
+- Maak een GitHub issue aan in jouw repository
+  - **Let op:** dit is niet een bestand in de map `.github/ISSUE_TEMPLATE` aanpassen, deze laat je gewoon staan!
+  - Meer info over het aanmaken van een GitHub issue: <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>
+- Koppel jouw lector aan het issue als assignee
+- Gebruik het voorziene template dat automatisch wordt geladen
+- Geef voldoende context en details over je probleem
+- Om elke student evenveel te kunnen helpen, mag je maximaal 3 issues openen
+
+**Belangrijk:** Technische vragen via e-mail worden niet beantwoord. Gebruik altijd de bovenstaande kanalen voor de beste en snelste hulp.
+
+## Mag ik AI gebruiken?
+
+?> Voor dit olod hanteren we level 3 van de [AI Assessment Scale](https://arxiv.org/pdf/2412.09029). Probeer wel eerst zelf een oplossing te vinden m.b.v. traditionele bronnen alvorens AI tools te gebruiken, zie bv. <https://www.vaia.be/nl/blog/hoe-vervuilend-is-ai>.
+
+**Wat mag je met AI tools:**
+
+- Code genereren en laten uitleggen
+- Documentatie schrijven (dossier, README)
+- Testdata genereren
+- Concepten laten uitleggen die je niet begrijpt
+- Brainstormen over ideeën voor je project
+- Debugging hulp en foutboodschappen laten uitleggen
+
+**Belangrijke voorwaarden:**
+
+- Je moet alle gegenereerde code grondig begrijpen
+- Je bent volledig verantwoordelijk voor de kwaliteit en correctheid
+- Je moet de code kunnen uitleggen tijdens de demo (bv. je extra technologie)
+- Je mag niet blindelings code kopiëren zonder te begrijpen wat het doet
+
+**Tijdens de evaluatie:**
+
+- Je moet kunnen uitleggen hoe je code werkt
+- Je moet kunnen aantonen dat je de gebruikte technologieën begrijpt
+- AI-hulp vermelden in je dossier wordt gewaardeerd maar is niet verplicht
