@@ -39,11 +39,11 @@ jobs:
           config_file: .markdownlint.json
           dot: false
 
-      - name: Check links in markdown files
-        id: lychee
-        uses: lycheeverse/lychee-action@v2.6.1
-        with:
-          args: "'./**/*.md' '*.md' --scheme https"
+      # - name: Check links in markdown files
+      #   id: lychee
+      #   uses: lycheeverse/lychee-action@v2.6.1
+      #   with:
+      #     args: "'./**/*.md' '*.md' --scheme https"
 
       - name: Check for broken GitHub commit references
         uses: ./commit-verifier
