@@ -22,6 +22,7 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 
 - Het dossier is volledig en tijdig ingediend (zie [sectie 4](#4-dossier-vereisten) voor de vereisten)
 - Er werden voldoende (kleine) commits gemaakt
+  - Als je per 2 werkt, moeten we een aantal pull requests met feedback zien
 - De applicatie draait online
 - De applicatie start zonder problemen op gebruik makend van de instructies in de README
 - De applicatie wijkt voldoende af van de voorbeeldapplicatie
