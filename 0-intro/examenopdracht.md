@@ -26,7 +26,7 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 - De applicatie draait online
 - De applicatie start zonder problemen op gebruik makend van de instructies in de README
 - De applicatie wijkt voldoende af van de voorbeeldapplicatie
-- De applicatie is gemaakt in NodeJS en TypeScript met NestJS als web framework
+- De applicatie is gemaakt in React.
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - Er is een extra technologie gebruikt (zie [sectie 6](#6-voorbeelden-van-extras) voor voorbeelden)
 - Er werden een aantal niet-triviale en werkende integratietesten gemaakt (naast de testen voor user)
