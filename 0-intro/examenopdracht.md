@@ -30,9 +30,9 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - Er is een extra technologie gebruikt (zie [sectie 6](#6-voorbeelden-van-extras) voor voorbeelden)
 - Er werden een aantal niet-triviale en werkende integratietesten gemaakt (naast de testen voor user)
-- De demo duurt niet langer dan 15 minuten (incl. Front-end Web Development indien van toepassing)
+- De demo duurt niet langer dan 15 minuten (incl. Web Services indien van toepassing)
 
-## 3. Minimumvereisten
+## 3. Evaluatiecriteria
 
 ### Componenten
 
@@ -90,7 +90,7 @@ Dien enkel een pdf in op Chamilo, er zijn genoeg plugins voor VS Code om Markdow
 
 Naast het dossier dien je ook een demo van jouw applicatie op te nemen en te delen via Panopto met jouw lector(en). Deze demo moet voldoen aan de volgende vereisten:
 
-- De demo mag maximaal 15 minuten duren (inclusief Front-end Web Development, indien van toepassing)
+- De demo mag maximaal 15 minuten duren (inclusief Web Services, indien van toepassing)
 - De webcam moet aanstaan tijdens de demo zodat je gezicht zichtbaar is
 - Je deelt de demo via Panopto met jouw lector(en) - zorg ervoor dat de toegangsrechten correct ingesteld zijn
 - Dit is geen commerciële presentatie, maar een technische demo gericht op de implementatie
@@ -113,14 +113,14 @@ Naast het dossier dien je ook een demo van jouw applicatie op te nemen en te del
     - Toon de werking van de extra technologie in actie
     - Laat de code zien waar je de extra technologie geïmplementeerd hebt
     - Leg uit waarom je voor deze technologie gekozen hebt
-    - Doe dit voor beide olods (Web Services en Front-end Web Development indien van toepassing)
+    - Doe dit voor beide olods (Front-end Web Development en Web Services indien van toepassing)
   - **Testen demonstreren**:
     - Laat alle testen lopen via de command line
     - Toon dat ze succesvol slagen
   - **Code showcase**:
     - Toon een stukje code waar je bijzonder fier op bent
     - Leg uit waarom je dit goed vindt en wat het doet
-    - Dit geldt voor beide olods (Web Services en Front-end Web Development indien van toepassing)
+    - Dit geldt voor beide olods (Front-end Web Development en Web Services indien van toepassing)
 
 ## 6. Voorbeelden van extra's
 
