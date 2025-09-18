@@ -23,14 +23,15 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 - Het dossier is volledig en tijdig ingediend (zie [sectie 4](#4-dossier-vereisten) voor de vereisten)
 - Er werden voldoende (kleine) commits gemaakt
   - Als je per 2 werkt, moeten we een aantal pull requests met feedback zien
+- De demo duurt niet langer dan 15 minuten (incl. Front-end Web Development indien van toepassing)
+- De applicatie is gemaakt in React
 - De applicatie draait online
-- De applicatie start zonder problemen op gebruik makend van de instructies in de README
+- De applicatie start zonder problemen op a.d.h.v. één commando zoals vermeld in de README
 - De applicatie wijkt voldoende af van de voorbeeldapplicatie
-- De applicatie is gemaakt in React.
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - Er is een extra technologie gebruikt (zie [sectie 6](#6-voorbeelden-van-extras) voor voorbeelden)
-- Er werden een aantal niet-triviale en werkende integratietesten gemaakt (naast de testen voor user)
-- De demo duurt niet langer dan 15 minuten (incl. Web Services indien van toepassing)
+- Er werden een aantal niet-triviale en werkende e2e-testen gemaakt (naast de testen voor de user).
+- De applicatie is voldoende complex
 
 ## 3. Evaluatiecriteria
 
@@ -61,17 +62,19 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 ### Algemeen
 
 - een aantal niet-triviale én werkende e2e testen
-- minstens één extra technologie (zie [sectie 6](#6-voorbeelden-van-extras) voor voorbeelden)
+- minstens één extra technologie
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
+- de applicatie start zonder problemen op a.d.h.v. 1 commando zoals vermeld in de README
+- de applicatie draait online
 - duidelijke en volledige README.md
+- duidelijk en volledig dossier
 
 ### Demo
 
 - de student toont een werkende React applicatie
-- de student overloopt de projectstructuur
+- de student overloopt de projectstructuur - indien van toepassing
 - de applicatie is responsive en heeft een degelijke stijl
-- de applicatie wijkt voldoende af van de voorbeeldapplicatie
 - de student toont de implementatie/werking van de extra technologie
 - alle testen slagen
 - de student toont een stukje code waar die fier op is
