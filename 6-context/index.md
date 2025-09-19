@@ -6,8 +6,8 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les6 69e7baf
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
@@ -18,9 +18,9 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les5 ca4119d
-> yarn install
-> yarn prisma migrate dev
-> yarn start:dev
+> pnpm install
+> pnpm prisma migrate dev
+> pnpm start:dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
@@ -695,8 +695,8 @@ export default function LabelInput({
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les6-opl 7564a38
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.

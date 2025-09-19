@@ -6,8 +6,8 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les3 2e1eb31
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 
 Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door Vite gegenereerde scripts en stylesheets geïnjecteerd.
@@ -34,7 +34,7 @@ We hebben volgende dependencies nodig om met React Router aan de slag te kunnen 
 Installeer beide dependencies
 
 ```bash
-yarn add react-router@~6.26.0 react-router-dom@~6.26.0
+pnpm add react-router@~6.26.0 react-router-dom@~6.26.0
 ```
 
 ### Achter de schermen
@@ -120,7 +120,7 @@ Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf
 Installeer dit package:
 
 ```bash
-yarn add react-lorem-ipsum
+pnpm add react-lorem-ipsum
 ```
 
 Maak de `About` page aan:
@@ -755,8 +755,8 @@ import './index.css';
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les3-opl 75b3f6d
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 
 ## Oefening 2 - Je eigen project

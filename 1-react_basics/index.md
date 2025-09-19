@@ -158,13 +158,13 @@ Pnpm zal ook in de `package.json`een `packageManager` property aanmaken. Dit bev
 cd budget
 pnpm install
 ```
+
 Wanneer je `pnpm install` uitvoert, gebeurt er dit stap voor stap:
 
 - Leest `package.json`(bekijkt de dependencies en versies)
 - Controleert de lockfile (pnpm-lock.yaml). Als die er is, gebruikt pnpm exact de versies die daar vastgelegd zijn → dit maakt builds reproduceerbaar. Als die er niet is, maakt pnpm er een aan.
 - Downloadt packages (indien nodig). Packages worden maar één keer fysiek gedownload op je computer (in de pnpm store, meestal in je home-directory (Geef in terminal volgende in `pnpm store path`)). Als een project dezelfde dependency nodig heeft als een ander project, dan maakt pnpm gewoon een snelkoppeling in plaats van alles opnieuw te kopiëren.
 - Maakt een strikte node_modules-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in package.json heeft staan.
-
 
 ### .gitignore
 

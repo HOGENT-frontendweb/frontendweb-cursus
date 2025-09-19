@@ -6,8 +6,8 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les4 75b3f6d
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vanaf dit hoofdstuk heb je de bijbehorende backend nodig:
@@ -16,9 +16,9 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les4 4e63e94
-> yarn install
-> yarn prisma migrate dev
-> yarn start:dev
+> pnpm install
+> pnpm prisma migrate dev
+> pnpm start:dev
 > ```
 >
 > Vergeet niet om een `.env` bestand aan te maken in de root van het back-end project:
@@ -40,7 +40,7 @@ Naast SWR hebben we ook [axios](https://www.npmjs.com/package/axios) nodig, een 
 Installeer alvast `axios` en `swr`:
 
 ```bash
-yarn add axios swr
+pnpm add axios swr
 ```
 
 ## useEffect
@@ -810,7 +810,7 @@ Je kan omgevingsvariabelen definiëren in het `.env` bestand. De omgevingsvariab
 
 De omgevingsvariabelen zijn beschikbaar via het object `import.meta.env`. Een omgevingsvariabele met de naam `VITE_NOT_SECRET_CODE` wordt in de code `import.meta.env.VITE_NOT_SECRET_CODE`.
 
-Er is ook een ingebouwde omgevingsvariabele met de naam `NODE_ENV`. Wanneer je `yarn dev` uitvoert, is `NODE_ENV` altijd gelijk aan `development`.
+Er is ook een ingebouwde omgevingsvariabele met de naam `NODE_ENV`. Wanneer je `pnpm dev` uitvoert, is `NODE_ENV` altijd gelijk aan `development`.
 
 De omgevingsvariabelen worden toegevoegd aan de code _at build time_. Aangezien Vite een statische HTML/CSS/JS-bundel produceert, kan het deze onmogelijk tijdens runtime lezen. Daarom staan de waarden letterlijk in de code, plaats hier dus geen API keys en andere geheime sleutels in.
 
@@ -844,8 +844,8 @@ Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. M
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les4-opl 4324cf3
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.

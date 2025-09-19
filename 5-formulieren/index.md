@@ -6,8 +6,8 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les5 4324cf3
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
@@ -18,9 +18,9 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les5 ca4119d
-> yarn install
-> yarn prisma migrate dev
-> yarn start:dev
+> pnpm install
+> pnpm prisma migrate dev
+> pnpm start:dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
@@ -234,7 +234,7 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
 Voeg dit package toe aan het project:
 
 ```bash
-yarn add react-hook-form
+pnpm add react-hook-form
 ```
 
 We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook uit het `react-hook-form` package.
@@ -861,8 +861,8 @@ Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de 
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les5-opl 69e7baf
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.

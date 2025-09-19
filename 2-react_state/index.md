@@ -6,8 +6,8 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les2 c122351
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 
 ## Props en state
@@ -451,7 +451,7 @@ export default function StarRating() {
 Voor de weergave van de sterren maken we gebruik van [react-icons](https://react-icons.github.io/react-icons/). Dit is een npm package met honderden svg's onder de vorm van componenten. We maken gebruik van de library [Ionicons 5](https://react-icons.github.io/react-icons/icons/io5/).
 
 ```bash
-yarn add react-icons
+pnpm add react-icons
 ```
 
 Implementeer de `StarRating` component als volgt:
@@ -1171,8 +1171,8 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les2-opl 2e1eb31
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 
 ## Oefening 4 - README

@@ -6,8 +6,8 @@
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les7 7cc828c
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
@@ -18,9 +18,9 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les7 ca4119d
-> yarn install
-> yarn prisma migrate dev
-> yarn start:dev
+> pnpm install
+> pnpm prisma migrate dev
+> pnpm start:dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
@@ -34,13 +34,13 @@ Cypress draait in een browser en niet via een WebDriver. Dus het draait (zo goed
 Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev dependency:
 
 ```bash
-yarn add --dev cypress
+pnpm add --dev cypress
 ```
 
 We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md) toe.
 
 ```bash
-yarn add --dev eslint-plugin-cypress
+pnpm add --dev eslint-plugin-cypress
 ```
 
 Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended` rules. Zonder deze plugin krijgen we `no-undef` foutmeldingen voor de functies `describe`, `it`...
@@ -68,7 +68,7 @@ Voeg vervolgens een nieuw commando toe aan de `package.json`:
 Vervolgens kan je Cypress openen met onderstaand commando:
 
 ```bash
-yarn test
+pnpm test
 ```
 
 Wanneer je Cypress voor de eerste keer opent in een project, dien je een wizard te doorlopen om Cypress te configureren. Sla een eventuele melding van de nieuwtjes in Cypress over.
@@ -681,8 +681,8 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les7-opl 16e8d25
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
