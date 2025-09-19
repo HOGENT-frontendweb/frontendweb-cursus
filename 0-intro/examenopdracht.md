@@ -26,7 +26,7 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 - De demo duurt niet langer dan 15 minuten (incl. Front-end Web Development indien van toepassing)
 - De applicatie is gemaakt in React
 - De applicatie draait online
-- De applicatie start zonder problemen op a.d.h.v. één commando zoals vermeld in de README
+- De applicatie start zonder problemen op a.d.h.v. de instructies in de README en gebruikt hiervoor Docker.
 - De applicatie wijkt voldoende af van de voorbeeldapplicatie
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - Er is een extra technologie gebruikt (zie [sectie 6](#6-voorbeelden-van-extras) voor voorbeelden)
@@ -65,7 +65,7 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 - minstens één extra technologie
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
 - maakt gebruik van de laatste ES-features (async/await, object destructuring, spread operator...)
-- de applicatie start zonder problemen op a.d.h.v. 1 commando zoals vermeld in de README
+- de applicatie start zonder problemen op a.d.h.v. de instructies in de README en gebruikt hiervoor Docker.
 - de applicatie draait online
 - duidelijke en volledige README.md
 - duidelijk en volledig dossier

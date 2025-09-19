@@ -656,30 +656,30 @@ Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://ta
 
 1. Installeer Tailwind CSS
 
-  ```bash
-  pnpm install tailwindcss @tailwindcss/vite
-  ```
+    ```bash
+    pnpm install tailwindcss @tailwindcss/vite
+    ```
 
 2. Configureer de Vite plugin: voeg tailwindcss toe aan de plugins in `vite.config.js`
 
-  ```javascript
-  // vite.config.js
-  import { defineConfig } from 'vite';
-  import react from '@vitejs/plugin-react-swc';
-  import tailwindcss from '@tailwindcss/vite';// 👈
+    ```javascript
+    // vite.config.js
+    import { defineConfig } from 'vite';
+    import react from '@vitejs/plugin-react-swc';
+    import tailwindcss from '@tailwindcss/vite';// 👈
 
-  // https://vite.dev/config/
-  export default defineConfig({
-    plugins: [react(), tailwindcss()],// 👈
-  });
-  ```
+    // https://vite.dev/config/
+    export default defineConfig({
+      plugins: [react(), tailwindcss()],// 👈
+    });
+    ```
 
 3. Voeg een import toe in `index.css`:
 
-  ```css
-  /* src/index.css */
-  @import 'tailwindcss';
-  ```
+    ```css
+    /* src/index.css */
+    @import 'tailwindcss';
+    ```
 
 4. Maak gebruik van Tailwind CSS klassen in je componenten:
 
