@@ -81,7 +81,7 @@ Lees hierover meer in de [Vite documentatie](https://vitejs.dev/guide/why.html).
 Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/). Een nieuwe React-applicatie maken is zo simpel als:
 
 ```bash
-yarn create vite budget --template react-swc
+pnpm create vite budget --template react-swc
 ```
 
 Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen. In deze applicatie kan je transacties op bepaalde plaatsen bijhouden om zo je budget te beheren. We bouwen steeds verder op deze startapplicatie.
@@ -89,8 +89,7 @@ Dit commando maakt een map `budget` met alle bestanden voor deze React-applicati
 Deze map bevat onder andere volgende bestanden/mappen:
 
 - `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc.
-  - Hieronder configureren we Yarn zodat alle dependencies in de `node_modules` map geïnstalleerd worden. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 40.020 (!) bestanden die 148 MB innemen).
-- `yarn.lock`: dit bestand bevat de exacte versies van de dependencies die effectief geïnstalleerd zijn.
+  - Hieronder installeren we met pnpm alle dependencies in de `node_modules` map. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 1664 (!) bestanden die 85 MB innemen).
 - `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...).
 - `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
 - er werd ook automatisch een `.gitignore` voorzien.
@@ -98,33 +97,13 @@ Deze map bevat onder andere volgende bestanden/mappen:
 - `vite.config.js`: configuratiebestand voor Vite.
 - `index.html`: de enige HTML-pagina van de applicatie. De inhoud van deze pagina zal steeds aangepast worden door React.
 
-### yarn
+### pnpm
 
-[yarn](https://yarnpkg.com/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). Ze doen beide hetzelfde en zijn inwisselbaar maar de ene keer `yarn` gebruiken en de andere keer `npm` is dan weer geen goed idee. Ze kunnen andere versies van packages cachen e.d. en dan kan je rare fouten tegenkomen.
-
-Het project gebruikt standaard Yarn v1. Dit passen we aan naar Yarn v2, naar analogie bij Web Services. Alvorens je Yarn v2 kan gebruiken, moet je eerst [Corepack](https://nodejs.org/api/corepack.html) inschakelen. Op Windows moet je hiervoor een terminal openen als administrator.
-
-```bash
-corepack enable
-```
-
-Vervolgens kiezen we de laatste versie van Yarn:
-
-```bash
-yarn set version berry
-```
-
-Maak vervolgens een `.yarnrc.yml` bestand aan in de root van je project met volgende inhoud:
-
-```yml
-nodeLinker: node-modules
-```
-
-Dit zorgt ervoor dat Yarn v2 de dependencies installeert in de `node_modules` map. Voer hierna een `yarn install` uit om de dependencies te installeren.
+[pnpm](https://pnpm.io/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). pnpm is een alternatieve package manager die sneller is en minder schijfruimte gebruikt. pnpm maakt gebruik van een centrale cache voor alle packages, waardoor het sneller is en minder schijfruimte gebruikt. Het is compatibel met npm en kan eenvoudig geïnstalleerd worden. Als je de software reeds hebt geïnstalleerd, heb je pnpm al op je systeem staan.
 
 ### package.json
 
-De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `yarn init` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
+De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `pnpm init` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
 
 [package.json](examples/package.json ':include :type=code')
 
@@ -141,9 +120,9 @@ De `package.json` kan enkele properties bevatten:
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
 - `devDependencies`: packages enkel nodig in development (en dus niet in productie)
 - `scripts`: laten toe om een soort van shortcuts te maken voor scripts (bv. de applicatie starten, testen, builden voor productie, etc.)
-- `packageManager`: de package manager die gebruikt wordt (in dit geval Yarn)
+- `packageManager`: de package manager die gebruikt wordt (in dit geval pnpm)
 
-Met een simpele `yarn install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`yarn install --prod` installeert enkel de `dependencies`).
+Met een simpele `pnpm install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`pnpm install --prod` installeert enkel de `dependencies`).
 
 Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (bv. door webpack) omgevormd wordt tot iets wat browsers begrijpen.
 
@@ -161,21 +140,35 @@ In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~)
 
 Kortom, een tilde is strenger dan een hoedje.
 
-Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `yarn install` en `yarn start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
+Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `pnpm install` en `pnpm start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
 
 Er zijn nog heel wat andere opties voor de `package.json`. Je vindt alles op <https://docs.npmjs.com/cli/v10/configuring-npm/package-json>.
 
-### yarn.lock en .yarn map
+### pnpm-lock.yaml
 
-Wanneer je een package installeert, zal yarn een `yarn.lock` bestand aanmaken. Dit bestand bevat de exacte versies van de packages die geïnstalleerd zijn. Dit bestand moet je zeker mee opnemen in je git repository. Dit zorgt ervoor dat iedereen exact dezelfde versies van de packages gebruikt.
+Wanneer je een package installeert, zal pnpm een `pnpm.lock.yaml` bestand aanmaken. Dit bestand bevat de exacte versies van de packages die geïnstalleerd zijn. Dit bestand moet je zeker mee opnemen in je git repository. Dit zorgt ervoor dat iedereen exact dezelfde versies van de packages gebruikt.
 
 Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd de exacte versie staat maar een bepaalde syntax die aangeeft welke versies toegelaten zijn (zie vorige sectie).
 
-Yarn zal ook een `.yarn` map aanmaken. Deze map bevat de geïnstalleerde versie van Yarn en wordt door [Corepack](https://nodejs.org/api/corepack.html) gebruikt om de packages te installeren. Deze map moet je niet opnemen in je git repository.
+Pnpm zal ook in de `package.json`een `packageManager` property aanmaken. Dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole(sha512-hash). Dit zorgt ervoor dat iedereen Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
+
+### Installeer de dependencies
+
+```bash
+cd budget
+pnpm install
+```
+Wanneer je `pnpm install` uitvoert, gebeurt er dit stap voor stap:
+
+- Leest `package.json`(bekijkt de dependencies en versies)
+- Controleert de lockfile (pnpm-lock.yaml). Als die er is, gebruikt pnpm exact de versies die daar vastgelegd zijn → dit maakt builds reproduceerbaar. Als die er niet is, maakt pnpm er een aan.
+- Downloadt packages (indien nodig). Packages worden maar één keer fysiek gedownload op je computer (in de pnpm store, meestal in je home-directory (Geef in terminal volgende in `pnpm store path`)). Als een project dezelfde dependency nodig heeft als een ander project, dan maakt pnpm gewoon een snelkoppeling in plaats van alles opnieuw te kopiëren.
+- Maakt een strikte node_modules-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in package.json heeft staan.
+
 
 ### .gitignore
 
-Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `yarn install`.
+Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `pnpm install`.
 
 Download de `.gitignore` van <https://github.com/github/gitignore/blob/main/Node.gitignore> en plaats deze in de root van je project. Het is belangrijk dat je het bestand exact de naam `.gitignore` heeft.
 
@@ -183,7 +176,7 @@ Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestan
 
 ### src
 
-Start de applicatie met het commando `yarn dev`.
+Start de applicatie met het commando `pnpm dev`.
 
 De `src` map bevat een aantal JSX-bestanden (`main.jsx`, `App.jsx`...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
@@ -205,30 +198,37 @@ ESLint gebruikt sinds v9 [flat configuration files](https://eslint.org/blog/2022
 
 Als je meer wil weten over de configuratie, gebruik dan de [ESLint documentatie](https://eslint.org/docs/user-guide/configuring).
 
-Je kan de linting starten met het commando `yarn lint`. Deze print vervolgens alle fouten en waarschuwingen in de console. Als je aan dit commando `--fix` toevoegt, zal ESLint proberen om de fouten automatisch op te lossen.
+Je kan de linting starten met het commando `pnpm lint`. Deze print vervolgens alle fouten en waarschuwingen in de console. Als je aan dit commando `--fix` toevoegt, zal ESLint proberen om de fouten automatisch op te lossen.
 
 Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
 
 ```bash
-yarn add -D @stylistic/eslint-plugin
+pnpm add -D @stylistic/eslint-plugin
 ```
 
 We overlopen dit bestand en breiden het alvast uit met een paar stijlregels:
 
 ```js
 import js from '@eslint/js';
-import stylistic from '@stylistic/eslint-plugin'; // 👈 5
+import stylistic from '@stylistic/eslint-plugin';// 👈 5
 import globals from 'globals';
-import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
-export default [
-  { ignores: ['dist'] }, // 👈 1
+export default defineConfig([
+  globalIgnores(['dist']),// 👈 1
   {
-    files: ['**/*.{js,jsx}'], // 👈 2
+    files: ['**/*.{js,jsx}'],// 👈 2
+    plugins: {
+      '@stylistic': stylistic,
+    },// 👈 5
+    extends: [
+      js.configs.recommended,
+      reactHooks.configs['recommended-latest'],
+      reactRefresh.configs.vite,
+    ],    // 👈 4
     languageOptions: {
-      // 👇 3
       ecmaVersion: 2020,
       globals: globals.browser,
       parserOptions: {
@@ -236,26 +236,15 @@ export default [
         ecmaFeatures: { jsx: true },
         sourceType: 'module',
       },
-    },
-    settings: { react: { version: '18.3' } }, // 👈 3
-    plugins: {
-      // 👇 4
-      react,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
-      '@stylistic': stylistic, // 👈 6
-    },
+    },// 👈 3
     rules: {
-      ...js.configs.recommended.rules, // 👈 7
-      ...react.configs.recommended.rules, // 👈 7
-      ...react.configs['jsx-runtime'].rules, // 👈 7
-      ...reactHooks.configs.recommended.rules, // 👈 7
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // 👇 6
       'react/jsx-no-target-blank': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },
       ],
-      // 👇 8
       '@stylistic/no-multiple-empty-lines': [
         'error',
         {
@@ -284,18 +273,16 @@ export default [
       'react/prop-types': 'off',
     },
   },
-];
+]);
 ```
 
 1. We negeren de `dist` map. Deze map zal later onze gebouwde React applicatie bevatten.
 2. We linten enkel bestanden met een `.js` of `.jsx` extensie.
 3. We definiëren de versie van ECMAScript (ES) die we gebruiken, de globale variabelen die we gebruiken, de parser opties en de versie van React die we gebruiken.
    - ECMAScript is de standaard waarop JavaScript gebaseerd is. De versie van ECMAScript die we gebruiken is 2020.
-4. We importeren een aantal plugins die we gebruiken in onze linting configuratie. Plugins bevatten regels die specifiek zijn voor een bepaalde technologie, een bepaalde bibliotheek, etc.
-5. Importeer de `@stylistic/eslint-plugin-js` plugin.
-6. Voeg de plugin toe aan de `plugins` property.
-7. We vertrekken van een aantal aanbevolen regels van ESLint en React.
-8. We voegen ook enkele stijlregels en React-specifieke regels toe. Voor regels gebruik je altijd dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
+4. We importeren een aantal plugins die we gebruiken in onze linting configuratie. Plugins bevatten regels die specifiek zijn voor een bepaalde technologie, een bepaalde bibliotheek, etc. `extends` wordt gebruikt om een set kant-en-klare regels of configuraties te activeren
+5. `plugins` voegt extra regels of functionaliteit toe aan ESLint, maar activeert die regels niet automatisch. Je moet ze dan zelf toevoegen aan rules. 5. Importeer de `@stylistic/eslint-plugin-js` plugin. Voeg de plugin toe aan de `plugins` property.
+6. We vertrekken van een aantal aanbevolen regels van ESLint en React. We voegen ook enkele stijlregels en React-specifieke regels toe. Voor regels gebruik je altijd dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
 
 Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd telkens je CTRL+S (of COMMAND+S) drukt. Open de JSON settings via F1 > Zoek naar "Preferences: Open Settings (JSON)" en voeg onderstaand toe (zonder de { }):
 
@@ -313,7 +300,7 @@ Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd 
 }
 ```
 
-Run voor elke commit `yarn lint`. Dit zal je code linten, sommige problemen zelf oplossen en fouten geven omtrent manueel op te lossen problemen.
+Run voor elke commit `pnpm lint`. Dit zal je code linten, sommige problemen zelf oplossen en fouten geven omtrent manueel op te lossen problemen.
 
 ## Transaction
 
@@ -731,8 +718,8 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
 > git checkout -b les1-opl c122351
-> yarn install
-> yarn dev
+> pnpm install
+> pnpm dev
 > ```
 
 ## Oefening 1 - Je eigen project
@@ -746,7 +733,7 @@ git clone <JOUW_GIT_REPOSITORY_URL>
 Maak een nieuwe Vite React-applicatie aan met de naam van je project in de map van je Git repository. Gebruik een zinnige naam zodat duidelijk is in welke map jouw front-end zich bevindt (bv. suffix `-frontend`).
 
 ```bash
-yarn create vite <PROJECTNAAM> --template react-swc
+pnpm create vite <PROJECTNAAM> --template react-swc
 ```
 
 Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
