@@ -685,8 +685,9 @@ Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://ta
 
 ### Tailwind CSS klassen gebruiken
 
-1. Pas ook de `title` van de app aan in `index.html`
-2. Pas de `App` component aan.
+- Pas ook de `title` van de app aan in `index.html`
+
+- Pas de `App` component aan.
 
   Voeg een `h1` tag toe en maak gebruik van Tailwind CSS klassen om de tekst groter, vetter te maken, te centreren en we voegen een marge toe onder de titel. Verwijder ook de `className` van de `div`.
 
@@ -706,28 +707,28 @@ Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://ta
         {TRANSACTION_DATA.map((t) => (<Transaction {...t} key={t.id} />))}
       </div>);
   }
+  ```;
+
+- Pas de `Transaction` component aan.
+
+  ```jsx
+  // src/components/transaction/Transaction.jsx
+  export default function Transaction({ user, amount, place }) { // 👈2
+  return (
+    <div className="bg-amber-800 text-amber-100 border rounded-lg text-center" > {/* 👈 1*/}
+      {user.name} gaf €{amount} uit bij {place.name}
+    </div>);
+  }
   ```
 
- 3. Pas nu de `Transaction` component aan.
+  1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
+  2. Je kan ook de props meteen destructuren in de parameters van de functie.
 
-    ```jsx
-    // src/components/transaction/Transaction.jsx
-    export default function Transaction({ user, amount, place }) { // 👈2
-      return (
-        <div className="bg-amber-800 text-amber-100 border rounded-lg text-center" > {/* 👈 1*/}
-          {user.name} gaf €{amount} uit bij {place.name}
-        </div>);
-    }
-    ```
+  Opmerking: Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
 
-    1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
-    2. Je kan ook de props meteen destructuren in de parameters van de functie.
-
-    Opmerking: Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
-
-    ```jsx
-    <div style={{ width: '80%' }}>...</div>
-    ```
+  ```jsx
+  <div style={{ width: '80%' }}>...</div>
+  ```
 
 ## Debugging
 
