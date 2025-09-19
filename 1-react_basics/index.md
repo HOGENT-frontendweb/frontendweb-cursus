@@ -650,55 +650,84 @@ Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
 
 ## CSS in React
 
-In dit project maken we gebruik van [Bootstrap](https://getbootstrap.com/), een populair JavaScript- en CSS-framework. Bootstrap kan op verschillende manieren worden toegevoegd aan React. Laten we gebruik maken van Bootstrap CDN, de eenvoudigste manier om Bootstrap toe te voegen aan de React. Geen extra installatie of download is vereist. Een alternatief is om gebruik te maken van [react-bootstrap](https://www.npmjs.com/package/react-bootstrap).
+In dit project maken we gebruik van [Tailwind CSS](https://tailwindcss.com/). Tailwind CSS is een `utility-first` CSS framework. In plaats van zelf telkens nieuwe CSS-klassen te schrijven, kunnen we met Tailwind gebruikmaken van kant-en-klare klassen zoals `flex`, `p-4`, `bg-blue-500`. Dit zorgt ervoor dat we veel sneller en consistenter kunnen werken. Tailwind CSS lijkt op een framework zoals Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of JSX kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
 
-Om Bootstrap op deze manier toe te voegen, voeg je een paar links toe aan de entry file van je applicatie. In een typische React applicatie gecreëerd met `create-vite` is dit het `index.html` bestand.
+Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://tailwindcss.com/docs/installation/using-vite). Dit zijn de stappen:
 
-```html
-<!-- public/index.html -->
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-      crossorigin="anonymous"
-    />
-    <!-- 👆 1 -->
-    <title>BudgetApp</title>
-    <!-- 👆 2 -->
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
+1. Installeer Tailwind CSS
+
+```bash
+pnpm install tailwindcss @tailwindcss/vite
 ```
 
-1. We linken naar de [huidige stabiele versie](https://getbootstrap.com/docs/versions/) van Bootstrap CSS.
-   - Als je gebruik wil maken van geavanceerde features van Bootstrap (zoals een modal, dropdown menu's...), dan installeer je best [react-bootstrap](https://www.npmjs.com/package/react-bootstrap).
-2. Pas ook de `title` van de app aan.
+2. Configureer de Vite plugin: voeg tailwindcss toe aan de plugins in `vite.config.js`
 
-Gooi het bestand `App.css` weg en maak `index.css` leeg. We gaan de styling van Bootstrap gebruiken. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
+```javascript
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+import tailwindcss from '@tailwindcss/vite';// 👈
 
-Pas nu de `Transaction` component aan en maak gebruik van de Bootstrap class `text_bg_dark` voor de `div` tag. Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}` in onderstaand voorbeeld. Je kan ook de props meteen destructuren in de parameters van de functie.
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), tailwindcss()],// 👈
+});
+```
+
+3. Voeg een import toe in `index.css`:
+
+```css
+/* src/index.css */
+@import 'tailwindcss';
+```
+
+4. Maak gebruik van Tailwind CSS klassen in je componenten:
+
+### Tailwind CSS klassen gebruiken
+
+1. Pas ook de `title` van de app aan in `index.html`
+2. Pas de `App` component aan.
+
+  Voeg een `h1` tag toe en maak gebruik van Tailwind CSS klassen om de tekst groter, vetter te maken, te centreren en we voegen een marge toe onder de titel. Verwijder ook de `className` van de `div`.
+
+  De bijhorende `App.css` kan je dan ook verwijderen (ook de `import`). We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
+
+```jsx
+// src/App.jsx
+import Transaction from './components/transactions/Transaction';
+import TRANSACTION_DATA from './api/mock_data';
+
+function App() {
+  return (
+    <div>{/* 👈 */}
+      <h1 className="text-2xl font-bold text-center mb-4"> {/* 👈 */}
+        Mijn Budget App
+      </h1>
+      {TRANSACTION_DATA.map((t) => (<Transaction {...t} key={t.id} />))}
+    </div>);
+}
+```
+
+ 3. Pas nu de `Transaction` component aan.
 
 ```jsx
 // src/components/transaction/Transaction.jsx
-// 👇
-export default function Transaction({ user, amount, place }) {
-  // 👇
+export default function Transaction({ user, amount, place }) { // 👈2
   return (
-    <div className='text-bg-dark' style={{ textAlign: 'center' }}>
+    <div className="bg-amber-800 text-amber-100 border rounded-lg text-center" > {/* 👈 1*/}
       {user.name} gaf €{amount} uit bij {place.name}
-    </div>
-  );
+    </div>);
 }
 ```
+
+1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
+2. Je kan ook de props meteen destructuren in de parameters van de functie.
+
+Opmerking: Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
+
+```jsx
+ <div style={{ width: '80%' }}>...</div>
+ ```
 
 ## Debugging
 
@@ -795,6 +824,7 @@ end note
 ## Mogelijke extra's voor de examenopdracht
 
 - UI Component library gebruiken, bv.
+  - [React Bootstrap](https://react-bootstrap.github.io/)
   - [Material-UI](https://mui.com/)
   - [Chakra UI](https://chakra-ui.com/)
   - [antd](https://ant.design/)
