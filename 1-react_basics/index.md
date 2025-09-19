@@ -746,7 +746,7 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les1-opl c122351
+> git checkout -b les1-opl 2355815
 > pnpm install
 > pnpm dev
 > ```

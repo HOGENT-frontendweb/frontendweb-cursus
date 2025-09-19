@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les2 c122351
+> git checkout -b les2 2355815
 > pnpm install
 > pnpm dev
 > ```
