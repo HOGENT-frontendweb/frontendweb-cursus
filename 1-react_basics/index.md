@@ -656,30 +656,30 @@ Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://ta
 
 1. Installeer Tailwind CSS
 
-```bash
-pnpm install tailwindcss @tailwindcss/vite
-```
+  ```bash
+  pnpm install tailwindcss @tailwindcss/vite
+  ```
 
 2. Configureer de Vite plugin: voeg tailwindcss toe aan de plugins in `vite.config.js`
 
-```javascript
-// vite.config.js
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import tailwindcss from '@tailwindcss/vite';// 👈
+  ```javascript
+  // vite.config.js
+  import { defineConfig } from 'vite';
+  import react from '@vitejs/plugin-react-swc';
+  import tailwindcss from '@tailwindcss/vite';// 👈
 
-// https://vite.dev/config/
-export default defineConfig({
-  plugins: [react(), tailwindcss()],// 👈
-});
-```
+  // https://vite.dev/config/
+  export default defineConfig({
+    plugins: [react(), tailwindcss()],// 👈
+  });
+  ```
 
 3. Voeg een import toe in `index.css`:
 
-```css
-/* src/index.css */
-@import 'tailwindcss';
-```
+  ```css
+  /* src/index.css */
+  @import 'tailwindcss';
+  ```
 
 4. Maak gebruik van Tailwind CSS klassen in je componenten:
 
@@ -692,42 +692,42 @@ export default defineConfig({
 
   De bijhorende `App.css` kan je dan ook verwijderen (ook de `import`). We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
 
-```jsx
-// src/App.jsx
-import Transaction from './components/transactions/Transaction';
-import TRANSACTION_DATA from './api/mock_data';
+  ```jsx
+  // src/App.jsx
+  import Transaction from './components/transactions/Transaction';
+  import TRANSACTION_DATA from './api/mock_data';
 
-function App() {
-  return (
-    <div>{/* 👈 */}
-      <h1 className="text-2xl font-bold text-center mb-4"> {/* 👈 */}
-        Mijn Budget App
-      </h1>
-      {TRANSACTION_DATA.map((t) => (<Transaction {...t} key={t.id} />))}
-    </div>);
-}
-```
+  function App() {
+    return (
+      <div>{/* 👈 */}
+        <h1 className="text-2xl font-bold text-center mb-4"> {/* 👈 */}
+          Mijn Budget App
+        </h1>
+        {TRANSACTION_DATA.map((t) => (<Transaction {...t} key={t.id} />))}
+      </div>);
+  }
+  ```
 
  3. Pas nu de `Transaction` component aan.
 
-```jsx
-// src/components/transaction/Transaction.jsx
-export default function Transaction({ user, amount, place }) { // 👈2
-  return (
-    <div className="bg-amber-800 text-amber-100 border rounded-lg text-center" > {/* 👈 1*/}
-      {user.name} gaf €{amount} uit bij {place.name}
-    </div>);
-}
-```
+    ```jsx
+    // src/components/transaction/Transaction.jsx
+    export default function Transaction({ user, amount, place }) { // 👈2
+      return (
+        <div className="bg-amber-800 text-amber-100 border rounded-lg text-center" > {/* 👈 1*/}
+          {user.name} gaf €{amount} uit bij {place.name}
+        </div>);
+    }
+    ```
 
-1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
-2. Je kan ook de props meteen destructuren in de parameters van de functie.
+    1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
+    2. Je kan ook de props meteen destructuren in de parameters van de functie.
 
-Opmerking: Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
+    Opmerking: Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
 
-```jsx
- <div style={{ width: '80%' }}>...</div>
- ```
+    ```jsx
+    <div style={{ width: '80%' }}>...</div>
+    ```
 
 ## Debugging
 
