@@ -754,7 +754,9 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 
 ## Oefening 1 - Je eigen project
 
-Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Clone jouw Git repository uit de GitHub classroom:
+Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Bij de aanmaak van de repo dien je een teamnaam op te geven. Werk je alleen, gebruik dan je volledige naam als teamnaam (FamilienaamVoornaam). Werk je met twee, dan neem je beide familienamen samen (Familienaam1Familienaam2).
+
+Clone jouw Git repository uit de GitHub classroom:
 
 ```bash
 git clone <JOUW_GIT_REPOSITORY_URL>
