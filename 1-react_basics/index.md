@@ -150,7 +150,7 @@ Wanneer je een package installeert, zal pnpm een `pnpm.lock.yaml` bestand aanmak
 
 Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd de exacte versie staat maar een bepaalde syntax die aangeeft welke versies toegelaten zijn (zie vorige sectie).
 
-Pnpm zal ook in de `package.json`een `packageManager` property aanmaken. Dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole(sha512-hash). Dit zorgt ervoor dat iedereen Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
+Pnpm zal ook in de `package.json`een `packageManager` property aanmaken. Dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole(sha512-hash). Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
 
 ### Installeer de dependencies
 
