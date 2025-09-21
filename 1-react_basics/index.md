@@ -57,7 +57,7 @@ Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
   ![Vite - native ES Modules](./images/vite_ESModules.webp ':size=80%')
 
-- Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.service
+- Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.
 
   - De **dependency modules** zijn JavaScript-modules die je hebt geïmporteerd uit de map `node_modules`. Deze modules worden verwerkt en gebundeld met behulp van [esbuild](https://esbuild.github.io/), een JavaScript-bundler geschreven in Go die 10-100x sneller presteert dan [Webpack](https://webpack.js.org/).
   - De **applicatie modules** zijn modules die je voor je applicatie schrijft, zoals .jsx-bestanden.
