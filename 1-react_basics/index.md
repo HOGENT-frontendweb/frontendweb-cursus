@@ -386,7 +386,7 @@ import Transaction from './components/transactions/Transaction';
 
 function App() {
   return (
-    <div className='App'>
+    <div>
       <Transaction />
     </div>
   );
@@ -525,7 +525,7 @@ function App() {
   const amount = 200; // 👈 1
   const place = 'Dranken Geers'; // 👈 1
   return (
-    <div className='App'>
+    <div>
       <Transaction user={user} place={place} amount={amount} /> {/* 👈 2 */}
     </div>
   );
@@ -547,7 +547,7 @@ import TRANSACTION_DATA from './api/mock_data'; // 👈 1
 function App() {
   const trans = TRANSACTION_DATA[0]; // 👈 2
   return (
-    <div className='App'>
+    <div>
       {/* 👇 2 */}
       <Transaction
         user={trans.user}
@@ -588,7 +588,7 @@ import TRANSACTION_DATA from './api/mock_data';
 function App() {
   // const trans = TRANSACTION_DATA[0]; 👈 1
   return (
-    <div className='App'>
+    <div>
       {/* 👇 2 */}
       {TRANSACTION_DATA.map((trans) => (
         <Transaction
@@ -615,7 +615,7 @@ import TRANSACTION_DATA from './api/mock_data';
 
 function App() {
   return (
-    <div className='App'>
+    <div>
       {TRANSACTION_DATA.map((trans) => (
         <Transaction {...trans} />
       ))}
@@ -689,9 +689,9 @@ Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://ta
 
 - Pas de `App` component aan.
 
-  Voeg een `h1` tag toe en maak gebruik van Tailwind CSS klassen om de tekst groter, vetter te maken, te centreren en we voegen een marge toe onder de titel. Verwijder ook de `className` van de `div`.
+  Voeg een `h1` tag toe en maak gebruik van Tailwind CSS klassen om de tekst groter, vetter te maken, te centreren en we voegen een marge toe onder de titel.
 
-  De bijhorende `App.css` kan je dan ook verwijderen (ook de `import`). We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
+  De bijhorende `App.css` kan je dan ook verwijderen. We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
 
   ```jsx
   // src/App.jsx
@@ -700,7 +700,7 @@ Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://ta
 
   function App() {
     return (
-      <div>{/* 👈 */}
+      <div>
         <h1 className="text-2xl font-bold text-center mb-4"> {/* 👈 */}
           Mijn Budget App
         </h1>
