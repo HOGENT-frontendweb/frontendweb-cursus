@@ -155,11 +155,9 @@ We implementeren de `Place` component, voorlopig nog zonder rating. Deze compone
 // src/components/places/Place.jsx
 const Place = ({ id, name, rating }) => {
   return (
-    <div className='card bg-light border-dark mb-4'>
-      <div className='card-body'>
-        <h5 className='card-title'>{name}</h5>
-        <button className='btn btn-primary'>Verwijder</button>
-      </div>
+    <div className="p-3 outline outline-black/5 rounded-md shadow-lg mb-4">
+      <h5 className="text-xl font-medium mb-2">{name}</h5>
+      <button className='mt-6 py-2 px-2.5 rounded-md bg-blue-600 text-white'>Verwijder</button>
     </div>
   );
 };
@@ -179,18 +177,16 @@ import Place from './Place';
 const PlacesList = () => {
   const places = PLACE_DATA;
   return (
-    <div className='grid mt-3'>
-      <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
-        {places
-          .sort((a, b) =>
-            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
-          )
-          .map((p) => (
-            <div className='col' key={p.id}>
-              <Place {...p} />
-            </div>
-          ))}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+      {places
+        .sort((a, b) =>
+          a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+        )
+        .map((p) => (
+          <div key={p.id}>
+            <Place {...p} />
+          </div>
+        ))}
     </div>
   );
 };
@@ -210,15 +206,16 @@ import PlacesList from './components/places/PlacesList'; // 👈
 
 function App() {
   return (
-    <div>
-      {TRANSACTION_DATA.map((trans) => (
-        <Transaction key={trans.id} {...trans} />
-      ))}
+    <div className="bg-white text-gray-900">
+      <h1 className="text-2xl font-bold text-center mb-4">
+        Mijn Budget App
+      </h1>
+      {TRANSACTION_DATA.map((t) => (<Transaction {...t} key={t.id} />))}
       <PlacesList />
       {/* 👆 */}
-    </div>
-  );
+    </div>);
 }
+
 export default App;
 ```
 
@@ -268,14 +265,13 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   // src/components/places/Place.jsx
   const Place = ({ id, name, rating }) => {
     // 👇 1
-    const handleClick = (e) => {
+    const handleClick = () => {
       console.log('you clicked the remove button');
     };
     return (
-      <div className='card bg-light border-dark mb-4'>
-        <div className='card-body'>
-          <h5 className='card-title'>{name}</h5>
-          <button className='btn btn-primary' onClick={handleClick}>
+      <div className="p-3 outline outline-black/5 rounded-md shadow-lg mb-4">
+        <h5 className="text-xl font-medium mb-2">{name}</h5>
+           <button className='mt-6 py-2 px-2.5 rounded-md bg-blue-600 text-white' onClick={handleClick}>
             {/* 👆 2 */}
             Verwijder
           </button>
@@ -324,19 +320,17 @@ const PlacesList = () => {
 
   return (
     <>
-      <h1>Places</h1>
-      <div className='grid mt-3'>
-        <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
-          {places
-            .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
-            )
-            .map((p) => (
-              <div className='col' key={p.id}>
-                <Place {...p} onDelete={handleDeletePlace} /> {/* 👈 3 */}
-              </div>
-            ))}
-        </div>
+      <h1 className="text-4xl mb-4">Places</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+        {places
+          .sort((a, b) =>
+            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+          )
+          .map((p) => (
+            <div key={p.id}>
+              <Place {...p} onDelete={handleDeletePlace} /> {/* 👈 3 */}
+            </div>
+          ))}
       </div>
     </>
   );
@@ -363,7 +357,6 @@ De `Place` component moet ook worden aangepast:
 
 ```jsx
 // src/components/places/Place.jsx
-
 const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   // 👆 1  👇 2
   const handleDelete = () => {
@@ -371,14 +364,12 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   };
 
   return (
-    <div className='card bg-light border-dark mb-4'>
-      <div className='card-body'>
-        <h5 className='card-title'>{name}</h5>
-        <button className='btn btn-primary' onClick={handleDelete}>
-          Verwijder
-        </button>
-        {/* 👈 3 */}
-      </div>
+    <div className="p-3 outline outline-black/5 rounded-md shadow-lg mb-4">
+      <h5 className="text-xl font-medium mb-2">{name}</h5>
+      <button className='mt-6 py-2 px-2.5 rounded-md bg-blue-600 text-white' onClick={handleDelete}>
+        Verwijder
+      </button>
+      {/* 👈 3 */}
     </div>
   );
 };
@@ -460,18 +451,17 @@ Implementeer de `StarRating` component als volgt:
 // src/components/places/StarRating.jsx
 import { IoStarSharp } from 'react-icons/io5'; // 👈 1
 
-const Star = () => <IoStarSharp color='yellow' />; // 👈 2
+const Star = () => <IoStarSharp color='gold' />; // 👈 2
 
 export default function StarRating() {
   const stars = [...new Array(5)];
   return (
-    <>
+    <div className="flex">
       {stars.map((_, i) => (
         <Star key={i} />
       ))}
-      {/* 👆 3 */}
-    </>
-    // 👆 4
+    </div>
+    // 👆 3
   );
 }
 ```
@@ -479,7 +469,6 @@ export default function StarRating() {
 1. We maken gebruik van het `IoStarSharp` icon uit de Ionicons-collectie.
 2. De `Star` component retourneert één gele ster.
 3. De `StarRating` component retourneert vijf sterren. We creëren een array met vijf elementen en mappen elk element naar een `Star` component. We voegen ook een `key` attribuut toe, hier gebruiken we de index.
-4. React-components mogen maar één element retourneren. We wrappen de elementen in een lege tag. Dit genereert geen extra DOM element, enkel een virtuele knoop in de virtual DOM.
 
 ### Oefening 2 - StarRating in Place component
 
@@ -489,25 +478,20 @@ Voeg de StarRating component toe aan de Place component en bekijk het resultaat.
 
   ```jsx
   // src/components/places/Place.jsx
-  import StarRating from './StarRating';
   import { IoTrashOutline } from 'react-icons/io5';
+  import StarRating from './StarRating';
 
-  const Place = ({ id, name, rating, onDelete = (f) => f }) => {
-    const handleDelete = () => {
-      onDelete(id);
+  const Place = ({ id, name, rating }) => {
+
+    const handleClick = () => {
+      console.log('you clicked the remove button');
     };
 
     return (
-      <div className='card bg-light border-dark mb-4'>
-        <div className='card-body'>
-          <h5 className='card-title'>{name}</h5>
-          <div className='card-text'>
-            <StarRating />
-          </div>
-          <button className='btn btn-primary' onClick={handleDelete}>
-            <IoTrashOutline />
-          </button>
-        </div>
+      <div className="p-3 outline outline-black/5 rounded-md shadow-lg mb-4">
+        <h5 className="text-xl font-medium mb-2">{name}</h5>
+        <StarRating />
+        <button className='mt-6 py-2 px-2.5 rounded-md bg-blue-600 text-white' onClick={handleClick}><IoTrashOutline /></button>
       </div>
     );
   };
@@ -523,18 +507,18 @@ Vervolgens willen we het aantal sterren in de rating variabel maken. Dit doen we
 // src/components/places/StarRating.jsx
 import { IoStarSharp } from 'react-icons/io5';
 
-const Star = () => <IoStarSharp color='yellow' />;
+const Star = () => <IoStarSharp color='gold' />;
 
 export default function StarRating({ totalStars = 5 }) {
   // 👆 1
 
   const stars = [...new Array(totalStars)]; // 👈 2
   return (
-    <>
+    <div className="flex">
       {stars.map((_, i) => (
         <Star key={i} />
       ))}
-    </>
+    </div>
   );
 }
 ```
@@ -552,17 +536,17 @@ import { IoStarSharp } from 'react-icons/io5';
 
 // 👇
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
+  <IoStarSharp color={selected ? 'gold' : 'grey'} />
 );
 
 export default function StarRating({ totalStars = 5 }) {
   const stars = [...new Array(totalStars)];
   return (
-    <>
+    <div className="flex">
       {stars.map((_, i) => (
         <Star key={i} />
       ))}
-    </>
+    </div>
   );
 }
 ```
@@ -582,16 +566,12 @@ const Place = ({ id, name, rating, onDelete = (f) => f }) => {
   };
 
   return (
-    <div className='card bg-light border-dark mb-4'>
-      <div className='card-body'>
-        <h5 className='card-title'>{name}</h5>
-        <div className='card-text'>
-          <StarRating selectedStars={rating} /> {/* 👈 2*/}
-        </div>
-        <button className='btn btn-primary' onClick={handleDelete}>
-          <IoTrashOutline />
-        </button>
-      </div>
+    <div className="p-3 border rounded-md mb-4">
+      <h5 className="text-xl mb-1">{name}</h5>
+      <StarRating selectedStars={rating} /> {/* 👈 2*/}
+      <button className='mt-6 py-2 px-2.5 rounded-md bg-blue-600 text-white' onClick={handleDelete}>
+        <IoTrashOutline />
+      </button>
     </div>
   );
 };
@@ -609,7 +589,7 @@ De `StarRating` component zal die informatie via de prop `selected` doorgeven aa
 import { IoStarSharp } from 'react-icons/io5';
 
 const Star = ({ selected = false }) => (
-  <IoStarSharp color={selected ? 'yellow' : 'grey'} />
+  <IoStarSharp color={selected ? 'gold' : 'grey'} />
 );
 
 export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
@@ -617,14 +597,17 @@ export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
   const stars = [...new Array(totalStars)];
   return (
     <>
-      {stars.map((_, i) => (
-        <Star key={i} selected={selectedStars > i} /> // 👈 2
-      ))}
+      <div className="flex">
+        {stars.map((_, i) => (
+          <Star key={i} selected={selectedStars > i} /> // 👈 2
+        ))}
+      </div>
       {/* 👇 3 */}
-      <p>
+      <p className="text-gray-700 mt-2">
         {selectedStars} of {totalStars} stars
       </p>
     </>
+    // 👆 4
   );
 }
 ```
@@ -632,6 +615,7 @@ export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
 1. Het aantal geselecteerde sterren wordt via de prop `selectedStars` meegegeven.
 2. Een ster is geselecteerd als de rating groter is dan de index.
 3. We geven ook informatie weer over het aantal geselecteerde sterren.
+4. React-components mogen maar één element retourneren. We wrappen de elementen in een lege tag. Dit genereert geen extra DOM element, enkel een virtuele knoop in de virtual DOM.
 
 Bekijk het resultaat!
 
@@ -651,23 +635,25 @@ Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster
 
   const Star = ({ selected = false, index }) => {     // 👈 1
     // 👇 2
-    const handleClick = (e) => {
+    const handleClick = () => {
       console.log(`you clicked star ${index}`);
     };
 
     return (
-      <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleClick} /> {/* 👈 3 */}
-    );
+      < IoStarSharp color={selected ? 'gold' : 'grey'} onClick={handleClick} />
+    );// 👈 3
   };
 
   export default function StarRating({ totalStars = 5, selectedStars = 0 }) {
     const stars = [...new Array(totalStars)];
     return (
       <>
-        {stars.map((_, i) => (
-          <Star key={i} selected={selectedStars > i} index={i} />{/* 👈 1 */}
-        ))}
-        <p>
+        <div className="flex">
+          {stars.map((_, i) => (
+            <Star key={i} selected={selectedStars > i} index={i} />
+          ))}{/* 👈 1 */}
+        </div>
+        <p className="text-gray-700 mt-2">
           {selectedStars} of {totalStars} stars
         </p>
       </>
@@ -703,24 +689,22 @@ const PlacesList = () => {
 
   return (
     <>
-      <h1>Places</h1>
-      <div className='grid mt-3'>
-        <div className='row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xxl-4 g-3'>
-          {places
-            .sort((a, b) =>
-              a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
-            )
-            .map((p) => (
-              <div className='col' key={p.id}>
-                <Place
-                  {...p}
-                  onDelete={handleDeletePlace}
-                  onRate={handleRatePlace}
-                />
-                {/* 👆 2 */}
-              </div>
-            ))}
-        </div>
+      <h1 className="text-4xl mb-4">Places</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-3">
+        {places
+          .sort((a, b) =>
+            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+          )
+          .map((p) => (
+            <div className='col' key={p.id}>
+              <Place
+                {...p}
+                onDelete={handleDeletePlace}
+                onRate={handleRatePlace}
+              />
+              {/* 👆 2 */}
+            </div>
+          ))}
       </div>
     </>
   );
@@ -749,16 +733,12 @@ const Place = ({ id, name, rating, onDelete, onRate }) => {
   };
 
   return (
-    <div className='card bg-light border-dark mb-4'>
-      <div className='card-body'>
-        <h5 className='card-title'>{name}</h5>
-        <div className='card-text'>
-          <StarRating selectedStars={rating} onRate={handleRate} /> {/* 👈 3*/}
-        </div>
-        <button className='btn btn-primary' onClick={handleDelete}>
-          <IoTrashOutline />
-        </button>
-      </div>
+    <div className="p-3 outline outline-black/5 rounded-md shadow-lg mb-4">
+      <h5 className="text-xl font-medium mb-2">{name}</h5>
+      <StarRating selectedStars={rating} onRate={handleRate} /> {/* 👈 3*/}
+      <button className='mt-6 py-2 px-2.5 rounded-md bg-blue-600 text-white' onClick={handleDelete}>
+        <IoTrashOutline />
+      </button>
     </div>
   );
 };
@@ -783,7 +763,7 @@ const Star = ({ index, selected = false, onSelect = (f) => f }) => {
   };
 
   return (
-    <IoStarSharp color={selected ? 'yellow' : 'grey'} onClick={handleSelect} />
+    <IoStarSharp color={selected ? 'gold' : 'grey'} onClick={handleSelect} />
   );
 };
 
@@ -795,16 +775,18 @@ export default function StarRating({
   const stars = [...new Array(totalStars)];
   return (
     <>
-      {stars.map((_, i) => (
-        <Star
-          key={i}
-          index={i}
-          selected={selectedStars > i}
-          onSelect={onRate}
-        />
-      ))}
-      {/* 👆 2 en 4 */}
-      <p>
+      <div className="flex">
+        {stars.map((_, i) => (
+          <Star
+            key={i}
+            index={i}
+            selected={selectedStars > i}
+            onSelect={onRate}
+          />
+        ))}
+        {/* 👆 2 en 4 */}
+      </div>
+      <p className="text-gray-700 mt-2">
         {selectedStars} of {totalStars} stars
       </p>
     </>
@@ -821,7 +803,7 @@ export default function StarRating({
 
 Momenteel wordt de lijst van transacties gegenereerd in de `App` component. Het is beter om hier een aparte component `TransactionList` voor aan te maken.
 
-Maak een bestand `TransactionList.jsx` aan in de map `src/components/transactions` en kopieer hier de code omtrent de lijst van transacties uit `App.jsx` naartoe.
+Maak een bestand `TransactionList.jsx` aan in de map `src/components/transactions` en kopieer hier de code omtrent de lijst van transacties uit `App.jsx` naartoe. Voeg een h1 tag toe bovenaan de lijst.
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
@@ -831,7 +813,7 @@ import { TRANSACTION_DATA } from '../../api/mock_data';
 export default function TransactionList() {
   return (
     <>
-      <h1>Transactions</h1>
+      <h1 className="text-4xl mb-4">Transactions</h1>
       {TRANSACTION_DATA.map((trans, index) => (
         <Transaction {...trans} key={index} />
       ))}
@@ -843,22 +825,22 @@ export default function TransactionList() {
 Gebruik vervolgens deze component in `App.jsx`.
 
 ```jsx
-import TransactionList from './components/transactions/TransactionList'; // 👈 1
 import PlacesList from './components/places/PlacesList';
+import TransactionList from './components/transactions/TransactionsList'; // 👈 1
 
 function App() {
   return (
-    <div>
-      <TransactionList /> {/* 👈 2 */}
+    <div className="bg-white text-gray-900">
+      <TransactionList />{/* 👈 2 */}
       <PlacesList />
-    </div>
-  );
+    </div>);
 }
+
 export default App;
 ```
 
 1. Importeer `TransactionList` en verwijder de andere niet gebruikte imports
-2. Het aanmaken van de lijst gebeurt nu door de `TransactionList` component
+2. Het aanmaken van de lijst gebeurt nu door de `TransactionList` component. Verwijder ook de h1 tag.
 
 ## Input velden toevoegen a.d.h.v. controlled components
 
@@ -876,16 +858,17 @@ import { TRANSACTION_DATA } from '../../api/mock_data';
 export default function TransactionList() {
   return (
     <>
-      <h1>Transactions</h1>
+      <h1 className="text-4xl mb-4">Transactions</h1>
       {/* 👇 */}
-      <div className='input-group mb-3 w-50'>
+      <div className='flex mb-3 w-1/2 gap-2 mx-4'>
         <input
           type='search'
           id='search'
-          className='form-control rounded'
+          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-gray-600'
           placeholder='Search'
         />
-        <button type='button' className='btn btn-outline-primary'>
+        <button type='button' className='py-2 px-2.5 rounded-md text-blue-600 border border-blue-600'>
           Search
         </button>
       </div>
@@ -902,13 +885,13 @@ Formulierelementen in React zijn read-only. Door state toe te voegen, kan de com
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
-import { useState } from 'react'; // 👈 1
 import Transaction from './Transaction';
 import { TRANSACTION_DATA } from '../../api/mock_data';
+import { useState } from 'react'; // 👈 1
 
 export default function TransactionList() {
   const [text, setText] = useState(''); // 👈 1
-  const [search, setSearch] = useState(''); // 👈 1
+  const [search, setSearch] = useState(''); // 👈
 
   // 👇 5
   const filteredTransactions = TRANSACTION_DATA.filter((t) => {
@@ -918,21 +901,20 @@ export default function TransactionList() {
 
   return (
     <>
-      <h1>Transactions</h1>
-      <div className='input-group mb-3 w-50'>
+      <h1 className="text-4xl mb-4">Transactions</h1>
+      <div className='flex mb-3 w-1/2 gap-2 mx-4'>
         <input
           type='search'
           id='search'
-          className='form-control rounded'
+          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-gray-600'
           placeholder='Search'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
         {/* 👆 2 en 3 */}
-        <button
-          type='button'
-          className='btn btn-outline-primary'
-          onClick={() => setSearch(text)}
+        <button type='button' className='py-2 px-2.5 rounded-md
+        text-blue-600 border border-blue-600' onClick={() => setSearch(text)}
         >
           Search
         </button>
@@ -990,7 +972,7 @@ const filteredTransactions = useMemo(
   () =>
     TRANSACTION_DATA.filter((t) => {
       console.log('filtering...');
-      return t.place.toLowerCase().includes(search.toLowerCase());
+      return t.place.name.toLowerCase().includes(search.toLowerCase());
     }),
   [search],
 );
@@ -1004,6 +986,12 @@ De `useMemo` hook verwacht twee parameters:
 2. Een **dependency array** die elke waarde bevat waarnaar verwezen wordt in de calculation function.
 
 Bij elke volgende render vergelijkt React de dependencies met de dependencies die je tijdens de laatste render hebt doorgegeven. Als geen van de dependencies is gewijzigd, retourneert `useMemo` de waarde die al eerder werd berekend. Anders zal React de berekening opnieuw uitvoeren en de nieuwe waarde retourneren.
+
+Belangrijk:
+
+- Je moet useMemo niet overal gebruiken.
+- Kleine berekeningen of eenvoudige objecten hoef je niet te memoizen: de overhead van useMemo kan dan zelfs trager zijn dan de berekening zelf.
+- Gebruik het vooral als je echte performanceproblemen merkt.
 
 ### Weergave tabel met transacties
 
@@ -1021,23 +1009,21 @@ function TransactionsTable({ transactions }) {
   }
 
   return (
-    <div>
-      <table className='table table-hover table-responsive'>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>User</th>
-            <th>Place</th>
-            <th className='text-end'>Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {transactions.map((transaction) => (
-            <Transaction key={transaction.id} {...transaction} />
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <table className='table-auto w-full border-collapse'>
+      <thead>
+        <tr className="border-b-2 border-gray-300">
+          <th className="text-start py-2">Date</th>
+          <th className="text-start py-2">User</th>
+          <th className="text-start py-2">Place</th>
+          <th className='text-end py-2'>Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {transactions.map((transaction) => (
+          <Transaction key={transaction.id} {...transaction} />
+        ))}
+      </tbody>
+    </table>
   );
 }
 
@@ -1067,7 +1053,7 @@ export default function TransactionList() {
 
   return (
     <>
-      <h1>Transactions</h1>
+      <h1 className="text-4xl mb-4">Transactions</h1>
       <div className='input-group mb-3 w-50'>
         <input
           type='search'
@@ -1086,8 +1072,8 @@ export default function TransactionList() {
         </button>
       </div>
 
-      <div className='mt-4'>
-        {/* 👇 */}
+      {/* 👇 */}
+      <div className='m-4'>
         <TransactionsTable transactions={filteredTransactions} />
       </div>
     </>
@@ -1119,7 +1105,6 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
 
   ```jsx
   // src/components/transactions/Transaction.jsx
-
   // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
   const dateFormat = new Intl.DateTimeFormat('nl-BE', {
     day: '2-digit',
@@ -1136,11 +1121,11 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
 
   export default function Transaction({ id, date, amount, user, place }) {
     return (
-      <tr>
-        <td>{dateFormat.format(new Date(date))}</td>
-        <td>{user.name}</td>
-        <td>{place.name}</td>
-        <td className='text-end'>{amountFormat.format(amount)}</td>
+      <tr className="border-b border-gray-200">
+        <td className="py-2">{dateFormat.format(new Date(date))}</td>
+        <td className="py-2">{user.name}</td>
+        <td className="py-2">{place.name}</td>
+        <td className='text-end py-2'>{amountFormat.format(amount)}</td>
       </tr>
     );
   }
