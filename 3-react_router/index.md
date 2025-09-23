@@ -20,21 +20,12 @@ Daarnaast is React een library en geen framework, zoals bv. Angular dat wel is. 
 
 ## React Router
 
-React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native.
+React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info op](https://reactrouter.com/start/modes)). Deze mode biedt ede mogelijkheid om react routes op een eenvoudige manier te definiëren.
 
-We hebben volgende dependencies nodig om met React Router aan de slag te kunnen (in React):
-
-- [react-router](https://www.npmjs.com/package/react-router): de core van React Router (gedeeld met React Native)
-- [react-router-dom](https://www.npmjs.com/package/react-router-dom): implementaties specifiek voor routing in webapplicaties
-
-> Let op: `react-router` wordt niet automatisch geïnstalleerd als je `react-router-dom` installeert!
-
-`react-router` is nodig voor de werking, maar tijdens implementatie zal je enkel componenten en hooks importeren uit `react-router-dom`.
-
-Installeer beide dependencies
+Installeer React Router [meer info op](https://reactrouter.com/start/data/installation)
 
 ```bash
-pnpm add react-router@~6.26.0 react-router-dom@~6.26.0
+pnpm add react-router
 ```
 
 ### Achter de schermen
@@ -52,9 +43,9 @@ Deze werking is wel overmatig versimpeld, maar het geeft toch een idee...
 
 ### BrowserRouter
 
-De [`BrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) is een van de mogelijkheden in `react-router-dom` om te gebruiken als router. Dit type router zal functioneren zoals je verwacht dat een router functioneert: hij gebruikt het deel na de `/` om naar een pagina te navigeren. Dit is zeer gelijkaardig aan hoe server-side gerenderde pagina's werken.
+De [`BrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) is een van de mogelijkheden om te gebruiken als router. Dit type router zal functioneren zoals je verwacht dat een router functioneert: hij gebruikt het deel na de `/` om naar een pagina te navigeren. Dit is zeer gelijkaardig aan hoe server-side gerenderde pagina's werken.
 
-Een probleem hierbij is dat browsers standaard refreshen wanneer de URL na de `/` wijzigt. In dit geval zal `react-router-dom` dit probleem opvangen en voorkomen.
+Een probleem hierbij is dat browsers standaard refreshen wanneer de URL na de `/` wijzigt. In dit geval zal `react-router` dit probleem opvangen en voorkomen.
 
 Het voordeel met dit soort routers is dat je webapplicatie werkt zoals een _old-school website_, met alle features die een URL te bieden heeft.
 
@@ -80,13 +71,14 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'; // 👈
+import { createBrowserRouter } from 'react-router';// 👈
+import { RouterProvider } from 'react-router/dom'; // 👈
 
 // 👇
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    Component: App,
   },
 ]);
 
@@ -98,7 +90,7 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
-[createBrowserRouter](https://reactrouter.com/en/main/routers/create-browser-router) creëert een `RemixRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [Route](https://reactrouter.com/en/main/route/route) objecten mee. Deze koppelen een URL (`path`) aan een component (`element`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/en/main/routers/router-provider).
+[createBrowserRouter](https://reactrouter.com/api/data-routers/createBrowserRouter#createbrowserrouter) creëert een `DataRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [RouteObject](https://reactrouter.com/start/data/route-object) objecten mee. Deze koppelen een URL (`path`) aan een component (`Component`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/api/data-routers/RouterProvider#routerprovider).
 
 In dit voorbeeld configureren we een enkele route die de `App` component toont wanneer de URL `/` is. We zullen later meer routes toevoegen.
 
@@ -115,25 +107,26 @@ We voorzien volgende basis routes in de voorbeeldapplicatie
 
 Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie plaatsen we in de `pages` map. Maak een map `pages` aan met daarin de mappen `places` en `transactions`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan.
 
-Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `react-lorem-ipsum`.
+Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `@faker-js/faker`.
 
 Installeer dit package:
 
 ```bash
-pnpm add react-lorem-ipsum
+pnpm add @faker-js/faker
 ```
 
 Maak de `About` page aan:
 
 ```jsx
 // src/pages/about/About.jsx
-import { LoremIpsum } from 'react-lorem-ipsum';
+import { faker } from '@faker-js/faker';
 
 const About = () => (
   <div>
-    <h1>Over ons</h1>
+    <h1 className="text-4xl mb-4">Over ons</h1>
     <div>
-      <LoremIpsum p={2} />
+      <p className="mb-4">{faker.lorem.paragraph(10)}</p>
+      <p>{faker.lorem.paragraph(10)}</p>
     </div>
   </div>
 );
@@ -148,7 +141,7 @@ Maak de `NotFound` page aan
 const NotFound = () => {
   return (
     <div>
-      <h1>Pagina niet gevonden</h1>
+      <h1 className="text-4xl mb-4">Pagina niet gevonden</h1>
       <p>Er is geen pagina op deze url, probeer iets anders.</p>
     </div>
   );
@@ -164,22 +157,23 @@ Nu we de nodige pagina's hebben, hoeven we enkel nog de routes te configureren. 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import TransactionList from './pages/transactions/TransactionList'; // 👈 1
-import PlacesList from './pages/places/PlacesList'; // 👈 1
-import NotFound from './pages/NotFound'; // 👈 1
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
+import TransactionList from './pages/transactions/TransactionsList.jsx';
+import PlacesList from './pages/places/PlacesList.jsx'; // 👈 1
+import NotFound from './pages/NotFound.jsx'; // 👈 1
 import About from './pages/about/About.jsx'; // 👈 1
 
 // 👇
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    Component: App,
   },
-  { path: 'transactions', element: <TransactionList /> }, // 👈 2
-  { path: 'places', element: <PlacesList /> }, // 👈 2
-  { path: 'about', element: <About /> }, // 👈 2
-  { path: '*', element: <NotFound /> }, // 👈 3
+  { path: 'transactions', Component: TransactionList }, // 👈 2
+  { path: 'places', Component: PlacesList }, // 👈 2
+  { path: 'about', Component: About }, // 👈 2
+  { path: '*', Component: NotFound }, // 👈 3
 ]);
 
 createRoot(document.getElementById('root')).render(
@@ -189,7 +183,7 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
-1. Importeer de gewenste componenten.
+1. Importeer de gewenste componenten (Merk op dat we de extensie `.jsx` expliciet moeten meegeven bij de imports van de componenten in de `pages` map. Dit is een eigenaardigheid van Vite).
 2. Vul de array met route objecten aan, één voor elke route. We geven telkens de component die getoond moet worden mee aan de optie `element`. Wanneer de URL in de browser wijzigt, zal de `RouterProvider` doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van het `Route` object.
 3. Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test dit zelf eens uit!**
    - Deze route hoeft niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
@@ -204,27 +198,28 @@ Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component.
 
 ```jsx
 // src/App.jsx
-import { Link } from 'react-router-dom'; // 👈
+import { Link } from 'react-router';
 
 function App() {
   return (
-    <div>
-      <h1>Welkom!</h1>
+    <div className="mx-4">
+      <h1 className="text-4xl mb-4">Welkom!</h1>
       <p>Kies één van de volgende links:</p>
       <ul>
         <li>
-          <Link to='/transactions'>Transacties</Link> {/* 👈 */}
+          <Link to='/transactions' className="text-blue-600 underline">Transacties</Link> {/* 👈 */}
         </li>
         <li>
-          <Link to='/places'>Plaatsen</Link> {/* 👈 */}
+          <Link to='/places' className="text-blue-600 underline">Plaatsen</Link> {/* 👈 */}
         </li>
         <li>
-          <Link to='/about'>Over ons</Link> {/* 👈 */}
+          <Link to='/about' className="text-blue-600 underline">Over ons</Link> {/* 👈 */}
         </li>
       </ul>
     </div>
   );
 }
+
 export default App;
 ```
 
@@ -236,14 +231,14 @@ Om eigenschappen over de huidige route op te vragen bestaat de hook `useLocation
 
 ```jsx
 // src/pages/NotFound.jsx
-import { useLocation } from 'react-router-dom'; // 👈
+import { useLocation } from 'react-router'; // 👈
 
 const NotFound = () => {
   const { pathname } = useLocation(); // 👈
 
   return (
     <div>
-      <h1>Pagina niet gevonden</h1>
+      <h1 className="text-4xl mb-4">Pagina niet gevonden</h1>
       <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p> {/* 👈 */}
     </div>
   );
@@ -253,38 +248,38 @@ export default NotFound;
 
 Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
-- [useLocation](https://reactrouter.com/en/main/hooks/use-location)
+- [useLocation](https://reactrouter.com/api/hooks/useLocation#uselocation)
 - [Location interface van history package](https://github.com/remix-run/history/blob/main/docs/api-reference.md#location)
 
 ![How to use docs](./images/how-to-docs.jpg ':size=50%')
 
 ## Routes nesten
 
-Je kan [geneste routes](https://reactrouter.com/en/main/start/overview#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
+Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
 
 ```jsx
 // src/pages/about/About.jsx
-import { LoremIpsum } from 'react-lorem-ipsum';
-import { Link } from 'react-router-dom'; // 👈
+import { faker } from '@faker-js/faker';
+import { Link } from 'react-router';
 
 const About = () => (
   <div>
-    <h1>Over ons</h1>
+    <h1 className="text-4xl mb-4">Over ons</h1>
     <div>
-      <LoremIpsum p={2} />
-
-      <ul>
-        <li>
-          <Link to='/about/services'>Onze diensten</Link> {/* 👈 */}
-        </li>
-        <li>
-          <Link to='/about/history'>Geschiedenis</Link> {/* 👈 */}
-        </li>
-        <li>
-          <Link to='/about/location'>Locatie</Link> {/* 👈 */}
-        </li>
-      </ul>
+      <p className="mb-4">{faker.lorem.paragraph(10)}</p>
+      <p>{faker.lorem.paragraph(10)}</p>
     </div>
+    <ul  className="p-4 mb-4">
+      <li>
+        <Link to='/about/services' className="text-blue-600 underline">Onze diensten</Link> {/* 👈 */}
+      </li>
+      <li>
+        <Link to='/about/history' className="text-blue-600 underline">Geschiedenis</Link> {/* 👈 */}
+      </li>
+      <li>
+        <Link to='/about/location' className="text-blue-600 underline">Locatie</Link> {/* 👈 */}
+      </li>
+    </ul>
   </div>
 );
 
@@ -296,22 +291,22 @@ En we voegen deze pagina's toe aan `About.jsx`.
 ```jsx
 export const Services = () => (
   <div>
-    <h1>Onze diensten</h1>
-    <LoremIpsum p={2} />
+    <h1 className="text-4xl mb-4">Onze diensten</h1>
+    <p>{faker.lorem.paragraph(10)}</p>
   </div>
 );
 
 export const History = () => (
   <div>
-    <h1>Geschiedenis</h1>
-    <LoremIpsum p={2} />
+    <h1 className="text-4xl mb-4">Geschiedenis</h1>
+    <p>{faker.lorem.paragraph(10)}</p>
   </div>
 );
 
 export const Location = () => (
   <div>
-    <h1>Locatie</h1>
-    <LoremIpsum p={2} />
+    <h1 className="text-4xl mb-4">Locatie</h1>
+    <p>{faker.lorem.paragraph(10)}</p>
   </div>
 );
 ```
@@ -323,7 +318,8 @@ Daarna passen we de definitie van `/about` aan, de drie nieuwe routes dienen als
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router';
+import { RouterProvider } from 'react-router/dom';
 import TransactionList from './pages/transactions/TransactionList';
 import PlacesList from './pages/places/PlacesList';
 import NotFound from './pages/NotFound';
@@ -332,29 +328,29 @@ import About, { Services, History, Location } from './pages/about/About.jsx'; //
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    Component: App,
   },
-  { path: 'transactions', element: <TransactionList /> },
-  { path: 'places', element: <PlacesList /> },
+  { path: 'transactions', Component: TransactionList },
+  { path: 'places', Component: PlacesList },
   {
     path: 'about',
-    element: <About />,
+    Component: About,
     children: [
       {
         path: 'services',
-        element: <Services />,
+        Component: Services,
       },
       {
         path: 'history',
-        element: <History />,
+        Component: History,
       },
       {
         path: 'location',
-        element: <Location />,
+        Component: Location,
       },
     ], // 👆
   },
-  { path: '*', element: <NotFound /> },
+  { path: '*', Component: NotFound },
 ]);
 
 createRoot(document.getElementById('root')).render(
@@ -370,7 +366,7 @@ Voeg onderaan de `About` component de `Outlet` toe:
 
 ```jsx
 // src/about/About.jsx
-import { Outlet, Link } from 'react-router-dom'; // 👈
+import { Outlet, Link } from 'react-router'; // 👈
 
 // ...
 
@@ -389,7 +385,7 @@ const About = () => (
 Stel we willen dat gebruikers die naar `/services` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.jsx`:
 
 ```jsx
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 // ...
 
 const router = createBrowserRouter([
@@ -415,16 +411,18 @@ Maak een component `PlaceDetail.jsx` aan in de folder `/src/pages/places`.
 Definieer de nieuwe route in `main.jsx`:
 
 ```jsx
+import PlaceDetail from './pages/places/PlacesDetail.jsx';
+//...
 {
   path: '/places',
   children: [
     {
       index: true,
-      element: <PlacesList />,
+      Component: PlacesList,
     },
     {
       path: ':id',
-      element: <PlaceDetail />,
+      Component: PlaceDetail,
     },
   ],
 }
@@ -441,11 +439,11 @@ Stel we hebben volgende routes gedefinieerd:
 ```jsx
 {
   path: '/places/:id',
-  element: <PlaceDetail />
+  Component: PlaceDetail
 },
 {
   path: '/posts/:year/:month',
-  element: <Posts />
+  Component: Posts
 }
 ```
 
@@ -474,7 +472,7 @@ We moeten nog enkel de `PlaceDetail` component implementeren zodat we de details
 
 ```jsx
 // src/pages/places/PlaceDetail.jsx
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { PLACE_DATA } from '../../api/mock_data';
 
 const PlaceDetail = () => {
@@ -486,7 +484,7 @@ const PlaceDetail = () => {
   if (!place) {
     return (
       <div>
-        <h1>Plaats niet gevonden</h1>
+        <h1 className="text-4xl mb-4">Plaats niet gevonden</h1>
         <p>Er is geen plaats met id {id}.</p>
       </div>
     );
@@ -494,7 +492,7 @@ const PlaceDetail = () => {
 
   return (
     <div>
-      <h1>{place.name}</h1>
+      <h1 className="text-4xl mb-4">{place.name}</h1>
       <p>Hier komen de transacties van {place.name}</p>
     </div>
   );
@@ -516,8 +514,8 @@ Pas hiervoor de code in de component `Place` aan.
   We moeten enkel de naam van de place omvormen naar een link. Dit doen we met de `Link` component van React Router.
 
   ```jsx
-  <h5 className='card-title'>
-    <Link to={`/places/${id}`}>{name}</Link>
+  <h5 className="text-xl font-medium mb-2">
+    <Link className="text-blue-600 underline" to={`/places/${id}`}>{name}</Link>
   </h5>
   ```
 
@@ -527,7 +525,7 @@ Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenv
 
 ```jsx
 // src/pages/Layout.jsx
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 import Navbar from '../components/Navbar';
 
 export default function Layout() {
@@ -541,10 +539,11 @@ export default function Layout() {
 ```
 
 De `Navbar` component voorziet in het menu.
+//TO DO vanaf hier nog aanpassen
 
 ```jsx
 // src/components/Navbar.jsx
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 export default function Navbar() {
   return (
@@ -643,7 +642,7 @@ Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar link
 
 ```jsx
 // src/pages/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router-dom'; // 👈
+import { Outlet, ScrollRestoration } from 'react-router'; // 👈
 import Navbar from '../components/Navbar';
 
 export default function Layout() {
@@ -665,7 +664,7 @@ Als voorbeeld gaan we onderaan de NotFound pagina een knop zetten waarmee we ter
 
 ```jsx
 // src/pages/NotFound.jsx
-import { useLocation, useNavigate } from 'react-router-dom'; // 👈
+import { useLocation, useNavigate } from 'react-router'; // 👈
 
 const NotFound = () => {
   const navigate = useNavigate(); // 👈
@@ -707,7 +706,7 @@ Maak hiervoor gebruik van de `NavLink` component. De actieve link maak je op in 
 
 ```jsx
 // src/components/Navbar.jsx
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 
 export default function Navbar() {
   return (
@@ -765,5 +764,5 @@ Denk voor je eigen applicatie na over de navigatie en implementeer.
 
 ## Mogelijke extra's voor de examenopdracht
 
-- Gebruik de nieuwe [loader](https://reactrouter.com/en/main/route/loader) en [action](https://reactrouter.com/en/main/route/action) props van de `Route` component van `react-router-dom` om de data op te halen.
+- Gebruik de nieuwe [loader](https://reactrouter.com/en/main/route/loader) en [action](https://reactrouter.com/en/main/route/action) props van de `Route` component van `react-router` om de data op te halen.
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
