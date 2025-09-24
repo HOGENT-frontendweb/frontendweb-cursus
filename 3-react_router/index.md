@@ -532,41 +532,98 @@ export default function Layout() {
   return (
     <div className='container-xl'>
       <Navbar />
-      <Outlet />
+      <div className='p-4'>
+        <Outlet />
+      </div>
     </div>
   );
 }
 ```
 
-De `Navbar` component voorziet in het menu.
-//TO DO vanaf hier nog aanpassen
+De `Navbar` component voorziet in het menu. We maken een responsive menu.
 
 ```jsx
 // src/components/Navbar.jsx
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
+import { useState } from 'react';
+import { BsFillPiggyBankFill } from 'react-icons/bs';
 
 export default function Navbar() {
+
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+  };
+
   return (
-    <nav className='navbar sticky-top mb-4 navbar-light bg-light'>
-      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <Link className='nav-link' to='/'>
+    <>
+      <nav className="relative px-4 py-4 flex justify-between items-center bg-gray-200">
+
+        <div className="flex items-center">
+          <NavLink to="/" className="flex items-center text-blue-600 hover:text-blue-800">
+            <BsFillPiggyBankFill size={28} className="text-blue-600" />
+            <span className="font-semibold text-lg pl-2">Budget</span>
+          </NavLink>
+        </div>
+        <div className="lg:hidden">
+          <button className="navbar-burger flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
+            <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <title>Mobile menu</title>
+              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+            </svg>
+          </button>
+        </div>
+        <ul className="hidden absolute top-1/2 left-1/2
+        transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
+          <li><Link className='text-gray-400' to='/'>
             Transactions
-          </Link>
-        </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <Link className='nav-link' to='/places'>
+          </Link></li>
+          <li><Link className='text-gray-400' to='/places'>
             Places
-          </Link>
-        </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <Link className='nav-link' to='/about'>
+          </Link></li>
+          <li><Link className='text-gray-400' to='/about'>
             About us
-          </Link>
-        </div>
-        <div className='flex-grow-1'></div>
+          </Link></li>
+        </ul>
+      </nav>
+      <div className={`navbar-menu relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>
+        <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+        <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
+        max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
+          <div className="flex items-center mb-8">
+            <Link to="/" className="mr-auto flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+              <BsFillPiggyBankFill size={28} className="text-blue-600" />
+              <span className="font-semibold text-lg">Budget</span>
+            </Link>
+            <button onClick={toggleNavbar} className="navbar-close" >
+              <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
+                xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div>
+            <ul>
+              <li className="mb-1">
+                <Link className="block p-4 text-sm font-semibold
+                text-gray-400 rounded" to="/transactions">Transactions</Link>
+              </li>
+              <li className="mb-1">
+                <Link className="block p-4 text-sm font-semibold
+                text-gray-400 rounded" to="/places">Places</Link>
+              </li>
+              <li className="mb-1">
+                <Link className="block p-4 text-sm font-semibold
+                text-gray-400 rounded" to="/about">About us</Link>
+              </li>
+            </ul>
+          </div>
+        </nav>
       </div>
-    </nav>
+    </>
   );
 }
 ```
@@ -574,64 +631,57 @@ export default function Navbar() {
 Pas `main.jsx` aan, alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
 
 ```jsx
+// src/main.jsx
+//...
 const router = createBrowserRouter([
   {
-    element: <Layout />, // 👈
+    Component: Layout, // 👈
     // 👇
     children: [
       {
         path: '/',
         element: <Navigate replace to='/transactions' />,
       },
-      {
-        path: '/transactions',
-        element: <TransactionList />,
-      },
+      { path: 'transactions', Component: TransactionList },
       {
         path: '/places',
         children: [
           {
             index: true,
-            element: <PlacesList />,
+            Component: PlacesList,
           },
           {
             path: ':id',
-            element: <PlaceDetail />,
+            Component: PlaceDetail,
           },
         ],
       },
       {
         path: 'about',
-        element: <About />,
+        Component: About,
         children: [
           {
             path: 'services',
-            element: <Services />,
+            Component: Services,
           },
           {
             path: 'history',
-            element: <History />,
+            Component: History,
           },
           {
             path: 'location',
-            element: <Location />,
+            Component: Location,
           },
-        ],
+        ], // 👆
       },
       {
         path: 'services',
         element: <Navigate to='/about/services' replace />,
       },
-      { path: '*', element: <NotFound /> },
+      { path: '*', Component: NotFound },
     ],
-  },
-]);
-
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>,
-);
+  }]);
+//...
 ```
 
 In `main.jsx` kan je nu de `App` component verwijderen.
@@ -649,7 +699,9 @@ export default function Layout() {
   return (
     <div className='container-xl'>
       <Navbar />
-      <Outlet />
+      <div className='p-4'>
+        <Outlet />
+      </div>
       <ScrollRestoration /> {/* 👈 */}
     </div>
   );
@@ -702,36 +754,14 @@ Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
 
 ## Aanduiden van de actieve link in de navigatie
 
-Maak hiervoor gebruik van de `NavLink` component. De actieve link maak je op in CSS met de `active` class. Pas de `Navbar` component aan:
+Maak hiervoor gebruik van de `NavLink` component uit `react-router`. De actieve link maak je op in CSS met de `active` class. Pas alle links in de de `Navbar` component als volgt aan:
 
 ```jsx
 // src/components/Navbar.jsx
-import { NavLink } from 'react-router';
-
-export default function Navbar() {
-  return (
-    <nav className='navbar sticky-top mb-4 navbar-light bg-light'>
-      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/transactions'>
-            Transactions
-          </NavLink>
-        </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/places'>
-            Places
-          </NavLink>
-        </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/about'>
-            About us
-          </NavLink>
-        </div>
-        <div className='flex-grow-1'></div>
-      </div>
-    </nav>
-  );
-}
+//...
+<NavLink className="nav-link block p-4 text-sm font-semibold
+  text-gray-400 rounded" to="/transactions">Transactions</NavLink>
+//...
 ```
 
 Voeg onderstaande code toe aan de `index.css`:
