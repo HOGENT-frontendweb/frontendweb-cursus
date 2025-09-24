@@ -778,6 +778,21 @@ Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
 import './index.css';
 ```
 
+## Custom styles
+
+Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css`:
+
+```css
+@layer base {
+  h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: 4px;
+  }
+}
+```
+
+Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen.
+
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
