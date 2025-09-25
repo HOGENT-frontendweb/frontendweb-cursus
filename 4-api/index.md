@@ -70,47 +70,14 @@ export default function TransactionList() {
     console.log('transactions are rendered');
   });
 
-  const filteredTransactions = useMemo(
-    () =>
-      TRANSACTION_DATA.filter((t) => {
-        return t.place.name.toLowerCase().includes(search.toLowerCase());
-      }),
-    [search],
-  );
-
-  return (
-    <>
-      <h1>Transactions</h1>
-      <div className='input-group mb-3 w-50'>
-        <input
-          type='search'
-          id='search'
-          className='form-control rounded'
-          placeholder='Search'
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <button
-          type='button'
-          className='btn btn-outline-primary'
-          onClick={() => setSearch(text)}
-        >
-          Search
-        </button>
-      </div>
-
-      <div className='mt-4'>
-        <TransactionsTable transactions={filteredTransactions} />
-      </div>
-    </>
-  );
+ //...
 }
 ```
 
 1. We importeren `useEffect`.
 2. Binnen de component roepen we de `useEffect` functie aan. We geven een **callback functie** mee als parameter. De functie die we meegeven wordt het **effect** genoemd. Wanneer React onze component rendert, onthoudt React het effect dat we hebben gedefinieerd en voert het het effect uit na het updaten van de DOM. Dit gebeurt standaard na elke render, ook na de eerste.
 
-Start de app en bekijk de console. Voeg een transactie toe. We zien in de console dat `useEffect` na de initiële render en bij elke rerender wordt uitgevoerd.
+Start de app en bekijk de console. Geef een zoekterm in. We zien in de console dat `useEffect` na de initiële render en bij elke rerender wordt uitgevoerd.
 
 > **Merk op:** React StrictMode (zie `main.jsx`) controleert of een component pure is door de component functie tweemaal aan te roepen. Dit gebeurt enkel in development mode, niet in productie. Dit is ook de reden waarom het loggen naar de console tweemaal gebeurt. Zie [Detecting impure calculations with StrictMode](https://react.dev/learn/keeping-components-pure) en [Why does my calculation runs twice](https://react.dev/reference/react/useMemo#my-calculation-runs-twice-on-every-re-render).
 
@@ -165,7 +132,7 @@ export default function TransactionList({ user = 'Louis' }) {
     console.log(`Hi ${user}, transactions after initial render or transaction added`);
   }, [search, user]) // 👈 meerdere dependencies
 
-  // ..
+  //  JSX...
 ```
 
 React vergelijkt de dependency waarden met behulp van [Object.is](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is). Voor arrays en objecten wordt hier bijgevolg gekeken naar de referentie, en niet naar de exacte waarde!
@@ -330,16 +297,16 @@ Omdat we de laadindicator in meerdere componenten nodig hebben, maken we hiervoo
 // src/components/Loader.jsx
 export default function Loader() {
   return (
-    <div className='d-flex flex-column align-items-center'>
-      <div className='spinner-border'>
-        <span className='visually-hidden'>Loading...</span>
+    <div className='flex flex-col items-center'>
+      <div className='animate-spin rounded-full h-15 w-15 border-b-4 border-blue-600'>
+        <span className='sr-only'>Loading...</span>
       </div>
     </div>
   );
 }
 ```
 
-Deze `Loader` component toont een simpele loading indicator van Bootstrap.
+Deze `Loader` component toont een simpele loading indicator van tailwindcss.
 
 Ook zullen we foutafhandeling in meerdere componenten nodig hebben. Daarom maken we hiervoor een aparte component `Error` aan in een nieuw bestand `components/Error.jsx`:
 
@@ -351,9 +318,9 @@ export default function Error({ error }) {
   // 👆 1 👇 2
   if (isAxiosError(error)) {
     return (
-      <div className='alert alert-danger'>
-        <h4 className='alert-heading'>Oops, something went wrong</h4>
-        <p>
+      <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-4'>
+        <h4 className='text-red-800 font-semibold text-lg mb-2'>Oops, something went wrong</h4>
+        <p className='text-red-700'>
           {/* 👇 3 */}
           {error?.response?.data?.message || error.message}
           {error?.response?.data?.details && (
@@ -367,18 +334,17 @@ export default function Error({ error }) {
       </div>
     );
   }
-
   // 👇 4
   if (error) {
     return (
-      <div className='alert alert-danger'>
-        <h4 className='alert-heading'>An unexpected error occured</h4>
-        {error.message || JSON.stringify(error)}
-      </div>
+      <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-4'>
+        <h4 className='text-red-800 font-semibold text-lg mb-2'>An unexpected error occured</h4>
+        <p className='text-red-700'>{error.message || JSON.stringify(error)}</p>
+      </div >
     );
   }
 
-  return null; // 👈 5
+  return null;// 👈 5
 }
 ```
 
@@ -580,25 +546,24 @@ export default function TransactionList() {
   return (
     <>
       <h1>Transactions</h1>
-      <div className='input-group mb-3 w-50'>
+      <div className='flex mb-3 w-1/2 gap-2 mx-4'>
         <input
           type='search'
           id='search'
-          className='form-control rounded'
+          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-gray-600'
           placeholder='Search'
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <button
-          type='button'
-          className='btn btn-outline-primary'
-          onClick={() => setSearch(text)}
+        <button type='button' className='py-2 px-2.5 rounded-md
+        text-blue-600 border border-blue-600' onClick={() => setSearch(text)}
         >
           Search
         </button>
       </div>
 
-      <div className='mt-4'>
+       <div className='m-4'>
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error}>
           {/* 👇 5 */}
@@ -648,11 +613,13 @@ export const deleteById = async (url, { arg: id }) => {
 
 De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. Echter is het niet zijn verantwoordelijkheid om de effectieve API call uit te voeren, die is voor de `TransactionList`. We voegen een verwijderknop toe aan deze component:
 
+TODO verder aanpassen naar tailwindcss
+
 ```jsx
 import { IoTrashOutline } from 'react-icons/io5'; // 👈 1
 // ...
 
-function Transaction({ id, user, date, amount, place, onDelete }) { // 👈 3
+function Transaction({ id, user, date, amount, place, onDelete = ()=> {} }) { // 👈 3
   // 👇 2
   const handleDelete = () => {
     onDelete(id);
@@ -666,7 +633,7 @@ function Transaction({ id, user, date, amount, place, onDelete }) { // 👈 3
       <td> {amountFormat.format(amount)}</td>
       <td>
         {/* 👇 1 */}
-        <button className='btn btn-primary' onClick={handleDelete}>
+        <button className='py-2 px-2.5 rounded-md bg-blue-600' onClick={handleDelete}>
           <IoTrashOutline />
         </button>
       </td>
