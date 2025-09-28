@@ -1155,7 +1155,7 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les2-opl 2e1eb31
+> git checkout -b les2-opl f239e01
 > pnpm install
 > pnpm dev
 > ```
