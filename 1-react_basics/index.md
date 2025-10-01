@@ -777,7 +777,7 @@ Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
   - Duid aan welk(e) olod(s) je volgt
   - Je laat de links voor de online versie staan, je kan deze wel weggooien voor olods die je niet volgt
 
-?> Zet ook meteen de ESLint en debugger configuratie op punt!
+?> Zet ook meteen de ESLint en debugger configuratie en .gitignore op punt!
 
 Commit vervolgens de lege React-applicatie:
 

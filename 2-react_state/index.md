@@ -848,7 +848,11 @@ In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaan
 
 In React wordt de veranderlijke state bewaard in de **state variabele** van componenten en alleen bijgewerkt met bijhorende **set-functie**. We moeten dus de state van het formulier bijhouden en bijwerken wanneer een veld in het formulier wordt gewijzigd. Dit noemt men [**controlled components**](https://reactjs.org/docs/forms.html#controlled-components).
 
-In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filteren o.b.v. de plaats. We voegen een formulier met zoekveld en -knop toe. Voeg deze code toe aan de `TransactionList` component:
+In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filteren o.b.v. de plaats. We voegen een formulier met zoekveld en -knop toe.
+
+![TransactionList](./images/TransactionList.png)
+
+Voeg deze code toe aan de `TransactionList` component:
 
 ```jsx
 // src/components/transactions/TransactionList.jsx
@@ -929,7 +933,7 @@ export default function TransactionList() {
 }
 ```
 
-1. Voeg state toe voor het inputveld. De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld (vandaar de twee state variabelen).
+1. Voeg state `text` toe voor het inputveld (is een Controlled Component). De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld. Er moet een re-render geactiveerd worden bij klik op de `Search` knop vandaar de state `search`.
 2. Verbind het inputelement met de component state via de `value` prop.
 3. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen.
 4. Nu kunnen we bij het klikken op de zoekknop de `search` tekst instellen, waardoor de component gererenderd wordt en de gefilterde transacties getoond moeten worden.
@@ -1160,15 +1164,24 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 > pnpm dev
 > ```
 
-## Oefening 4 - README
+## Oefening 4 - README eigen project
 
-Pas `README.md` aan zodat de gebruiker weet hoe de dependencies geïnstalleerd moeten worden, en hoe de applicatie gestart moet worden (in development).
+Pas `README.md` in de root van je repository aan zodat de gebruiker weet hoe de dependencies geïnstalleerd moeten worden, en hoe de applicatie gestart moet worden (in development).
 
-## Oefening 5 - Challenges
+Verwijder de README.md in je frontend map - de README.md in de root is voldoende.
+
+## Oefening 5 - Eigen project
+
+- maak een mockup van een eenvoudige pagina in je project
+- ontwerp de componentenboom. Beslis wat als state moet bewaard worden, en wat als props moet worden doorgegeven. Welke eventhandlers zijn er nodig? Waar implementeer je die? En hoe worden die doorgegeven?
+- voeg mock data toe
+- implementeer de componenten
+
+## Oefening 6 - Challenges
 
 Probeer de challenges op [https://react.dev/learn/keeping-components-pure](https://react.dev/learn/keeping-components-pure).
 
-## Oefening 6 - To do app
+## Oefening 7 - To do app
 
 Zorg ervoor dat de checkbox in de To do app (zie oefening 2 van vorige les) aan en uit gevinkt kan worden.
 
@@ -1178,7 +1191,7 @@ Zorg ervoor dat de checkbox in de To do app (zie oefening 2 van vorige les) aan 
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>. Ga naar de branch `oplossingLes2`
 
-## Oefening 7 - SnakeEyes
+## Oefening 8 - SnakeEyes
 
 SnakeEyes is het resultaat van het gooien van twee dobbelstenen. Als op beide dobbelstenen één oog staat heb je "snake eyes". Bij de aanvang van het spel worden twee dobbelstenen getoond met de waarde 6. Het aantal dobbelstenen is standaard 2, maar kan ook meer zijn. Telkens wanneer de gebruiker op een dobbelsteen klikt, wordt een willekeurig getal gegenereerd.
 
