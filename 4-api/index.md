@@ -613,8 +613,6 @@ export const deleteById = async (url, { arg: id }) => {
 
 De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. Echter is het niet zijn verantwoordelijkheid om de effectieve API call uit te voeren, die is voor de `TransactionList`. We voegen een verwijderknop toe aan deze component:
 
-TODO verder aanpassen naar tailwindcss
-
 ```jsx
 import { IoTrashOutline } from 'react-icons/io5'; // 👈 1
 // ...
@@ -626,11 +624,11 @@ function Transaction({ id, user, date, amount, place, onDelete = ()=> {} }) { //
   };
 
   return (
-    <tr>
-      <td>{dateFormat.format(new Date(date))}</td>
-      <td>{user.name}</td>
-      <td>{place.name}</td>
-      <td> {amountFormat.format(amount)}</td>
+    <tr className="border-b border-gray-200">
+      <td className="py-2">{dateFormat.format(new Date(date))}</td>
+      <td className="py-2">{user.name}</td>
+      <td className="py-2">{place.name}</td>
+      <td className="text-end py-2"> {amountFormat.format(amount)}</td>
       <td>
         {/* 👇 1 */}
         <button className='py-2 px-2.5 rounded-md bg-blue-600' onClick={handleDelete}>
@@ -639,7 +637,7 @@ function Transaction({ id, user, date, amount, place, onDelete = ()=> {} }) { //
       </td>
     </tr>
   );
-});
+};
 
 export default Transaction;
 ```
@@ -657,35 +655,28 @@ import Transaction from './Transaction';
 function TransactionsTable({ transactions, onDelete }) {
   if (transactions.length === 0) {
     return (
-      <div className='alert alert-info'>There are no transactions yet.</div>
+      <div className='p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50'>There are no transactions yet.</div>
     );
   }
-
   return (
-    <div>
-      <table className='table table-hover table-responsive'>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>User</th>
-            <th>Place</th>
-            <th className='text-end'>Amount</th>
-            {/* 👇 */}
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+    <table className='table-auto w-full border-collapse'>
+      <thead>
+        <tr className="border-b-2 border-gray-300">
+          <th className="text-start py-2">Date</th>
+          <th className="text-start py-2">User</th>
+          <th className="text-start py-2">Place</th>
+          <th className='text-end py-2'>Amount</th>
           {/* 👇 */}
-          {transactions.map((transaction) => (
-            <Transaction
-              key={transaction.id}
-              onDelete={onDelete}
-              {...transaction}
-            />
-          ))}
-        </tbody>
-      </table>
-    </div>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {transactions.map((transaction) => (
+          {/* 👇 */}
+          <Transaction key={transaction.id} {...transaction}  onDelete={onDelete} />
+        ))}
+      </tbody>
+    </table>
   );
 }
 
@@ -718,25 +709,7 @@ export default function TransactionList() {
   // ...
 
   return (
-    <>
-      <h1>Transactions</h1>
-      <div className='input-group mb-3 w-50'>
-        <input
-          type='search'
-          id='search'
-          className='form-control rounded'
-          placeholder='Search'
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <button
-          type='button'
-          className='btn btn-outline-primary'
-          onClick={() => setSearch(text)}
-        >
-          Search
-        </button>
-      </div>
+     <!.. input en search knop ...>
       <div className='mt-4'>
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error || deleteError}>

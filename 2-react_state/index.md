@@ -1008,7 +1008,7 @@ import Transaction from './Transaction';
 function TransactionsTable({ transactions }) {
   if (transactions.length === 0) {
     return (
-      <div className='alert alert-info'>There are no transactions yet.</div>
+      <div className='p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50'>There are no transactions yet.</div>
     );
   }
 
