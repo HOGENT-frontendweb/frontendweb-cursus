@@ -16,13 +16,11 @@ Wanneer een client een React-applicatie opent (a.k.a. naar de URL ervan surft), 
 
 Daarnaast is React een library en geen framework, zoals bv. Angular dat wel is. Dit zorgt ervoor dat er dus geen ingebouwde router beschikbaar is. Daarvoor biedt [React Router](https://reactrouter.com/) een oplossing.
 
-!> Merk op: wij gebruiken hier [React Router versie 6.26](https://reactrouter.com/en/main/start/overview). Andere versies hebben mogelijks andere implementaties/APIs.
-
 ## React Router
 
-React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info op](https://reactrouter.com/start/modes)). Deze mode biedt ede mogelijkheid om react routes op een eenvoudige manier te definiëren.
+React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om react routes op een eenvoudige manier te definiëren.
 
-Installeer React Router [meer info op](https://reactrouter.com/start/data/installation)
+Installeer React Router [Zie de documentatie.](https://reactrouter.com/start/data/installation)
 
 ```bash
 pnpm add react-router
@@ -105,7 +103,7 @@ We voorzien volgende basis routes in de voorbeeldapplicatie
 - `/places`: een lijst van places
 - `/about`: over ons pagina
 
-Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie plaatsen we in de `pages` map. Maak een map `pages` aan met daarin de mappen `places` en `transactions`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan.
+Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie plaatsen we in de `pages` map. Maak een map `pages` aan met daarin de mappen `places` en `transactions`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan. Voeg een titel toe aan de PlacesList component.
 
 Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `@faker-js/faker`.
 
@@ -159,7 +157,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 import { createBrowserRouter } from 'react-router';
 import { RouterProvider } from 'react-router/dom';
-import TransactionList from './pages/transactions/TransactionsList.jsx';
+import TransactionList from './pages/transactions/TransactionsList.jsx'; // 👈 1
 import PlacesList from './pages/places/PlacesList.jsx'; // 👈 1
 import NotFound from './pages/NotFound.jsx'; // 👈 1
 import About from './pages/about/About.jsx'; // 👈 1
@@ -184,7 +182,7 @@ createRoot(document.getElementById('root')).render(
 ```
 
 1. Importeer de gewenste componenten (Merk op dat we de extensie `.jsx` expliciet moeten meegeven bij de imports van de componenten in de `pages` map. Dit is een eigenaardigheid van Vite).
-2. Vul de array met route objecten aan, één voor elke route. We geven telkens de component die getoond moet worden mee aan de optie `element`. Wanneer de URL in de browser wijzigt, zal de `RouterProvider` doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van het `Route` object.
+2. Vul de array met route objecten aan, één voor elke route. We geven telkens de component die getoond moet worden mee aan de optie `Component`. Wanneer de URL in de browser wijzigt, zal de `RouterProvider` doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van het `RouteObject`.
 3. Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test dit zelf eens uit!**
    - Deze route hoeft niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
 
@@ -194,7 +192,7 @@ Uit de route voor de `NotFound` component blijkt dat je ook reguliere expressies
 
 ## Navigeren tussen pagina's
 
-Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component. We voegen enkele links toe aan de `App` component:
+Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component. Pas de `App` component als volgt aan:
 
 ```jsx
 // src/App.jsx
@@ -260,7 +258,7 @@ Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes
 ```jsx
 // src/pages/about/About.jsx
 import { faker } from '@faker-js/faker';
-import { Link } from 'react-router';
+import { Link } from 'react-router';// 👈
 
 const About = () => (
   <div>
@@ -411,7 +409,7 @@ Maak een component `PlaceDetail.jsx` aan in de folder `/src/pages/places`.
 Definieer de nieuwe route in `main.jsx`:
 
 ```jsx
-import PlaceDetail from './pages/places/PlacesDetail.jsx';
+import PlaceDetail from './pages/places/PlaceDetail.jsx';
 //...
 {
   path: '/places',
@@ -514,9 +512,13 @@ Pas hiervoor de code in de component `Place` aan.
   We moeten enkel de naam van de place omvormen naar een link. Dit doen we met de `Link` component van React Router.
 
   ```jsx
+  // src/components/places/Place.jsx
+  import { Link } from 'react-router';
+  //...
   <h5 className="text-xl font-medium mb-2">
     <Link className="text-blue-600 underline" to={`/places/${id}`}>{name}</Link>
   </h5>
+  //...
   ```
 
 ## De Layout component
@@ -540,34 +542,37 @@ export default function Layout() {
 }
 ```
 
+### De navbar
+
 De `Navbar` component voorziet in het menu. We maken een responsive menu.
 
 ```jsx
 // src/components/Navbar.jsx
-import { NavLink } from 'react-router';
+// src/components/Navbar.jsx
+import { Link } from 'react-router';
 import { useState } from 'react';
 import { BsFillPiggyBankFill } from 'react-icons/bs';
 
 export default function Navbar() {
 
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);// 👈1
 
   const toggleNavbar = () => {
     setIsNavbarOpen(!isNavbarOpen);
-  };
+  };// 👈1
 
   return (
     <>
       <nav className="relative px-4 py-4 flex justify-between items-center bg-gray-200">
 
         <div className="flex items-center">
-          <NavLink to="/" className="flex items-center text-blue-600 hover:text-blue-800">
+          <Link to="/" className="flex items-center text-blue-600 hover:text-blue-800">
             <BsFillPiggyBankFill size={28} className="text-blue-600" />
             <span className="font-semibold text-lg pl-2">Budget</span>
-          </NavLink>
+          </Link>
         </div>
         <div className="lg:hidden">
-          <button className="navbar-burger flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
+          <button className="navbar-burger flex items-center text-blue-600 p-3" onClick={toggleNavbar}>{/* 👈1 */}
             <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <title>Mobile menu</title>
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
@@ -576,7 +581,7 @@ export default function Navbar() {
         </div>
         <ul className="hidden absolute top-1/2 left-1/2
         transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
-          <li><Link className='text-gray-400' to='/'>
+          <li><Link className='text-gray-400' to='/transactions'>
             Transactions
           </Link></li>
           <li><Link className='text-gray-400' to='/places'>
@@ -587,7 +592,7 @@ export default function Navbar() {
           </Link></li>
         </ul>
       </nav>
-      <div className={`navbar-menu relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>
+      <div className={`navbar-menu relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>{/* 👈 */}
         <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
         <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
         max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
@@ -628,10 +633,15 @@ export default function Navbar() {
 }
 ```
 
+1. We maken een state variabele `isNavbarOpen` aan om bij te houden of de navigatiebalk open of dicht is. De `toggleNavbar` functie keert deze waarde om. We gebruiken deze waarde om de navigatiebalk te tonen of te verbergen.
+
+### Integratie van de Layout component
+
 Pas `main.jsx` aan, alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
 
 ```jsx
 // src/main.jsx
+import Layout from './pages/Layout.jsx';// 👈
 //...
 const router = createBrowserRouter([
   {
@@ -685,6 +695,114 @@ const router = createBrowserRouter([
 ```
 
 In `main.jsx` kan je nu de `App` component verwijderen.
+
+### Aanduiden van de actieve link in de navigatie
+
+Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` zet automatisch `aria-current="page"` op de actieve link. Tailwind's `aria-[current=page]:text-blue-800` selector pakt deze status op.
+
+```jsx
+// src/components/Navbar.jsx
+//...
+<NavLink className="text-gray-400 aria-[current=page]:text-blue-800"
+  to="/transactions">Transactions</NavLink>
+//...
+```
+
+### Refactoring NavBar
+
+We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavItem` te maken voor de links:
+
+```jsx
+// src/components/NavBar.jsx
+const NavItem = ({ to, children, options}) => {
+  return (
+    <li className="mb-1">
+      <NavLink className={`text-gray-400 rounded  aria-[current=page]:text-blue-800 ${options}`}
+        to={to}>{children}</NavLink>
+    </li>
+  );
+};
+```
+
+Voor het logo maken we ook een aparte component `Logo` aan:
+
+```jsx
+// src/components/Navbar.jsx
+const Logo = () => {
+  return (
+    <Link to="/" className="mr-auto flex items-center space-x-2 text-blue-600 hover:text-blue-800">
+      <BsFillPiggyBankFill size={28} className="text-blue-600" />
+      <span className="font-semibold text-lg">Budget</span>
+    </Link>
+  );
+};
+```
+
+Pas  de `Navbar` component aan:
+
+```jsx
+// src/components/Navbar.jsx
+//...
+export default function Navbar() {
+
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
+
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen);
+  };
+
+  return (
+    <>
+      <nav className="relative px-4 py-4 flex justify-between items-center bg-gray-200">
+
+        <div className="flex items-center">
+          <Logo />{/* 👈 */}
+        </div>
+
+        <div className="lg:hidden">
+          <button className="navbar-burger flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
+            <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <title>Mobile menu</title>
+              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+            </svg>
+          </button>
+        </div>
+        <ul className="hidden absolute top-1/2 left-1/2
+        transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
+          <NavItem to="/transactions">Transactions</NavItem>{/* 👈 */}
+          <NavItem to="/places">Places</NavItem>{/* 👈 */}
+          <NavItem to="/about">About</NavItem>{/* 👈 */}
+        </ul>
+      </nav>
+      <div className={`navbar-menu relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>
+        <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+        <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
+        max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
+          <div className="flex items-center mb-8">
+            <Logo/>{/* 👈 */}
+            <button onClick={toggleNavbar} className="navbar-close" >
+              <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
+                xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div>
+            <ul>
+              <NavItem to="/transactions" options="block p-4 text-sm font-semibold">Transactions</NavItem>{/* 👈 */}
+              <NavItem to="/places" options="block p-4 text-sm font-semibold">Places</NavItem>{/* 👈 */}
+              <NavItem to="/about" options="block p-4 text-sm font-semibold">About</NavItem>{/* 👈 */}
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </>
+  );
+}
+//...
+```
 
 ## Scroll restoration
 
@@ -752,32 +870,6 @@ Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
 
 ?> Het is aangeraden om zoveel mogelijk gebruik te maken van de `Link` component. Dit zorgt ervoor dat de gebruiker meer controle heeft over links, zoals het openen in een nieuw tabblad.
 
-## Aanduiden van de actieve link in de navigatie
-
-Maak hiervoor gebruik van de `NavLink` component uit `react-router`. De actieve link maak je op in CSS met de `active` class. Pas alle links in de de `Navbar` component als volgt aan:
-
-```jsx
-// src/components/Navbar.jsx
-//...
-<NavLink className="nav-link block p-4 text-sm font-semibold
-  text-gray-400 rounded" to="/transactions">Transactions</NavLink>
-//...
-```
-
-Voeg onderstaande code toe aan de `index.css`:
-
-```css
-a.nav-link.active {
-  color: blue;
-}
-```
-
-Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
-
-```jsx
-import './index.css';
-```
-
 ## Custom styles
 
 Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css`:
@@ -793,12 +885,18 @@ Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles d
 
 Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen.
 
+Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
+
+```jsx
+import './index.css';
+```
+
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl 75b3f6d
+> git checkout -b les3-opl f67787f
 > pnpm install
 > pnpm dev
 > ```
