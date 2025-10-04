@@ -606,7 +606,7 @@ export default function Navbar() {
                 xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
           </div>
@@ -785,7 +785,7 @@ export default function Navbar() {
                 xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
           </div>
@@ -850,7 +850,8 @@ const NotFound = () => {
       <h1>Pagina niet gevonden</h1>
       <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p>
       {/* 👇 */}
-      <button onClick={handleGoHome}>Go home!</button>
+      <button className='py-2 px-2.5 rounded-md text-blue-600
+      border border-blue-600 mt-4' onClick={handleGoHome}>Go home!</button>
     </div>
   );
 };
@@ -863,7 +864,7 @@ Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React 
 Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
 
 ```jsx
-<Link to='/' replace className='alert-link'>
+<Link to='/' replace className='py-2 px-2.5 rounded-md text-blue-600 border border-blue-600 mt-4'>
   Go home!
 </Link>
 ```
@@ -896,7 +897,7 @@ import './index.css';
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl f67787f
+> git checkout -b les3-opl 5a31e56
 > pnpm install
 > pnpm dev
 > ```

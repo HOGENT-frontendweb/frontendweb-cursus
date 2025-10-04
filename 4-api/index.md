@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4 f67787f
+> git checkout -b les4 5a31e56
 > pnpm install
 > pnpm dev
 > ```
@@ -15,7 +15,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les4 4e63e94
+> git checkout -b les4 d486627
 > pnpm install
 > pnpm prisma migrate dev
 > pnpm start:dev
@@ -168,7 +168,7 @@ Maak een bestand `transactions.js` aan in de map `api`. Hierin plaatsen we alle 
 ```jsx
 import axios from 'axios'; // 👈 1
 
-const baseUrl = 'http://localhost:9000/api/transactions'; // 👈 2
+const baseUrl = 'http://localhost:3000/api/transactions'; // 👈 2
 
 // 👇 3
 export const getAll = async () => {
@@ -272,7 +272,7 @@ export default function TransactionList() {
       transactions.filter((t) => {
         return t.place.name.toLowerCase().includes(search.toLowerCase());
       }),
-    [search, transactions],
+    [search, transactions],// 👈 4
   );
   //...
 }
@@ -283,7 +283,7 @@ export default function TransactionList() {
 3. Pas de state aan nadat je de lijst terugkrijgt van de API.
    - Een effect met een `setState` is vaak de trigger van een oneindige lus. Dit is niet het geval hier, omdat de `useEffect` enkel bij de initiële render wordt uitgevoerd. De state wordt enkel aangepast bij de initiële render.
    - `setState` gebruiken in een `useEffect` zou een belletje moeten doen rinkelen om te zoeken naar een betere oplossing!
-4. Om te filteren gebruiken we nu de opgehaalde transacties
+4. Om te filteren gebruiken we nu de opgehaalde transacties en dit wordt ook een dependency van de `useMemo`.
 
 Start de applicatie en bekijk het resultaat.
 
@@ -433,20 +433,21 @@ export default function TransactionList() {
   return (
     <>
       <h1>Transactions</h1>
-      <div className='input-group mb-3 w-50'>
+       <div className='flex mb-3 w-1/2 gap-2 mx-4'>
         <input
           type='search'
           id='search'
-          className='form-control rounded'
+          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-gray-600'
           placeholder='Search'
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={(e)=> {
+            setText(e.target.value);
+          }}
         />
-        <button
-          type='button'
-          className='btn btn-outline-primary'
-          onClick={() => setSearch(text)}
-        >
+        <button type='button' className='py-2 px-2.5 rounded-md text-blue-600 border border-blue-600' onClick = {()=> {
+          setSearch(text);
+        }}>
           Search
         </button>
       </div>
@@ -497,9 +498,10 @@ Eerst en vooral maken we een algemene functie voor een GET all request. Hernoem 
 Pas het bestand aan als volgt:
 
 ```jsx
+// src/api/index.js
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:9000/api'; // 👈 1
+const baseUrl = 'http://localhost:3000/api'; // 👈 1
 
 // 👇 2
 export async function getAll(url) {
@@ -516,6 +518,7 @@ export async function getAll(url) {
 Vervolgens gebruiken we de `useSWR` hook om onze transacties op te halen:
 
 ```jsx
+// src/pages/transactions/TransactionList.jsx
 import { useState, useMemo } from 'react'; // 👈 1
 import TransactionsTable from '../../components/transactions/TransactionsTable';
 import AsyncData from '../../components/AsyncData';
@@ -545,24 +548,7 @@ export default function TransactionList() {
 
   return (
     <>
-      <h1>Transactions</h1>
-      <div className='flex mb-3 w-1/2 gap-2 mx-4'>
-        <input
-          type='search'
-          id='search'
-          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-          focus:outline-gray-600'
-          placeholder='Search'
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <button type='button' className='py-2 px-2.5 rounded-md
-        text-blue-600 border border-blue-600' onClick={() => setSearch(text)}
-        >
-          Search
-        </button>
-      </div>
-
+       <!.. h1, input en search knop ...>
        <div className='m-4'>
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error}>
@@ -602,6 +588,7 @@ De volgende stap van de CRUD operaties is de 'D', een transactie verwijderen. En
 Voeg een `deleteById` functie toe in `index.js` in de map `api`:
 
 ```jsx
+// src/api/index.js
 // 👇 1
 export const deleteById = async (url, { arg: id }) => {
   await axios.delete(`${baseUrl}/${url}/${id}`); // 👈 2
@@ -614,6 +601,7 @@ export const deleteById = async (url, { arg: id }) => {
 De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. Echter is het niet zijn verantwoordelijkheid om de effectieve API call uit te voeren, die is voor de `TransactionList`. We voegen een verwijderknop toe aan deze component:
 
 ```jsx
+// src/components/transactions/Transaction.jsx
 import { IoTrashOutline } from 'react-icons/io5'; // 👈 1
 // ...
 
@@ -629,8 +617,8 @@ function Transaction({ id, user, date, amount, place, onDelete = ()=> {} }) { //
       <td className="py-2">{user.name}</td>
       <td className="py-2">{place.name}</td>
       <td className="text-end py-2"> {amountFormat.format(amount)}</td>
-      <td>
-        {/* 👇 1 */}
+      {/* 👇 1 */}
+      <td className="text-end py-2">
         <button className='py-2 px-2.5 rounded-md bg-blue-600' onClick={handleDelete}>
           <IoTrashOutline />
         </button>
@@ -649,6 +637,7 @@ export default Transaction;
 We breiden de `TransactionTable` uit met een `onDelete` prop die we meteen doorgeven aan de `Transaction` component:
 
 ```jsx
+// src/components/transactions/TransactionsTable.jsx
 import Transaction from './Transaction';
 
 // 👇
@@ -709,7 +698,7 @@ export default function TransactionList() {
   // ...
 
   return (
-     <!.. input en search knop ...>
+     <!.. h1, input en search knop ...>
       <div className='mt-4'>
         {/* 👇 4 */}
         <AsyncData loading={isLoading} error={error || deleteError}>
@@ -757,7 +746,7 @@ De omgevingsvariabelen worden toegevoegd aan de code _at build time_. Aangezien 
 Voeg een `.env` file toe in de root folder met de environment settings. Hierin definiëren we de url naar de API:
 
 ```dotenv
-VITE_API_URL='http://localhost:9000/api'
+VITE_API_URL='http://localhost:3000/api'
 ```
 
 In de code van `api/index.js` vervang je `baseUrl` door
@@ -783,7 +772,7 @@ Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. M
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4-opl 4324cf3
+> git checkout -b les4-opl 7d81745
 > pnpm install
 > pnpm dev
 > ```

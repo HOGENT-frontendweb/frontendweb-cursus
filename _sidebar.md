@@ -6,7 +6,7 @@
 - [1. React basics](./1-react_basics/index.md)
 - [2. React state management](./2-react_state/index.md)
 - [3. React Router](./3-react_router/index.md)
-- [4. Data ophalen uit een REST API (WIP)](./4-api/index.md)
+- [4. Data ophalen uit een REST API](./4-api/index.md)
 - [5. Formulieren & hooks (WIP)](./5-formulieren/index.md)
 - [6. Context API (WIP)](./6-context/index.md)
 - [7. Testing (WIP)](./7-react_testing/index.md)
