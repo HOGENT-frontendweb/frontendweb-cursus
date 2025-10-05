@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les5 7d81745
+> git checkout -b les5 6d60fc7
 > pnpm install
 > pnpm dev
 > ```
@@ -80,34 +80,63 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
 ### Oefening 2 - Toevoegen van knoppen
 
-Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en een potloodknop in de lijst voor elke transactie (`Transaction.jsx`).
+Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en een potloodknop in de lijst voor elke transactie (`Transaction.jsx`). Zorg dat de verwijderknop en edit knop niet getoond wordt als we de detail van een plaats bekijken.
 
 - Oplossing +
 
   In `TransactionList.jsx` voeg je onderstaande code toe:
 
   ```jsx
-  import { Link } from 'react-router-dom';
+  // src/pages/transactions/TransactionList.jsx
+  import { Link } from 'react-router'; // 👈
   //...
-  <div className='clearfix'>
-    <Link to='/transactions/add' className='btn btn-primary float-end'>
+
+  <div className='flex justify-between mb-3 gap-2'>   {/* 👈 */}
+    <div className="w-1/2 flex gap-2">  {/* 👈 */}
+      <input
+        type='search'
+        id='search'
+        className='flex-1 rounded bg-white p-1 text-gray-900 placeholder:text-gray-400
+        outline-1 outline-gray-300 focus:outline-blue-600'
+        placeholder='Search'
+        value={text}
+        onChange={(e)=> {
+          setText(e.target.value);
+        }}
+      />
+      <button type='button' className='py-2 px-2.5 rounded-md
+      text-blue-600 border border-blue-600'
+      onClick = {()=> {setSearch(text);}>
+        Search
+      </button>
+    </div>
+    <Link to='/transactions/add' className='py-2 px-2.5 rounded-md text-white border border-blue-600 bg-blue-600'>
       Add transaction
-    </Link>
-  </div>;
+    </Link> {/* 👈 */}
+  </div>
+      //..
   ```
 
   In `Transaction.jsx` voeg je onderstaande code toe:
 
   ```jsx
-  import { IoTrashOutline, IoPencilOutline } from 'react-icons/io5';
-  import { Link } from 'react-router-dom';
+  // src/components/transactions/Transaction.jsx
+  import { IoTrashOutline, IoPencilOutline } from 'react-icons/io5'; //👈
+  import { Link } from 'react-router'; // 👈
   //...
-  <Link to={`/transactions/edit/${id}`} className='btn btn-light'>
-    <IoPencilOutline />
-  </Link>;
+      <td className="py-2 flex justify-end">  {/* 👈 */}
+        {onDelete ?
+          <>
+            <button className='py-2 px-2.5 rounded-md bg-blue-600' onClick={handleDelete}>
+              <IoTrashOutline />
+            </button>
+            <Link to={`/transactions/edit/${id}`} className='mx-2 py-2 px-2.5 rounded-md bg-blue-600'>
+              <IoPencilOutline />
+            </Link>
+          </>:''} {/* 👈 */}
+      </td>
+  //...
   ```
-
-Zorg dat deze link niet getoond wordt als we de detail van een plaats bekijken.
 
 ## Het formulier
 
@@ -118,38 +147,44 @@ Maak een bestand `TransactionForm.jsx` aan in de map `src/components/transaction
 export default function TransactionForm({ places = [] }) {
   return (
     <>
-      <form className='w-50 mb-3'>
+      <form>
         <div className='mb-3'>
-          <label htmlFor='userId' className='form-label'>
+          <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
             User id
           </label>
           <input
             id='userId'
             name='userId'
             type='number'
-            className='form-control'
+            className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-blue-600 w-full'
             placeholder='userid'
             required
           />
         </div>
         <div className='mb-3'>
-          <label htmlFor='date' className='form-label'>
+          <label htmlFor='date' className="block text-sm/6 font-medium text-gray-900">
             Date
           </label>
           <input
             id='date'
             name='date'
             type='date'
-            className='form-control'
+            className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-blue-600 w-full'
             placeholder='date'
           />
         </div>
 
         <div className='mb-3'>
-          <label htmlFor='places' className='form-label'>
+          <label htmlFor='places' className="block text-sm/6 font-medium text-gray-900">
             Place
           </label>
-          <select id='placeId' name='placeId' className='form-select' required>
+          <select id='placeId' name='placeId' className="w-full appearance-none
+           rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900
+           outline-1 -outline-offset-1 outline-gray-300 focus:outline-2
+           focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
+          required>
             <option value='' disabled>
               -- Select a place --
             </option>
@@ -162,24 +197,23 @@ export default function TransactionForm({ places = [] }) {
         </div>
 
         <div className='mb-3'>
-          <label htmlFor='amount' className='form-label'>
+          <label htmlFor='amount' className="block text-sm/6 font-medium text-gray-900">
             Amount
           </label>
           <input
             id='amount'
             name='amount'
             type='number'
-            className='form-control'
+            className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-blue-600 w-full'
             required
           />
         </div>
 
-        <div className='clearfix'>
-          <div className='btn-group float-end'>
-            <button type='submit' className='btn btn-primary'>
-              Add transaction
-            </button>
-          </div>
+        <div className='flex justify-end'>
+          <button type='submit' className='py-2 px-2.5 rounded-md text-white bg-blue-600'>
+            Add transaction
+          </button>
         </div>
       </form>
     </>
@@ -212,7 +246,7 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
     } = useSWR('places', getAll); // 👈 1
 
     return (
-      <>
+       <div className='w-full max-w-sm'>
         <h1>Add transaction</h1>
 
         {/* 👇 3 */}
@@ -220,7 +254,7 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
           {/* 👇 2 */}
           <TransactionForm places={places} />
         </AsyncData>
-      </>
+      </div>
     );
   }
   ```
@@ -254,79 +288,84 @@ export default function TransactionForm({ places = [] }) {
   };
 
   return (
-    <>
-      {/* 👇 4*/}
-      <form onSubmit={handleSubmit(onSubmit)} className='w-50 mb-3'>
+    {/* 👇 4*/}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className='mb-3'>
+        <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
+          User id
+        </label>
+        {/* 👇 3 */}
+        <input
+          {...register('userId')}
+          id='userId'
+          name='userId'
+          type='number'
+          className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+        focus:outline-blue-600 w-full'
+          placeholder='userid'
+          required
+        />
+      </div>
+      <div className='mb-3'>
+        <label htmlFor='date' className="block text-sm/6 font-medium text-gray-900">
+          Date
+        </label>
+        {/* 👇 3 */}
+        <input
+          {...register('date')}
+          id='date'
+          name='date'
+          type='date'
+          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+        focus:outline-blue-600 w-full'
+          placeholder='date'
+        />
+      </div>
         <div className='mb-3'>
-          <label htmlFor='userId' className='form-label'>
-            User Id
-          </label>
-          {/* 👇 3 */}
-          <input
-            {...register('userId')}
-            id='userId'
-            type='number'
-            className='form-control'
-            placeholder='userid'
-            required
-          />
-        </div>
-        <div className='mb-3'>
-          <label htmlFor='date' className='form-label'>
-            Date
-          </label>
-          {/* 👇 3 */}
-          <input
-            {...register('date')}
-            id='date'
-            type='date'
-            className='form-control'
-            placeholder='date'
-          />
-        </div>
-        <div className='mb-3'>
-          <label htmlFor='places' className='form-label'>
-            Place
-          </label>
-          {/* 👇 3 */}
-          <select
-            {...register('placeId')}
-            id='places'
-            className='form-select'
-            required
-          >
-            <option value='' disabled>
-              -- Select a place --
+        <label htmlFor='places' className="block text-sm/6 font-medium text-gray-900">
+          Place
+        </label>
+        {/* 👇 3 */}
+        <select
+          {...register('placeId')}
+          id='placeId'
+          name='placeId'
+          className="w-full appearance-none
+          rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900
+          outline-1 -outline-offset-1 outline-gray-300 focus:outline-2
+          focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
+          required>
+          <option value='' disabled>
+            -- Select a place --
+          </option>
+          {places.map(({ id, name }) => (
+            <option key={id} value={id}>
+              {name}
             </option>
-            {places.map(({ id, name }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className='mb-3'>
-          <label htmlFor='amount' className='form-label'>
-            Amount
-          </label>
-          {/* 👇 3 */}
-          <input
-            {...register('amount')}
-            id='amount'
-            type='number'
-            className='form-control'
-            required
-          />
-        </div>
-        <div className='clearfix'>
-          <div className='btn-group float-end'>
-            <button type='submit' className='btn btn-primary'>
-              Add transaction
-            </button>
-          </div>
-        </div>
-      </form>
-    </>
+          ))}
+        </select>
+      </div>
+      <div className='mb-3'>
+        <label htmlFor='amount' className="block text-sm/6 font-medium text-gray-900">
+          Amount
+        </label>
+        {/* 👇 3 */}
+        <input
+          {...register('amount')}
+          id='amount'
+          name='amount'
+          type='number'
+          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+        focus:outline-blue-600 w-full'
+          required
+        />
+      </div>
+      <div className='flex justify-end'>
+        <button type='submit' className='py-2 px-2.5 rounded-md text-white bg-blue-600'>
+          Add transaction
+        </button>
+      </div>
+    </form>
   );
 }
 ```
@@ -409,7 +448,7 @@ import { useForm } from 'react-hook-form';
 const validationRules = {
   userId: {
     required: 'User is required',
-    min: { value: 1, message: 'min 1' },
+    min: { value: 1, message: 'UserId must be minimum 1' },
   },
 };
 
@@ -435,25 +474,28 @@ export default function TransactionForm({places = []}) {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} className="w-50 mb-3">
-        <div className="mb-3">
-          <label htmlFor="user" className="form-label">User id</label>
-          {/* 👇 1 */}
-          <input
-            {...register('userId', validationRules.userId)}
-            id="user"
-            type="number"
-            className="form-control"
-            placeholder="userid"
-            required
-          />
-          {/* 👇 2 */}
-          {errors.userId && <p className="form-text text-danger">{errors.userId.message}</p> }
-        </div>
-        {/** ... */}
-      </form>
-    </>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className='mb-3'>
+        <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
+          User id
+        </label>
+        {/* 👇 1 */}
+        <input
+          {...register('userId', validationRules.userId)}
+          id='userId'
+          name='userId'
+          type='number'
+          className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-blue-600 w-full'
+          placeholder='userid'
+          required
+        />
+         {/* 👇 2 */}
+        {errors.userId && <p className="text-red-500 text-sm mt-1">{errors.userId.message}</p> }
+      </div>
+      {/*... */}
+    </form>
   );
 ```
 
@@ -473,13 +515,18 @@ Definieer de validatieregels voor de andere inputvelden
   const validationRules = {
     userId: {
       required: 'User is required',
-      min: { value: 1, message: 'min 1' },
+      min: { value: 1, message: 'UserId must be minimum 1' },
     },
     date: {
       required: 'Date is required',
       valueAsDate: true,
+      validate: (value) => {
+        if (value >new Date()) return 'Date cannot be in the future';
+        return null;
+      },
     },
     placeId: {
+      valueAsNumber: true,
       required: 'Place is required',
     },
     amount: {
@@ -625,7 +672,7 @@ Als we in de `Transaction` component klikken op de potlood-knop, navigeren we na
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.jsx
 // ... (imports)
-import { useParams } from 'react-router-dom'; // 👈 1
+import { useParams } from 'react-router'; // 👈 1
 import { getAll, save, getById } from '../../api'; // 👈 3
 
 export default function AddOrEditTransaction() {
@@ -669,8 +716,9 @@ export default function AddOrEditTransaction() {
 In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `EMPTY_TRANSACTION` en passen we de code verder aan.
 
 ```jsx
+// src/components/transactions/TransactionForm.jsx
 // ... (imports)
-import { useNavigate } from 'react-router-dom'; // 👈 3
+import { useNavigate } from 'react-router'; // 👈 3
 
 export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION, saveTransaction}) {  // 👈 1
   const navigate = useNavigate(); // 👈 3
@@ -703,11 +751,11 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
   return (
     {/* ... */}
     {/* 👇 2  */}
-    <button type='submit' className='btn btn-primary'>
-      {transaction?.id
-        ? "Save transaction"
-        : "Add transaction"}
-    </button>
+        <button type='submit' className='py-2 px-2.5 rounded-md text-white bg-blue-600'>
+          {transaction?.id
+            ? 'Save transaction'
+            : 'Add transaction'}
+        </button>
     {/* ... */}
   );
 }
@@ -840,6 +888,8 @@ const handleDeleteTransaction = useCallback(
 ```
 
 Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr dit ook doet.
+
+Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook een beetje overhead. Gebruik useCallback enkel als je een functie doorgeeft als prop (bij grote lijsten) of als dependency van een andere hook (bv. useEffect, useMemo, useCallback). Dit is nodig omdat functies in JavaScript referentietypes zijn. Bij elke render wordt een nieuwe functie aangemaakt, ook al is de code identiek. Hierdoor worden pure componenten onnodig opnieuw gerenderd of worden hooks onnodig opnieuw uitgevoerd.
 
 ### Oefening 6 - Memoization
 

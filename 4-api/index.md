@@ -772,7 +772,7 @@ Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. M
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4-opl 7d81745
+> git checkout -b les4-opl 6d60fc7
 > pnpm install
 > pnpm dev
 > ```
