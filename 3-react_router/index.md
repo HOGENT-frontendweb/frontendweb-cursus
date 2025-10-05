@@ -392,7 +392,7 @@ const router = createBrowserRouter([
     path: 'services',
     element: <Navigate to='/about/services' replace />,
   },
-  { path: '*', element: <NotFound /> },
+  { path: '*', Component: NotFound },
 ]);
 
 // ...
@@ -412,7 +412,7 @@ Definieer de nieuwe route in `main.jsx`:
 import PlaceDetail from './pages/places/PlaceDetail.jsx';
 //...
 {
-  path: '/places',
+  path: 'places',
   children: [
     {
       index: true,
@@ -572,7 +572,7 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="lg:hidden">
-          <button className="navbar-burger flex items-center text-blue-600 p-3" onClick={toggleNavbar}>{/* 👈1 */}
+          <button className="flex items-center text-blue-600 p-3" onClick={toggleNavbar}>{/* 👈1 */}
             <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <title>Mobile menu</title>
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
@@ -592,8 +592,8 @@ export default function Navbar() {
           </Link></li>
         </ul>
       </nav>
-      <div className={`navbar-menu relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>{/* 👈 */}
-        <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+      <div className={`relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>{/* 👈 */}
+        <div className="fixed inset-0 bg-gray-800 opacity-25"></div>
         <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
         max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
           <div className="flex items-center mb-8">
@@ -601,7 +601,7 @@ export default function Navbar() {
               <BsFillPiggyBankFill size={28} className="text-blue-600" />
               <span className="font-semibold text-lg">Budget</span>
             </Link>
-            <button onClick={toggleNavbar} className="navbar-close" >
+            <button onClick={toggleNavbar}>
               <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
                 xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24"
@@ -760,7 +760,7 @@ export default function Navbar() {
         </div>
 
         <div className="lg:hidden">
-          <button className="navbar-burger flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
+          <button className="flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
             <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
               <title>Mobile menu</title>
               <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
@@ -774,13 +774,13 @@ export default function Navbar() {
           <NavItem to="/about">About</NavItem>{/* 👈 */}
         </ul>
       </nav>
-      <div className={`navbar-menu relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>
-        <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
+      <div className={`relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>
+        <div className="fixed inset-0 bg-gray-800 opacity-25"></div>
         <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
         max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
           <div className="flex items-center mb-8">
             <Logo/>{/* 👈 */}
-            <button onClick={toggleNavbar} className="navbar-close" >
+            <button onClick={toggleNavbar} >
               <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
                 xmlns="http://www.w3.org/2000/svg" fill="none"
                 viewBox="0 0 24 24"
