@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les5 ca4119d
+> git checkout -b les5 d486627
 > pnpm install
 > pnpm prisma migrate dev
 > pnpm start:dev
@@ -910,7 +910,7 @@ Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de 
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les5-opl 69e7baf
+> git checkout -b les5-opl 53ef032
 > pnpm install
 > pnpm dev
 > ```

@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les7 ca4119d
+> git checkout -b les7 d486627
 > pnpm install
 > pnpm prisma migrate dev
 > pnpm start:dev
