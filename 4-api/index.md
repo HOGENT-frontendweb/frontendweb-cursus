@@ -15,17 +15,13 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les4 d486627
+> git checkout -b les5 d486627
 > pnpm install
-> pnpm prisma migrate dev
+> pnpm db:migrate
 > pnpm start:dev
 > ```
 >
-> Vergeet niet om een `.env` bestand aan te maken in de root van het back-end project:
->
-> ```env
-> NODE_ENV=development
-> ```
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie.
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
