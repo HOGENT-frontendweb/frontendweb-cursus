@@ -47,13 +47,22 @@ Het aanmaken van een context gebeurt typisch in 3 stappen:
 2. Bied de context aan via een provider.
 3. Neem data uit de context via een consumer (of dus in een child component).
 
+Om de darkmode te activeren in tailwindcss volg je de stappen in de [tailwindcss documentatie](https://tailwindcss.com/docs/dark-mode).
+
+```css
+/* src/index.css */
+@custom-variant dark (&:where(.dark, .dark *));
+```
+
+Eens geactiveerd kan je in je CSS klassen zoals `dark:bg-gray-800` gebruiken.
+
 ### Stap 1: Creëer de context
 
 In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `Layout` component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
-// src/components/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+// src/pages/Layout.jsx
+import { Outlet, ScrollRestoration } from 'react-router';
 import Navbar from '../components/Navbar';
 import { createContext } from 'react'; // 👈
 
@@ -63,7 +72,9 @@ export default function Layout() {
   return (
     <div className='container-xl'>
       <Navbar />
-      <Outlet />
+      <div className='p-4'>
+        <Outlet />
+      </div>
       <ScrollRestoration />
     </div>
   );
@@ -76,7 +87,7 @@ Voeg toe in `Layout.jsx`:
 
 ```jsx
 // src/components/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router-dom';
+import { Outlet, ScrollRestoration } from 'react-router';
 import Navbar from '../components/Navbar';
 import { createContext } from 'react';
 
@@ -84,12 +95,14 @@ export const ThemeContext = createContext();
 
 export default function Layout() {
   return (
-    <ThemeContext.Provider value={{ theme: 'dark' }}>
+    <ThemeContext.Provider value={{ darkmode: 'true' }}>
       {' '}
       {/* 👈 */}
       <div className='container-xl'>
         <Navbar />
-        <Outlet />
+        <div className='p-4'>
+          <Outlet />
+        </div>
         <ScrollRestoration />
       </div>
     </ThemeContext.Provider>
@@ -103,7 +116,7 @@ Elk **context object** wordt beschikbaar gemaakt met een **context provider** co
 
 ### Stap 3: Consume de context
 
-De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. het thema in de `TransactionTable` component. De `TransactionsTable` component zal de data consumeren, en is een context consumer.
+De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. de darkmode in de `TransactionTable` component. De `TransactionsTable` component zal de data consumeren, en is een context consumer.
 
 ```jsx
 // src/components/transactions/TransactionTable.jsx
@@ -112,23 +125,23 @@ import { ThemeContext } from '../../pages/Layout'; // 👈 1
 // ...
 
 function TransactionTable({ transactions }) {
-  const { theme } = useContext(ThemeContext); // 👈 1
+  const { darkmode } = useContext(ThemeContext); // 👈 1
 
   // ...
 
   return (
     <div>
       {/* 👇 2 */}
-      <table className={`table table-hover table-responsive table-${theme}`}>
-    {/* ... */}
+      <table className={`${darkmode?'dark':''} dark:bg-black dark:text-white table-auto w-full border-collapse mb-4'>
+    {/* ... */}`
   );
 }
 ```
 
 1. De `useContext` hook wordt gebruikt om met de context te connecteren en heeft als parameter een context object `ThemeContext`. Het retourneert de `value` van de huidige context (zie value property van de context provider).
-2. In onze context zit momenteel enkel een variable `theme`. Die voegen we toe aan het attribuut className van de `table` tag. Bootstrap heeft twee klassen voor een lichte en donkere table: `table-light` en `table-dark`.
+2. In onze context zit momenteel enkel een variable `darkmode`. Die voegen we toe aan het attribuut className van de `table` tag. Als de class `dark` aanwezig is, zal tailwindcss de dark mode toepassen op alle kindelementen.
 
-De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om te wisselen van dark naar light mode of omgekeerd? Dan moeten we een aparte component aan te maken.
+De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om te wisselen van dark naar light mode of omgekeerd? Dan moeten we een aparte component aanmaken.
 
 ## ThemeContext en Provider
 
@@ -155,90 +168,61 @@ De `ThemeProvider` beheert de state en functies, en stelt deze ter beschikking a
 
 ```jsx
 // src/contexts/Theme.context.jsx
-import { createContext, useState, useCallback, useMemo } from 'react';
-
-// 👇 1
-export const themes = {
-  dark: 'dark',
-  light: 'light',
-};
+import { useState, useEffect, useMemo, useCallback } from 'react';
+import { createContext } from 'react';
 
 export const ThemeContext = createContext();
 
-export const ThemeProvider = ({ children }) => {
+const ThemeProvider = ({ children }) => {
+  // 👇 1
+  const [darkmode, setDarkmode] = useState(Boolean(localStorage.getItem('darkmode')));
+
   // 👇 2
-  const [theme, setTheme] = useState(
-    sessionStorage.getItem('themeMode') || themes.dark,
-  );
+  useEffect(() => {
+    if (darkmode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('darkmode', darkmode);
+  }, [darkmode]);
 
   // 👇 3
-  const toggleTheme = useCallback(() => {
-    const newThemeValue = theme === themes.dark ? themes.light : themes.dark;
-    setTheme(newThemeValue);
-    sessionStorage.setItem('themeMode', newThemeValue);
-  }, [theme]);
+  const toggleDarkmode = useCallback(() => setDarkmode((prev) => !prev), []);
 
-  const value = useMemo(() => ({ theme, toggleTheme }), [theme, toggleTheme]); // 👈 4
+  const value = useMemo(() => ({ darkmode, toggleDarkmode }), [darkmode, toggleDarkmode]);// 👈 4
 
   return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  ); // 👈 5
+    <ThemeContext.Provider value={value}>
+      {children}
+    </ThemeContext.Provider>
+  );// 👈 5
 };
+
+export default ThemeProvider;
 ```
 
-1. We definiëren eerst een constante `themes` met de mogelijke waarden.
-2. De `ThemeProvider` houdt de state bij, hier het geselecteerde thema. Eventueel halen we een vorige waarde uit `sessionStorage` op.
-3. De `ThemeProvider` voorziet ook in een functie om het thema aan te passen.
+1. De `ThemeProvider` houdt de state bij, hier `darkmode`. We halen de waarde uit `sessionStorage` op. getItem returnt altijd een string of undefined (als niet bestaat). Dit converteren we naar een Boolean.
+2. Synchroniseert de dark mode state met de DOM en sessionStorage. De DOM update voegt/verwijdert de dark CSS class op het <html> element. sessionStorage slaat de huidige state op zodat het bewaard blijft na page refresh
+3. De `ThemeProvider` voorziet ook in een functie om de darkmode aan te passen.
 4. De `ThemeProvider` bepaalt wat er gedeeld wordt met de children. Maak hiervoor de constante `value` aan. Vermits het hier om een waarde (en geen functie) gaat, gebruiken we `useMemo`.
 5. De `ThemeProvider` stelt de `value` ter beschikking van de children.
 
-We krijgen echter een eslint fout 'Fast refresh only works when a file only exports components'. Dit lossen we later op.
+We krijgen echter een eslint fout 'Fast refresh only works when a file only exports components'. Fast refresh is een feature van React die ervoor zorgt dat de applicatie snel herladen wordt bij wijzigingen in de code. Dit werkt enkel als een bestand enkel componenten exporteert. Maak daarom een nieuw bestand `index.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
 
-### Kleur van de tekst
+```js
+// src/contexts/index.js
+import { createContext } from 'react';
 
-Het thema zal gebruikt worden om de achtergrondkleur in te stellen, maar soms dient ook de kleur van de tekst of van een rand te worden ingesteld (de tegengestelde kleur). Dus we voorzien een extra berekende waarde en maken ook deze waarde beschikbaar.
+export const ThemeContext = createContext();
+```
+
+En importeer `ThemeContext` in `Theme.context.jsx`:
 
 ```jsx
 // src/contexts/Theme.context.jsx
-import { createContext, useState, useCallback, useMemo } from 'react';
-
-export const themes = {
-  dark: 'dark',
-  light: 'light',
-};
-
-// 👇 1
-const switchTheme = (theme) =>
-  theme === themes.dark ? themes.light : themes.dark;
-
-export const ThemeContext = createContext();
-
-export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(
-    sessionStorage.getItem('themeMode') || themes.dark,
-  );
-
-  const toggleTheme = useCallback(() => {
-    const newThemeValue = switchTheme(theme); // 👈 2
-    setTheme(newThemeValue);
-    sessionStorage.setItem('themeMode', newThemeValue);
-  }, [theme]);
-
-  // 👇 3
-  const value = useMemo(
-    () => ({ theme, textTheme: switchTheme(theme), toggleTheme }),
-    [theme, toggleTheme],
-  );
-
-  return (
-    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
-  );
-};
+import {ThemeContext} from './';
 ```
-
-1. Maak een functie om de kleur om te wisselen.
-2. Pas de functie `toggleTheme` aan.
-3. Maak `textTheme` beschikbaar voor de children.
 
 ### Providing ThemeContext
 
@@ -262,90 +246,112 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
+### Instellen van dark mode in Tailwind
+
+Pas `index.css` aan zodat er met de juiste kleuren wordt gewerkt.
+
+```css
+html, body {
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
+  min-height: 100vh;
+}
+```
+
+html en body krijgen de juiste achtergrondkleur en tekstkleur in light en dark mode. `min-height` zorgt ervoor dat de body altijd minstens de volledige hoogte van het scherm heeft.
+
 ### Consuming ThemeContext
 
 Voeg in `Navbar.jsx` een knop toe om van thema te wisselen:
 
 ```jsx
 // src/components/Navbar.jsx
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { useContext } from 'react'; //👈 1
 import { ThemeContext, themes } from '../contexts/Theme.context'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5'; // 👈 4
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useContext(ThemeContext); // 👈 2
+  const { darkmode, toggleDarkmode } = useContext(ThemeContext); // 👈 2
 
   return (
-    {/* 👇 3 */}
-    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}>
-      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/'>
-            Transactions
-          </NavLink>
+    <>
+      {/* 👇 3 */}
+      <nav className="relative px-4 py-4 flex justify-between
+      items-center bg-white dark:bg-gray-900 dark:text-gray-100
+      border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center">
+          <Logo />
         </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/places'>
-            Places
-          </NavLink>
+
+        <div className="lg:hidden">
+          <button className="flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
+            <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <title>Mobile menu</title>
+              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+            </svg>
+          </button>
         </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/about'>
-            Over ons
-          </NavLink>
+
+        <ul className="hidden absolute top-1/2 left-1/2
+        transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
+          <NavItem to="/transactions">Transactions</NavItem>
+          <NavItem to="/places">Places</NavItem>
+          <NavItem to="/about">About</NavItem>
+        </ul>
+
+         {/* 👇 4 */}
+        <div className="hidden lg:flex lg:items-center lg:space-x-4">
+          <button
+            type='button'
+            onClick={toggleDarkmode}
+            className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
+          >
+            {darkmode ? <IoMoonSharp color='white' size={20}/> : <IoSunny size={20}/>}
+          </button>
         </div>
-        <div className='flex-grow-1'></div>
-        {/* 👇 4 */}
-        <button
-          className='btn btn-secondary'
-          type='button'
-          onClick={toggleTheme}
-        >
-          {theme === themes.dark ? <IoMoonSharp /> : <IoSunny />}
-        </button>
+
+      </nav>
+      <div className={`relative z-50 ${isNavbarOpen ? 'block' : 'hidden'} `}>
+        <div className="fixed inset-0 bg-gray-800 opacity-25"></div>
+        {/* 👇 3 */}
+        <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
+        max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between dark:bg-black">
+          <div className="flex items-center mb-8">
+            <Logo/>
+            <button onClick={toggleNavbar} >
+              {/* 👇 3 */}
+              <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500 dark:text-white"
+                xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          </div>
+          <div>
+            <ul>
+              <NavItem to="/transactions" options="block p-4 text-sm font-semibold">Transactions</NavItem>
+              <NavItem to="/places" options="block p-4 text-sm font-semibold">Places</NavItem>
+              <NavItem to="/about" options="block p-4 text-sm font-semibold">About</NavItem>
+            </ul>
+          </div>
+        </nav>
       </div>
-    </nav>
+    </>
   );
 }
 ```
 
 1. Importeer de nodige componenten.
 2. Roep de `useContext` hook aan en gebruik destructuring om de properties, die de component nodig heeft, eruit te halen.
-3. Voeg de bootstrap klassen toe voor de achtergrondkleur en de kleur van de tekst.
+3. Voeg de dark klassen toe voor de achtergrondkleur en de kleur van de tekst.
 4. Voorzie de knop om het thema te kiezen.
 
-Pas `Layout.jsx` aan zodat er met de `ThemeContext` wordt gewerkt.
-
-```jsx
-// src/components/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import { useContext } from 'react';
-import { ThemeContext } from '../contexts/Theme.context'; // 👈
-
-export default function Layout() {
-  const { theme, textTheme } = useContext(ThemeContext); // 👈
-  return (
-    <div className={`container-xl bg-${theme} text-${textTheme}`}>
-      {/* 👈 */}
-      <Navbar />
-      <Outlet />
-      <ScrollRestoration />
-    </div>
-  );
-}
-```
-
-De `TransactionTable` component blijft behouden. De `ThemeContext` komt nu wel niet uit `main.jsx` maar `Theme.context.jsx`:
-
-```jsx
-import { ThemeContext } from '../../contexts/Theme.context';
-```
+De toegevoegde code in de `TransactionTable` mag je nu verwijderen.
 
 ### Oefening 1 - ThemeContext
 
-Pas de andere componenten aan.
+Voeg waar nodig de dark mode klassen toe in de andere componenten.
 
 ## Custom hooks
 
@@ -356,91 +362,53 @@ In elke component die gebruik maakt van de context dienen we volgende code te sc
 ```jsx
 import { ThemeContext } from '../../contexts/Theme.context';
 
-const { theme, ... } = useContext(ThemeContext);
+const { darkmode, toggleDarkmode } = useContext(ThemeContext);
 ```
 
 Om duplicate code te vermijden kunnen we gebruik maken van een **custom hook**. Neem hiervoor eerst [Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks) door.
 
-Maak vervolgens twee custom hooks aan in `Theme.context.jsx`:
+Maak vervolgens volgende custom hook aan in `index.js`:
 
 ```jsx
-// src/contexts/Theme.context.jsx
-import {
-  createContext,
-  useState,
-  useCallback,
-  useMemo,
-  useContext,
-} from 'react'; // 👈
-
-export const themes = {
-  dark: 'dark',
-  light: 'light',
-};
+// src/contexts/index.js
+import { createContext, useContext } from 'react';// 👈1
 
 export const ThemeContext = createContext();
 
-// 👇 1
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext); c
 
-// 👇 2
-export const useThemeColors = () => {
-  const { theme, textTheme } = useContext(ThemeContext);
-  return { theme, textTheme };
-};
-
-//...
+export const useThemeColor = () => {
+  const { darkmode } = useContext(ThemeContext);
+  return { darkmode };
+}; // 👈 3
 ```
 
-1. Importeer `useContext`. Deze hook retourneert de drie waarden `theme`, `textTheme` en `toggleTheme`.
-2. Deze hook retourneert enkel het `theme` en `textTheme`.
-
-We krijgen echter de linting fout dat 'Fast Refresh only works when a file only exports components'. Maak een nieuw bestand `theme.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
-
-```js
-import { useContext } from 'react';
-import { ThemeContext } from './Theme.context';
-
-export const themes = {
-  dark: 'dark',
-  light: 'light',
-};
-
-export const useTheme = () => useContext(ThemeContext);
-
-export const useThemeColors = () => {
-  const { theme, textTheme } = useContext(ThemeContext);
-  return { theme, textTheme };
-};
-```
+1. Importeer `useContext`.
+2. De `useTheme` hook retourneert de waarden `darkmode`, `toggleDarkmode`.
+3. De `useThemeColor` hook retourneert enkel `darkmode`.
 
 Zo kan de code in `Navbar.jsx` als volgt aangepast worden:
 
 ```jsx
 // src/components/Navbar.jsx
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 //import { useContext } from 'react'; // 👈 1
 //import { ThemeContext } from '../contexts/Theme.context'; // 👈 1
-import { useTheme } from '../contexts/theme'; // 👈 1
+import { useTheme } from '../contexts'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5';
 
 export default function Navbar() {
-  const { theme, toggleTheme } = useTheme(); // 👈 2
-
-  return (
-    {/* 👇 2 */}
-    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}>
-    {/* ... */}
-  );
+  const { darkmode, toggleDarkmode } = useTheme(); // 👈 2
+  //...
 }
 ```
 
 1. Verwijder de import `useContext`, `ThemeContext`, en importeer `useTheme`.
 2. Destructure de waarden die in deze component gebruikt worden.
 
-### Oefening 2 - Custom hooks
+### Oefening 2 - useTheme
 
-Pas de andere componenten aan.
+Pas de StarRating component aan zodat deze ook van de `useThemeColor` hook gebruik maakt om i.g.v. darkmode een niet geselecteerde ster wit te kleuren.
 
 ## Anti-patterns
 
@@ -460,33 +428,54 @@ Componenten mag je niet definiëren binnen een andere component. Ofwel maak je e
 
 ```jsx
 // src/components/LabelInput.jsx
-export default function LabelInput({
+const LabelInput  = ({
   label,
   name,
+  placeholder,
   type,
   validationRules,
   ...rest
-}) {
+}) => {
   const hasError = name in errors;
 
   return (
     <div className='mb-3'>
-      <label htmlFor={name} className='form-label'>
+      <label htmlFor={name} className="block text-sm/6 font-medium text-gray-900 dark:text-white">
         {label}
       </label>
       <input
         {...register(name, validationRules)}
         id={name}
+        name={name}
         type={type}
-        className='form-control'
+        className='rounded bg-white p-1
+         text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
+          focus:outline-blue-600 w-full  dark:bg-gray-800 dark:text-white'
+        placeholder={placeholder}
         {...rest}
       />
-      {hasError ? (
-        <div className='form-text text-danger'>{errors[name].message}</div>
-      ) : null}
-    </div>
-  );
-}
+      {hasError && <p className="text-red-500 text-sm mt-1">{errors[name].message}</p> }
+    </div>);
+};
+
+export default LabelInput;
+```
+
+Opdat de juiste styling zou worden toegepast op native browser controls(zoals date pickers, select dropdown, checkboxes, scrollbars) in dark mode (kalender icon wit bij input `type='date'`), passen we index.css aan. Zonder color-scheme zouden native browser controls altijd hun standaard (meestal lichte) styling behouden, zelfs in dark mode. Met deze CSS krijg je automatische native theming die perfect aansluit bij je custom Tailwind styling!
+
+```css
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
+  /* Form controls ondersteunen automatisch light/dark */
+  input, select, textarea, button {
+    color-scheme: inherit;
+  }
 ```
 
 We krijgen nog fouten (zie verder). Importeer eerst de `LabelInput` component in `TransactionForm` component en pas de invoervelden aan. De code voor het `userId` inputveld wordt:
@@ -495,6 +484,7 @@ We krijgen nog fouten (zie verder). Importeer eerst de `LabelInput` component in
 <LabelInput
   label='User Id'
   name='userId'
+  placeholder='user id'
   type='number'
   validationRules={validationRules.userId}
 />;
@@ -563,6 +553,7 @@ import { useFormContext } from 'react-hook-form'; // 👈
 export default function LabelInput({
   label,
   name,
+  placeholder,
   type,
   validationRules,
   ...rest
@@ -572,25 +563,7 @@ export default function LabelInput({
     formState: { errors },
   } = useFormContext(); // 👈
 
-  const hasError = name in errors;
-
-  return (
-    <div className='mb-3'>
-      <label htmlFor={name} className='form-label'>
-        {label}
-      </label>
-      <input
-        {...register(name, validationRules)}
-        id={name}
-        type={type}
-        className='form-control'
-        {...rest}
-      />
-      {hasError ? (
-        <div className='form-text text-danger'>{errors[name].message}</div>
-      ) : null}
-    </div>
-  );
+  //...
 }
 ```
 
@@ -599,6 +572,52 @@ Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik
 ### Oefening 3 - SelectList
 
 Maak een `SelectList` component aan.
+
+- Oplossing +
+
+  ```jsx
+  // src/components/SelectList.jsx
+  import { useFormContext } from 'react-hook-form';
+
+  export default function SelectList({
+    label, name, placeholder, items, validationRules, ...rest
+  }) {
+    const {
+      register,
+      formState: {
+        errors,
+      },
+    } = useFormContext();
+
+    const hasError = name in errors;
+
+    return <div className='mb-3'>
+      <label htmlFor={name} className="block text-sm/6 font-medium text-gray-900 dark:text-white mb-1.5">
+        {label}
+      </label>
+      <select
+        {...register(name, validationRules.placeId)}
+        id={name}
+        name={name}
+        className="w-full appearance-none
+            rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900
+            outline-1 -outline-offset-1 outline-gray-300 focus:outline-2
+            focus:-outline-offset-2 focus:outline-blue-600
+            sm:text-sm/6 dark:bg-gray-800 dark:text-white"
+        {...rest} >
+        <option value='' disabled>
+          {placeholder}
+        </option>
+        {items.map(({ id, name }) => (
+          <option key={id} value={id}>
+            {name}
+          </option>
+        ))}
+      </select>
+      {hasError && <p className="text-red-500 text-sm mt-1">{errors[name].message}</p> }
+    </div>;
+  }
+  ```
 
 ### Uitschakelen inputvelden bij submit
 
@@ -622,20 +641,18 @@ export default function TransactionForm({
     <>
       <FormProvider {...methods}>
         {/* ... */}
-        <div className='clearfix'>
-          <div className='btn-group float-end'>
-            {/* 👇 */}
-            <button
+        <div className='flex justify-end'>
+              <button
               type='submit'
               disabled={isSubmitting}
-              className='btn btn-primary'
+              className='primary'
             >
               {transaction?.id ? 'Save transaction' : 'Add transaction'}
             </button>
             {/* 👇 */}
             <Link
               disabled={isSubmitting}
-              className='btn btn-light'
+              className='secondary ml-2'
               to='/transactions'
             >
               Cancel

@@ -548,7 +548,6 @@ De `Navbar` component voorziet in het menu. We maken een responsive menu.
 
 ```jsx
 // src/components/Navbar.jsx
-// src/components/Navbar.jsx
 import { Link } from 'react-router';
 import { useState } from 'react';
 import { BsFillPiggyBankFill } from 'react-icons/bs';
