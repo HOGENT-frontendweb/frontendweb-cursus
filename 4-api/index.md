@@ -10,7 +10,7 @@
 > pnpm dev
 > ```
 >
-> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig:
+> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig. Maak een database `budget` aan. Zie instructies in de [cursus Webservices](https://hogent-frontendweb.github.io/webservices-cursus/#/4-datalaag/deel1?id=mysql-databank) :
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
@@ -18,6 +18,7 @@
 > git checkout -b les5 d486627
 > pnpm install
 > pnpm db:migrate
+> pnpm db:seed
 > pnpm start:dev
 > ```
 >

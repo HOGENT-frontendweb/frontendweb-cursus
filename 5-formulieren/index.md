@@ -20,6 +20,7 @@
 > git checkout -b les5 d486627
 > pnpm install
 > pnpm db:migrate
+> pnpm db:seed
 > pnpm start:dev
 > ```
 >
