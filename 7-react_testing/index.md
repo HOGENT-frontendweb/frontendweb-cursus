@@ -34,25 +34,39 @@ Cypress draait in een browser en niet via een WebDriver. Dus het draait (zo goed
 Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev dependency:
 
 ```bash
-pnpm add --dev cypress
+pnpm add -D cypress
 ```
 
 We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md) toe.
 
 ```bash
-pnpm add --dev eslint-plugin-cypress
+pnpm add -D eslint-plugin-cypress
 ```
 
-Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en exporteer de `recommended` rules. Zonder deze plugin krijgen we `no-undef` foutmeldingen voor de functies `describe`, `it`...
+Na de installatie voer je het volgende commando uit om te selecteren welke packages gebuild mogen worden:
+
+```bash
+pnpm approve-builds
+
+# Selecteer alles door op de letter a te drukken
+# Druk op Enter
+# Voer vervolgens de letter y in om te bevestigen
+```
+
+pnpm zal steeds vragen om goedkeuring als een package gebuild moet worden na installatie.
+
+Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en activeer de `recommended` rules. Zonder deze plugin krijgen we `no-undef` foutmeldingen voor de functies `describe`, `it`...
 
 ```js
 // eslint.config.js
-import pluginCypress from 'eslint-plugin-cypress/flat';
+import pluginCypress from 'eslint-plugin-cypress';
 
 // ...
 
-export default [
-  pluginCypress.configs.recommended,
+extends: [
+     //...
+      pluginCypress.configs.recommended,
+    ],
   // ...
 ];
 ```
@@ -91,7 +105,7 @@ Cypress opent **The Launchpad** in de browser. The Launchpad is het portaal naar
 
 ## De eerste test
 
-Dan is het tijd voor onze eerste test. Kies `Create new empty spec`. Behoud de standaard naam voor de spec en klik op `Create spec`. Een dialoogvenster met de gegenereerde spec wordt getoond. De test zal controleren of het surfen naar de [Example app](https://example.cypress.io) werkt.
+Dan is het tijd voor onze eerste test. Kies `Create new spec`. Behoud de standaard path en klik op `Create spec`. Een dialoogvenster met de gegenereerde spec wordt getoond. De test zal controleren of het surfen naar de [Example app](https://example.cypress.io) werkt.
 
 ```jsx
 describe('template spec', () => {
@@ -177,7 +191,7 @@ In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon ch
 Neem volgende stukje HTML als voorbeeld:
 
 ```html
-<button id="main" class="btn btn-large" name="submission" role="button">
+<button id="main" class="btn btn-large">
   Submit
 </button>
 ```
@@ -214,8 +228,6 @@ De beste optie is om gewoon een extra [`data-attribute`](https://developer.mozil
 <button
   id="main"
   class="btn btn-large"
-  name="submission"
-  role="button"
   data-cy="submit"
 >
   <!-- 👆 -->
@@ -237,10 +249,11 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
 
 ```jsx
 // src/components/transactions/TransactionForm.js
-<form onSubmit={handleSubmit(onSubmit)} className='mb-5'>
+<form onSubmit={handleSubmit(onSubmit)}>
   <LabelInput
     label='User ID'
     name='userId'
+    placeholder='user id'
     type='number'
     validationRules={validationRules.userId}
     data-cy='user_input' // 👈 1
@@ -248,6 +261,7 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
   <LabelInput
     label='Date'
     name='date'
+    placeholder='date'
     type='date'
     validationRules={validationRules.date}
     data-cy='date_input' // 👈 1
@@ -263,6 +277,7 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
   <LabelInput
     label='Amount'
     name='amount'
+    placeholder='amount'
     type='number'
     validationRules={validationRules.amount}
     data-cy='amount_input' // 👈 1
@@ -272,14 +287,14 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
       <button
         type='submit'
         disabled={isSubmitting || !isValid}
-        className='btn btn-primary'
+        className='primary'
         data-cy='submit_transaction' // 👈 2
       >
         {transaction?.id ? 'Save transaction' : 'Add transaction'}
       </button>
       <Link
         disabled={isSubmitting}
-        className='btn btn-light'
+        className='secondary ml-2'
         to='/transactions'
       >
         Cancel
@@ -296,63 +311,37 @@ Op een gelijkaardige manier passen we `Transaction` aan zodat we nadien kunnen c
 
 ```jsx
 // src/components/transactions/Transaction.js
-import { memo, useCallback } from 'react';
 // ...
-
-const TransactionMemoized = memo(function Transaction({
-  id,
-  user,
-  date,
-  amount,
-  place,
-  onDelete,
-}) {
-  const handleDelete = useCallback(() => {
-    onDelete(id);
-  }, [id, onDelete]);
-
-  return (
+return (
     {/* 👇 */}
-    <tr data-cy='transaction'>
+    <tr className="border-b border-gray-200 dark:border-gray-800" data-cy='transaction'>
       {/* 👇 */}
-      <td data-cy='transaction_date'>
-        {dateFormat.format(new Date(date))}
-      </td>
+      <td className="py-2" data-cy='transaction_date'>{dateFormat.format(new Date(date))}</td>
       {/* 👇 */}
-      <td data-cy='transaction_user'>{user.name}</td>
+      <td className="py-2" data-cy='transaction_user'>{user.name}</td>
       {/* 👇 */}
-      <td data-cy='transaction_place'>{place.name}</td>
+      <td className="py-2" data-cy='transaction_place'>{place.name}</td>
       {/* 👇 */}
-      <td data-cy='transaction_amount' className='text-end'>
-        {amountFormat.format(amount)}
-      </td>
-      <td>
-        {onDelete ? (
+      <td className='text-end py-2' data-cy='transaction_amount'>{amountFormat.format(amount)}</td>
+      <td className="py-2 flex justify-end">
+        {onDelete ?
           <>
-            <Link
-              to={`/transactions/edit/${id}`}
-              className='btn btn-primary'
-              data-cy='transaction_edit_btn'
-            >
-              {/* 👆 */}
+            {/* 👇 */}
+            <Link to={`/transactions/edit/${id}`} className='mx-2 py-2
+            px-2.5 rounded-md bg-blue-600'  data-cy='transaction_edit_btn'>
               <IoPencilOutline />
             </Link>
-            <button
-              className='btn btn-danger'
-              onClick={handleDelete}
-              data-cy='transaction_remove_btn'
-            >
-              {/* 👆 */}
+            {/* 👇 */}
+            <button className='py-2 px-2.5 rounded-md bg-blue-600'
+              onClick={handleDelete} data-cy='transaction_remove_btn'>
               <IoTrashOutline />
             </button>
-          </>
-        ) : null}
+          </>:''}
       </td>
     </tr>
   );
-});
+//...
 
-export default TransactionMemoized;
 ```
 
 Uiteindelijk kunnen we de echte testcode schrijven. Voeg een nieuw bestand `cypress/e2e/addTransaction.cy.js` toe.
@@ -365,7 +354,7 @@ describe('Add and remove transaction', () => {
 
     cy.get('[data-cy=user_input]').type('2'); // 👈 2
     cy.get('[data-cy=date_input]').type('2024-10-01'); // 👈 2
-    cy.get('[data-cy=place_input]').select(3); // 👈 2
+    cy.get('[data-cy=place_input]').select('3'); // 👈 2
     cy.get('[data-cy=amount_input]').type('200'); // 👈 2
     cy.get('[data-cy=submit_transaction]').click(); // 👈 3
     cy.get('[data-cy=transaction_user]').eq(9).contains('Pieter'); // 👈 4
@@ -379,7 +368,7 @@ describe('Add and remove transaction', () => {
 2. Dan vragen we alle input fields op en geven we zinvolle data in.
    - Bij text input fields kan je gewoon de [`.type()`](https://docs.cypress.io/api/commands/type) functie gebruiken.
    - Voor select inputs de functie [`.select()`](https://docs.cypress.io/api/commands/select). Hierbij kan de waarde zowel de value, als de content, of zelfs de index zijn.
-3. Als laatste klikken (m.b.v. [`click()`](https://docs.cypress.io/api/commands/click)) we op de submit button. Submitten zorgt ervoor dat we terug naar onze overzichtspagina gaan, dat gebeurt ook in de testomgeving. Maar door de validation mode 'onBlur' gebeurt het cli
+3. Als laatste klikken (m.b.v. [`click()`](https://docs.cypress.io/api/commands/click)) we op de submit button. Submitten zorgt ervoor dat we terug naar onze overzichtspagina gaan, dat gebeurt ook in de testomgeving. Maar door de validation mode 'onBlur' gebeurt dit niet.
 4. Daarna kunnen we kijken of de transactie toegevoegd is. We hebben `data-cy` op elk deel van een Transaction, maar er zijn meerdere transacties, dus we kunnen niet gewoon bv. 'de' `transaction_user` opvragen (`cy.get("[data-cy=transaction_user]")`). Met `eq()` kan je één specifiek element opvragen a.d.h.v. zijn index.
 5. We doen hetzelfde voor de amount.
 6. Vaak is het gewoon al nuttig om te kijken of er effectief één toegevoegd is, los van de inhoud, dat kan natuurlijk ook.
@@ -456,15 +445,13 @@ Deze [cheat sheet](https://cheatography.com/aiqbal/cheat-sheets/cypress-io/) kan
 - Oplossing +
 
   ```js
-    it("should show the error message for an invalid user id", () => {
-        cy.visit("http://localhost:5173/transactions/add");
+    it('should show the error message for an invalid user id', () => {
+      cy.visit('http://localhost:5173/transactions/add');
+      cy.get('[data-cy=user_input]').type('-1');
+      cy.get('[data-cy=user_input]').blur();
+      cy.get('[data-cy=submit_transaction]').click();
 
-        cy.get("[data-cy=user_input]").type("-1");
-        cy.get("[data-cy=user_input]").blur();
-        cy.get("[data-cy=submit_transaction]").click();
-
-        cy.get("[data-cy=label_input_error]").contains("min 1");
-      });
+      cy.get('[data-cy=label_input_error]').contains('UserId must be minimum 1');
     });
   ```
 
@@ -485,7 +472,7 @@ describe('Transactions list', () => {
     // 👇 1
     cy.intercept(
       'GET',
-      'http://localhost:9000/api/transactions',
+      'http://localhost:3000/api/transactions',
       `{"items":[{"id":1,"amount":-97,"date":"2024-10-01","user":{"id":1,"name":"Pieter"},
       "place":{"id":4,"name":"Chinees Restaurant"}}]}`,
     );
@@ -517,7 +504,7 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
     {
       "id": 1,
       "amount": -97,
-      "date": "2024-10-01",
+      "date": "2025-10-01",
       "user": {
         "id": 2,
         "name": "Pieter"
@@ -530,7 +517,7 @@ Creëer een nieuw bestand `transactions.json` in de `fixtures` map van cypress
     {
       "id": 1,
       "amount": 100,
-      "date": "2024-10-01",
+      "date": "2025-10-01",
       "user": {
         "id": 2,
         "name": "Pieter"
@@ -552,7 +539,7 @@ describe('Transactions list', () => {
   it('should show the transactions', () => {
     cy.intercept(
       'GET',
-      'http://localhost:9000/api/transactions',
+      'http://localhost:3000/api/transactions',
       { fixture: 'transactions.json' }, // 👈
     );
 
@@ -579,7 +566,7 @@ describe('Transactions list', () => {
 
   it('should show a loading indicator for a very slow response', () => {
     cy.intercept(
-      'http://localhost:9000/api/transactions', // 👈 1
+      'http://localhost:3000/api/transactions', // 👈 1
       // 👇 2
       (req) => {
         req.on('response', (res) => {
@@ -637,7 +624,7 @@ Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er gee
     cy.visit('http://localhost:5173');
     cy.intercept(
       'GET',
-      'http://localhost:9000/api/transactions',
+      'http://localhost:3000/api/transactions',
       { fixture: 'transactions.json' }, // 👈
     );
     cy.get('[data-cy=transactions_search_input]').type('Ir');
@@ -659,7 +646,7 @@ Als de back-end fouten geeft bij het ophalen van de transacties, dan zijn er gee
   });
 
   it('should show an error if the API call fails', () => {
-    cy.intercept('GET', 'http://localhost:9000/api/transactions', {
+    cy.intercept('GET', 'http://localhost:3000/api/transactions', {
       statusCode: 500,
       body: {
         error: 'Internal server error',
