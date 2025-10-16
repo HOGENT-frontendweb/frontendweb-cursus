@@ -65,15 +65,15 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
     children: [
       {
         index: true,
-        element: <TransactionList />,
+        Component: TransactionList ,
       },
       {
         path: 'add',
-        element: <AddOrEditTransaction />,
+        Component: AddOrEditTransaction,
       },
       {
         path: 'edit/:id',
-        element: <AddOrEditTransaction />,
+        Component: AddOrEditTransaction,
       },
     ],
   }
@@ -141,7 +141,7 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en
 
 ## Het formulier
 
-Maak een bestand `TransactionForm.jsx` aan in de map `src/components/transactions`. Dit bevat een formulier met drie input velden (userId, date en amount) en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de plaatsen door als prop.
+Maak een bestand `TransactionForm.jsx` aan in de map `src/components/transactions`. Dit bevat een formulier met drie input velden (userId, date en amount) en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop.
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
