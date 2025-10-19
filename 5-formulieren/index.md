@@ -272,7 +272,7 @@ Voeg dit package toe aan het project:
 pnpm add react-hook-form
 ```
 
-We maken gebruik van de [useForm](https://react-hook-form.com/api/useform) hook uit het `react-hook-form` package.
+We maken gebruik van de [useForm](https://react-hook-form.com/docs/useform) hook uit het `react-hook-form` package.
 
 ```jsx
 // src/components/transactions/TransactionForm.jsx
@@ -371,12 +371,12 @@ export default function TransactionForm({ places = [] }) {
 }
 ```
 
-1. `useForm` is een **custom hook** om forms te beheren. Het geeft allerlei nuttige functies en andere info over het formulier terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/api/useform/).
-2. [register](https://react-hook-form.com/api/useform/register): met deze functie registreer je velden in het formulier en geef je een naam mee voor het veld. De waarden van de velden kunnen zo gebruikt worden voor zowel formuliervalidatie als het verzenden van het formulier. We hoeven zelf geen state bij te houden. Achterliggend wordt [React.ref](https://react.dev/learn/referencing-values-with-refs) gebruikt.
+1. `useForm` is een **custom hook** om forms te beheren. Het geeft allerlei nuttige functies en andere info over het formulier terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/docs/useform).
+2. [register](https://react-hook-form.com/docs/useform/register): met deze functie registreer je velden in het formulier en geef je een naam mee voor het veld. De waarden van de velden kunnen zo gebruikt worden voor zowel formuliervalidatie als het verzenden van het formulier. We hoeven zelf geen state bij te houden. Achterliggend wordt [React.ref](https://react.dev/learn/referencing-values-with-refs) gebruikt.
 3. Registreer de formuliervelden in de `useForm` hook.
-4. [handleSubmit](https://react-hook-form.com/api/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier.
+4. [handleSubmit](https://react-hook-form.com/docs/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier.
 5. De `onSubmit` functie logt de verstuurde waarden naar de console. `values` bevat de ingevulde waarden per formulierveld: `register('userId')` wordt doorgegeven als `{ userId:'value' }`.
-6. [reset](https://react-hook-form.com/api/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
+6. [reset](https://react-hook-form.com/docs/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
 
 ### Default values
 
@@ -475,7 +475,6 @@ export default function TransactionForm({places = []}) {
   };
 
   return (
-  return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='mb-3'>
         <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
@@ -501,7 +500,7 @@ export default function TransactionForm({places = []}) {
 ```
 
 1. Als tweede parameter van de `register` functie kan je de validatieregels meegeven (`required`, `min`, `max`, `minLength`, `maxLength`, `pattern`, `validate`). Je kan ook de bijhorende foutmelding opgeven. Hiervoor definiëren we een constante `validationRules`. Gebruik geen constante object literals/arrays in de component, zoals bv. validatieregels. Plaats deze buiten de component. Anders wordt dit bij elke render opnieuw aangemaakt.
-   - React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](https://react-hook-form.com/api/useform/register). Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
+   - React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](https://react-hook-form.com/docs/useform/register). Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
 2. Voor de weergave van de fouten maken we gebruik van het `errors` object. Aan de hand van het `type` property kan je het type van de fout opvragen (bv. `errors.userId.type === 'required'`). Merk op dat we hier gebruik maken van `&&`, dit wordt wel eens gezien als een anti-pattern in React. Het is eigenlijk beter om de ternary operator (`voorwaarde ? true : false`) te gebruiken. Dit wordt dus: `{errors.userId ? <p className="form-text text-danger">{errors.userId.message}</p> : null}`.
 3. Als het formulier niet geldig is beëindigen we het afhandelen van de submit.
 4. `mode`: validatie strategie alvorens submit. onBlur validatie wordt getriggerd bij het blur event.
@@ -541,7 +540,7 @@ Definieer de validatieregels voor de andere inputvelden
   };
   ```
 
-Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfde code moeten schrijven, zouden we een aparte component moeten maken. Deze component zal gebruik moeten maken van [useFormContext](https://react-hook-form.com/api/useformcontext). Dit komt in het volgende hoofdstuk aan bod.
+Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfde code moeten schrijven, zouden we een aparte component moeten maken. Deze component zal gebruik moeten maken van [useFormContext](https://react-hook-form.com/docs/useformcontext). Dit komt in het volgende hoofdstuk aan bod.
 
 ## POST /api/transactions
 
