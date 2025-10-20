@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les5 d486627
+> git checkout -b les5 13add05
 > pnpm install
 > pnpm db:migrate
 > pnpm db:seed
