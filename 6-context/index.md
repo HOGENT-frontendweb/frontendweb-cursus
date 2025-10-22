@@ -40,13 +40,20 @@ De Context API bestaat uit drie bouwstenen:
 
 ## Licht of donker thema
 
-Om de werking van de React Context API te demonstreren kan de gebruiker van onze budgetapplicatie een licht of donker thema kiezen. We gaan hiervoor een context gebruiken aangezien het thema van de website door alle componenten gekend moet zijn om bv. de kleuren aan te passen.
+Om de werking van de React Context API te demonstreren kan de gebruiker van onze budgetapplicatie een licht of donker thema kiezen. We gaan hiervoor een context gebruiken aangezien het thema van de website door heel veel componenten gekend moet zijn om bv. de kleuren, beelden,... aan te passen.
 
 Het aanmaken van een context gebeurt typisch in 3 stappen:
 
 1. Creëer een context.
 2. Bied de context aan via een provider.
 3. Neem data uit de context via een consumer (of dus in een child component).
+
+In tailwindcss is er ondersteuning voor dark mode op 2 manieren `media` en `class`:
+
+- de `media` strategie: dark mode wordt automatisch geactiveerd op basis van de voorkeuren van het besturingssysteem van de gebruiker.
+- de `class` strategie: dark mode wordt geactiveerd door de class `dark` toe te voegen aan een parent element (meestal het `<html>` of `<body>` element). Alle child elementen erven dan automatisch de dark mode stijlen.
+
+We gebruiken hier de `class` strategie omdat we de dark mode willen aan- of uitzetten via een knop in de UI.
 
 Om de darkmode te activeren in tailwindcss volg je de stappen in de [tailwindcss documentatie](https://tailwindcss.com/docs/dark-mode).
 
@@ -56,6 +63,18 @@ Om de darkmode te activeren in tailwindcss volg je de stappen in de [tailwindcss
 ```
 
 Eens geactiveerd kan je in je CSS klassen zoals `dark:bg-gray-800` gebruiken.
+
+Je krijgt de ESLint/CSS-fout `unknown at rule @custom-variant(css - unknownAtRules)` omdat @custom-variant een Tailwind CSS v4-specifieke at-rule is die niet herkend wordt door de standaard CSS-validator in VS Code. Pas hiervoor de instellingen van je workspace aan in VS Code:
+
+```json
+{
+ "files.associations": {
+  "*.css": "tailwindcss"
+}
+}
+```
+
+Die configuratie vertelt VS Code om .css bestanden te behandelen als Tailwind CSS bestanden in plaats van gewone CSS. Zo wordt de standaard css validator uitgeschakeld voor deze bestanden en krijg je geen fouten meer voor Tailwind-specifieke syntax zoals @custom-variant. Meer op <https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss>, recommended VS Code settings. Merk op: je moet `CSS IntelliSense extensie` geïnstalleerd hebben.
 
 ### Stap 1: Creëer de context
 
@@ -133,7 +152,7 @@ function TransactionTable({ transactions }) {
   return (
     <div>
       {/* 👇 2 */}
-      <table className={`${darkmode?'dark':''} dark:bg-black dark:text-white table-auto w-full border-collapse mb-4'>
+      <table className={`${darkmode?'dark':''} dark:bg-black dark:text-white table-auto w-full border-collapse mb-4`}>
     {/* ... */}`
   );
 }
@@ -204,12 +223,14 @@ export default ThemeProvider;
 ```
 
 1. De `ThemeProvider` houdt de state bij, hier `darkmode`. We halen de waarde uit `sessionStorage` op. getItem returnt altijd een string of undefined (als niet bestaat). Dit converteren we naar een Boolean.
-2. Synchroniseert de dark mode state met de DOM en sessionStorage. De DOM update voegt/verwijdert de dark CSS class op het <html> element. sessionStorage slaat de huidige state op zodat het bewaard blijft na page refresh
+2. Synchroniseert de dark mode state met de DOM en sessionStorage. De DOM update voegt/verwijdert de dark CSS class op het html-element (`document.documentElement`). sessionStorage slaat de huidige state op zodat het bewaard blijft na page refresh.
 3. De `ThemeProvider` voorziet ook in een functie om de darkmode aan te passen.
 4. De `ThemeProvider` bepaalt wat er gedeeld wordt met de children. Maak hiervoor de constante `value` aan. Vermits het hier om een waarde (en geen functie) gaat, gebruiken we `useMemo`.
 5. De `ThemeProvider` stelt de `value` ter beschikking van de children.
 
-We krijgen echter een eslint fout 'Fast refresh only works when a file only exports components'. Fast refresh is een feature van React die ervoor zorgt dat de applicatie snel herladen wordt bij wijzigingen in de code. Dit werkt enkel als een bestand enkel componenten exporteert. Maak daarom een nieuw bestand `index.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
+!> Het gebruik van `document.documentElement` is een anti-pattern in React omdat het direct de DOM manipuleert buiten de React lifecycle om. Echter, in dit specifieke geval is het noodzakelijk om de dark mode functionaliteit van Tailwind CSS te ondersteunen, aangezien Tailwind CSS afhankelijk is van de aanwezigheid van de 'dark' class op een hoog niveau in de DOM om de juiste stijlen toe te passen.
+
+We krijgen een eslint fout `Fast refresh only works when a file only exports components`. Fast refresh is een feature van React die ervoor zorgt dat de applicatie snel herladen wordt bij wijzigingen in de code. Dit werkt enkel als een bestand enkel componenten exporteert. Maak daarom een nieuw bestand `index.js` aan in de `contexts` folder en plaats alle exports die geen component zijn in dit bestand. Pas eventueel de verwijzingen aan.
 
 ```js
 // src/contexts/index.js
@@ -232,7 +253,7 @@ Stel in `main.jsx` de `ThemeProvider` ter beschikking aan alle children.
 ```jsx
 // src/main.jsx
 // ... imports
-import { ThemeProvider } from './contexts/Theme.context'; // 👈
+import ThemeProvider from './contexts/Theme.context'; // 👈
 
 // ...
 
@@ -268,11 +289,34 @@ Voeg in `Navbar.jsx` een knop toe om van thema te wisselen:
 // src/components/Navbar.jsx
 import { NavLink } from 'react-router';
 import { useContext } from 'react'; //👈 1
-import { ThemeContext, themes } from '../contexts/Theme.context'; // 👈 1
+import { ThemeContext } from '../contexts'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5'; // 👈 4
 
+const NavItem = ({ to, children, options}) => {
+  return (
+    <li className="mb-1">
+      {/* 👇 3 */}
+      <NavLink className={`text-gray-400 dark:text-white rounded  aria-[current=page]:text-blue-800 ${options}`}
+        to={to}>{children}</NavLink>
+    </li>
+  );
+};
+
+//...
+
+{/* 👇 2*/}
+const ThemeToggle = () => {
+  const { darkmode, toggleDarkmode } = useContext(ThemeContext);
+  return (  <button
+    type='button'
+    onClick={toggleDarkmode}
+    className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
+  >
+    {darkmode ? <IoMoonSharp color='white' size={20}/> : <IoSunny size={20}/>}
+  </button>);
+};
+
 export default function Navbar() {
-  const { darkmode, toggleDarkmode } = useContext(ThemeContext); // 👈 2
 
   return (
     <>
@@ -302,13 +346,7 @@ export default function Navbar() {
 
          {/* 👇 4 */}
         <div className="hidden lg:flex lg:items-center lg:space-x-4">
-          <button
-            type='button'
-            onClick={toggleDarkmode}
-            className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
-          >
-            {darkmode ? <IoMoonSharp color='white' size={20}/> : <IoSunny size={20}/>}
-          </button>
+           <ThemeToggle />
         </div>
 
       </nav>
@@ -319,6 +357,8 @@ export default function Navbar() {
         max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between dark:bg-black">
           <div className="flex items-center mb-8">
             <Logo/>
+            {/* 👇 4 */}
+            <ThemeToggle />
             <button onClick={toggleNavbar} >
               {/* 👇 3 */}
               <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500 dark:text-white"
@@ -344,15 +384,15 @@ export default function Navbar() {
 ```
 
 1. Importeer de nodige componenten.
-2. Roep de `useContext` hook aan en gebruik destructuring om de properties, die de component nodig heeft, eruit te halen.
+2. Maak een component aan met een knop om het thema te kiezen. Roep de `useContext` hook aan en gebruik destructuring om de properties, die de component nodig heeft, eruit te halen.
 3. Voeg de dark klassen toe voor de achtergrondkleur en de kleur van de tekst.
-4. Voorzie de knop om het thema te kiezen.
+4. Voeg de knop toe aan de navbar.
 
 De toegevoegde code in de `TransactionTable` mag je nu verwijderen.
 
 ### Oefening 1 - ThemeContext
 
-Voeg waar nodig de dark mode klassen toe in de andere componenten.
+Voeg waar nodig de dark mode klassen toe in de andere componenten. Voorzien een grijze kleur voor de randen, lijnen van de tabel in dark mode. Pas ook de rand aan van de Place component in dark mode. De inputvelden stijlen we later in deze les.
 
 ## Custom hooks
 
@@ -376,7 +416,7 @@ import { createContext, useContext } from 'react';// 👈1
 
 export const ThemeContext = createContext();
 
-export const useTheme = () => useContext(ThemeContext); c
+export const useTheme = () => useContext(ThemeContext); // 👈 2
 
 export const useThemeColor = () => {
   const { darkmode } = useContext(ThemeContext);
@@ -398,10 +438,11 @@ import { NavLink } from 'react-router';
 import { useTheme } from '../contexts'; // 👈 1
 import { IoMoonSharp, IoSunny } from 'react-icons/io5';
 
-export default function Navbar() {
+const ThemeToggle = () => {
   const { darkmode, toggleDarkmode } = useTheme(); // 👈 2
   //...
-}
+};
+
 ```
 
 1. Verwijder de import `useContext`, `ThemeContext`, en importeer `useTheme`.
