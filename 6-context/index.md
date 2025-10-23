@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6 53ef032
+> git checkout -b les6 6ad1816
 > pnpm install
 > pnpm dev
 > ```
@@ -273,9 +273,14 @@ createRoot(document.getElementById('root')).render(
 Pas `index.css` aan zodat er met de juiste kleuren wordt gewerkt.
 
 ```css
-html, body {
+@layer base {
+  html, body {
   @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
   min-height: 100vh;
+  }
+  h1 {
+    @apply text-4xl mb-4;
+  }
 }
 ```
 
@@ -466,7 +471,7 @@ Er zitten een paar anti-patterns in ons formulier. Waarschijnlijk zijn deze ook 
 
 De combinatie `label` en `input` tag komen vaak voor. Kunnen we hier aparte component van maken?
 
-Componenten mag je niet definiëren binnen een andere component. Ofwel maak je een functiecomponent `LabelInput` in het bestand van het formulier ofwel als aparte component als je deze wil hergebruiken. We kiezen voor de 2de optie. Plaats de code van het invoerveld van de gebruiker hierin en maak van de hardgecodeerde waarden props:
+Componenten mag je niet definiëren binnen een andere component. Ofwel maak je een functiecomponent `LabelInput` in het bestand van het formulier ofwel als aparte component als je deze wil hergebruiken. We kiezen voor de 2de optie. Plaats de code van het invoerveld van de gebruiker hierin en maak van de hardgecodeerde waarden props. Voeg ook de dark mode styling toe.
 
 ```jsx
 // src/components/LabelInput.jsx
@@ -503,21 +508,25 @@ const LabelInput  = ({
 export default LabelInput;
 ```
 
-Opdat de juiste styling zou worden toegepast op native browser controls(zoals date pickers, select dropdown, checkboxes, scrollbars) in dark mode (kalender icon wit bij input `type='date'`), passen we index.css aan. Zonder color-scheme zouden native browser controls altijd hun standaard (meestal lichte) styling behouden, zelfs in dark mode. Met deze CSS krijg je automatische native theming die perfect aansluit bij je custom Tailwind styling!
+Opdat de juiste styling zou worden toegepast op native browser controls(zoals date pickers, select dropdown, checkboxes, scrollbars) in dark mode (kalender icon wit bij input `type='date'`), passen we index.css aan. Zonder color-scheme zouden native browser controls altijd hun standaard (meestal lichte) styling behouden, zelfs in dark mode. Met deze CSS krijg je automatische native theming die perfect aansluit bij je custom Tailwind styling! Plaats dit buiten de @layer regels.
 
 ```css
-  :root {
+@layer base {
+  /*...*/
+  input,
+  select,
+  textarea,
+  button {
     color-scheme: light;
   }
 
-  .dark {
+  .dark input,
+  .dark select,
+  .dark textarea,
+  .dark button {
     color-scheme: dark;
   }
-
-  /* Form controls ondersteunen automatisch light/dark */
-  input, select, textarea, button {
-    color-scheme: inherit;
-  }
+}
 ```
 
 We krijgen nog fouten (zie verder). Importeer eerst de `LabelInput` component in `TransactionForm` component en pas de invoervelden aan. De code voor het `userId` inputveld wordt:
@@ -613,7 +622,7 @@ Importeer `useFormContext` en maak gebruik van `useFormContext` voor het gebruik
 
 ### Oefening 3 - SelectList
 
-Maak een `SelectList` component aan.
+Maak een `SelectList` component aan. Voeg ook de dark mode styling toe.
 
 - Oplossing +
 
@@ -638,7 +647,7 @@ Maak een `SelectList` component aan.
         {label}
       </label>
       <select
-        {...register(name, validationRules.placeId)}
+        {...register(name, validationRules)}
         id={name}
         name={name}
         className="w-full appearance-none
@@ -687,14 +696,15 @@ export default function TransactionForm({
               <button
               type='submit'
               disabled={isSubmitting}
-              className='primary'
+              className='bg-blue-500 text-white font-medium py-2 px-4 rounded'
             >
               {transaction?.id ? 'Save transaction' : 'Add transaction'}
             </button>
             {/* 👇 */}
             <Link
               disabled={isSubmitting}
-              className='secondary ml-2'
+              className='py-2 px-4 rounded text-blue-500
+      border border-blue-500 bg-white dark:bg-gray-900 ml-2'
               to='/transactions'
             >
               Cancel
@@ -728,32 +738,43 @@ export default function LabelInput({
   const hasError = name in errors;
 
   return (
-    <div className='mb-3'>
-      <label htmlFor={name} className='form-label'>
-        {label}
-      </label>
-      <input
-        {...register(name, validationRules)}
-        id={name}
-        type={type}
+    //...
+      <input ...
         disabled={isSubmitting}
-        className='form-control'
-        {...rest}
+
       /> {/* 👆 */}
-      {hasError ? (
-        <div className='form-text text-danger'>{errors[name].message}</div>
-      ) : null}
-    </div>
+    //...
   );
 }
 ```
+
+### Toevoegen van stijlregels voor de knoppen
+
+- `@layer base` = voor HTML elementen (h1, p, body, a, etc.)
+- `@layer components`= voor herbruikbare component classes (.btn, .card, .primary, etc.)
+De cascade volgorde is: base -> components -> utilities. Dus als je een class in `@layer components` definieert, overschrijft deze de stijlen in `@layer base`.
+
+```css
+/* src/index.css */
+@layer components {
+  .primary {
+    @apply bg-blue-500 text-white font-medium py-2 px-4 rounded;
+  }
+  .secondary {
+    @apply py-2 px-4 rounded text-blue-500
+      border border-blue-500 bg-white dark:bg-gray-900;
+  }
+}
+```
+
+Pas nu alle knoppen in de applicatie aan zodat ze de `primary` of `secondary` class gebruiken.
 
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6-opl 7564a38
+> git checkout -b les6-opl 6b8dff1
 > pnpm install
 > pnpm dev
 > ```
