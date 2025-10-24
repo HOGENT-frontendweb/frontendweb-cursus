@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7 6b8dff1
+> git checkout -b les7 4b5ec1b
 > pnpm install
 > pnpm dev
 > ```
@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les7 13add05
+> git checkout -b les7 3386a40
 > pnpm install
 > pnpm prisma migrate dev
 > pnpm start:dev
@@ -353,7 +353,7 @@ describe('Add and remove transaction', () => {
     cy.visit('http://localhost:5173/transactions/add'); // 👈 1
 
     cy.get('[data-cy=user_input]').type('2'); // 👈 2
-    cy.get('[data-cy=date_input]').type('2024-10-01'); // 👈 2
+    cy.get('[data-cy=date_input]').type('2025-10-01'); // 👈 2
     cy.get('[data-cy=place_input]').select('3'); // 👈 2
     cy.get('[data-cy=amount_input]').type('200'); // 👈 2
     cy.get('[data-cy=submit_transaction]').click(); // 👈 3
@@ -473,7 +473,7 @@ describe('Transactions list', () => {
     cy.intercept(
       'GET',
       'http://localhost:3000/api/transactions',
-      `{"items":[{"id":1,"amount":-97,"date":"2024-10-01","user":{"id":1,"name":"Pieter"},
+      `{"items":[{"id":1,"amount":-97,"date":"2025-10-01","user":{"id":1,"name":"Pieter"},
       "place":{"id":4,"name":"Chinees Restaurant"}}]}`,
     );
 
@@ -481,7 +481,7 @@ describe('Transactions list', () => {
     cy.visit('http://localhost:5173');
     cy.get('[data-cy=transaction]').should('have.length', 1);
     cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
-    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2024');
+    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2025');
   });
 });
 ```
@@ -546,7 +546,7 @@ describe('Transactions list', () => {
     cy.visit('http://localhost:5173');
     cy.get('[data-cy=transaction]').should('have.length', 2); // 👈
     cy.get('[data-cy=transaction_place]').eq(0).contains('Chinees Restaurant');
-    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2024');
+    cy.get('[data-cy=transaction_date]').eq(0).should('contain', '01/10/2025');
   });
 });
 ```
@@ -667,7 +667,7 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7-opl 16e8d25
+> git checkout -b les7-opl fc07e2a
 > pnpm install
 > pnpm dev
 > ```

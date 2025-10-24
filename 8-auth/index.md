@@ -244,41 +244,41 @@ const validationRules = {
 export default function Login() {
   const methods = useForm();
 
-  return (
-    <FormProvider {...methods}>
-      <div className='container'>
-        <form className='d-flex flex-column'>
-          <h1>Sign in</h1>
+    return (
+    <div className='w-full max-w-sm'>
+      <h1>Sign in</h1>
+      <FormProvider {...methods}>
+        <div className='container'>
+          <form className='d-flex flex-column'>
 
-          <LabelInput
-            label='email'
-            type='text'
-            name='email'
-            placeholder='your@email.com'
-            validationRules={validationRules.email}
-          />
+            <LabelInput
+              label='email'
+              type='text'
+              name='email'
+              placeholder='your@email.com'
+              validationRules={validationRules.email}
+            />
 
-          <LabelInput
-            label='password'
-            type='password'
-            name='password'
-            validationRules={validationRules.password}
-          />
+            <LabelInput
+              label='password'
+              type='password'
+              placeholder='password'
+              name='password'
+              validationRules={validationRules.password}
+            />
 
-          <div className='clearfix'>
-            <div className='btn-group float-end'>
-              <button type='submit' className='btn btn-primary'>
+            <div className='flex justify-end'>
+              <button type='submit' className="primary">
                 Sign in
               </button>
-
-              <button type='button' className='btn btn-light'>
+              <button type='submit' className="secondary ml-2">
                 Cancel
               </button>
             </div>
-          </div>
-        </form>
-      </div>
-    </FormProvider>
+          </form>
+        </div>
+      </FormProvider>
+    </div>
   );
 }
 ```
@@ -365,6 +365,7 @@ export default function Login() {
           <LabelInput
             label='password'
             type='password'
+            placeholder='password'
             name='password'
             validationRules={validationRules.password}
           />

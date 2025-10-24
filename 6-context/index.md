@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les5 13add05
+> git checkout -b les6 3386a40
 > pnpm install
 > pnpm db:migrate
 > pnpm db:seed
@@ -115,7 +115,7 @@ export const ThemeContext = createContext();
 
 export default function Layout() {
   return (
-    <ThemeContext.Provider value={{ darkmode: 'true' }}>
+    <ThemeContext.Provider value={{ darkmode: true }}>
       {' '}
       {/* 👈 */}
       <div className='container-xl'>
@@ -393,7 +393,7 @@ export default function Navbar() {
 3. Voeg de dark klassen toe voor de achtergrondkleur en de kleur van de tekst.
 4. Voeg de knop toe aan de navbar.
 
-De toegevoegde code in de `TransactionTable` mag je nu verwijderen.
+De toegevoegde code in de `TransactionTable` en `Layout` mag je nu verwijderen.
 
 ### Oefening 1 - ThemeContext
 
@@ -774,7 +774,7 @@ Pas nu alle knoppen in de applicatie aan zodat ze de `primary` of `secondary` cl
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6-opl 6b8dff1
+> git checkout -b les6-opl 4b5ec1b
 > pnpm install
 > pnpm dev
 > ```
