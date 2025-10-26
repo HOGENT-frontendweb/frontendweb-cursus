@@ -78,26 +78,16 @@ Die configuratie vertelt VS Code om .css bestanden te behandelen als Tailwind CS
 
 ### Stap 1: Creëer de context
 
-In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `Layout` component, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
+In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de `main.jsx`, een context aan m.b.v. `createContext`. Deze factory-functie heeft één optioneel argument, de standaardwaarde. Exporteer `ThemeContext` zodat de consumers dit kunnen gebruiken.
 
 ```jsx
-// src/pages/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router';
-import Navbar from '../components/Navbar';
+// src/main.jsx
+//...
 import { createContext } from 'react'; // 👈
 
 export const ThemeContext = createContext(); // 👈
 
-export default function Layout() {
-  return (
-    <div className='container-xl'>
-      <Navbar />
-      <div className='p-4'>
-        <Outlet />
-      </div>
-      <ScrollRestoration />
-    </div>
-  );
+//...
 }
 ```
 
@@ -106,28 +96,15 @@ export default function Layout() {
 Voeg toe in `Layout.jsx`:
 
 ```jsx
-// src/components/Layout.jsx
-import { Outlet, ScrollRestoration } from 'react-router';
-import Navbar from '../components/Navbar';
-import { createContext } from 'react';
-
-export const ThemeContext = createContext();
-
-export default function Layout() {
-  return (
-    <ThemeContext.Provider value={{ darkmode: true }}>
-      {' '}
-      {/* 👈 */}
-      <div className='container-xl'>
-        <Navbar />
-        <div className='p-4'>
-          <Outlet />
-        </div>
-        <ScrollRestoration />
-      </div>
+// src/main.jsx
+//...
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <ThemeContext.Provider value={{darkmode:true}}>
+      <RouterProvider router={router} />
     </ThemeContext.Provider>
-  );
-}
+  </StrictMode>,
+);
 ```
 
 Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. Geef een object door (vandaar `{{}}`). Alle kinderen onder de provider zullen opnieuw renderen wanneer de waarde van de `Provider` verandert.
@@ -141,7 +118,7 @@ De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. de darkmo
 ```jsx
 // src/components/transactions/TransactionTable.jsx
 import { useContext } from 'react'; // 👈 1
-import { ThemeContext } from '../../pages/Layout'; // 👈 1
+import { ThemeContext } from '../../main'; // 👈 1
 // ...
 
 function TransactionTable({ transactions }) {
@@ -248,7 +225,7 @@ import {ThemeContext} from './';
 
 ### Providing ThemeContext
 
-Stel in `main.jsx` de `ThemeProvider` ter beschikking aan alle children.
+Stel in `main.jsx` de `ThemeProvider` ter beschikking aan alle children. Verwijder de reeds toegevoegde code.
 
 ```jsx
 // src/main.jsx
@@ -393,7 +370,7 @@ export default function Navbar() {
 3. Voeg de dark klassen toe voor de achtergrondkleur en de kleur van de tekst.
 4. Voeg de knop toe aan de navbar.
 
-De toegevoegde code in de `TransactionTable` en `Layout` mag je nu verwijderen.
+De toegevoegde code in de `TransactionTable` mag je nu verwijderen.
 
 ### Oefening 1 - ThemeContext
 
@@ -463,7 +440,7 @@ Er zitten een paar anti-patterns in ons formulier. Waarschijnlijk zijn deze ook 
 
 1. Gebruik geen constante object literals/arrays binnen de component, bv. validatieregels. Plaats deze buiten de component.
 2. Definieer geen pure functies binnen de component (functies zonder afhankelijkheden van variabelen), bv. `toDateInputString`. Plaats deze buiten de component.
-3. Definieer geen componenten inline in een andere component, bv. `LabelInput` (zie verder). Plaats deze buiten de component.
+3. Definieer geen componenten inline in een andere component, bv. `Star` component. Plaats deze buiten de component.
 4. Gebruik een id als waarde voor de `key` prop in lijsten, gebruik geen index.
    - Deze fout hebben we reeds opgelost in hoofdstuk 1.
 
