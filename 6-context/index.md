@@ -93,7 +93,7 @@ export const ThemeContext = createContext(); // 👈
 
 ### Stap 2: Bied de context aan
 
-Voeg toe in `Layout.jsx`:
+Voeg toe in `main.jsx`:
 
 ```jsx
 // src/main.jsx
