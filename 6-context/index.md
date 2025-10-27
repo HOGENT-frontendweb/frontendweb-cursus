@@ -751,7 +751,7 @@ Pas nu alle knoppen in de applicatie aan zodat ze de `primary` of `secondary` cl
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6-opl 4b5ec1b
+> git checkout -b les6-opl 5d642b4
 > pnpm install
 > pnpm dev
 > ```

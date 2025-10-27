@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7 4b5ec1b
+> git checkout -b les7 5d642b4
 > pnpm install
 > pnpm dev
 > ```
@@ -17,9 +17,10 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les7 3386a40
+> git checkout -b les6 3386a40
 > pnpm install
-> pnpm prisma migrate dev
+> pnpm db:migrate
+> pnpm db:seed
 > pnpm start:dev
 > ```
 >
@@ -667,7 +668,7 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7-opl fc07e2a
+> git checkout -b les7-opl 5d642b4
 > pnpm install
 > pnpm dev
 > ```

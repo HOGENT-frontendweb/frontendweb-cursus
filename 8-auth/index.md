@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8 16e8d25
+> git checkout -b les8 5d642b4
 > pnpm install
 > pnpm dev
 > ```
@@ -18,7 +18,8 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > pnpm install
-> pnpm prisma migrate dev
+> pnpm db:migrate
+> pnpm db:seed
 > pnpm start:dev
 > ```
 >
@@ -144,13 +145,13 @@ export const AuthProvider = ({ children }) => {
 13. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`. We voegen de huidige token uit `localStorage` toe als initiële waarde van onze state-variabele. We houden de `localStorage` key bij in een globale constante.
 14. We halen ook de `user` gegevens op en voegen de waarde toe aan de context. Vervolledig `error` en `loading` in de context.
 
-Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan onze volledige Context waarde kunnen. Maak een file `auth.js` aan in de `contexts` folder.
+Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan onze volledige Context waarde kunnen ophalen. Maak een file `auth.js` aan in de `contexts` folder. Plaats ook de andere exports uit `Auth.context.jsx` in deze file en pas de imports in `Auth.context.jsx` aan.
 
 ```js
 // src/contexts/auth.js
-import { useContext } from 'react';
-import { AuthContext } from './Auth.context';
-
+import { createContext, useContext } from 'react';
+export const JWT_TOKEN_KEY = 'jwtToken';
+export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 ```
 
@@ -188,7 +189,7 @@ Vervolgens gaan we een instantie van axios configureren voor het gebruik van een
 ```jsx
 // src/api/index.js
 import axiosRoot from 'axios'; // 👈 1
-import { JWT_TOKEN_KEY } from '../contexts/Auth.context';
+import { JWT_TOKEN_KEY } from '../contexts/auth';
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -245,7 +246,7 @@ export default function Login() {
   const methods = useForm();
 
     return (
-    <div className='w-full max-w-sm'>
+    <div className='w-full max-w-md'>
       <h1>Sign in</h1>
       <FormProvider {...methods}>
         <div className='container'>
@@ -288,7 +289,7 @@ Zorg ervoor dat deze component getoond wordt op de URL `/login`. Voeg deze route
 ```jsx
 {
   path: '/login',
-  element: <Login />,
+  Component : Login,
 }
 ```
 
@@ -297,7 +298,7 @@ Om aan te melden maken we gebruik van onze `useAuth` hook. Pas `src/pages/Login.
 ```jsx
 // src/pages/Login.jsx
 import { useCallback } from 'react'; // 👈 1
-import { useNavigate } from 'react-router-dom'; // 👈 3
+import { useNavigate } from 'react-router'; // 👈 3
 import { FormProvider, useForm } from 'react-hook-form';
 import LabelInput from '../components/LabelInput';
 import { useAuth } from '../contexts/auth'; // 👈 2
@@ -369,26 +370,24 @@ export default function Login() {
             name='password'
             validationRules={validationRules.password}
           />
-          <div className='clearfix'>
-            <div className='btn-group float-end'>
-              <button
-                type='submit'
-                className='btn btn-primary'
-                disabled={loading}
-              >
-                {/* 👆 4 */}
-                Sign in
-              </button>
+          <div className='flex justify-end'>
+            <button
+              type='submit'
+              className='primary'
+              disabled={loading}
+            >
+              {/* 👆 4 */}
+              Sign in
+            </button>
 
-              <button
-                type='button'
-                className='btn btn-light'
-                onClick={handleCancel}
-              >
-                {/* 👆 6*/}
-                Cancel
-              </button>
-            </div>
+            <button
+              type='button'
+              className='secondary ml-2'
+              onClick={handleCancel}
+            >
+              {/* 👆 6*/}
+              Cancel
+            </button>
           </div>
         </form>
       </div>
@@ -457,7 +456,7 @@ Nu kunnen we de `PrivateRoute` component aanmaken. Maak een bestand `src/compone
 
 ```jsx
 // src/components/PrivateRoute.jsx
-import { Navigate, Outlet, useLocation } from 'react-router-dom'; // 👈 3 en 4
+import { Navigate, Outlet, useLocation } from 'react-router'; // 👈 3 en 4
 import { useAuth } from '../contexts/auth'; // 👈 2
 
 // 👇 1
@@ -466,18 +465,14 @@ export default function PrivateRoute() {
   const { pathname } = useLocation(); // 👈 4
 
   // 👇 2
-  if (!ready) {
+ if (!ready) {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='col-12'>
-            <h1>Loading...</h1>
-            <p>
-              Please wait while we are checking your credentials and loading the
-              application.
-            </p>
-          </div>
-        </div>
+      <div>
+        <h1>Loading...</h1>
+        <p>
+          Please wait while we are checking your credentials and loading the
+          application.
+        </p>
       </div>
     );
   }
@@ -505,7 +500,7 @@ import PrivateRoute from './components/PrivateRoute';
 
 const router = createBrowserRouter([
   {
-    element: <Layout />,
+    Component: Layout,
     children: [
       {
         path: '/',
@@ -513,43 +508,65 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element: <Login />,
+        Component: Login ,
       },
       {
         path: '/transactions',
-        element: <PrivateRoute />, // 👈
+        Component:PrivateRoute ,// 👈
         children: [
           {
             index: true,
-            element: <TransactionsList />,
+            Component: TransactionList ,
           },
           {
             path: 'add',
-            element: <AddOrEditTransaction />,
+            Component: AddOrEditTransaction ,
           },
           {
             path: 'edit/:id',
-            element: <AddOrEditTransaction />,
+            Component: AddOrEditTransaction ,
           },
         ],
       },
       {
         path: '/places',
-        element: <PrivateRoute />, // 👈
+        Component:PrivateRoute,// 👈
         children: [
           {
             index: true,
-            element: <PlacesList />,
+            Component: PlacesList,
+          },
+          {
+            path: ':id',
+            Component: PlaceDetail,
           },
         ],
       },
       {
-        path: '*',
-        element: <NotFound />,
+        path: 'about',
+        Component: About,
+        children: [
+          {
+            path: 'services',
+            Component: Services,
+          },
+          {
+            path: 'history',
+            Component: History,
+          },
+          {
+            path: 'location',
+            Component: Location,
+          },
+        ],
       },
+      {
+        path: 'services',
+        element: <Navigate to='/about/services' replace />,
+      },
+      { path: '*', Component: NotFound },
     ],
-  },
-]);
+  }]);
 // ...
 ```
 
@@ -557,7 +574,7 @@ We dienen er ook voor te zorgen dat na het inloggen genavigeerd wordt naar de pa
 
 ```jsx
 // src/pages/Login.jsx
-import { useNavigate, useLocation } from 'react-router-dom'; // 👈
+import { useNavigate, useLocation } from 'react-router'; // 👈
 //...
 
 export default function Login() {
@@ -593,67 +610,44 @@ Als laatste voegen we nog een login- en logout-knop toe aan onze navbar. Deze kn
 ```jsx
 // src/components/Navbar.jsx
 // ...
-import { useAuth } from '../contexts/Auth.context';
+import { useAuth } from '../contexts/auth';// 👈 1
 
 export default function Navbar() {
-  const { isAuthed } = useAuth(); // 👈 1
+
+   // 👇 1
+  const AuthButtons = ()=> {
+    const { isAuthed } = useAuth();
+    return  isAuthed ? (
+      <Link className='primary' to='/logout'>
+        Logout
+      </Link>
+    ) : (
+      <Link className='primary' to='/login'>
+        Login
+      </Link>
+    );
+  };
+
   // ...
 
   return (
-    <nav className={`navbar sticky-top bg-${theme} text-bg-${theme} mb-4`}>
-      <div className='container-fluid flex-column flex-sm-row align-items-start align-items-sm-center'>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <Link className='nav-link' to='/'>
-            Transactions
-          </Link>
+    //...  👇 2
+    <div className="hidden lg:flex lg:items-center lg:space-x-4">
+          <AuthButtons/>
+          <ThemeToggle/>
         </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <Link className='nav-link' to='/places'>
-            Places
-          </Link>
-        </div>
-        <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-          <NavLink className='nav-link' to='/about'>
-            About us
-          </NavLink>
-        </div>
-        <div className='flex-grow-1'></div>
-        {
-          // 👇 2
-          isAuthed ? (
-            // 👇 3
-            <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-              <Link className='nav-link' to='/logout'>
-                Logout
-              </Link>
-            </div>
-          ) : (
-            // 👇 4
-            <div className='nav-item my-2 mx-sm-3 my-sm-0'>
-              <Link className='nav-link' to='/login'>
-                Login
-              </Link>
-            </div>
-          )
-        }
-
-        <button
-          className='btn btn-${theme}'
-          type='button'
-          onClick={toggleTheme}
-        >
-          {theme === 'dark' ? <IoMoonSharp /> : <IoSunny />}
-        </button>
-      </div>
-    </nav>
+    //...
+     <div className="flex items-center mb-8">
+        <Logo/>
+        <AuthButtons/>
+        <ThemeToggle/>
+     //...
   );
 }
 ```
 
-1. We controleren of er een gebruiker ingelogd is.
-2. En tonen afhankelijk van de waarde andere knoppen.
-3. Als we aangemeld zijn, tonen we de logout-knop.
-4. In het andere geval, tonen we de login-knop.
+1. Maak een component `AuthButtons`. Controleer of er een gebruiker ingelogd is, en toon afhankelijk van de waarde andere knoppen.
+2. Voeg de `AuthButtons` component toe aan de navbar.
 
 We dienen nog een `Logout` component aan te maken. Maak een nieuw bestand `src/pages/Logout.jsx` met volgende inhoud:
 
@@ -673,25 +667,13 @@ export default function Logout() {
   // 👇 2
   if (isAuthed) {
     return (
-      <div className='container'>
-        <div className='row'>
-          <div className='col-12'>
-            <h1>Logging out...</h1>
-          </div>
-        </div>
-      </div>
+      <h1>Logging out...</h1>
     );
   }
 
   // 👇 3
   return (
-    <div className='container'>
-      <div className='row'>
-        <div className='col-12'>
-          <h1>You were successfully logged out</h1>
-        </div>
-      </div>
-    </div>
+    <h1>You were successfully logged out</h1>
   );
 }
 ```
@@ -707,9 +689,17 @@ Voeg de route naar `Logout` component toe aan `src/main.jsx` en importeer de `Lo
 // src/main.jsx
 {
   path: '/logout',
-  element: <Logout />,
+  Component: Logout,
 }
 ```
+
+## Oefening - Pas TransactionForm aan
+
+De gebruiker moet nu niet langer de `userId` kunnen ingeven bij het aanmaken van een nieuwe transactie. De backend gebruikt de userId van de aangemelde gebruiker. Pas hiervoor de `TransactionForm` component aan.
+
+- verwijder de `userId` uit de validatieregels.
+- verwijder de defaultwaarde voor `userId` in useForm defaultValues.
+- verwijder het `LabelInput` veld voor de `userId`.
 
 ## Oefening - Registreren
 
@@ -729,7 +719,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
      - Gebruik hiervoor de `validate` functie van `register`: <https://react-hook-form.com/docs/useform/register>.
      - Je moet hiervoor de `validationRules` binnen de component zetten, gebruik een `useMemo` om dit object te maken.
      - Om een waarde van een veld op te vragen gebruik je `getValues`.
-   - Als de gebruiker reeds aangemeld is, moet deze pagina de gebruiker doorsturen naar de `/` route.
+   - Als de gebruiker is geregistreerd, moet deze pagina de gebruiker doorsturen naar de `/` route.
    - Voeg de route naar de register pagina toe aan `src/main.jsx`.
    - Pas ook de `NavBar` component aan. Voorzie naast de login ook een register link.
 3. Pas de `AddTransaction` component aan zodat de `userId` niet langer ingegeven dient te worden. In de back-end wordt de `userId` van de aangemelde gebruiker genomen (uit de token).
@@ -741,7 +731,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8-opl 237fcd6
+> git checkout -b les8-opl b333700
 > pnpm install
 > pnpm dev
 > ```

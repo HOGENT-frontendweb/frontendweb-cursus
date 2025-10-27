@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9 56dc080
+> git checkout -b les9 b333700
 > pnpm install
 > pnpm dev
 > ```
@@ -18,7 +18,8 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > pnpm install
-> pnpm prisma migrate dev
+> pnpm db:migrate
+> pnpm db:seed
 > pnpm start:dev
 > ```
 >
@@ -161,7 +162,7 @@ Voer de testen opnieuw uit. Bekijk ook de mock-data en ga na of dit nu overeenst
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9-opl b9f9671
+> git checkout -b les9-opl 1e5986a
 > pnpm install
 > pnpm dev
 > ```
