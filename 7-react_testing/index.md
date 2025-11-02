@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7 5d642b4
+> git checkout -b les7 6b8dff1
 > pnpm install
 > pnpm dev
 > ```
@@ -43,18 +43,6 @@ We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-pl
 ```bash
 pnpm add -D eslint-plugin-cypress
 ```
-
-Na de installatie voer je het volgende commando uit om te selecteren welke packages gebuild mogen worden:
-
-```bash
-pnpm approve-builds
-
-# Selecteer alles door op de letter a te drukken
-# Druk op Enter
-# Voer vervolgens de letter y in om te bevestigen
-```
-
-pnpm zal steeds vragen om goedkeuring als een package gebuild moet worden na installatie.
 
 Pas vervolgens de configuratie van ESLint aan. Importeer de plugin en activeer de `recommended` rules. Zonder deze plugin krijgen we `no-undef` foutmeldingen voor de functies `describe`, `it`...
 
