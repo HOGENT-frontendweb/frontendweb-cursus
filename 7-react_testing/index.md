@@ -38,6 +38,18 @@ Om met Cypress aan de slag te gaan, moet je dit eerst installeren als dev depend
 pnpm add -D cypress
 ```
 
+Na de installatie voer je het volgende commando uit om te selecteren welke packages gebuild mogen worden:
+
+```bash
+pnpm approve-builds
+
+# Selecteer alles door op de letter a te drukken
+# Druk op Enter
+# Voer vervolgens de letter y in om te bevestigen
+```
+
+pnpm zal steeds vragen om goedkeuring als een package gebuild moet worden na installatie.
+
 We voegen ook de [Cypress ESLint plugin](https://github.com/cypress-io/eslint-plugin-cypress/blob/HEAD/FLAT-CONFIG.md) toe.
 
 ```bash

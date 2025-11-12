@@ -920,6 +920,7 @@ Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de 
 ## Mogelijke extra's voor de examenopdracht
 
 - [Formik](https://www.npmjs.com/package/formik)
+- [react-jsonschema-form](https://www.npmjs.com/package/react-jsonschema-form): formulieren genereren op basis van een JSON schema
 - Validatie in [react-hook-form](https://www.npmjs.com/package/react-hook-form) met [Joi](https://www.npmjs.com/package/joi), [Yup](https://npmjs.com/package/yup) of dergelijke
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
 - Maak gebruik van **meerdere** custom hooks uit:
