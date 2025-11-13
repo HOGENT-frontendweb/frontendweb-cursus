@@ -18,6 +18,7 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > pnpm install
+> docker compose up -d
 > pnpm db:migrate
 > pnpm db:seed
 > pnpm start:dev
@@ -27,7 +28,7 @@
 
 In dit hoofdstuk voegen we authenticatie en autorisatie toe aan onze applicatie. We maken hiervoor gebruik van JSON Web Tokens (JWT). We zullen de gebruiker toelaten om zich aan te melden en uit te loggen, maar ook te registreren. We zullen ook bepaalde routes afschermen voor niet-aangemelde gebruikers.
 
-?> De code die je in de olods Front-end Web Development en Web Services opbouwt, werd vorig jaar door een student gecontroleerd op gebied van security. Een aantal zaken werden reeds dit academiejaar aangepast. Voel je vrij om deze bachelorproef te lezen als inspiratie voor eigen projecten: <br /><br />Vermeersch, J. (2024). Cybersecuritymaatregelen in de opleidingsonderdelen over webapplicatieontwikkeling aan Hogeschool Gent: een analyse en integratie van aanbevelingen in de voorbeeldapplicaties. Gent: s.n. Geraadpleegd op 3 november 2024, via <https://catalogus.hogent.be/catalog/hog01:003132172>.
+?> De code die je in de olods Front-end Web Development en Web Services opbouwt, werd in een bachelorproef door een student gecontroleerd op gebied van security. Een aantal zaken werden reeds in de applicatie aangepast. Voel je vrij om deze bachelorproef te lezen als inspiratie voor eigen projecten: <br /><br />Vermeersch, J. (2024). Cybersecuritymaatregelen in de opleidingsonderdelen over webapplicatieontwikkeling aan Hogeschool Gent: een analyse en integratie van aanbevelingen in de voorbeeldapplicaties. Gent: s.n. Geraadpleegd op 3 november 2024, via <https://catalogus.hogent.be/catalog/hog01:003132172>.
 
 ## API calls voor login
 
@@ -680,7 +681,6 @@ export default function Logout() {
 
 1. We maken gebruik van een `useEffect` voor het uitloggen.
 2. Als de gebruiker aan het uitloggen is (en dus nog aangemeld is), geven we aan dat we aan het uitloggen zijn.
-   - Hier kan je het uitloggen nog verder uitbreiden door bijvoorbeeld te vragen of overal of enkel op dit toestel uitgelogd moet worden. Als je overal wil uitloggen, zal je in de back-end nog wel wat extra werk moeten doen.
 3. Als de gebruiker is uitgelogd, geven we een melding weer.
 
 Voeg de route naar `Logout` component toe aan `src/main.jsx` en importeer de `Logout` component:
@@ -722,7 +722,6 @@ Een gebruiker dient zich te kunnen registreren op de site.
    - Als de gebruiker is geregistreerd, moet deze pagina de gebruiker doorsturen naar de `/` route.
    - Voeg de route naar de register pagina toe aan `src/main.jsx`.
    - Pas ook de `NavBar` component aan. Voorzie naast de login ook een register link.
-3. Pas de `AddTransaction` component aan zodat de `userId` niet langer ingegeven dient te worden. In de back-end wordt de `userId` van de aangemelde gebruiker genomen (uit de token).
 
 > **Oplossing voorbeeldapplicatie**
 >
