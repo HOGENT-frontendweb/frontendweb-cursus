@@ -847,3 +847,5 @@ end note
 - [JavaScript Visualized: Promises & Async/Await](https://medium.com/@lydiahallie/javascript-visualized-promises-async-await-a3f1aad8a943)
 - [Re-implementing JavaScript's == in JavaScript](https://evanhahn.com/re-implementing-javascript-double-equals-in-javascript/)
   - Laat duidelijk zien waarom je `===` moet gebruiken i.p.v. `==`.
+- [The Intl API: The best browser API you're not using](https://polypane.app/blog/the-intl-api-the-best-browser-api-youre-not-using/)
+- [The Great CSS Expansion](https://blog.gitbutler.com/the-great-css-expansion)
