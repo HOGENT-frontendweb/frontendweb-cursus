@@ -378,7 +378,7 @@ In `App.jsx` staat de code voor de standaard startpagina: het Vite en React-logo
 
 JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
-Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
+Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Tailwind` toe.
 
 ```jsx
 // src/App.jsx
