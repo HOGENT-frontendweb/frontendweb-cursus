@@ -92,7 +92,7 @@ Volgende opties dien je te selecteren
 
 - select a framework: react
 - select a variant: Typescript + React Compiler
-- install with pnpm and start now: Yes
+- install with pnpm and start now: No
 
 Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen. In deze applicatie kan je transacties op bepaalde plaatsen bijhouden om zo je budget te beheren. We bouwen steeds verder op deze startapplicatie.
 
@@ -210,7 +210,11 @@ Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestan
 
 ### src
 
-Start de applicatie met het commando `pnpm dev`.
+Start de applicatie met het commando
+
+```bash
+pnpm dev
+```
 
 De `src` map bevat een aantal tsx-bestanden (`main.tsx`, `App.tsx`...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
@@ -585,13 +589,14 @@ Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een
 // src/App.tsx
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock_data';
+import type { Transaction as TransactionType } from './types'; //👈 2
 
 function App() {
   // const trans = TRANSACTION_DATA[0]; 👈 1
   return (
     <div>
       {/* 👇 2 */}
-      {TRANSACTION_DATA.map((trans) => (
+      {TRANSACTION_DATA.map((trans: TransactionType) => (
         <Transaction
           user={trans.user}
           place={trans.place}
@@ -613,11 +618,12 @@ Je kan ook gebruik maken van object destructuring om attributen te genereren. El
 ```tsx
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock_data';
+import type { Transaction as TransactionType } from './types';
 
 function App() {
   return (
     <div>
-      {TRANSACTION_DATA.map((trans) => (
+      {TRANSACTION_DATA.map((trans: TransactionType) => (
         <Transaction {...trans} />
       ))}
       {/* 👆 */}
@@ -733,18 +739,22 @@ Dit zijn de stappen:
    import { defineConfig } from 'vite';
    import react, { reactCompilerPreset } from '@vitejs/plugin-react';
    import babel from '@rolldown/plugin-babel';
-   import path from 'path';// 👈
-   import tailwindcss from '@tailwindcss/vite';// 👈
+   import path from 'path'; // 👈
+   import tailwindcss from '@tailwindcss/vite'; // 👈
 
-    // <https://vite.dev/config/>
-    export default defineConfig({
-    plugins: [react(),tailwindcss(), babel({ presets: [reactCompilerPreset()] }),],// 👈
-    resolve: {
-    alias: {
-    '@': path.resolve(\_\_dirname, './src'),
-    },
-    },// 👈
-    });
+   // <https://vite.dev/config/>
+   export default defineConfig({
+     plugins: [
+       react(),
+       tailwindcss(),
+       babel({ presets: [reactCompilerPreset()] }),
+     ], // 👈
+     resolve: {
+       alias: {
+         '@': path.resolve(__dirname, './src'),
+       },
+     }, // 👈
+   });
    ```
 
 6. `ShadCN/ui` installeren
@@ -806,8 +816,8 @@ Dit zijn de stappen:
           {/* 👈 */}
           Mijn Budget App
         </h1>
-        {TRANSACTION_DATA.map((t: TransactionType) => (
-          <Transaction key={t.id} {...t} />
+        {TRANSACTION_DATA.map((trans: TransactionType) => (
+          <Transaction key={trans.id} {...trans} />
         ))}
       </div>
     );
