@@ -193,20 +193,15 @@ cd budget
 pnpm install
 ```
 
-Wanneer je `pnpm install` uitvoert, gebeurt er dit stap voor stap:
+Wanneer je `pnpm install` uitvoert, gebeurt dit stap voor stap:
 
 - Leest `package.json`(bekijkt de dependencies en versies)
-- Controleert de lockfile (pnpm-lock.yaml). Als die er is, gebruikt pnpm exact de versies die daar vastgelegd zijn → dit maakt builds reproduceerbaar. Als die er niet is, maakt pnpm er een aan.
-- Downloadt packages (indien nodig). Packages worden maar één keer fysiek gedownload op je computer (in de pnpm store, meestal in je home-directory (Geef in terminal volgende in `pnpm store path`)). Als een project dezelfde dependency nodig heeft als een ander project, dan maakt pnpm gewoon een snelkoppeling in plaats van alles opnieuw te kopiëren.
-- Maakt een strikte node_modules-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in package.json heeft staan.
-
-### .gitignore
-
-Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `pnpm install`.
-
-Download de `.gitignore` van <https://github.com/github/gitignore/blob/main/Node.gitignore> en plaats deze in de root van je project. Het is belangrijk dat je het bestand exact de naam `.gitignore` heeft.
-
-Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestand ook aanpassen naar eigen wens, maar dit is een vrij complete voor een Node.js project.
+- Controleert de lockfile (`pnpm-lock.yaml`).
+  - Als die er is, gebruikt pnpm exact de versies die daar vastgelegd zijn → dit maakt builds reproduceerbaar.
+  - Als die er niet is, maakt pnpm er een aan.
+- Downloadt packages (indien nodig). Packages worden maar één keer fysiek gedownload op je computer (in de pnpm store). Als een project dezelfde dependency nodig heeft als een ander project, dan maakt pnpm gewoon een snelkoppeling in plaats van alles opnieuw te kopiëren.
+  - De pnpm store vind je meestal in je home-directory. Gebruik `pnpm store path` om het pad te vinden.
+- Maakt een strikte `node_modules`-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in de `package.json` heeft staan.
 
 ### src
 
@@ -216,7 +211,7 @@ Start de applicatie met het commando
 pnpm dev
 ```
 
-De `src` map bevat een aantal tsx-bestanden (`main.tsx`, `App.tsx`...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
+De `src` map bevat een aantal tsx-bestanden (`main.tsx`, `App.tsx`, ...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
 Probeer maar iets aan te passen in de `App.tsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
 
@@ -269,7 +264,7 @@ export default defineConfig([
 ]);
 ```
 
-1. [eslint-config-prettier](https://npmjs.com/package/eslint-config-prettier): schakelt alle regels uit die in conflict kunnen komen met Prettier (focus op formatting).ESLint en Prettier kunnen soms in conflict komen, omdat ze beide regels kunnen hebben die betrekking hebben op code formatting. Bijvoorbeeld, ESLint kan een regel hebben die vereist dat er geen puntkomma aan het einde van elke regel staat, terwijl Prettier automatisch puntkomma's toevoegt. Door `eslint-config-prettier` toe te voegen, worden alle ESLint-regels uitgeschakeld die in conflict kunnen komen met Prettier, waardoor je beide tools zonder problemen kunt gebruiken. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
+1. [eslint-config-prettier](https://npmjs.com/package/eslint-config-prettier): schakelt alle regels uit die in conflict kunnen komen met Prettier (focus op formatting). ESLint en Prettier kunnen soms in conflict komen, omdat ze beide regels kunnen hebben die betrekking hebben op code formatting. Bijvoorbeeld: ESLint kan een regel hebben die vereist dat er geen puntkomma aan het einde van elke regel staat, terwijl Prettier automatisch puntkomma's toevoegt. Door `eslint-config-prettier` toe te voegen, worden alle ESLint-regels uitgeschakeld die in conflict kunnen komen met Prettier, waardoor je beide tools zonder problemen kunt gebruiken. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
 2. `ecmaVersion: 2020`: hiermee kunnen we gebruik maken van de nieuwste JavaScript features, zoals optionele chaining, nullish coalescing, etc.
 
 Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd telkens je CTRL+S (of COMMAND+S) drukt. Open de JSON settings via F1 > Zoek naar "Preferences: Open Settings (JSON)" en voeg onderstaand toe (zonder de { }):
@@ -323,11 +318,11 @@ Standaard rendert deze de `App` component. Het `main.tsx` bestand ga je zelden z
 
 ### App.tsx
 
-In `App.tsx` staat de code voor de standaard startpagina: het Vite en React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`, deze is enkel voor deze component. Globale stijlen definieer je in het bestand `index.css`.
+In `App.tsx` staat de code voor de standaard startpagina: het Vite en React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`. In tegenstelling tot wat je verwacht, is deze stijl toch globaal. De compiler voegt alle CSS-bestanden samen tot één bestand, dus alle stijlen zijn globaal. Per conventie definieer je globale stijl in het bestand `index.css`.
 
 tsx is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere tsx-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
-Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
+Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak [ShadCN](https://ui.shadcn.com/) toe.
 
 ```tsx
 // src/App.tsx
@@ -507,7 +502,7 @@ export default function Transaction({ user, amount, place }: TransactionProps) {
 
 #### Stap 3: Waar komen props vandaan?
 
-Hoe krijg je nu de juiste data in de `props` van een component? Props worden doorgegeven door de **oudercomponent**. Dus in `App.tsx` (de oudercomponent) maken we deze data aan en geven deze door aan de `Transaction` component:
+Hoe krijg je nu de juiste data in de `props` van een component? Props worden doorgegeven door de **oudercomponent**. Dus in `App.tsx` ( = de oudercomponent) maken we deze data aan en geven deze door aan de `Transaction` component:
 
 ```tsx
 // src/App.tsx
@@ -726,13 +721,13 @@ Dit zijn de stappen:
 
 5. Pas `vite.config.ts`aan.
 
-   Installleer `@types/node`. Dit bevat TypeScript type-definities voor Node.js. Deze types zijn enkel nodig bij het compileren/ontwikkelen (-D) en niet in de productie runtime.
+   Installleer `@types/node`. Dit bevat TypeScript type-definities voor Node.js. Deze types zijn enkel nodig bij het compileren/ontwikkelen (aangegeven met de `-D` optie) en niet in de productie runtime.
 
    ```bash
    pnpm add -D @types/node
    ```
 
-   Pas `vite.config.js` aan: voeg `tailwindcss` toe aan de plugins en zorg ervoor dat de alias @ geresolved kan worden
+   Pas `vite.config.js` aan: voeg `tailwindcss` toe aan de plugins en zorg ervoor dat de alias `@` geresolved kan worden
 
    ```javascript
    // vite.config.ts
@@ -748,24 +743,25 @@ Dit zijn de stappen:
        react(),
        tailwindcss(),
        babel({ presets: [reactCompilerPreset()] }),
-     ], // 👈
+     ],
+     // 👇
      resolve: {
        alias: {
          '@': path.resolve(__dirname, './src'),
        },
-     }, // 👈
+     },
    });
    ```
 
-6. `ShadCN/ui` installeren
+6. ShadCN/ui installeren
 
-   Je kan eerst visueel samenstellen hoe je project eruit moet zien. Shadcn heeft benoemde visuele stijlen geïntroduceerd die het uiterlijk van componenten veranderen, zoals de borderradius, opvulling, afstand en algehele dichtheid. In plaats van CSS-variabelen één voor één aan te passen, kies je een stijl en elk component neemt die stijl over. Meer op (<https://www.shadcnblocks.com/blog/shadcn-component-styles-vega-nova-maia-lyra-mira>).
+   Je kan eerst visueel samenstellen hoe je project eruit moet zien. Shadcn heeft benoemde visuele stijlen geïntroduceerd die het uiterlijk van componenten veranderen, zoals de borderradius, opvulling, afstand, ... In plaats van CSS-variabelen één voor één aan te passen, kies je een stijl en elk component neemt die stijl over. Meer op (<https://www.shadcnblocks.com/blog/shadcn-component-styles-vega-nova-maia-lyra-mira>).
 
    De stijlvariant kies je op [shadcn/create](https://ui.shadcn.com/create) in volgende stappen:
    - In het menu kies je de stijl. Klik vervolgens op 'Get code'.
    - Kies het tabblad 'New Project'.
-   - Kies 'Vite' en de component library 'Base UI' ([Meer op (https://shadcnstudio.com/blog/radix-ui-vs-shadcn-ui)]) en klik op 'Copy Command'.
-   - Voeg `ShadCN/ui` nu toe aan je project. Je kan de preset achteraf nog veranderen, dan kies je voor het tabblad 'Existing Project'. We kozen de defaults
+   - Kies 'Vite' en de component library 'Base UI' (Meer op <https://shadcnstudio.com/blog/radix-ui-vs-shadcn-ui>) en klik op 'Copy Command'.
+   - Voeg ShadCN/ui nu toe aan je project. Je kan de preset achteraf nog veranderen, dan kies je voor het tabblad 'Existing Project'. We kozen de defaults
 
    ```bash
    pnpm dlx shadcn@latest init --preset b0  --base base --template vite
@@ -794,7 +790,7 @@ Dit zijn de stappen:
 
 ### Tailwind CSS klassen gebruiken voor styling
 
-- Pas ook de `title` van de app aan in `index.html`
+- Pas de `title` van de app aan in `index.html`
 
 - Pas de `App` component aan.
 
@@ -811,9 +807,8 @@ Dit zijn de stappen:
   function App() {
     return (
       <div>
+        {/* 👇 */}
         <h1 className='text-2xl font-bold text-center mb-4'>
-          {' '}
-          {/* 👈 */}
           Mijn Budget App
         </h1>
         {TRANSACTION_DATA.map((trans: TransactionType) => (
@@ -840,17 +835,19 @@ Dit zijn de stappen:
     amount,
   }: TransactionProps) {
     return (
+      {/* 👇 1*/}
       <div className='bg-blue-800 text-blue-100 border-blue-900 border rounded-lg text-center m-2'>
-        {/* 👈 1*/}
         {user.name} gaf €{amount} uit bij {place.name}
       </div>
     );
   }
   ```
 
-1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
+- Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
 
-Opmerking: Ook het `style` attribuut kan je binnen een tsx-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
+### `style` attribuut
+
+Ook het `style` attribuut kan je binnen een tsx-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}` in onderstaand voorbeeld:
 
 ```tsx
 <div style={{ width: '80%' }}>...</div>
@@ -868,14 +865,12 @@ Het zou handig zijn als we in VS Code konden debuggen... Uiteraard kan dit ook. 
 
 Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de `return` in de `App` component. Als je nu naar de browser gaat, zou de debugger moeten stoppen op het breakpoint. Hoera, we kunnen degelijk debuggen!
 
-TODO: aanpassen aan de nieuwe github
-
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les1-opl 2355815
+> git checkout -b les1-opl TODO:
 > pnpm install
 > pnpm dev
 > ```
