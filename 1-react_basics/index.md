@@ -31,11 +31,11 @@ Wat als resultaat heeft:
 
 Een React applicatie bestaat uit een heleboel componenten die samen een webpagina vormen. Een component is een stukje code dat een bepaald deel van de webpagina voorstelt. Een component kan andere componenten bevatten. Dit is een van de redenen waarom React zo populair is: je kan je code opdelen in kleine, herbruikbare stukken. Deze componenten samen vormen één boomstructuur, de component tree.
 
-Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML. Tijdens het renderen zal React de component tree doorlopen en voor elk component de bijbehorende functie uitvoeren. Deze functie zal tsx teruggeven, wat React dan omzet naar HTML.
+Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML. Tijdens het renderen zal React de component tree doorlopen en voor elk component de bijbehorende functie uitvoeren. Deze functie zal TSX teruggeven, wat React dan omzet naar HTML.
 
-### tsx
+### TSX
 
-Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML) of TSX (voor Typescript + XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript/Typescript. Let wel op: tsx is geen standaard JavaScript en wordt niet begrepen door de browser. tsx wordt door de compiler omgezet(gecompileerd) naar JavaScript. Wanneer we gebruik maken van TSX, wordt de Typescript code eerst getranspileerd naar JavaScript met behulp van de TypeScript compiler, en vervolgens wordt tsx omgezet naar Javascript.
+Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML) of TSX (voor Typescript + XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript/Typescript. Let wel op: TSX is geen standaard JavaScript en wordt niet begrepen door de browser. TSX wordt door de compiler omgezet (gecompileerd) naar JavaScript. Wanneer we gebruik maken van TSX, wordt de Typescript code eerst vertaald naar JavaScript met behulp van de TypeScript compiler, en vervolgens wordt TSX omgezet naar JavaScript.
 
 Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waarop je moet letten:
 
@@ -49,9 +49,9 @@ Bij een React-applicatie in TypeScript moet de code eerst omgezet worden naar Ja
 Daarnaast is er een buildproces waarbij de applicatie geoptimaliseerd wordt voor productie. Tijdens deze stap worden onder andere bestanden gebundeld, CSS geoptimaliseerd, afbeeldingen verwerkt en afhankelijkheden samengevoegd.
 Tools die deze taken uitvoeren noemen we buildtools of **bundlers**, zoals bijvoorbeeld Vite. Vite gebruikt tijdens development een snelle transpiler (zoals esbuild) en voert bij het builden een bundlingstap uit (via Rollup).
 
-Vroeger werd [`create-react-app`](https://create-react-app.dev/) gebruikt om een nieuwe React-applicatie te maken. Dit is een command line tool die een nieuwe React-applicatie opzet met een aantal standaardinstellingen. Het gebruikt achter de schermen [Webpack](https://webpack.js.org/) als bundler.
+Tegenwoordig wordt [Vite](https://vitejs.dev/) gebruikt om een nieuwe React applicatie te maken. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWAs). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
-De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWAs). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
+!> [create-react-app](https://create-react-app.dev/) was vroeger de standaard manier om een nieuwe React-applicatie te maken, maar deze tool is inmiddels verouderd en wordt niet meer actief onderhouden.
 
 Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
@@ -59,9 +59,9 @@ Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
   ![Vite - native ES Modules](./images/vite_ESModules.webp ':size=80%')
 
-- Bij het starten van de development server verdeelt Vite de modules in twee categorieën: dependency modules en applicatie modules.
+- Bij het starten van de development server verdeelt Vite de modules in twee categorieën: dependency en applicatie modules.
   - De **dependency modules**: Dit zijn modules afkomstig uit de map `node_modules`. Vite voert hiervoor een pre-bundling (dependency optimization) uit met behulp van [esbuild](https://esbuild.github.io/), een zeer snelle tool geschreven in Go (presteert 10-100x sneller dan [Webpack](https://webpack.js.org/)).
-  - De **applicatie modules**: Dit zijn de bestanden die je zelf schrijft (bijvoorbeeld .ts en .tsx). Deze modules worden door Vite on-demand getransformeerd en geserveerd wanneer de browser ze nodig heeft.
+  - De **applicatie modules**: Dit zijn de bestanden die je zelf schrijft (bijvoorbeeld .ts en .tsx). Deze modules worden door Vite on-demand getransformeerd en aangeleverd wanneer de browser ze nodig heeft.
 
 - **HMR (Hot Module Replacement)**: In Vite worden enkel de gewijzigde modules opnieuw geladen. Dit zorgt voor snelle updates in de browser tijdens ontwikkeling.
 
@@ -98,31 +98,31 @@ Dit commando maakt een map `budget` met alle bestanden voor deze React-applicati
 
 Deze map bevat onder andere volgende bestanden/mappen:
 
-- `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc.
+- `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest, ... worden, etc.
   - Hieronder installeren we met pnpm alle dependencies in de `node_modules` map. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 1664 (!) bestanden die 85 MB innemen).
-- `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...).
-- `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal tsx- en CSS-bestanden, etc.
+- `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen, ...).
+- `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal TSX- en CSS-bestanden, etc.
 - er werd ook automatisch een `.gitignore` voorzien.
 - `eslint.config.js`: configuratiebestand voor [eslint](https://eslint.org/), een tool die je code analyseert en je waarschuwt voor mogelijke fouten, slechte praktijken, etc.
 - `vite.config.ts`: configuratiebestand voor Vite.
 - `tsconfig.json`: het root configuratiebestand dat verwijzingen bevat naar de andere configs. Het bestaat bijna altijd alleen uit references naar specifiekere configs. Dit zorgt ervoor dat TypeScript weet welke projecten er zijn.
 - `tsconfig.node.json`: zijn de compilerinstellingen voor files die in Node.js draaien, zoals vite.config.ts (tijdens development/build) en eslint.config.js. Deze files maken gebruik van Node.js API's, zoals`fs`en`path`, die niet beschikbaar zijn in de browser. Door een aparte tsconfig te hebben, kunnen we de compilerinstellingen apart configureren en zorgen we dat ze correct getranspileerd worden. Het bevat o.a.
-  - "lib": ["ES2023"] — alleen ES2023,
-  - "types": ["node"] — Node.js types (fs, path, etc.)
-  - "include": ["vite.config.ts"] — checkt alleen buildconfiguratie
+  - `"lib": ["ES2023"]` — alleen ES2023,
+  - `"types": ["node"]` — Node.js types (fs, path, etc.)
+  - `"include": ["vite.config.ts"]` — checkt alleen buildconfiguratie
 - `tsconfig.app.json`: is voor je browser applicatie (de React code in de src-folder). Deze files maken gebruik van DOM, Window, Browser API's. Het bevat o.a.
-  - "lib": ["ES2023", "DOM"] — ondersteunt DOM API's (voor browser)
-  - "tsx": "react-tsx" — kan React tsx compileren
-  - "include": ["src"] — checkt alleen je source code
+  - `"lib": ["ES2023", "DOM"]` — ondersteunt DOM API's (voor browser)
+  - `"tsx": "react-tsx"` — kan React tsx compileren
+  - `"include": ["src"]` — checkt alleen je source code
 - `index.html`: de enige HTML-pagina van de applicatie. De inhoud van deze pagina zal steeds aangepast worden door React.
 
 ### React Compiler
 
-Meta ontwikkelde [React Compiler](https://react.dev/learn/react-compiler), een gespecialiseerde compiler die automatisch je React-applicatie optimaliseert. Deze compiler is inmiddels niet langer experimenteel en wordt steeds meer gebruikt in productieomgevingen. React Compiler analyzeert automatisch je React-code om memoization (het hergebruiken van berekeningsresultaten) op slimmere wijze toe te passen. Normaal gezien moet je dit handmatig doen met hooks als `useMemo` en `useCallback`, wat foutgevoelig kan zijn.
+Meta ontwikkelde [React Compiler](https://react.dev/learn/react-compiler), een gespecialiseerde compiler die automatisch je React-applicatie optimaliseert. Deze compiler is inmiddels niet langer experimenteel en wordt steeds meer gebruikt in productieomgevingen. React Compiler analyseert automatisch je React-code om memoization (het hergebruiken van berekeningsresultaten) op slimmere wijze toe te passen. Normaal gezien moet je dit handmatig doen met hooks als `useMemo` en `useCallback` (zie verder in de cursus), wat foutgevoelig kan zijn.
 
 De compiler doet onder andere het volgende:
 
-- **Automatische optimalisaties**: De compiler bepaalt automatisch welke waarden en functies gememoizeerd moeten worden, zodat je dit niet handmatig hoeft te doen.
+- **Automatische optimalisaties**: De compiler bepaalt automatisch welke waarden en functies memoized moeten worden, zodat je dit niet handmatig hoeft te doen.
 - **Renders voorkomen**: Door slimmer memoization toe te passen, voorkomt de compiler onnodige re-renders van componenten.
 - **State management**: De compiler begrijpt beter hoe je state en effecten gebruiken, en kan hier optimalisaties toepassen.
 - **Code transformatie**: Net als de TypeScript compiler transformeert de React Compiler je code automatisch zodat deze efficiënter wordt uitgevoerd.
@@ -133,11 +133,11 @@ Voor meer informatie, zie de [officiele React Compiler documentatie](https://rea
 
 ### pnpm
 
-[pnpm](https://pnpm.io/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). pnpm is een alternatieve package manager die sneller is en minder schijfruimte gebruikt. pnpm maakt gebruik van een centrale cache voor alle packages, waardoor het sneller is en minder schijfruimte gebruikt. Het is compatibel met npm en kan eenvoudig geïnstalleerd worden. Als je de software reeds hebt geïnstalleerd, heb je pnpm al op je systeem staan.
+[pnpm](https://pnpm.io/) is het programma dat alle dependencies van onze applicatie zal installeren. [npm](https://www.npmjs.com/package/npm) is waarschijnlijk de bekendste package manager voor Node.js. pnpm is een alternatieve package manager die sneller is en minder schijfruimte gebruikt. pnpm maakt gebruik van een centrale cache voor alle packages, waardoor het sneller is en minder schijfruimte gebruikt. Het is compatibel met npm en kan eenvoudig geïnstalleerd worden. Als je de software reeds hebt geïnstalleerd, heb je pnpm al op je systeem staan.
 
 ### package.json
 
-De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `pnpm init` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
+De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `pnpm create vite` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
 
 [package.json](examples/package.json ':include :type=code')
 
@@ -154,9 +154,9 @@ De `package.json` kan enkele properties bevatten:
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
 - `devDependencies`: packages enkel nodig in development (en dus niet in productie)
 - `scripts`: laten toe om een soort van shortcuts te maken voor scripts (bv. de applicatie starten, testen, builden voor productie, etc.)
-- `packageManager`: de package manager die gebruikt wordt (in dit geval pnpm)
+- `packageManager`: dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole (sha512-hash). Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
 
-Met een simpele `pnpm install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`pnpm install --prod` installeert enkel de `dependencies`).
+Met een simpele `pnpm install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken. `pnpm install --prod` installeert enkel de `dependencies`.
 
 Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (bv. door webpack) omgevormd wordt tot iets wat browsers begrijpen.
 
@@ -184,9 +184,9 @@ Wanneer je een package installeert, zal pnpm een `pnpm.lock.yaml` bestand aanmak
 
 Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd de exacte versie staat maar een bepaalde syntax die aangeeft welke versies toegelaten zijn (zie vorige sectie).
 
-Pnpm zal ook in de `package.json`een `packageManager` property aanmaken. Dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole(sha512-hash). Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
-
 ### Installeer de dependencies
+
+Ga naar de root van je project en installeer de dependencies:
 
 ```bash
 cd budget
