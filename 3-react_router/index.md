@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 f67787f
+> git checkout -b les3 TODO:
 > pnpm install
 > pnpm dev
 > ```
@@ -63,7 +63,7 @@ Naast deze twee types zijn er nog andere beschikbaar, [lees meer in de documenta
 
 De voorbeeldapplicatie zal gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerste route. We doen dit in `main.tsx`, het startpunt van de app:
 
-```tsx
+```jsx
 // src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -114,7 +114,7 @@ pnpm add @faker-js/faker
 
 Maak de `About` page aan in de map `src/pages/about`. We maken gebruik van een submap 'about' omdat deze pagina geneste routes zal bevatten die we later zullen implementeren.
 
-```tsx
+```jsx
 // src/pages/about/About.tsx
 import { faker } from '@faker-js/faker';
 
@@ -139,7 +139,7 @@ pnpm dlx shadcn@latest add alert
 
 En voeg dan onderstaande component toe:
 
-```tsx
+```jsx
 // src/pages/NotFound.tsx
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
@@ -159,7 +159,7 @@ export default function NotFound() {
 
 Nu we de nodige pagina's hebben, hoeven we enkel nog de routes te configureren. Hiervoor gaan we naar de `main.tsx` en voegen de extra routes toe.
 
-```tsx
+```jsx
 // src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -202,7 +202,7 @@ Uit de route voor de `NotFound` component blijkt dat je ook reguliere expressies
 
 Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component. Pas de `App` component als volgt aan:
 
-```tsx
+```jsx
 // src/App.tsx
 import { Link } from 'react-router'; //👈
 
@@ -244,7 +244,7 @@ Je geeft de URL waarnaar genavigeerd moet worden mee aan de `to` prop. Achter de
 
 Om eigenschappen over de huidige route op te vragen bestaat de hook `useLocation`. Pas de `NotFound` component aan:
 
-```tsx
+```jsx
 // src/pages/NotFound.tsx
 import { useLocation } from 'react-router'; // 👈
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -277,7 +277,7 @@ Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
 Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We passen de about page aan zodat de active tab uit de link gehaald kan worden.
 
-```tsx
+```jsx
 // src/pages/about/About.tsx
 import { faker } from '@faker-js/faker';
 import { Link } from 'react-router'; // 👈
@@ -317,7 +317,7 @@ export default About;
 
 En we voegen deze pagina's toe aan `About.tsx`.
 
-```tsx
+```jsx
 export const Services = () => (
   <>
     <h1 className='text-2xl font-semibold mb-6'>Services</h1>
@@ -342,7 +342,7 @@ export const Location = () => (
 
 Daarna passen we de definitie van `/about` aan, de drie nieuwe routes dienen als kind van de `/about` route te worden aangemaakt (vergeet de nodige imports niet):
 
-```tsx
+```jsx
 // src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -393,7 +393,7 @@ Nu willen we de subroutes `/about/services`, `/about/history` en `/about/locatio
 
 Voeg onderaan de `About` component de `Outlet` toe:
 
-```tsx
+```jsx
 // src/about/About.tsx
 import { Outlet, Link } from 'react-router'; // 👈
 
@@ -413,7 +413,7 @@ const About = () => (
 
 Stel we willen dat gebruikers die naar `/about` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.tsx`:
 
-```tsx
+```jsx
 import { Navigate } from 'react-router';
 // ...
 
@@ -433,7 +433,7 @@ Deze route rendert de `Navigate` component wanneer de gebruiker naar `/services`
 
 Als we naar de `/about` pagina navigeren, zal de `About` component getoond worden. Omdat er geen subroute opgegeven is, zal de `Outlet` component niets tonen. Wanneer we naar `/about/services` navigeren, zal de `Services` component getoond worden in de `Outlet` van de `About` component. We willen nu dat gebruikers die naar `/about` navigeren automatisch doorgestuurd worden naar `/about/services`. Hiervoor voegen we een extra route toe die `/about` matcht en de `Navigate` component rendert:
 
-```tsx
+```jsx
 { path: '/about',
   element: <About />,
   children: [
@@ -456,7 +456,7 @@ Maak een component `PlaceDetail.tsx` aan in de folder `/src/pages/places`. We pl
 
 Definieer de nieuwe route in `main.tsx`:
 
-```tsx
+```jsx
 import PlaceDetail from './pages/places/PlaceDetail.tsx';
 //...
 {
@@ -482,7 +482,7 @@ Om dit id op te halen uit de URL maken we gebruik van de `useParams` hook. Deze 
 
 Stel we hebben volgende routes gedefinieerd:
 
-```tsx
+```jsx
 {
   path: '/places/:id',
   element: <PlaceDetail />,
@@ -516,7 +516,7 @@ Wanneer we navigeren naar `/posts/2021/1`, dan zal de `Posts` component getoond 
 
 We moeten nog enkel de `PlaceDetail` component implementeren zodat we de details van een place kunnen tonen (later halen we ook de bijhorende transacties op).
 
-```tsx
+```jsx
 // src/pages/places/PlaceDetail.tsx
 import { useParams } from 'react-router';
 import { PLACE_DATA } from '../../api/mock_data';
@@ -559,7 +559,7 @@ Pas hiervoor de code in de component `Place` aan.
 
   We moeten enkel de naam van de place omvormen naar een link. Dit doen we met de `Link` component van React Router.
 
-  ```tsx
+  ```jsx
   // src/components/places/Place.tsx
   import { Link } from 'react-router';
   //...
@@ -575,7 +575,7 @@ Pas hiervoor de code in de component `Place` aan.
 
 Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk wordt getoond op elke pagina. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/components` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de onderliggende routes.
 
-```tsx
+```jsx
 // src/components/Layout.tsx
 import { Outlet } from 'react-router';
 import Navbar from './Navbar';
@@ -596,7 +596,7 @@ export default function Layout() {
 
 De `Navbar` component voorziet in het menu. We maken een responsive menu.
 
-```tsx
+```jsx
 // src/components/Navbar.tsx
 import { Link } from 'react-router';
 import { useState } from 'react';
@@ -655,7 +655,7 @@ export default function Navbar() {
 
 Pas `main.tsx` aan, alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
 
-```tsx
+```jsx
 // src/main.tsx
 import Layout from './components/Layout.tsx'; // 👈
 //...
@@ -721,7 +721,7 @@ In `main.tsx` kan je nu de `App` component verwijderen.
 
 Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` zet automatisch `aria-current="page"` op de actieve link. We voegen ook extra styling toe aan de (actieve) link zodat deze beter opvalt.
 
-```tsx
+```jsx
 // src/components/Navbar.tsx
 //...
 <NavLink
@@ -743,7 +743,7 @@ De `NavLink` component heeft een `className` prop die een functie accepteert. De
 
 We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavItem` te maken voor de links. Voeg de code toe in `Navbar.tsx`:
 
-```tsx
+```jsx
 // src/components/NavBar.tsx
 interface NavItemProps {
   to: string;
@@ -766,7 +766,7 @@ const NavItem = ({ to, children }: NavItemProps) => (
 
 Pas de `Navbar` component aan:
 
-```tsx
+```jsx
 // src/components/Navbar.tsx
 import { Link, NavLink } from 'react-router';
 import { useState } from 'react';
@@ -840,7 +840,7 @@ export default function Navbar() {
 
 Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser. Indien gewenst, moet je hier zelf voor zorgen. Maak hiervoor gebruik van de `ScrollRestoration` component. Elke keer als de URL wijzigt, vraagt deze de browser om naar boven te scrollen. Pas hiervoor de `Layout` component aan.
 
-```tsx
+```jsx
 // src/components/Layout.tsx
 import { Outlet, ScrollRestoration } from 'react-router'; // 👈
 import Navbar from './Navbar';
@@ -864,7 +864,7 @@ Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze 
 
 Als voorbeeld gaan we onderaan de NotFound pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `NotFound.tsx`:
 
-```tsx
+```jsx
 // src/pages/NotFound.tsx
 import { useLocation, useNavigate } from 'react-router'; // 👈
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -901,7 +901,7 @@ Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React 
 
 Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
 
-```tsx
+```jsx
 import { Link, useLocation } from 'react-router';
 //...
 <Link to='/' replace className='underline hover:no-underline'>
@@ -919,7 +919,7 @@ Bij het gebruik van de [Tabs component](https://ui.shadcn.com/docs/components/ba
 
 Neem de [documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Maak een nieuwe pagina `AboutTabs.tsx` aan en verwijs in `main.tsx` naar deze component.
 
-```tsx
+```jsx
 // src/about/AboutTabs.tsx
 import { faker } from '@faker-js/faker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -997,7 +997,7 @@ We moeten overschakelen naar een **controlled component** waar we zelf de state 
 
 De shadcn docs tonen meestal enkel een basisgebruik, voor de Tabs met de prop `defaultValue`. De `defaultValue` is de initiële actieve tab. Daarna beheert de component **zelf de state**.
 
-```tsx
+```jsx
 <Tabs defaultValue='tab1' />
 ```
 
@@ -1016,7 +1016,7 @@ Wil je begrijpen hoe iets werkt of welke props beschikbaar zijn, dan moet je naa
 
 Controlled gedrag werkt als volgt
 
-```tsx
+```jsx
 const [activeTab, setActiveTab] = useState("tab1")
 <Tabs value={activeTab} onValueChange={setActiveTab} />
 ```
@@ -1033,7 +1033,7 @@ In deze stap bepaalt de url de tab die getoond zal worden.
 6. Maak de tabs controlled
 7. De content wordt bepaald door React Router
 
-```tsx
+```jsx
 import { faker } from '@faker-js/faker';
 import { Outlet, useLocation, useNavigate } from 'react-router'; // 👈1, 5, 7
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -1103,7 +1103,7 @@ Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is ee
 
 Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
 
-```tsx
+```jsx
 import './index.css';
 ```
 
@@ -1112,7 +1112,7 @@ import './index.css';
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl 5a31e56
+> git checkout -b les3-opl TODO:
 > pnpm install
 > pnpm dev
 > ```
