@@ -18,7 +18,7 @@ Daarnaast is React een library en geen framework, zoals bv. Angular dat wel is. 
 
 ## React Router
 
-React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om react routes op een eenvoudige manier te definiëren.
+React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om React routes op een eenvoudige manier te definiëren, en biedt daarnaast ook nog extra features zoals data loading, error handling, etc. We zullen in deze cursus enkel gebruik maken van de basis features van React Router, maar we raden aan om zeker eens te kijken naar de extra features die deze mode te bieden heeft.
 
 Installeer React Router [Zie de documentatie.](https://reactrouter.com/start/data/installation)
 
@@ -102,7 +102,7 @@ We voorzien volgende basis routes in de voorbeeldapplicatie
 - `/places`: een lijst van places
 - `/about`: over ons pagina
 
-Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL/route plaatsen we in de `pages` map. Maak een map `pages`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan.
+Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL of route plaatsen we in de `pages` map. Maak een map `pages`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan.
 
 Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `@faker-js/faker`.
 
@@ -166,10 +166,10 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { RouterProvider, createBrowserRouter } from 'react-router';
-import TransactionList from './pages/TransactionList.tsx'; // 👈 1
-import PlacesList from './pages/PlacesList.tsx'; // 👈 1
-import About from './pages/about/About.tsx'; // 👈 1
-import NotFound from './pages/NotFound.tsx'; // 👈 1
+import TransactionList from './pages/TransactionList'; // 👈 1
+import PlacesList from './pages/PlacesList'; // 👈 1
+import About from './pages/about/About'; // 👈 1
+import NotFound from './pages/NotFound'; // 👈 1
 
 const router = createBrowserRouter([
   {
@@ -189,7 +189,7 @@ createRoot(document.getElementById('root')!).render(
 );
 ```
 
-1. Importeer de gewenste componenten (Merk op dat we de extensie `.tsx` expliciet moeten meegeven bij de imports van de componenten in de `pages` map. Dit is een eigenaardigheid van Vite).
+1. Importeer de gewenste componenten.
 2. Vul de array met route objecten aan, één voor elke route. We geven telkens de component die getoond moet worden mee aan de optie `element`. Wanneer de URL in de browser wijzigt, zal de `RouterProvider` doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van het `RouteObject`. We geven een absoluut pad mee aan de `path` optie, dit pad begint altijd met een `/`.
 3. Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test dit zelf eens uit!**
    - Deze route hoeft niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
@@ -213,22 +213,22 @@ function App() {
       <p>Kies één van de volgende links:</p>
       <ul>
         <li>
+          {/* 👇 */}
           <Link to='/transactions' className='text-blue-600 underline'>
             Transacties
-          </Link>{' '}
-          {/* 👈 */}
+          </Link>
         </li>
         <li>
+          {/* 👇 */}
           <Link to='/places' className='text-blue-600 underline'>
             Plaatsen
-          </Link>{' '}
-          {/* 👈 */}
+          </Link>
         </li>
         <li>
+          {/* 👇 */}
           <Link to='/about' className='text-blue-600 underline'>
             Over ons
-          </Link>{' '}
-          {/* 👈 */}
+          </Link>
         </li>
       </ul>
     </div>
@@ -256,10 +256,10 @@ export default function NotFound() {
     <>
       <h1 className='text-3xl font-semibold mb-4'>Not found</h1>
       <Alert variant='destructive'>
+        {/* 👇 */}
         <AlertDescription>
           There is nothing at {pathname}, try something else.
         </AlertDescription>
-        {/* 👈 */}
       </Alert>
     </>
   );
@@ -291,22 +291,22 @@ const About = () => (
     </div>
     <ul className='p-4 mb-4'>
       <li>
+        {/* 👇 */}
         <Link to='/about/services' className='text-blue-600 underline'>
           Services
-        </Link>{' '}
-        {/* 👈 */}
+        </Link>
       </li>
       <li>
+        {/* 👇 */}
         <Link to='/about/history' className='text-blue-600 underline'>
           History
-        </Link>{' '}
-        {/* 👈 */}
+        </Link>
       </li>
       <li>
+        {/* 👇 */}
         <Link to='/about/location' className='text-blue-600 underline'>
           Location
-        </Link>{' '}
-        {/* 👈 */}
+        </Link>
       </li>
     </ul>
   </>
@@ -423,7 +423,7 @@ const router = createBrowserRouter([
     path: '/services',
     element: <Navigate to='/about/services' replace />,
   },
-  { path: '*', element: NotFound },
+  { path: '*', element: <NotFound /> },
 ]);
 
 // ...
@@ -629,9 +629,9 @@ export default function Navbar() {
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label='Toggle menu'
         >
+          {/* 👇 1 */}
           {isOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
         </button>
-        {/* 👈1 */}
       </div>
 
       {/* Mobile menu */}
@@ -884,7 +884,8 @@ export default function NotFound() {
       <h1 className='text-3xl font-semibold mb-4'>Not found</h1>
       <Alert variant='destructive'>
         <AlertDescription>
-          There is nothing at {pathname}, <br /> {/* 👇 */}
+          {/* 👇 */}
+          There is nothing at {pathname}, <br />
           <Button
             variant='link'
             onClick={handleGoHome}
@@ -993,7 +994,7 @@ We moeten overschakelen naar een **controlled component** waar we zelf de state 
 
 ### Stap 2: API Documentatie doornemen
 
-`Shadcn` is geen volledige component library, maar een gestylede wrapper rond primitives. Het gedrag (logica, state, events) komt van de libraries `Base UI / Radix UI`. Shadcn voegt vooral styling en structuur toe.
+Shadcn is geen volledige component library, maar een gestylede wrapper rond primitives. Het gedrag (logica, state, events) komt van de libraries `Base UI / Radix UI`. Shadcn voegt vooral styling en structuur toe.
 
 De shadcn docs tonen meestal enkel een basisgebruik, voor de Tabs met de prop `defaultValue`. De `defaultValue` is de initiële actieve tab. Daarna beheert de component **zelf de state**.
 
@@ -1006,27 +1007,30 @@ Maar dat is slechts een deel van de mogelijkheden. Onderaan de shadcn documentat
 - [Base UI](https://base-ui.com/react/components/tabs)
 - of [Radix UI](https://www.radix-ui.com/primitives/docs/components/tabs#api-reference).
 
-⚠️ Let op: kies bovenaan expliciet voor de `Base UI` tab.
+⚠️ Let op: kies bovenaan expliciet voor de `Base UI` tab, want wij dit is de library die wij gebruiken in de voorbeeldapplicatie.
 
 Wil je begrijpen hoe iets werkt of welke props beschikbaar zijn, dan moet je naar de onderliggende API kijken. Daar vinden we extra props:
 
-- defaultValue: startwaarde (uncontrolled)
-- value: huidig actieve tab (controlled)
-- onValueChange: callback bij wijziging
+- `defaultValue`: startwaarde (uncontrolled)
+- `value`: huidig actieve tab (controlled)
+- `onValueChange`: callback bij wijziging
 
 Controlled gedrag werkt als volgt
 
 ```jsx
+// 1. State aanmaken voor actieve tab
 const [activeTab, setActiveTab] = useState("tab1")
+
+// 2. Tabs component controlled maken door de waarde en onValueChange te koppelen aan state
 <Tabs value={activeTab} onValueChange={setActiveTab} />
 ```
 
-### Stap 3: actieve tab afleiden uit de routing
+### Stap 3: Actieve tab afleiden uit de routing
 
 In deze stap bepaalt de url de tab die getoond zal worden.
 
 1. Haal het path op en extraheer het segment.
-2. Definiëer een constante TABS. Door `as const` ziet TS dit als `readonly ['services', 'history', 'location']` (exact deze 3 waarden) en niet als een `sting[]`.
+2. Definiëer een constante TABS. Door `as const` ziet TypeScript dit als `readonly ['services', 'history', 'location']` (exact deze 3 waarden) en niet als een `sting[]`.
 3. Dit creëert een type dat slechts 3 waarden kan zijn `type TabValue = 'services' | 'history' | 'location'`
 4. Valideer de waarde, zorgt voor een fallback.
 5. Reageer op de tabwissel. De tabs veranderen niet zelf. We veranderen de URL en de UI volgt
@@ -1035,23 +1039,24 @@ In deze stap bepaalt de url de tab die getoond zal worden.
 
 ```jsx
 import { faker } from '@faker-js/faker';
-import { Outlet, useLocation, useNavigate } from 'react-router'; // 👈1, 5, 7
+import { Outlet, useLocation, useNavigate } from 'react-router'; // 👈 1, 5, 7
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Briefcase, Clock, MapPin } from 'lucide-react';
 
-const TABS = ['services', 'history', 'location'] as const; // 👈2
-type TabValue = (typeof TABS)[number]; // 👈3
+const TABS = ['services', 'history', 'location'] as const; // 👈 2
+type TabValue = (typeof TABS)[number]; // 👈 3
 
 const About = () => {
-  const navigate = useNavigate(); // 👈5
-  const { pathname } = useLocation(); // 👈1
+  const navigate = useNavigate(); // 👈 5
+  const { pathname } = useLocation(); // 👈 1
 
-  const segment = pathname.split('/').pop() as TabValue; // 👈1
-  const activeTab: TabValue = TABS.includes(segment) ? segment : 'services'; //👈4
+  const segment = pathname.split('/').pop() as TabValue; // 👈 1
+  const activeTab: TabValue = TABS.includes(segment) ? segment : 'services'; // 👈 4
 
+  // 👇 5
   const handleTabChange = (val: TabValue) => {
     navigate(`/about/${val}`);
-  }; // 👈5
+  };
 
   return (
     <div className='space-y-8'>
@@ -1061,8 +1066,8 @@ const About = () => {
           {faker.lorem.paragraph(10)}
         </p>
       </div>
+      {/* 👇 6 */}
       <Tabs value={activeTab} onValueChange={handleTabChange}>
-        {/* 👈6 */}
         <TabsList variant='line'>
           <TabsTrigger value='services' className='gap-1.5'>
             <Briefcase className='h-4 w-4' />
@@ -1077,14 +1082,15 @@ const About = () => {
             Location
           </TabsTrigger>
         </TabsList>
-        <Outlet /> {/* 👈7 */}
+        <Outlet /> {/* 👈 7 */}
       </Tabs>
     </div>
   );
 };
 
 export default About;
-//...
+
+// ...
 ```
 
 ## Custom styles
@@ -1119,9 +1125,9 @@ import './index.css';
 
 ## Oefening 2 - Je eigen project
 
-Denk voor je eigen applicatie na over de navigatie en implementeer.
+Denk voor je eigen applicatie na over de navigatie en implementeer deze met React Router.
 
 ## Mogelijke extra's voor de examenopdracht
 
-- Gebruik de nieuwe [loader](https://reactrouter.com/en/main/route/loader) en [action](https://reactrouter.com/en/main/route/action) props van de `Route` component van `react-router` om de data op te halen.
+- Gebruik de nieuwe [loader](https://reactrouter.com/start/data/data-loading) en [action](https://reactrouter.com/start/data/actions) props van de `Route` component van `react-router` om de data op te halen.
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
