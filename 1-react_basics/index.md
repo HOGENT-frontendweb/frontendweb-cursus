@@ -24,86 +24,120 @@ Wat als resultaat heeft:
 
 ## React
 
-[React](https://reactjs.org/) is in principe niet meer dan een library om hetzelfde te bereiken, maar dan handiger in gebruik. Om React te gebruiken, hebben we twee libraries nodig
+[React](https://react.dev/) is in principe niet meer dan een library om hetzelfde te bereiken, maar dan handiger in gebruik. Om React te gebruiken, hebben we twee libraries nodig:
 
 - `React`: laat toe om "views" aan te maken.
 - `ReactDOM`: rendert deze "views" in de DOM, m.a.w. dit is React voor de browser. Er is bijvoorbeeld ook nog [React Native](https://reactnative.dev/) voor mobile applicaties.
 
-Een React applicatie bestaat uit een heleboel componenten die samen een webpagina vormen. Een component is een stukje code dat een bepaald deel van de webpagina voorstelt. Een component kan andere componenten bevatten. Dit is een van de redenen waarom React zo populair is: je kan je code opdelen in kleine, herbruikbare stukken. Deze componenten samen vormen één boomstructuur, de component tree.
+Een React-applicatie bestaat uit een heleboel componenten die samen een webpagina vormen. Een component is een stukje code dat een bepaald deel van de webpagina voorstelt. Een component kan andere componenten bevatten. Dit is een van de redenen waarom React zo populair is: je kan je code opdelen in kleine, herbruikbare stukken. Deze componenten samen vormen één boomstructuur, de component tree.
 
-Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML. Tijdens het renderen zal React de component tree doorlopen en voor elk component de bijbehorende functie uitvoeren. Deze functie zal JSX teruggeven, wat React dan omzet naar HTML.
+Binnen de context van React zal je vaak het begrip **renderen** horen. Renderen betekent letterlijk "het omzetten van een datastructuur naar een visuele voorstelling". Binnen React betekent dit dus het omzetten van React-componenten naar HTML. Tijdens het renderen zal React de component tree doorlopen en voor elk component de bijbehorende functie uitvoeren. Deze functie zal TSX teruggeven, wat React dan omzet naar HTML.
 
-### JSX
+### TSX
 
-Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript. Let wel op: JSX is geen standaard JavaScript en wordt niet begrepen door de browser. JSX wordt door de compiler omgezet naar JavaScript.
+Samen met React heeft Meta ook JSX geïntroduceerd (een samentrekking van JavaScript en XML) of TSX (voor TypeScript + XML). Hiermee is het mogelijk om een soort van HTML te schrijven in JavaScript/TypeScript. Let wel op: TSX is geen standaard JavaScript en wordt niet begrepen door de browser. TSX wordt door de compiler omgezet (gecompileerd) naar JavaScript. Wanneer we gebruik maken van TSX, worden de TypeScript- en TSX-syntax in één stap door de compiler omgezet naar gewone JavaScript.
 
 Het 'HTML' stuk van JSX voelt echt vertrouwd als je HTML kent (en dat is natuurlijk de bedoeling), maar er zijn een aantal dingen waarop je moet letten:
 
-- `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS klasse mee te geven aan een element, het wordt vervangen door `className`
+- `class` is een reserved keyword in JavaScript, en kan dus niet gebruikt worden om een CSS-klasse mee te geven aan een element, het wordt vervangen door `className`
 - `for` is ook een reserved keyword in JavaScript, het wordt vervangen door `htmlFor`
 - Als je JavaScript code wilt mixen met een stuk 'HTML', dien je het tussen `{ }` te zetten, bijvoorbeeld `<h1>{title}</h1>`.
 
 ## Vite
 
-Bij een React applicatie is er steeds een compilatiestap nodig die de JSX omzet naar JavaScript. Deze compilatiestap zorgt ervoor dat de browser de code kan begrijpen, maar is niet beperkt tot enkel het omzetten van JSX naar JavaScript. Tijdens deze stap worden ook afbeeldingen goed gezet, CSS geoptimaliseerd, dependencies gebundeld, etc. Een tool die dergelijke taken uitvoert noemen we een buildtool of **bundler**.
+Bij een React-applicatie in TypeScript moet de code eerst omgezet worden naar JavaScript, aangezien browsers geen TypeScript of TSX begrijpen. Dit proces heet **transpileren** en omvat zowel het omzetten van TypeScript naar JavaScript als het transformeren van JSX/TSX naar gewone JavaScript code.
+Daarnaast is er een buildproces waarbij de applicatie geoptimaliseerd wordt voor productie. Tijdens deze stap worden onder andere bestanden gebundeld, CSS geoptimaliseerd, afbeeldingen verwerkt en afhankelijkheden samengevoegd.
+Tools die deze taken uitvoeren noemen we buildtools of **bundlers**, zoals bijvoorbeeld Vite. Vite gebruikt tijdens development een snelle transpiler (zoals esbuild) en voert bij het builden een bundlingstap uit (via Rollup).
 
-Vroeger werd [`create-react-app`](https://create-react-app.dev/) gebruikt om een nieuwe React-applicatie te maken. Dit is een command line tool die een nieuwe React-applicatie opzet met een aantal standaardinstellingen. Het gebruikt achter de schermen [Webpack](https://webpack.js.org/) als bundler.
+Tegenwoordig wordt [Vite](https://vitejs.dev/) gebruikt om een nieuwe React-applicatie te maken. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page Applications (SPA's) en Progressive Web Apps (PWAs). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
 
-De laatste jaren is [Vite](https://vitejs.dev/) echter populairder geworden. [**Vite**](https://vitejs.dev/) (afgeleid van het Franse woord voor "snel") is een **buildtool** en **ontwikkelingsserver** die voornamelijk wordt gebruikt voor het bouwen van moderne webtoepassingen, zoals Single Page applications (SPA's) en Progressive Web Apps (PWAs). Het is ontwikkeld door Evan You, de maker van het populaire JavaScript-framework Vue.js, maar Vite kan ook worden gebruikt voor het bouwen van toepassingen met andere JavaScript-frameworks, zoals React en Svelte.
+!> [create-react-app](https://create-react-app.dev/) was vroeger de standaard manier om een nieuwe React-applicatie te maken, maar deze tool is inmiddels verouderd en wordt niet meer actief onderhouden.
 
 Hier zijn enkele belangrijke kenmerken en concepten met betrekking tot Vite:
 
-- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) voor het laden van modules in moderne browsers. Dit betekent dat bestanden afzonderlijk kunnen worden geladen zonder de noodzaak van een bundel-stap tijdens de ontwikkeling.
+- **Native ES modules**: Vite maakt gebruik van native ES modules (ESM) in moderne browsers. Hierdoor kunnen modules afzonderlijk geladen worden, zonder dat er tijdens development een volledige bundling-stap nodig is.
 
   ![Vite - native ES Modules](./images/vite_ESModules.webp ':size=80%')
 
-- Wanneer de development build wordt gestart, verdeelt Vite de JavaScript-modules in twee categorieën: dependency modules en applicatie modules.
+- Bij het starten van de development server verdeelt Vite de modules in twee categorieën: dependency en applicatie modules.
+  - De **dependency modules**: Dit zijn modules afkomstig uit de map `node_modules`. Vite voert hiervoor een pre-bundling (dependency optimization) uit met behulp van [esbuild](https://esbuild.github.io/), een zeer snelle tool geschreven in Go (presteert 10-100x sneller dan [Webpack](https://webpack.js.org/)).
+  - De **applicatie modules**: Dit zijn de bestanden die je zelf schrijft (bijvoorbeeld .ts en .tsx). Deze modules worden door Vite on-demand getransformeerd en aangeleverd wanneer de browser ze nodig heeft.
 
-  - De **dependency modules** zijn JavaScript-modules die je hebt geïmporteerd uit de map `node_modules`. Deze modules worden verwerkt en gebundeld met behulp van [esbuild](https://esbuild.github.io/), een JavaScript-bundler geschreven in Go die 10-100x sneller presteert dan [Webpack](https://webpack.js.org/).
-  - De **applicatie modules** zijn modules die je voor je applicatie schrijft, zoals .jsx-bestanden.
+- **HMR (Hot Module Replacement)**: In Vite worden enkel de gewijzigde modules opnieuw geladen. Dit zorgt voor snelle updates in de browser tijdens ontwikkeling.
 
-- Vite verwerkt de dependency modules alleen vóór een enkel browserverzoek. De applicatie modules worden door Vite getransformeerd en aangereikt wanneer ze nodig zijn voor je applicatie.
+- **Ontwikkelingsserver**: Vite heeft een ingebouwde development server die gebruikmaakt van native ES modules en snelle transpiling. In combinatie met frameworks zoals React ondersteunt Vite ook Fast Refresh, waardoor UI-updates onmiddellijk zichtbaar zijn zonder verlies van component state.
 
-- **HMR (Hot Module Replacement)**: In Vite worden enkel de gewijzigde modules vervangen. Dit zorgt voor snelle code-updates in de browser tijdens ontwikkeling.
+- **Builds (productie)**: Voor productiebuilds gebruikt Vite [Rollup](https://rollupjs.org/) als bundler. Tijdens deze fase worden verschillende optimalisaties toegepast om de laadtijden te minimaliseren en de prestaties van je applicatie te verbeteren, zoals:
+  - bundling van modules (samenvoegen van bestanden)
+  - minificatie
+  - tree-shaking (verwijderen van ongebruikte code)
+  - optimalisatie van assets (CSS, afbeeldingen, enz.)
 
-- **Ontwikkelingsserver**: Vite bevat een ingebouwde ontwikkelingsserver die je gebruikt tijdens development. Deze server ondersteunt functies zoals snel laden (fast refresh), waardoor codeveranderingen direct worden weergegeven in de browser zonder de hele toepassing opnieuw te moeten compileren.
+  De output van de build wordt standaard geplaatst in de dist-map en bestaat uit statische bestanden die je kan deployen op een webserver.
+  Vite bevat een vooraf geconfigureerde `build`-opdracht die de applicatie bundelt met behulp van [Rollup](https://rollupjs.org/). Vite biedt ook een standaard Rollup-configuratie die je kan aanpassen wanneer dat nodig is.
 
-- **Builds**: Vite kan ook worden gebruikt om productiebuilds te maken. Tijdens de productiebuild past Vite verschillende optimalisaties toe, zoals minificatie, tree-shaking (waarbij ongebruikte code wordt verwijderd), en bundling (het samenvoegen van bestanden) om de laadtijden te minimaliseren en de prestaties van je applicatie te verbeteren. Vite bevat een vooraf geconfigureerde `build`-opdracht die de applicatie bundelt met behulp van [Rollup](https://rollupjs.org/). Vite biedt ook een standaard Rollup-configuratie die je kan aanpassen wanneer dat nodig is. De output bevindt zich in de `dist` folder en bevat statische assets die je plaatst op je productie server.
-
-  ![Vite en bundling](./images/vite_bundling.png)
+![Vite en bundling](./images/vite_bundling.png)
 
 Lees hierover meer in de [Vite documentatie](https://vitejs.dev/guide/why.html).
-
-?> Merk op: ondertussen werkt React zelf aan [een (experimentele!) compiler](https://react.dev/learn/react-compiler) die slimmer zou moeten zijn. Deze compiler zou de code optimaliseren en sneller maken. Echter is de compiler nog niet zo mooi als het lijkt, zie [dit artikel](https://www.developerway.com/posts/i-tried-react-compiler). De inhoud van het artikel zal je wel beter begrijpen na het hoofdstuk over React Hooks.
 
 ## create-vite
 
 Het is eenvoudig om een nieuwe React-applicatie te maken m.b.v. [create-vite](https://vitejs.dev/guide/). Een nieuwe React-applicatie maken is zo simpel als:
 
 ```bash
-pnpm create vite budget --template react-swc
+pnpm create vite budget
 ```
+
+Volgende opties dien je te selecteren:
+
+- select a framework: react
+- select a variant: TypeScript + React Compiler
+- install with pnpm and start now: No
 
 Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen. In deze applicatie kan je transacties op bepaalde plaatsen bijhouden om zo je budget te beheren. We bouwen steeds verder op deze startapplicatie.
 
 Deze map bevat onder andere volgende bestanden/mappen:
 
-- `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest... worden, etc.
+- `package.json`: dit bestand beschrijft welke dependencies we nodig hebben, hoe de applicatie moet gestart, getest, ... worden, etc.
   - Hieronder installeren we met pnpm alle dependencies in de `node_modules` map. Dit is typisch een map met immens veel heel kleine bestanden (bij het maken van deze cursus: 1664 (!) bestanden die 85 MB innemen).
-- `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen...).
-- `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal JSX- en CSS-bestanden, etc.
+- `public`: map die alles bevat wat publiek beschikbaar zal zijn voor onze webapplicaties (bv. afbeeldingen, ...).
+- `src`: map die alle broncode bevat waarmee onze applicaties gebouwd gaat worden, dus allemaal TSX- en CSS-bestanden, etc.
 - er werd ook automatisch een `.gitignore` voorzien.
 - `eslint.config.js`: configuratiebestand voor [eslint](https://eslint.org/), een tool die je code analyseert en je waarschuwt voor mogelijke fouten, slechte praktijken, etc.
-- `vite.config.js`: configuratiebestand voor Vite.
+- `vite.config.ts`: configuratiebestand voor Vite.
+- `tsconfig.json`: het root configuratiebestand dat verwijzingen bevat naar de andere configs. Het bestaat bijna altijd alleen uit references naar specifiekere configs. Dit zorgt ervoor dat TypeScript weet welke projecten er zijn.
+- `tsconfig.node.json`: zijn de compilerinstellingen voor files die in Node.js draaien, zoals vite.config.ts (tijdens development/build) en eslint.config.js. Deze files maken gebruik van Node.js API's, zoals `fs` en `path`, die niet beschikbaar zijn in de browser. Door een aparte tsconfig te hebben, kunnen we de compilerinstellingen apart configureren en zorgen we dat ze correct getranspileerd worden. Het bevat o.a.
+  - `"lib": ["ES2023"]` — alleen ES2023,
+  - `"types": ["node"]` — Node.js types (fs, path, etc.)
+  - `"include": ["vite.config.ts"]` — checkt alleen buildconfiguratie
+- `tsconfig.app.json`: is voor je browser applicatie (de React code in de src-folder). Deze files maken gebruik van DOM, Window, Browser API's. Het bevat o.a.
+  - `"lib": ["ES2023", "DOM"]` — ondersteunt DOM API's (voor browser)
+  - `"jsx": "react-jsx"` — kan React JSX compileren
+  - `"include": ["src"]` — checkt alleen je source code
 - `index.html`: de enige HTML-pagina van de applicatie. De inhoud van deze pagina zal steeds aangepast worden door React.
+
+### React Compiler
+
+Meta ontwikkelde [React Compiler](https://react.dev/learn/react-compiler), een gespecialiseerde compiler die automatisch je React-applicatie optimaliseert. Deze compiler is inmiddels niet langer experimenteel en wordt steeds meer gebruikt in productieomgevingen. React Compiler analyseert automatisch je React-code om memoization (het hergebruiken van berekeningsresultaten) op slimmere wijze toe te passen. Normaal gezien moet je dit handmatig doen met hooks als `useMemo` en `useCallback` (zie verder in de cursus), wat foutgevoelig kan zijn.
+
+De compiler doet onder andere het volgende:
+
+- **Automatische optimalisaties**: De compiler bepaalt automatisch welke waarden en functies memoized moeten worden, zodat je dit niet handmatig hoeft te doen.
+- **Renders voorkomen**: Door slimmer memoization toe te passen, voorkomt de compiler onnodige re-renders van componenten.
+- **State management**: De compiler begrijpt beter hoe je state en effecten gebruikt, en kan hier optimalisaties toepassen.
+- **Code transformatie**: Net als de TypeScript compiler transformeert de React Compiler je code automatisch zodat deze efficiënter wordt uitgevoerd.
+
+De compiler werkt net als andere compilers (Vite, TypeScript-compiler, etc.) en voert transformaties uit op je code vóór deze naar de browser wordt verzonden. Het analyseert je JavaScript/TypeScript code (inclusief JSX/TSX) en past automatisch optimalisaties toe.
+
+Voor meer informatie, zie de [officiële React Compiler documentatie](https://react.dev/learn/react-compiler).
 
 ### pnpm
 
-[pnpm](https://pnpm.io/) is het programma dat alle dependencies zal installeren, een andere misschien iets bekendere is [npm](https://www.npmjs.com/package/npm). pnpm is een alternatieve package manager die sneller is en minder schijfruimte gebruikt. pnpm maakt gebruik van een centrale cache voor alle packages, waardoor het sneller is en minder schijfruimte gebruikt. Het is compatibel met npm en kan eenvoudig geïnstalleerd worden. Als je de software reeds hebt geïnstalleerd, heb je pnpm al op je systeem staan.
+[pnpm](https://pnpm.io/) is het programma dat alle dependencies van onze applicatie zal installeren. [npm](https://www.npmjs.com/package/npm) is waarschijnlijk de bekendste package manager voor Node.js. pnpm is een alternatieve package manager die sneller is en minder schijfruimte gebruikt, dankzij een centrale cache voor alle packages. Het is compatibel met npm en kan eenvoudig geïnstalleerd worden. Als je de software reeds hebt geïnstalleerd, heb je pnpm al op je systeem staan.
 
 ### package.json
 
-De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `pnpm init` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
+De [package.json](https://docs.npmjs.com/cli/v10/configuring-npm/package-json) bevat alle metadata van ons project, meer in het bijzonder alle dependencies en commando's om onze app te starten. Het `pnpm create vite` commando zou een `package.json` gemaakt moeten hebben in de root van je project. Open deze, en je zou iets als volgt moeten zien:
 
 [package.json](examples/package.json ':include :type=code')
 
@@ -120,16 +154,16 @@ De `package.json` kan enkele properties bevatten:
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
 - `devDependencies`: packages enkel nodig in development (en dus niet in productie)
 - `scripts`: laten toe om een soort van shortcuts te maken voor scripts (bv. de applicatie starten, testen, builden voor productie, etc.)
-- `packageManager`: de package manager die gebruikt wordt (in dit geval pnpm)
+- `packageManager`: dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole (sha512-hash). Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
 
-Met een simpele `pnpm install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken (`pnpm install --prod` installeert enkel de `dependencies`).
+Met een simpele `pnpm install` installeren we meteen een identieke omgeving (met zowel `dependencies` als `devDependencies`) en dat maakt het handiger om in een team te werken. `pnpm install --prod` installeert enkel de `dependencies`.
 
-Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (bv. door webpack) omgevormd wordt tot iets wat browsers begrijpen.
+Het verschil tussen `dependencies` en `devDependencies` is het moment wanneer ze gebruikt worden. De `dependencies` zijn nodig in productie, m.a.w. de applicatie kan niet werken zonder deze packages. De `devDependencies` zijn enkel nodig om bv. het leven van de developer makkelijker te maken (types in TypeScript, linting, etc.) of bevatten packages die enkel gebruikt worden _at build time_, of dus wanneer de applicatie (bv. door Webpack) omgevormd wordt tot iets wat browsers begrijpen.
 
-Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees gerust eens door de specificatie). Kort gezegd houdt dit in dat elk versienummer bestaat uit drie delen: `MAJOR.MINOR.PATCH`, elke deel wordt met één verhoogd in volgende gevallen:
+Dependencies maken gebruik van [semantic versioning](https://semver.org/) (lees gerust eens door de specificatie). Kort gezegd houdt dit in dat elk versienummer bestaat uit drie delen: `MAJOR.MINOR.PATCH`, elk deel wordt met één verhoogd in volgende gevallen:
 
 - `MAJOR`: wijzigingen die **_niet_** compatibel zijn met oudere versies
-- `MINOR`: wijzigen die **_wel_** compatibel zijn met oudere versies
+- `MINOR`: wijzigingen die **_wel_** compatibel zijn met oudere versies
 - `PATCH`: kleine bugfixes (compatibel met oudere versies)
 
 In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~) of hoedje (^) als prefix, dit heeft volgende betekenis:
@@ -140,57 +174,57 @@ In een `package.json` zie je ook vaak versies zonder prefix of met een tilde (~)
 
 Kortom, een tilde is strenger dan een hoedje.
 
-Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript programmeurs zijn gewoon van een `git pull`, `pnpm install` en `pnpm start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
+Het lijkt misschien een beetje raar, maar zo'n `package.json` wordt voor vele toepassingen en frameworks gebruikt. JavaScript-programmeurs zijn gewend om een `git pull`, `pnpm install` en `pnpm start` te doen, zonder per se te moeten weten hoe een specifiek framework opgestart wordt.
 
 Er zijn nog heel wat andere opties voor de `package.json`. Je vindt alles op <https://docs.npmjs.com/cli/v10/configuring-npm/package-json>.
 
 ### pnpm-lock.yaml
 
-Wanneer je een package installeert, zal pnpm een `pnpm.lock.yaml` bestand aanmaken. Dit bestand bevat de exacte versies van de packages die geïnstalleerd zijn. Dit bestand moet je zeker mee opnemen in je git repository. Dit zorgt ervoor dat iedereen exact dezelfde versies van de packages gebruikt.
+Wanneer je een package installeert, zal pnpm een `pnpm-lock.yaml` bestand aanmaken. Dit bestand bevat de exacte versies van de packages die geïnstalleerd zijn. Dit bestand moet je zeker mee opnemen in je git repository. Dit zorgt ervoor dat iedereen exact dezelfde versies van de packages gebruikt.
 
 Dit bestand vermijdt versieconflicten aangezien in de `package.json` niet altijd de exacte versie staat maar een bepaalde syntax die aangeeft welke versies toegelaten zijn (zie vorige sectie).
 
-Pnpm zal ook in de `package.json`een `packageManager` property aanmaken. Dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole(sha512-hash). Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
-
 ### Installeer de dependencies
+
+Ga naar de root van je project en installeer de dependencies:
 
 ```bash
 cd budget
 pnpm install
 ```
 
-Wanneer je `pnpm install` uitvoert, gebeurt er dit stap voor stap:
+Wanneer je `pnpm install` uitvoert, gebeurt dit stap voor stap:
 
-- Leest `package.json`(bekijkt de dependencies en versies)
-- Controleert de lockfile (pnpm-lock.yaml). Als die er is, gebruikt pnpm exact de versies die daar vastgelegd zijn → dit maakt builds reproduceerbaar. Als die er niet is, maakt pnpm er een aan.
-- Downloadt packages (indien nodig). Packages worden maar één keer fysiek gedownload op je computer (in de pnpm store, meestal in je home-directory (Geef in terminal volgende in `pnpm store path`)). Als een project dezelfde dependency nodig heeft als een ander project, dan maakt pnpm gewoon een snelkoppeling in plaats van alles opnieuw te kopiëren.
-- Maakt een strikte node_modules-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in package.json heeft staan.
-
-### .gitignore
-
-Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `pnpm install`.
-
-Download de `.gitignore` van <https://github.com/github/gitignore/blob/main/Node.gitignore> en plaats deze in de root van je project. Het is belangrijk dat je het bestand exact de naam `.gitignore` heeft.
-
-Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestand ook aanpassen naar eigen wens, maar dit is een vrij complete voor een Node.js project.
+- Leest `package.json` (bekijkt de dependencies en versies)
+- Controleert de lockfile (`pnpm-lock.yaml`).
+  - Als die er is, gebruikt pnpm exact de versies die daar vastgelegd zijn → dit maakt builds reproduceerbaar.
+  - Als die er niet is, maakt pnpm er een aan.
+- Downloadt packages (indien nodig). Packages worden maar één keer fysiek gedownload op je computer (in de pnpm store). Als een project dezelfde dependency nodig heeft als een ander project, dan maakt pnpm gewoon een snelkoppeling in plaats van alles opnieuw te kopiëren.
+  - De pnpm store vind je meestal in je home-directory. Gebruik `pnpm store path` om het pad te vinden.
+- Maakt een strikte `node_modules`-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in de `package.json` heeft staan.
 
 ### src
 
-Start de applicatie met het commando `pnpm dev`.
+Start de applicatie met het commando
 
-De `src` map bevat een aantal JSX-bestanden (`main.jsx`, `App.jsx`...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
+```bash
+pnpm dev
+```
 
-Probeer maar iets aan te passen in de `App.jsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
+De `src` map bevat een aantal tsx-bestanden (`main.tsx`, `App.tsx`, ...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
-?> **Best practice**: het is beter om bestanden met JSX de extensie `.jsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
+Probeer maar iets aan te passen in de `App.tsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
+
+?> **Best practice**: het is beter om bestanden met TSX de extensie `.tsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
 ### eslint.config.js
 
-Het bestand `eslint.config.js` bevat de configuratie voor [ESLint](https://eslint.org/), een linting tool. Linting is statische analyse van code om problemen zoals verkeerde syntax en twijfelachtig gebruik van code te detecteren. Waarom zou je gebruiken maken van linting en formatting? Het kan vroegtijdig fouten, typo's en syntax errors vinden. Het verplicht developers dezelfde codeerstijl te gebruiken, best practices te volgen en vermijdt het committen van slechte code.
+Het bestand `eslint.config.js` bevat de configuratie voor [ESLint](https://eslint.org/), een linting tool. Linting is statische analyse van code om problemen zoals verkeerde syntax en twijfelachtig gebruik van code te detecteren. Waarom zou je gebruik maken van linting en formatting? Het kan vroegtijdig fouten, typo's en syntax errors vinden. Het verplicht developers dezelfde codeerstijl te gebruiken, best practices te volgen en vermijdt het committen van slechte code.
 
 De configuratie is gebaseerd op de aanbevolen regels van volgende plugins:
 
-- [eslint-plugin-react](https://npmjs.com/package/eslint-plugin-react): regels voor React
+- [eslint/js](https://npmjs.com/package/eslint): regels voor JavaScript
+- [typescript-eslint](https://npmjs.com/package/@typescript-eslint/eslint-plugin): regels voor TypeScript
 - [eslint-plugin-react-hooks](https://npmjs.com/package/eslint-plugin-react-hooks): regels voor React hooks (bv. checken of ze correct gebruikt worden)
 - [eslint-plugin-react-refresh](https://npmjs.com/package/eslint-plugin-react-refresh): regels om te controleren of componenten kunnen ververst worden met fast refresh
 
@@ -200,89 +234,38 @@ Als je meer wil weten over de configuratie, gebruik dan de [ESLint documentatie]
 
 Je kan de linting starten met het commando `pnpm lint`. Deze print vervolgens alle fouten en waarschuwingen in de console. Als je aan dit commando `--fix` toevoegt, zal ESLint proberen om de fouten automatisch op te lossen.
 
-Installeer de ESLint plugin waarmee je codeerstijl kan evalueren:
-
-```bash
-pnpm add -D @stylistic/eslint-plugin
-```
-
 We overlopen dit bestand en breiden het alvast uit met een paar stijlregels:
 
 ```js
 import js from '@eslint/js';
-import stylistic from '@stylistic/eslint-plugin';// 👈 5
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier'; // 👈 1
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-  globalIgnores(['dist']),// 👈 1
+  globalIgnores(['dist']),
   {
-    files: ['**/*.{js,jsx}'],// 👈 2
-    plugins: {
-      '@stylistic': stylistic,
-    },// 👈 5
+    files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
-      reactHooks.configs['recommended-latest'],
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
-    ],    // 👈 4
+      prettierConfig, // 👈 1
+    ],
     languageOptions: {
-      ecmaVersion: 2020,
+      ecmaVersion: 2020, // 👈 2
       globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
-    },// 👈 3
-    rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-      // 👇 6
-      'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-      '@stylistic/no-multiple-empty-lines': [
-        'error',
-        {
-          max: 1,
-          maxEOF: 1,
-          maxBOF: 0,
-        },
-      ],
-      '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
-      '@stylistic/quotes': ['error', 'single'],
-      '@stylistic/semi': ['error', 'always'],
-      '@stylistic/comma-dangle': ['error', 'always-multiline'],
-      '@stylistic/no-tabs': ['error'],
-      '@stylistic/max-len': [
-        'error',
-        {
-          code: 120,
-          tabWidth: 2,
-        },
-      ],
-      '@stylistic/arrow-parens': ['error', 'always'],
-      '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
-      '@stylistic/no-inner-declarations': 'off',
-      'react/react-in-jsx-scope': 'off',
-      'react/jsx-props-no-spreading': 'off',
-      'react/prop-types': 'off',
     },
   },
 ]);
 ```
 
-1. We negeren de `dist` map. Deze map zal later onze gebouwde React applicatie bevatten.
-2. We linten enkel bestanden met een `.js` of `.jsx` extensie.
-3. We definiëren de versie van ECMAScript (ES) die we gebruiken, de globale variabelen die we gebruiken, de parser opties en de versie van React die we gebruiken.
-   - ECMAScript is de standaard waarop JavaScript gebaseerd is. De versie van ECMAScript die we gebruiken is 2020.
-4. We importeren een aantal plugins die we gebruiken in onze linting configuratie. Plugins bevatten regels die specifiek zijn voor een bepaalde technologie, een bepaalde bibliotheek, etc. `extends` wordt gebruikt om een set kant-en-klare regels of configuraties te activeren
-5. `plugins` voegt extra regels of functionaliteit toe aan ESLint, maar activeert die regels niet automatisch. Je moet ze dan zelf toevoegen aan rules. 5. Importeer de `@stylistic/eslint-plugin-js` plugin. Voeg de plugin toe aan de `plugins` property.
-6. We vertrekken van een aantal aanbevolen regels van ESLint en React. We voegen ook enkele stijlregels en React-specifieke regels toe. Voor regels gebruik je altijd dezelfde prefix als het property in de plugins, in dit geval `@stylistic`. De naam van de regels vind je in de [documentatie van de plugin](https://eslint.style/packages/js#rules).
+1. [eslint-config-prettier](https://npmjs.com/package/eslint-config-prettier): schakelt alle regels uit die in conflict kunnen komen met Prettier (focus op formatting). ESLint en Prettier kunnen soms in conflict komen, omdat ze beide regels kunnen hebben die betrekking hebben op code formatting. Bijvoorbeeld: ESLint kan een regel hebben die vereist dat er geen puntkomma aan het einde van elke regel staat, terwijl Prettier automatisch puntkomma's toevoegt. Door `eslint-config-prettier` toe te voegen, worden alle ESLint-regels uitgeschakeld die in conflict kunnen komen met Prettier, waardoor je beide tools zonder problemen kunt gebruiken. De naam van de regels vind je in de [documentatie van de plugin](https://github.com/prettier/eslint-config-prettier).
+2. `ecmaVersion: 2020`: hiermee kunnen we gebruik maken van de nieuwste JavaScript features, zoals optionele chaining, nullish coalescing, etc.
 
 Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd telkens je CTRL+S (of COMMAND+S) drukt. Open de JSON settings via F1 > Zoek naar "Preferences: Open Settings (JSON)" en voeg onderstaand toe (zonder de { }):
 
@@ -306,82 +289,43 @@ Run voor elke commit `pnpm lint`. Dit zal je code linten, sommige problemen zelf
 
 In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van één transactie.
 
-Maak in de map `src` een map `components` aan met daarin een map `transactions`. In deze map maken we een nieuw bestand `Transaction.jsx` met volgende inhoud:
+Maak in de map `src` een map `components` aan met daarin een map `transactions`. In deze map maken we een nieuw bestand `Transaction.tsx` met volgende inhoud:
 
 ```jsx
-// src/components/transactions/Transaction.jsx
+// src/components/transactions/Transaction.tsx
 export default function Transaction() {
   return <div>Benjamin gaf €200 uit bij Dranken Geers.</div>;
 }
 ```
 
-Components zijn niets meer dan functies die de HTML, die getoond moet worden door deze component, teruggeeft.
-Hier voegen we hard gecodeerde tekst toe want weten of een lege component correct gerenderd wordt is nogal lastig.
+Components zijn niets meer dan functies die de HTML, die getoond moet worden door deze component, teruggeven.
+Hier voegen we hard gecodeerde tekst toe, want het is best lastig om te weten of een lege component correct gerenderd wordt.
 
-Om deze component te kunnen zien moet hij ergens in de `ReactDOM` gerenderd worden. De (enige) call naar `ReactDOM.render` gebeurt in de `main.jsx`:
+Om deze component te kunnen zien moet hij ergens in de React DOM gerenderd worden. De (enige) call naar `createRoot` gebeurt in de `main.tsx`:
 
 ```jsx
-// src/main.jsx
-createRoot(document.getElementById('root')).render(
+// src/main.tsx
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App />
   </StrictMode>,
 );
 ```
 
-Standaard rendert deze de `App` component. Het `main.jsx` bestand ga je zelden zelf aanpassen, dit zal enkel globale componenten bevatten.
+Standaard rendert deze de `App` component. Het `main.tsx` bestand ga je zelden zelf aanpassen, dit zal enkel globale componenten bevatten.
 
-[StrictMode](https://reactjs.org/docs/strict-mode.html) doet een aantal checks op alle (onderliggende) componenten. Het is altijd een goed idee om `StrictMode` aan te zetten.
+[StrictMode](https://react.dev/reference/react/StrictMode) doet een aantal checks op alle (onderliggende) componenten. Het is altijd een goed idee om `StrictMode` aan te zetten.
 
-### App.jsx
+### App.tsx
 
-```jsx
-// src/App.jsx
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+In `App.tsx` staat de code voor de standaard startpagina: het Vite- en React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`. In tegenstelling tot wat je verwacht, is deze stijl toch globaal. De compiler voegt alle CSS-bestanden samen tot één bestand, dus alle stijlen zijn globaal. Per conventie definieer je globale stijl in het bestand `index.css`.
 
-function App() {
-  const [count, setCount] = useState(0);
+TSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere tsx-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
-  return (
-    <>
-      <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
-}
-
-export default App;
-```
-
-In `App.jsx` staat de code voor de standaard startpagina: het Vite en React-logo, een link naar de documentatie, enz. Zoals eerder gezegd kan je ook CSS-klassen toevoegen aan HTML-elementen, maar hiervoor moet je het attribuut `className` gebruiken i.p.v. `class`. De `App` component heeft zijn eigen stijl in het bestand `App.css`, deze is enkel voor deze component. Globale stijlen definieer je in het bestand `index.css`.
-
-JSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere JSX-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
-
-Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak `Bootstrap` toe.
+Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak [shadcn](https://ui.shadcn.com/) toe.
 
 ```jsx
-// src/App.jsx
+// src/App.tsx
 import Transaction from './components/transactions/Transaction';
 
 function App() {
@@ -399,7 +343,7 @@ Als we nu naar [onze site](http://localhost:5173/) gaan, zouden we de hard gecod
 
 ### JSON
 
-Een hardgecodeerde string als component tonen is niet erg nuttig, daar is React complete overkill voor. In dat geval schrijf je beter een HTML pagina met wat CSS zoals je het in Web Development I geleerd hebt.
+Een hardgecodeerde string als component tonen is niet erg nuttig, daar is React complete overkill voor. In dat geval schrijf je beter een HTML-pagina met wat CSS zoals je het in Web Development I geleerd hebt.
 
 Dit soort frameworks worden pas de moeite als we componenten gaan schrijven die data op een bepaalde manier tonen en manipuleerbaar maken. Met andere woorden: als componenten hergebruikt kunnen worden.
 
@@ -429,15 +373,49 @@ Later, als we een back-end hebben, kunnen we dan makkelijk 'echte' data ophalen 
 
 ### Mock data
 
-Maak een map `api` met een bestand `mock_data.js` aan in de `src` map. Later vervangen we deze mock data door API calls.
+Maak een map `api` met een bestand `mock_data.ts` aan in de `src` map. Later vervangen we deze mock data door API calls.
 
-```js
-// src/api/mock_data.js
-const TRANSACTION_DATA = [
+#### Types definiëren
+
+Aangezien we met TypeScript werken, definiëren we eerst de types van onze data in een apart bestand. Zo kunnen we deze hergebruiken in verschillende delen van onze applicatie.
+
+```ts
+// src/types.ts
+export interface User {
+  id: number;
+  name: string;
+}
+
+export interface Place {
+  id: number;
+  name: string;
+  rating: number;
+}
+
+export interface Transaction {
+  id: number;
+  date: string;
+  amount: number;
+  user: User;
+  place: Place;
+}
+```
+
+Interfaces bestaan enkel tijdens development. Ze worden niet mee omgezet naar JavaScript, maar helpen de TypeScript compiler om fouten te detecteren.
+
+#### Mock data met types
+
+We importeren de types in onze mock data en gebruiken ze om de structuur van de data te typeren. Een transactie bevat een id, bedrag, datum, een gebruiker en een plaats van uitgave.
+
+```ts
+// src/api/mock_data.ts
+import type { Transaction } from '../types';
+
+const TRANSACTION_DATA: Transaction[] = [
   {
     id: 1,
     amount: 3500,
-    date: '2021-05-25T17:40:00.000Z',
+    date: '2026-05-25T17:40:00.000Z',
     place: {
       id: 1,
       name: 'Loon',
@@ -450,8 +428,8 @@ const TRANSACTION_DATA = [
   },
   {
     id: 2,
-    amount: -220,
-    date: '2021-05-08T18:00:00.000Z',
+    amount: 220,
+    date: '2026-05-08T18:00:00.000Z',
     place: {
       id: 2,
       name: 'Dranken Geers',
@@ -467,18 +445,18 @@ const TRANSACTION_DATA = [
 export default TRANSACTION_DATA;
 ```
 
-`TRANSACTION_DATA` is een array met twee objecten die een transactie voorstellen. We exporteren deze array zodat we deze in andere bestanden kunnen importeren en gebruiken.
-
 ### React props
 
-We gaan de `Transaction` component aanpassen zodat hij data van verschillende transacties kan weergeven:
+We passen de `Transaction` component aan zodat de component herbruikbaar is en hij data van verschillende transacties kan weergeven:
+
+#### Stap 1: variabelen gebruiken
 
 ```jsx
-// src/components/transaction/Transaction.jsx
+// src/components/transactions/Transaction.tsx
 export default function Transaction() {
-  const user = 'Benjamin'; // 👈 1
-  const amount = 200; // 👈 1
-  const place = 'Dranken Geers'; // 👈 1
+  const user: string = 'Benjamin'; // 👈 1
+  const amount: number = 200; // 👈 1
+  const place: string = 'Dranken Geers'; // 👈 1
   // 👇 2
   return (
     <div>
@@ -491,17 +469,25 @@ export default function Transaction() {
 1. Definieer een variabele voor `user`, `amount` en `place`.
 2. Vervang de hard gecodeerde info door de variabelen.
 
-`{user}` zorgt ervoor dat de waarde van de variable `user` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken. De uitvoer van deze code zal gerenderd worden in de HTML.
+`{user}` zorgt ervoor dat de waarde van de variable `user` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken (zoals `if`, `for`). De uitvoer van deze code zal gerenderd worden in de HTML.
 
 > Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
 
-De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
+Deze component is nog steeds niet herbruikbaar. De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
+
+#### Stap 2: Props
+
+Een functionele component kan parameters hebben, deze worden `props` genoemd. Props zijn de manier waarop we data van de ene component naar de andere kunnen doorgeven.
 
 ```jsx
-// src/components/transaction/Transaction.jsx
-export default function Transaction(props) {
-  // 👇 1
-  const { user, amount, place } = props; // 👈 2
+// 👇 1
+interface TransactionProps {
+  user: string;
+  amount: number;
+  place: string;
+}
+// 👇 2
+export default function Transaction({ user, amount, place }: TransactionProps) {
   return (
     <div>
       {user} gaf €{amount} uit bij {place}
@@ -510,14 +496,16 @@ export default function Transaction(props) {
 }
 ```
 
-1. We geven de data door via de `props` parameter, de React properties. Op die manier kunnen we informatie doorgeven van de ene component aan de andere. Elke React component ontvangt als eerste parameter een object `props` met daarin alle properties die aan de component zijn doorgegeven.
-2. Verwijder de constanten met de hard gecodeerde data. Om niet telkens `props.user`, `props.amount`... te moeten schrijven, maken we gebruik van **object destructuring**.
-   - Je kan natuurlijk ook meteen de properties destructuren in de parameters van de functie.
+1. In TypeScript definiëren we een interface `TransactionProps` die de structuur van de props beschrijft.
+2. Vervolgens voegen we de `props` parameter toe aan de functie en destructuren deze om de individuele properties te verkrijgen. Zo werken we type-safe met de props en kunnen we deze gebruiken in onze component.
+3. Verwijder de constanten met de hard gecodeerde data. Deze data zal nu via props binnenkomen.
 
-Hoe krijg je nu de juiste data in de `props` van een component? In `App.js` willen we:
+#### Stap 3: Waar komen props vandaan?
+
+Hoe krijg je nu de juiste data in de `props` van een component? Props worden doorgegeven door de **oudercomponent**. Dus in `App.tsx` ( = de oudercomponent) maken we deze data aan en geven deze door aan de `Transaction` component:
 
 ```jsx
-// src/App.jsx
+// src/App.tsx
 import Transaction from './components/transactions/Transaction';
 
 function App() {
@@ -535,12 +523,15 @@ export default App;
 ```
 
 1. Maak drie variabelen `user`, `amount`, `place`.
-2. Geef deze door aan de `Transaction` component. Dit doet je op dezelfde manier als bij HTML: je voegt simpelweg attributen toe op een bepaalde tag.
+2. Geef deze door aan de `Transaction` component. Dit doet je op dezelfde manier als bij HTML: je voegt simpelweg attributen toe op een bepaalde tag. De waarde rechts (`user={user}`) is JavaScript.
+   De naam links (`user`) is de propnaam.
+
+#### Stap 4: mock data gebruiken
 
 We willen natuurlijk dat hier de data van ons mock object komt:
 
 ```jsx
-// src/App.jsx
+// src/App.tsx
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock_data'; // 👈 1
 
@@ -562,35 +553,46 @@ export default App;
 ```
 
 1. Importeer de constante `TRANSACTION_DATA`.
-2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen.
+2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen. Geef de juiste data door aan de `Transaction` component. We moeten de `Transaction` component nog aanpassen zodat deze de juiste types van props verwacht.
 
-Pas ook de `Transaction` component aan zodat je de naam van de gebruiker en de plaats ziet. Je kan altijd eens kijken welke foutmeldingen je krijgt in de console indien je `user` of `place` rechtstreeks probeert te gebruiken.
+#### Stap 5: transaction component aanpassen
 
 ```jsx
-// src/components/transaction/Transaction.jsx
-export default function Transaction(props) {
-  const { user, amount, place } = props;
+// src/components/transactions/Transaction.tsx
+import type { Transaction as TransactionType } from '../../types'; // 👈 1
+
+interface TransactionProps extends Omit<TransactionType, 'id' | 'date'> {} // 👈 2
+
+export default function Transaction({ user, place, amount }: TransactionProps) {
+  // 👇 3
   return (
     <div>
-      {user.name} gaf €{amount} uit bij {place.name} {/* 👈 */}
+      {user.name} gaf €{amount} uit bij {place.name}
     </div>
   );
 }
 ```
 
+1. Importeer de `Transaction` interface. We geven een alias aan deze interface omdat we al een component `Transaction` hebben, zo vermijden we naamconflicten.
+2. De `TransactionProps` lijkt op `TransactionType` interface maar zonder de properties `id` en `date`.
+3. Pas de weergave aan zodat we de naam van de gebruiker en de plaats zien.
+
+#### Stap 6: meerdere transacties weergeven
+
 Eigenlijk willen we voor elk van de elementen in de array `TRANSACTION_DATA` een `Transaction` component tonen.
 
 ```jsx
-// src/App.jsx
+// src/App.tsx
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock_data';
+import type { Transaction as TransactionType } from './types'; // 👈 2
 
 function App() {
   // const trans = TRANSACTION_DATA[0]; 👈 1
   return (
     <div>
       {/* 👇 2 */}
-      {TRANSACTION_DATA.map((trans) => (
+      {TRANSACTION_DATA.map((trans: TransactionType) => (
         <Transaction
           user={trans.user}
           place={trans.place}
@@ -605,18 +607,19 @@ export default App;
 ```
 
 1. Verwijder de lijn die de eerste transactie ophaalt.
-2. We hier kunnen in de JSX-code ook onze array **mappen** waarbij we elk element omzetten naar een `Transaction` component.
+2. We kunnen hier in de tsx-code ook onze array **mappen** waarbij we elk element omzetten naar een `Transaction` component. Merk op de syntaxis: we gebruiken ronde haakjes `()` in plaats van accolades `{}` omdat we een multi-line expressie hebben. We kunnen ook gewoon accolades gebruiken, maar dan moeten we expliciet `return` gebruiken.
 
 Je kan ook gebruik maken van object destructuring om attributen te genereren. Elke key wordt dan een attribuut met de bijbehorende waarde. Het is **niet altijd een goed idee** maar het bespaart soms wel wat typwerk. Het zorgt vaak voor onleesbare code, je weet bv. niet welke props effectief gebruikt worden en het is moeilijker om later te debuggen.
 
 ```jsx
 import Transaction from './components/transactions/Transaction';
 import TRANSACTION_DATA from './api/mock_data';
+import type { Transaction as TransactionType } from './types';
 
 function App() {
   return (
     <div>
-      {TRANSACTION_DATA.map((trans) => (
+      {TRANSACTION_DATA.map((trans: TransactionType) => (
         <Transaction {...trans} />
       ))}
       {/* 👆 */}
@@ -633,7 +636,7 @@ Alles lijkt te werken, maar als je de console opent zal je een error zien staan:
 
 !> Als front-end developer moet je namelijk **altijd** de console van de browser open hebben. Hierin krijg je foutmeldingen en waarschuwingen te zien die je helpen bij het debuggen van je code. Soms crasht React door een fout en zie je gewoonweg niets meer in de browser. De console is dan je enige hulpmiddel, dit moet altijd de eerste reflex zijn bij een fout.
 
-Als je een lijst van elementen maakt, moet je altijd een `key` property voorzien (van het type `string`). Op basis van deze keys kan React weten welke elementen gewijzigd, toegevoegd of verwijderd zijn. Keys moeten uniek zijn binnen de array waarin de componenten gecreëerd worden, dus enkel t.o.v. de broer en zus elementen, niet over de hele applicatie.
+Als je een lijst van elementen maakt, moet je altijd een `key` property voorzien (van het type `string` of `number`). Op basis van deze keys kan React weten welke elementen gewijzigd, toegevoegd of verwijderd zijn. Keys moeten uniek zijn binnen de array waarin de componenten gecreëerd worden, dus enkel t.o.v. de broer en zus elementen, niet over de hele applicatie.
 
 Hoewel je altijd de **index van een array** kan gebruiken is dat **zelden een goed idee**. De key is het enige dat React gebruikt om DOM-elementen te identificeren. Dus stel dat je een element toevoegt op het einde van de lijst en halfweg een element verwijdert, dan zou bij een index-key React denken dat alle tussenliggende elementen dezelfde zijn!
 
@@ -641,7 +644,7 @@ Als je met 'echte' data werkt, die via een backend komt, heeft elk element heel 
 
 ```jsx
 <Transaction
-  key={trans.id} // 👈 2
+  key={trans.id}
   {...trans}
 />
 ```
@@ -650,85 +653,222 @@ Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
 
 ## CSS in React
 
-In dit project maken we gebruik van [Tailwind CSS](https://tailwindcss.com/). Tailwind CSS is een `utility-first` CSS framework. In plaats van zelf telkens nieuwe CSS-klassen te schrijven, kunnen we met Tailwind gebruikmaken van kant-en-klare klassen zoals `flex`, `p-4`, `bg-blue-500`. Dit zorgt ervoor dat we veel sneller en consistenter kunnen werken. Tailwind CSS lijkt op een framework zoals Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of JSX kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
+In dit project maken we gebruik van [shadcn](https://ui.shadcn.com). shadcn is geen klassieke component library zoals bijvoorbeeld [Material UI](https://mui.com/material-ui/) of [Bootstrap](https://react-bootstrap.netlify.app/). Bij klassieke libraries installeer je een package en gebruik je kant-en-klare componenten. Hierdoor heb je minder controle over de code.
 
-Om TailwindCSS toe te voegen aan je React project, zie [documentatie](https://tailwindcss.com/docs/installation/using-vite). Dit zijn de stappen:
+shadcn daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten zijn opgebouwd op basis van [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) voor toegankelijkheid en [Tailwind CSS](https://tailwindcss.com/) voor styling, wat ervoor zorgt dat ze zowel flexibel als consistent zijn.
 
-1. Installeer Tailwind CSS
+Tailwind CSS is een utility-first CSS framework. In plaats van zelf telkens nieuwe CSS-klassen te schrijven, kunnen we met Tailwind gebruikmaken van kant-en-klare klassen.
 
-    ```bash
-    pnpm install tailwindcss @tailwindcss/vite
-    ```
+```jsx
+<button className="flex p-4 bg-blue-500">Klik mij</button>
+```
 
-2. Configureer de Vite plugin: voeg tailwindcss toe aan de plugins in `vite.config.js`
+Tailwind CSS lijkt op een framework als Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of tsx kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
 
-    ```javascript
-    // vite.config.js
-    import { defineConfig } from 'vite';
-    import react from '@vitejs/plugin-react-swc';
-    import tailwindcss from '@tailwindcss/vite';// 👈
+### shadcn toevoegen
 
-    // https://vite.dev/config/
-    export default defineConfig({
-      plugins: [react(), tailwindcss()],// 👈
-    });
-    ```
+Om shadcn toe te voegen aan je React project, zie
+[documentatie](https://ui.shadcn.com/docs/installation/vite#existing-project).
+Dit zijn de stappen:
 
-3. Voeg een import toe in `index.css`:
+#### Stap 1 - Installeer Tailwind CSS
 
-    ```css
-    /* src/index.css */
-    @import 'tailwindcss';
-    ```
+Installeer eerst Tailwind CSS en de Vite plugin:
 
-4. Maak gebruik van Tailwind CSS klassen in je componenten:
+```bash
+pnpm install tailwindcss @tailwindcss/vite
+  ```
 
-### Tailwind CSS klassen gebruiken
+#### Stap 2 - Gebruik Tailwind CSS in je project
 
-- Pas ook de `title` van de app aan in `index.html`
+Vervang de inhoud van `index.css` door:
+
+```css
+/* src/index.css */
+@import 'tailwindcss';
+```
+
+#### Stap 3 - Pas `tsconfig.json` aan
+
+Voeg de volgende paths toe aan `compilerOptions` in `tsconfig.json`:
+
+```json
+{
+  //...
+  "compilerOptions": {
+    // ...
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
+```
+
+`paths` zorgt ervoor dat we vanaf nu kunnen importeren met `@/` als prefix in plaats van relatief te moeten importeren met `../../`. Dit maakt imports veel leesbaarder en onderhoudsvriendelijker. Je kan hierdoor:
+
+```jsx
+import { Button } from '../../../components/ui/button';
+```
+
+vervangen door
+
+```jsx
+import { Button } from '@/components/ui/button';
+```
+
+#### Stap 4 - Pas `tsconfig.app.json` aan
+
+Dit erft de instellingen van `tsconfig.json` maar overerving werkt niet altijd perfect. Voor alle zekerheid voeg je dezelfde paths regel ook hier toe aan de `compilerOptions` property.
+
+#### Stap 5 - Pas `vite.config.ts`aan
+
+Installeer `@types/node`. Dit bevat TypeScript type-definities voor Node.js. Deze types zijn enkel nodig bij het compileren/ontwikkelen (aangegeven met de `-D` optie) en niet in de productie runtime.
+
+```bash
+pnpm add -D @types/node
+```
+
+Pas `vite.config.ts` aan: voeg `tailwindcss` toe aan de plugins en zorg ervoor dat de alias `@` geresolved kan worden
+
+```javascript
+// vite.config.ts
+import { defineConfig } from 'vite';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
+import path from 'path'; // 👈
+import tailwindcss from '@tailwindcss/vite'; // 👈
+
+// <https://vite.dev/config/>
+export default defineConfig({
+  plugins: [
+    react(),
+    tailwindcss(),
+    babel({ presets: [reactCompilerPreset()] }),
+  ],
+  // 👇
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
+});
+```
+
+#### Stap 6 - Installeer shadcn
+
+Je kan eerst visueel samenstellen hoe je project eruit moet zien. shadcn heeft benoemde visuele stijlen geïntroduceerd die het uiterlijk van componenten veranderen, zoals de borderradius, opvulling, afstand, ... In plaats van CSS-variabelen één voor één aan te passen, kies je een stijl en elke component neemt die stijl over. Meer op <https://www.shadcnblocks.com/blog/shadcn-component-styles-vega-nova-maia-lyra-mira>.
+
+De stijlvariant kies je op [shadcn/create](https://ui.shadcn.com/create) in volgende stappen:
+
+- In het menu kies je de stijl. Pas eventueel wat kleuren aan. Klik vervolgens op 'Get code'.
+- Kies het tabblad 'New Project'.
+- Kies 'Vite' en de component library 'Base UI' (Meer op <https://shadcnstudio.com/blog/radix-ui-vs-shadcn-ui>) en klik op 'Copy Command'.
+- Voeg shadcn/ui nu toe aan je project. Je kan de preset achteraf nog veranderen, dan kies je voor het tabblad 'Existing Project'. We kozen de defaults.
+
+```bash
+pnpm dlx shadcn@latest init --preset b0  --base base --template vite
+```
+
+Onderstaande wordt aangepast in je project:
+
+- De instellingen worden opgeslagen in `components.json`.
+- In de `package.json` worden een aantal dependencies toegevoegd, zoals `@base-ui/react` en `lucide-react` packages.
+- Ook wordt `src/index.css` aangepast zodat dit het design-systeem voor je hele app bevat. Alle kleuren van je app worden gedefinieerd in [OKLCH formaat](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl), wat een modern kleurformaat is dat zorgt voor consistente kleuren op verschillende schermen en apparaten. Je kan deze kleuren gebruiken in je eigen CSS of Tailwind klassen.
+
+#### Stap 7 - Componenten toevoegen
+
+Je kan nu componenten toevoegen aan je project met de CLI tool van shadcn. Om een `Button` component toe te voegen:
+
+```bash
+pnpm dlx shadcn@latest add button
+```
+
+De broncode van de component wordt nu toegevoegd aan je project in de folder `./src/components/ui`. Je kan deze component vervolgens importeren en gebruiken in je eigen componenten. Je kan de code van de component volledig aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later.
+
+#### Stap 8 - Linting uitschakelen voor shadcn code
+
+Pas de linting aan zodat de code van shadcn niet gelint wordt. Voeg hiervoor de volgende regel toe aan de array in `eslint.config.js`:
+
+```js
+globalIgnores(['dist', 'src/components/ui/**']),
+```
+
+### Tailwind CSS-klassen gebruiken voor styling
+
+- Pas de `title` van de app aan in `index.html`
 
 - Pas de `App` component aan.
 
-  Voeg een `h1` tag toe en maak gebruik van Tailwind CSS klassen om de tekst groter, vetter te maken, te centreren en we voegen een marge toe onder de titel.
+  Voeg een `h1` tag toe en maak gebruik van Tailwind CSS-klassen om de tekst groter en vetter te maken, te centreren en er een marge onder toe te voegen.
 
   De bijhorende `App.css` kan je dan ook verwijderen. We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
 
   ```jsx
-  // src/App.jsx
+  // src/App.tsx
   import Transaction from './components/transactions/Transaction';
   import TRANSACTION_DATA from './api/mock_data';
+  import type { Transaction as TransactionType } from './types';
 
   function App() {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-center mb-4"> {/* 👈 */}
+        {/* 👇 */}
+        <h1 className='text-2xl font-bold text-center mb-4'>
           Mijn Budget App
         </h1>
-        {TRANSACTION_DATA.map((t) => (<Transaction {...t} key={t.id} />))}
-      </div>);
+        {TRANSACTION_DATA.map((trans: TransactionType) => (
+          <Transaction key={trans.id} {...trans} />
+        ))}
+      </div>
+    );
   }
-  ```;
+
+  export default App;
+  ```
 
 - Pas de `Transaction` component aan.
 
   ```jsx
-  // src/components/transaction/Transaction.jsx
-  export default function Transaction({ user, amount, place }) { // 👈2
-  return (
-    <div className="bg-amber-800 text-amber-100 border rounded-lg text-center" > {/* 👈 1*/}
-      {user.name} gaf €{amount} uit bij {place.name}
-    </div>);
+  // src/components/transactions/Transaction.tsx
+  import type { Transaction as TransactionType } from '../../types';
+
+  interface TransactionProps extends Omit<TransactionType, 'id' | 'date'> {}
+
+  export default function Transaction({
+    user,
+    place,
+    amount,
+  }: TransactionProps) {
+    return (
+      <div className='bg-blue-800 text-blue-100 border-blue-900 border rounded-lg text-center m-2'>
+        {/* 👆 1*/}
+        {user.name} gaf €{amount} uit bij {place.name}
+      </div>
+    );
   }
   ```
 
-  1. Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
-  2. Je kan ook de props meteen destructuren in de parameters van de functie.
+- Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
 
-  Opmerking: Ook het `style` attribuut kan je binnen een JSX-bestand gebruiken. Hiervoor gebruik je een inline Javascript object. Vandaar de `{{}}`. Voorbeeld:
+### `style` attribuut
 
-  ```jsx
-  <div style={{ width: '80%' }}>...</div>
-  ```
+Ook het `style` attribuut kan je binnen een tsx-bestand gebruiken. Hiervoor gebruik je een inline JavaScript object. Vandaar de `{{}}` in onderstaand voorbeeld:
+
+```jsx
+<div style={{ width: '80%' }}>...</div>
+```
+
+### Alternatieven voor styling
+
+shadcn is uiteraard niet de enige mogelijkheid om styling toe te voegen aan je React-applicatie. We kunnen wel stellen dat heel wat nieuwe projecten tegenwoordig standaard shadcn gebruiken.
+
+Alternatieven voor styling in React zijn:
+
+- Simpele CSS bestanden die je importeert in een component.
+  - **Let op:** deze stijlen zijn globaal!
+- CSS-in-JS libraries zoals [styled-components](https://styled-components.com/) of [Emotion](https://emotion.sh/). Hierbij schrijf je CSS in JavaScript bestanden. Deze worden vervolgens omgezet naar echte CSS-bestanden die aan de DOM worden toegevoegd.
+  - **Let op:** alles wat in JavaScript gebeurt is runtime, dus dit kan een performance impact hebben.
+- Andere component libraries zoals [Material UI](https://mui.com/material-ui/), [Chakra UI](https://chakra-ui.com/) of [antd](https://ant.design/). Deze bieden kant-en-klare componenten aan die je kan gebruiken in je project. Deze componenten zijn vaak ook (beperkt) aanpasbaar, maar je hebt minder controle over de code dan bij shadcn.
 
 ## Debugging
 
@@ -747,7 +887,7 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les1-opl 2355815
+> git checkout -b les1-opl TODO:
 > pnpm install
 > pnpm dev
 > ```
@@ -765,7 +905,7 @@ git clone <JOUW_GIT_REPOSITORY_URL>
 Maak een nieuwe Vite React-applicatie aan met de naam van je project in de map van je Git repository. Gebruik een zinnige naam zodat duidelijk is in welke map jouw front-end zich bevindt (bv. suffix `-frontend`).
 
 ```bash
-pnpm create vite <PROJECTNAAM> --template react-swc
+pnpm create vite <PROJECTNAAM>
 ```
 
 Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
@@ -777,7 +917,7 @@ Vul alvast de `README.md` en `dossier.md` aan voor zover mogelijk:
   - Duid aan welk(e) olod(s) je volgt
   - Je laat de links voor de online versie staan, je kan deze wel weggooien voor olods die je niet volgt
 
-?> Zet ook meteen de ESLint en debugger configuratie en .gitignore op punt!
+?> Zet ook meteen de ESLint en debugger configuratie en `.gitignore` op punt!
 
 Commit vervolgens de lege React-applicatie:
 
@@ -787,13 +927,15 @@ git commit -m "✨ Add empty React app ✨"
 git push
 ```
 
-Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponent maken voor je eigen project.
+Experimenteer al een beetje met componenten, props, etc. en commit je wijzigingen. Je kan al een paar basiscomponenten maken voor je eigen project.
 
 > 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
 
 ## Oefening 2 - To do app
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
+
+Styling is niet het doel van deze oefening, de code van de componenten is belangrijker. Het is daarom voldoende om Tailwind CSS te installeren, shadcn is niet nodig. Je kan de styling van de componenten volledig zelf doen.
 
 ![To do app](/./images/todo-app-screenshot.png ':size=80%')
 
@@ -841,7 +983,7 @@ end note
 ## Must read/watch
 
 - [Don't Use JS for That: Moving Features to CSS and HTML by Kilian Valkhof](https://www.youtube.com/watch?v=IP_rtWEMR0o)
-- [Practice React by fixing tests - Check your JSX knowledge!](https://reactpractice.dev/exercise/practice-react-by-fixing-tests-check-your-jsx-knowledge/)
+- [Practice React by fixing tests - Check your tsx knowledge!](https://reactpractice.dev/exercise/practice-react-by-fixing-tests-check-your-tsx-knowledge/)
 - [Statements vs expressions](https://www.joshwcomeau.com/javascript/statements-vs-expressions/)
 - [React.js: The Documentary](https://www.youtube.com/watch?v=8pDqJVdNa44)
 - [JavaScript Visualized: Promises & Async/Await](https://medium.com/@lydiahallie/javascript-visualized-promises-async-await-a3f1aad8a943)
