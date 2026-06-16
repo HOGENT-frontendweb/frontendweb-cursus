@@ -153,7 +153,7 @@ Je kan componenten opsplitsen in 2 hoofdtypes
 
 We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.tsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props. De verwijderknop implementeren we in de volgende sectie.
 
-We maken gebruik van Shadcn Button en Card componenten. Je kan de documentatie raadplegen op <https://ui.shadcn.com/>.
+We maken gebruik van ShadB Button en Card componenten. Je kan de documentatie raadplegen op <https://ui.shadcn.com/>.
 
 #### Stap 1. Voeg de componenten toe aan je project
 
@@ -278,7 +278,7 @@ In TSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 
 ### Oefening 1 - Event handler toevoegen
 
-Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verwijder knop, geef je `you clicked the remove button` in de console weer. Maak gebruik van de Button component van Shadcn.
+Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verwijder knop, geef je `you clicked the remove button` in de console weer. Maak gebruik van de Button component van shadcn.
 
 <!-- markdownlint-disable-next-line -->
 
@@ -327,11 +327,11 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
 1. Definieer binnen de component een functie `handleClick`, die het `onClick` event zal afhandelen. Per conventie starten event handlers met `handle` gevolgd door het event. Wanneer een event handler wordt aangeroepen, kan het synthetische event-object als argument aan de handler worden doorgegeven. Dit object werkt net als het normale DOM-event-object en biedt toegang tot informatie zoals de target (element dat het event heeft getriggerd) en de event-type (bijvoorbeeld 'click'). Print dit object gerust eens in de console om de inhoud ervan te bekijken.
 2. Voorzie een knop met de prop `onClick` en geef de event handler functie mee.
 
-### Stijl van ShadCN componenten aanpassen
+### Stijl van shadcn componenten aanpassen
 
-ShadCN componenten zijn volledig aanpasbaar:
+shadcn componenten zijn volledig aanpasbaar:
 
-- Je kan ook gebruik maken van de `className` prop die bij elke component aanwezig is. Deze `className` wordt toegevoegd aan de HTML-elementen van de component, waardoor je deze kan stylen met Tailwind CSS klassen. In het voorbeeld hierboven voegen we de klassen `text-destructive` en `hover:text-destructive` toe aan de verwijder knop. Deze klassen zijn gedefinieerd in het Tailwind CSS configuratiebestand van ShadCN en zorgen ervoor dat de tekst van de knop rood wordt.
+- Je kan ook gebruik maken van de `className` prop die bij elke component aanwezig is. Deze `className` wordt toegevoegd aan de HTML-elementen van de component, waardoor je deze kan stylen met Tailwind CSS klassen. In het voorbeeld hierboven voegen we de klassen `text-destructive` en `hover:text-destructive` toe aan de verwijder knop. Deze klassen zijn gedefinieerd in het Tailwind CSS configuratiebestand van shadcn en zorgen ervoor dat de tekst van de knop rood wordt.
 - Je kan ook de broncode van de component aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later. Je kan de broncode van de component volledig aanpassen, zoals de Tailwind CSS klassen en de structuur van de component
 - Je kan ook het globale thema aanpassen in `src/index.css`.
 
@@ -504,7 +504,7 @@ export default function StarRating() {
 }
 ```
 
-Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de icon library die ook gebruikt wordt in de Shadcn componenten.
+Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de icon library die ook gebruikt wordt in de shadcn componenten.
 
 Implementeer de `StarRating` component als volgt:
 
@@ -1009,7 +1009,7 @@ Dit is een **best practice**: lagere componenten zijn flexibel, hogere component
 
 ### Gevulde sterren
 
-Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen we gebruik maken van de `cn` functie van Shadcn. `cn` is een helperfunctie om Tailwind CSS klassen samen te voegen, conflicten op te lossen (de laatste klasse wint) en conditioneel toe te passen (filtert automatisch de falsy waarden eruit). Meer op [deze blog](https://dev.to/ramunarasinga/cn-utility-function-in-shadcn-uiui-3c4k)
+Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen we gebruik maken van de `cn` functie van shadcn. `cn` is een helperfunctie om Tailwind CSS klassen samen te voegen, conflicten op te lossen (de laatste klasse wint) en conditioneel toe te passen (filtert automatisch de falsy waarden eruit). Meer op [deze blog](https://dev.to/ramunarasinga/cn-utility-function-in-shadcn-uiui-3c4k)
 
 ```jsx
 // src/components/places/StarRating.tsx
@@ -1242,7 +1242,7 @@ Belangrijk:
 
 ### Weergave tabel met transacties
 
-We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft. Maak een nieuwe component `TransactionsTable`in de `src/components/transactions` folder. Installeer ook de `Table` component van Shadcn:
+We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft. Maak een nieuwe component `TransactionsTable`in de `src/components/transactions` folder. Installeer ook de `Table` component van shadcn:
 
 ```bash
 pnpm dlx shadcn@latest add table

@@ -322,7 +322,7 @@ In `App.tsx` staat de code voor de standaard startpagina: het Vite- en React-log
 
 TSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere tsx-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
-Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak [ShadCN](https://ui.shadcn.com/) toe.
+Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak [shadcn](https://ui.shadcn.com/) toe.
 
 ```jsx
 // src/App.tsx
@@ -653,9 +653,9 @@ Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
 
 ## CSS in React
 
-In dit project maken we gebruik van [ShadCN](https://ui.shadcn.com). ShadCN is geen klassieke component library zoals bijvoorbeeld [Material UI](https://mui.com/material-ui/) of [Bootstrap](https://react-bootstrap.netlify.app/). Bij klassieke libraries installeer je een package en gebruik je kant-en-klare componenten. Hierdoor heb je minder controle over de code.
+In dit project maken we gebruik van [shadcn](https://ui.shadcn.com). shadcn is geen klassieke component library zoals bijvoorbeeld [Material UI](https://mui.com/material-ui/) of [Bootstrap](https://react-bootstrap.netlify.app/). Bij klassieke libraries installeer je een package en gebruik je kant-en-klare componenten. Hierdoor heb je minder controle over de code.
 
-ShadCN daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten zijn opgebouwd op basis van [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) voor toegankelijkheid en [Tailwind CSS](https://tailwindcss.com/) voor styling, wat ervoor zorgt dat ze zowel flexibel als consistent zijn.
+shadcn daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten zijn opgebouwd op basis van [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) voor toegankelijkheid en [Tailwind CSS](https://tailwindcss.com/) voor styling, wat ervoor zorgt dat ze zowel flexibel als consistent zijn.
 
 Tailwind CSS is een utility-first CSS framework. In plaats van zelf telkens nieuwe CSS-klassen te schrijven, kunnen we met Tailwind gebruikmaken van kant-en-klare klassen.
 
@@ -665,9 +665,9 @@ Tailwind CSS is een utility-first CSS framework. In plaats van zelf telkens nieu
 
 Tailwind CSS lijkt op een framework als Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of tsx kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
 
-### ShadCN toevoegen
+### shadcn toevoegen
 
-Om ShadCN toe te voegen aan je React project, zie
+Om shadcn toe te voegen aan je React project, zie
 [documentatie](https://ui.shadcn.com/docs/installation/vite#existing-project).
 Dit zijn de stappen:
 
@@ -754,16 +754,16 @@ export default defineConfig({
 });
 ```
 
-#### Stap 6 - Installeer ShadCN
+#### Stap 6 - Installeer shadcn
 
-Je kan eerst visueel samenstellen hoe je project eruit moet zien. ShadCN heeft benoemde visuele stijlen geïntroduceerd die het uiterlijk van componenten veranderen, zoals de borderradius, opvulling, afstand, ... In plaats van CSS-variabelen één voor één aan te passen, kies je een stijl en elke component neemt die stijl over. Meer op <https://www.shadcnblocks.com/blog/shadcn-component-styles-vega-nova-maia-lyra-mira>.
+Je kan eerst visueel samenstellen hoe je project eruit moet zien. shadcn heeft benoemde visuele stijlen geïntroduceerd die het uiterlijk van componenten veranderen, zoals de borderradius, opvulling, afstand, ... In plaats van CSS-variabelen één voor één aan te passen, kies je een stijl en elke component neemt die stijl over. Meer op <https://www.shadcnblocks.com/blog/shadcn-component-styles-vega-nova-maia-lyra-mira>.
 
 De stijlvariant kies je op [shadcn/create](https://ui.shadcn.com/create) in volgende stappen:
 
 - In het menu kies je de stijl. Pas eventueel wat kleuren aan. Klik vervolgens op 'Get code'.
 - Kies het tabblad 'New Project'.
 - Kies 'Vite' en de component library 'Base UI' (Meer op <https://shadcnstudio.com/blog/radix-ui-vs-shadcn-ui>) en klik op 'Copy Command'.
-- Voeg ShadCN/ui nu toe aan je project. Je kan de preset achteraf nog veranderen, dan kies je voor het tabblad 'Existing Project'. We kozen de defaults.
+- Voeg shadcn/ui nu toe aan je project. Je kan de preset achteraf nog veranderen, dan kies je voor het tabblad 'Existing Project'. We kozen de defaults.
 
 ```bash
 pnpm dlx shadcn@latest init --preset b0  --base base --template vite
@@ -777,7 +777,7 @@ Onderstaande wordt aangepast in je project:
 
 #### Stap 7 - Componenten toevoegen
 
-Je kan nu componenten toevoegen aan je project met de CLI tool van ShadCN. Om een `Button` component toe te voegen:
+Je kan nu componenten toevoegen aan je project met de CLI tool van shadcn. Om een `Button` component toe te voegen:
 
 ```bash
 pnpm dlx shadcn@latest add button
@@ -785,9 +785,9 @@ pnpm dlx shadcn@latest add button
 
 De broncode van de component wordt nu toegevoegd aan je project in de folder `./src/components/ui`. Je kan deze component vervolgens importeren en gebruiken in je eigen componenten. Je kan de code van de component volledig aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later.
 
-#### Stap 8 - Linting uitschakelen voor ShadCN code
+#### Stap 8 - Linting uitschakelen voor shadcn code
 
-Pas de linting aan zodat de code van ShadCN niet gelint wordt. Voeg hiervoor de volgende regel toe aan de array in `eslint.config.js`:
+Pas de linting aan zodat de code van shadcn niet gelint wordt. Voeg hiervoor de volgende regel toe aan de array in `eslint.config.js`:
 
 ```js
 globalIgnores(['dist', 'src/components/ui/**']),
@@ -860,7 +860,7 @@ Ook het `style` attribuut kan je binnen een tsx-bestand gebruiken. Hiervoor gebr
 
 ### Alternatieven voor styling
 
-ShadCN is uiteraard niet de enige mogelijkheid om styling toe te voegen aan je React-applicatie. We kunnen wel stellen dat heel wat nieuwe projecten tegenwoordig standaard ShadCN gebruiken.
+shadcn is uiteraard niet de enige mogelijkheid om styling toe te voegen aan je React-applicatie. We kunnen wel stellen dat heel wat nieuwe projecten tegenwoordig standaard shadcn gebruiken.
 
 Alternatieven voor styling in React zijn:
 
@@ -868,7 +868,7 @@ Alternatieven voor styling in React zijn:
   - **Let op:** deze stijlen zijn globaal!
 - CSS-in-JS libraries zoals [styled-components](https://styled-components.com/) of [Emotion](https://emotion.sh/). Hierbij schrijf je CSS in JavaScript bestanden. Deze worden vervolgens omgezet naar echte CSS-bestanden die aan de DOM worden toegevoegd.
   - **Let op:** alles wat in JavaScript gebeurt is runtime, dus dit kan een performance impact hebben.
-- Andere component libraries zoals [Material UI](https://mui.com/material-ui/), [Chakra UI](https://chakra-ui.com/) of [antd](https://ant.design/). Deze bieden kant-en-klare componenten aan die je kan gebruiken in je project. Deze componenten zijn vaak ook (beperkt) aanpasbaar, maar je hebt minder controle over de code dan bij ShadCN.
+- Andere component libraries zoals [Material UI](https://mui.com/material-ui/), [Chakra UI](https://chakra-ui.com/) of [antd](https://ant.design/). Deze bieden kant-en-klare componenten aan die je kan gebruiken in je project. Deze componenten zijn vaak ook (beperkt) aanpasbaar, maar je hebt minder controle over de code dan bij shadcn.
 
 ## Debugging
 
@@ -935,7 +935,7 @@ Experimenteer al een beetje met componenten, props, etc. en commit je wijziginge
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
-Styling is niet het doel van deze oefening, de code van de componenten is belangrijker. Het is daarom voldoende om Tailwind CSS te installeren, ShadCN is niet nodig. Je kan de styling van de componenten volledig zelf doen.
+Styling is niet het doel van deze oefening, de code van de componenten is belangrijker. Het is daarom voldoende om Tailwind CSS te installeren, shadcn is niet nodig. Je kan de styling van de componenten volledig zelf doen.
 
 ![To do app](/./images/todo-app-screenshot.png ':size=80%')
 

@@ -18,9 +18,9 @@ Daarnaast is React een library en geen framework, zoals bv. Angular dat wel is. 
 
 ## React Router
 
-React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om React routes op een eenvoudige manier te definiëren, en biedt daarnaast ook nog extra features zoals data loading, error handling, etc. We zullen in deze cursus enkel gebruik maken van de basis features van React Router, maar we raden aan om zeker eens te kijken naar de extra features die deze mode te bieden heeft.
+React Router wordt aangeboden via de npm registry en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om React routes op een eenvoudige manier te definiëren, en biedt daarnaast ook nog extra features zoals data loading, error handling, etc. We zullen in deze cursus enkel gebruik maken van de basisfeatures van React Router, maar we raden aan om zeker eens te kijken naar de extra features die deze mode te bieden heeft.
 
-Installeer React Router [Zie de documentatie.](https://reactrouter.com/start/data/installation)
+Installeer React Router ([zie documentatie](https://reactrouter.com/start/data/installation)).
 
 ```bash
 pnpm add react-router
@@ -45,7 +45,7 @@ De [`BrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-rout
 
 Een probleem hierbij is dat browsers standaard refreshen wanneer de URL na de `/` wijzigt. In dit geval zal `react-router` dit probleem opvangen en voorkomen.
 
-Het voordeel met dit soort routers is dat je webapplicatie werkt zoals een _old-school website_, met alle features die een URL te bieden heeft.
+Het voordeel van dit soort routers is dat je webapplicatie werkt zoals een _old-school website_, met alle features die een URL te bieden heeft.
 
 ### HashRouter
 
@@ -57,7 +57,7 @@ Dit heeft als voordeel dat de browser by default niet zal refreshen. Het nadeel 
 
 `HashRouter` wordt typisch weinig gebruikt, we raden aan om `BrowserRouter` te gebruiken. Let hierbij op dat je de routers uit de data API kiest, dus via de functies [`createBrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) en [`createHashRouter`](https://reactrouter.com/en/main/routers/create-hash-router) en niet via de gelijknamige componenten.
 
-Naast deze twee types zijn er nog andere beschikbaar, [lees meer in de documentatie](https://reactrouter.com/6.26.0/routers/picking-a-router).
+Naast deze twee types zijn er nog andere beschikbaar, [lees meer in de documentatie](https://reactrouter.com/start/modes).
 
 ### In de voorbeeldapplicatie
 
@@ -87,11 +87,11 @@ createRoot(document.getElementById('root')!).render(
 );
 ```
 
-[createBrowserRouter](https://reactrouter.com/api/data-routers/createBrowserRouter#createbrowserrouter) creëert een `DataRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [RouteObject](https://reactrouter.com/start/data/route-object) objecten mee. Deze koppelen een URL (`path`) aan een component (`Component`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/api/data-routers/RouterProvider#routerprovider).
+[createBrowserRouter](https://reactrouter.com/api/data-routers/createBrowserRouter#createbrowserrouter) creëert een `DataRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [RouteObject](https://reactrouter.com/start/data/route-object) objecten mee. Deze koppelen een URL (`path`) aan een component (`element`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/api/data-routers/RouterProvider#routerprovider).
 
 In dit voorbeeld configureren we een enkele route die de `App` component toont wanneer de URL `/` is. We zullen later meer routes toevoegen.
 
-Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`, deze moet dus de root-component zijn van de applicatie.
+Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`. Deze moet dus de root-component zijn van de applicatie.
 
 ## Routes definiëren
 
@@ -131,7 +131,7 @@ const About = () => (
 export default About;
 ```
 
-Maak de `NotFound` page aan. Installeer eerst de `Alert` component van ShadCN:
+Maak de `NotFound` page aan. Installeer eerst de `Alert` component van shadcn:
 
 ```bash
 pnpm dlx shadcn@latest add alert
@@ -359,8 +359,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <App />,
   },
-  { path: 'transactions', element: <TransactionList /> },
-  { path: 'places', element: <PlacesList /> },
+  { path: '/transactions', element: <TransactionList /> },
+  { path: '/places', element: <PlacesList /> },
   {
     path: '/about',
     element: <About />,
@@ -394,7 +394,7 @@ Nu willen we de subroutes `/about/services`, `/about/history` en `/about/locatio
 Voeg onderaan de `About` component de `Outlet` toe:
 
 ```jsx
-// src/about/About.tsx
+// src/pages/about/About.tsx
 import { Outlet, Link } from 'react-router'; // 👈
 
 // ...
@@ -411,7 +411,7 @@ const About = () => (
 
 ## Redirects
 
-Stel we willen dat gebruikers die naar `/about` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.tsx`:
+Stel we willen dat gebruikers die naar `/services` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.tsx`:
 
 ```jsx
 import { Navigate } from 'react-router';
@@ -450,7 +450,7 @@ Deze route heeft de `index` optie meegegeven. Dit betekent dat deze route getoon
 
 ## URL parameters
 
-In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. De URL `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam aanklikbaar te zijn zodat we naar de detail van een plaats kunnen navigeren.
+In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. De URL `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam aanklikbaar te zijn zodat we naar de details van een plaats kunnen navigeren.
 
 Maak een component `PlaceDetail.tsx` aan in de folder `/src/pages/places`. We plaatsen deze component in de `places` map omdat deze component een child is van de `PlacesList` component.
 
@@ -474,7 +474,7 @@ import PlaceDetail from './pages/places/PlaceDetail.tsx';
 }
 ```
 
-De eerste route is een index-route die enkel getoond wordt op `/places`. Bij de eerste route valt op dat we een `index` optie meegeven. Zonder deze optie kunnen we niet navigeren naar `/`, wat de zogenaamde index-pagina is. Per definitie deelt een route met `index` hetzelfde pad als zijn ouder-route. De tweede route zal getoond worden wanneer een id (eigenlijk eender welke string) opgegeven wordt na `/places`, bv. `/places/1` maar ook `/places/foo`.
+De eerste route is een index-route die enkel getoond wordt op `/places`. Bij de eerste route valt op dat we een `index` optie meegeven. Zonder deze optie kunnen we niet navigeren naar `/places`, wat de zogenaamde index-pagina is voor deze route. Per definitie deelt een route met `index` hetzelfde pad als zijn ouder-route. De tweede route zal getoond worden wanneer een id (eigenlijk eender welke string) opgegeven wordt na `/places`, bv. `/places/1` maar ook `/places/foo`.
 
 Om dit id op te halen uit de URL maken we gebruik van de `useParams` hook. Deze hook retourneert een object van key/value pairs met alle URL parameters met hun waarde uit de huidige URL. Deze hook zal een nieuw object retourneren telkens wanneer een URL parameter wijzigt.
 
@@ -547,7 +547,7 @@ const PlaceDetail = () => {
 export default PlaceDetail;
 ```
 
-Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`. Daarna zoekt het een plaats met het opgegeven id. Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
+Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`. Daarna zoekt deze een plaats met het opgegeven id. Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
 
 ### Oefening 1 - Navigeren naar een place
 
@@ -653,7 +653,7 @@ export default function Navbar() {
 
 ### Integratie van de Layout component
 
-Pas `main.tsx` aan, alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
+Pas `main.tsx` aan. Alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
 
 ```jsx
 // src/main.tsx
@@ -739,12 +739,12 @@ Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` z
 
 De `NavLink` component heeft een `className` prop die een functie accepteert. Deze functie krijgt een object mee met de keys `isActive` en `isPending`. De key `isActive` is `true` wanneer de link actief is, anders is deze `false`. We kunnen deze waarde gebruiken om de juiste styling toe te passen op de link.
 
-### Refactoring NavBar
+### Refactoring Navbar
 
 We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavItem` te maken voor de links. Voeg de code toe in `Navbar.tsx`:
 
 ```jsx
-// src/components/NavBar.tsx
+// src/components/Navbar.tsx
 interface NavItemProps {
   to: string;
   children: React.ReactNode;
@@ -860,7 +860,7 @@ export default function Layout() {
 
 ## Navigeren vanuit code
 
-Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug met o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/6.26.0/hooks/use-navigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
+Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug. Deze functie verwacht o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/api/hooks/useNavigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
 
 Als voorbeeld gaan we onderaan de NotFound pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `NotFound.tsx`:
 
@@ -890,7 +890,7 @@ export default function NotFound() {
             variant='link'
             onClick={handleGoHome}
             className='text-destructive hover:text-destructive'
-          ></Button>
+          >go back home</Button>
         </AlertDescription>
       </Alert>
     </>
@@ -900,11 +900,11 @@ export default function NotFound() {
 
 Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React Router terug naar de home-pagina navigeren en de huidige URL hierdoor vervangen.
 
-Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
+Hetzelfde kan je bekomen met de Link tag, attribuut `replace` zet je op true.
 
 ```jsx
-import { Link, useLocation } from 'react-router';
-//...
+import { Link } from 'react-router';
+// ...
 <Link to='/' replace className='underline hover:no-underline'>
   go back home
 </Link>;
@@ -921,7 +921,7 @@ Bij het gebruik van de [Tabs component](https://ui.shadcn.com/docs/components/ba
 Neem de [documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Maak een nieuwe pagina `AboutTabs.tsx` aan en verwijs in `main.tsx` naar deze component.
 
 ```jsx
-// src/about/AboutTabs.tsx
+// src/pages/about/AboutTabs.tsx
 import { faker } from '@faker-js/faker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Briefcase, Clock, MapPin } from 'lucide-react';
@@ -994,7 +994,7 @@ We moeten overschakelen naar een **controlled component** waar we zelf de state 
 
 ### Stap 2: API Documentatie doornemen
 
-Shadcn is geen volledige component library, maar een gestylede wrapper rond primitives. Het gedrag (logica, state, events) komt van de libraries `Base UI / Radix UI`. Shadcn voegt vooral styling en structuur toe.
+shadcn is geen volledige component library, maar een gestylede wrapper rond primitives. Het gedrag (logica, state, events) komt van de libraries `Base UI / Radix UI`. shadcn voegt vooral styling en structuur toe.
 
 De shadcn docs tonen meestal enkel een basisgebruik, voor de Tabs met de prop `defaultValue`. De `defaultValue` is de initiële actieve tab. Daarna beheert de component **zelf de state**.
 
@@ -1007,7 +1007,7 @@ Maar dat is slechts een deel van de mogelijkheden. Onderaan de shadcn documentat
 - [Base UI](https://base-ui.com/react/components/tabs)
 - of [Radix UI](https://www.radix-ui.com/primitives/docs/components/tabs#api-reference).
 
-⚠️ Let op: kies bovenaan expliciet voor de `Base UI` tab, want wij dit is de library die wij gebruiken in de voorbeeldapplicatie.
+⚠️ Let op: kies bovenaan expliciet voor de `Base UI` tab, want dit is de library die wij gebruiken in de voorbeeldapplicatie.
 
 Wil je begrijpen hoe iets werkt of welke props beschikbaar zijn, dan moet je naar de onderliggende API kijken. Daar vinden we extra props:
 
@@ -1030,9 +1030,9 @@ const [activeTab, setActiveTab] = useState("tab1")
 In deze stap bepaalt de url de tab die getoond zal worden.
 
 1. Haal het path op en extraheer het segment.
-2. Definiëer een constante TABS. Door `as const` ziet TypeScript dit als `readonly ['services', 'history', 'location']` (exact deze 3 waarden) en niet als een `sting[]`.
+2. Definieer een constante TABS. Door `as const` ziet TypeScript dit als `readonly ['services', 'history', 'location']` (exact deze 3 waarden) en niet als een `string[]`.
 3. Dit creëert een type dat slechts 3 waarden kan zijn `type TabValue = 'services' | 'history' | 'location'`
-4. Valideer de waarde, zorgt voor een fallback.
+4. Valideer de waarde en zorg voor een fallback.
 5. Reageer op de tabwissel. De tabs veranderen niet zelf. We veranderen de URL en de UI volgt
 6. Maak de tabs controlled
 7. De content wordt bepaald door React Router
@@ -1105,7 +1105,7 @@ Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles d
 }
 ```
 
-Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een tailwind CSS directive.
+Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een TailWind CSS directive.
 
 Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
 
@@ -1129,5 +1129,5 @@ Denk voor je eigen applicatie na over de navigatie en implementeer deze met Reac
 
 ## Mogelijke extra's voor de examenopdracht
 
-- Gebruik de nieuwe [loader](https://reactrouter.com/start/data/data-loading) en [action](https://reactrouter.com/start/data/actions) props van de `Route` component van `react-router` om de data op te halen.
+- Gebruik de nieuwe [loader](https://reactrouter.com/start/data/data-loading) en [action](https://reactrouter.com/start/data/actions) attributen van de `Route` component van `react-router` om de data op te halen.
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
