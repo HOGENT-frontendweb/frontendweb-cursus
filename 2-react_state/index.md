@@ -32,15 +32,15 @@ React gebruikt een **Virtual DOM (VDOM)** als een extra abstractielaag bovenop h
 
 ![Virtual DOM voorstelling](./images/VDOM.webp ':size=60%')
 
-Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toegepast op de VDOM. De React DOM-library wordt gebruikt om efficiënt te controleren welke delen van de UI echt visueel moeten worden bijgewerkt in de echte DOM. Het is nl. niet altijd zo dat een state-wijziging ervoor zorgt dat elk kind gewijzigd is. Dit proces wordt [**reconciliation**](https://react.dev/learn/preserving-and-resetting-state) genoemd en is gebaseerd op deze stappen:
+Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toegepast op de VDOM. De React DOM-library wordt gebruikt om efficiënt te controleren welke delen van de UI echt visueel moeten worden bijgewerkt in de echte DOM. Het is nl. niet altijd zo dat een state wijziging ervoor zorgt dat elk kind gewijzigd is. Dit proces wordt [**reconciliation**](https://react.dev/learn/preserving-and-resetting-state) genoemd en is gebaseerd op deze stappen:
 
-1. VDOM wordt bijgewerkt door een state-wijziging in de applicatie. In React is elk UI-stuk een component en elke component heeft een state. React volgt het **observable** patroon en luistert naar state-wijzigingen. Wanneer de state of props van een component verandert, werkt React de virtuele DOM-structuur bij.
+1. VDOM wordt bijgewerkt door een state wijziging in de applicatie. In React is elk UI-stuk een component en elke component heeft een state. React volgt het **observable** patroon en luistert naar state wijzigingen. Wanneer de state of props van een component verandert, werkt React de virtuele DOM-structuur bij.
 2. De nieuwe VDOM wordt vergeleken met een eerdere VDOM-snapshot (= **diffing**).
 3. Enkel de gewijzigde delen van de echte DOM worden bijgewerkt. Er is geen DOM-update als er niets is veranderd.
 
 ![Reconciliation visualisatie](./images/reconciliation.png ':size=60%')
 
-React volgt een batch-updatemechanisme om de browser DOM bij te werken. Dit betekent dat React state-wijzigingen bundelt en ze dan samen doorvoert in één enkele rendering cyclus, in plaats van updates te verzenden voor elke afzonderlijke state-wijziging. Dit leidt tot logischerwijs betere prestaties.
+React volgt een batch-updatemechanisme om de browser DOM bij te werken. Dit betekent dat React state wijzigingen bundelt en ze dan samen doorvoert in één enkele rendercyclus, in plaats van updates te verzenden voor elke afzonderlijke state wijziging. Dit leidt logischerwijs tot betere prestaties.
 
 De kosten van virtuele DOM zijn veel minder "duur", omdat het niet nodig is om _alle_ elementen opnieuw te renderen. Net dit maakt React (en andere JS front-end frameworks) super gaaf.
 
@@ -83,16 +83,17 @@ We voegen een beetje mock data voor de plaatsen toe aan `mock_data.js` in de `ap
 ```javascript
 // src/api/mock_data.js
 import type { Transaction, Place } from '../types';// 👈 1
-const TRANSACTION_DATA = [...];
+
+// TRANSACTION_DATA blijft ongewijzigd
 
 // 👇 2
-const PLACE_DATA: Place[]= [
+const PLACE_DATA: Place[] = [
   { id: 1, name: 'home', rating: 5 },
   { id: 4, name: 'hogent', rating: 1 },
   { id: 7, name: 'bar', rating: 3 },
 ];
 
-export { TRANSACTION_DATA, PLACE_DATA } ; // 👈 3
+export { TRANSACTION_DATA, PLACE_DATA }; // 👈 3
 ```
 
 1. Importeer het 'Place' type
@@ -152,7 +153,7 @@ Je kan componenten opsplitsen in 2 hoofdtypes
 
 We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.tsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props. De verwijderknop implementeren we in de volgende sectie.
 
-We maken gebruik van Shadcn UI Button en Card componenten. Je kan de documentatie raadplegen op <<https://ui.shadcn.com/>.
+We maken gebruik van Shadcn Button en Card componenten. Je kan de documentatie raadplegen op <https://ui.shadcn.com/>.
 
 #### Stap 1. Voeg de componenten toe aan je project
 
@@ -247,7 +248,7 @@ In React kunnen we gebruik maken van event handlers in onze TSX-code. Neem het a
 
 ### Samenvatting van het artikel
 
-- `DOM events` worden gegenereerd door de browser (zoals klikken op knop, wijzigen van tekst input...). Alle browsers voorzien een **event based programming model**.
+- `DOM events` worden gegenereerd door de browser (zoals klikken op een knop, wijzigen van tekst input...). Alle browsers voorzien een **event based programming model**.
 - Built-in componenten zoals een knop ondersteunen enkel browser events zoals `onClick`. Maar ook aan je eigen componenten kan je **event handler props** toevoegen die je benoemt zoals je wil.
   - De naam van deze props start ook altijd met de prefix `on` gevolgd door de naam van het event.
 - Het afhandelen van events met React-elementen lijkt op het afhandelen van events van DOM-elementen. Er zijn enkele verschillen:
@@ -263,7 +264,7 @@ In pure HTML zou je dit schrijven:
 <button onclick="handleClick()" />
 ```
 
-In TX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
+In TSX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 
 ```jsx
 <button onClick={handleClick} />
@@ -275,9 +276,9 @@ In TX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 - Event handlers definieer je meestal binnen een component zodat ze toegang hebben tot de props en de state.
 - Je kan een event handler definiëren in een parent en doorgeven als een prop aan een child component
 
-### Oefening 3 - Event handler toevoegen
+### Oefening 1 - Event handler toevoegen
 
-Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verwijder knop, geef je `you clicked the remove button` in de console weer. Maak gebruik van de Button component van Shadcn UI.
+Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verwijder knop, geef je `you clicked the remove button` in de console weer. Maak gebruik van de Button component van Shadcn.
 
 <!-- markdownlint-disable-next-line -->
 
@@ -331,7 +332,7 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
 ShadCN componenten zijn volledig aanpasbaar:
 
 - Je kan ook gebruik maken van de `className` prop die bij elke component aanwezig is. Deze `className` wordt toegevoegd aan de HTML-elementen van de component, waardoor je deze kan stylen met Tailwind CSS klassen. In het voorbeeld hierboven voegen we de klassen `text-destructive` en `hover:text-destructive` toe aan de verwijder knop. Deze klassen zijn gedefinieerd in het Tailwind CSS configuratiebestand van ShadCN en zorgen ervoor dat de tekst van de knop rood wordt.
-- Je kan ook de broncode van de component aanpassen, maar het is beter om de broncode te kopieren en je eigen custom component te maken zodat updates geen probleem vormen later. Je kan de broncode van de component volledig aanpassen, zoals de Tailwind CSS klassen en de structuur van de component
+- Je kan ook de broncode van de component aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later. Je kan de broncode van de component volledig aanpassen, zoals de Tailwind CSS klassen en de structuur van de component
 - Je kan ook het globale thema aanpassen in `src/index.css`.
 
 ## State toevoegen
@@ -344,7 +345,7 @@ Vroeger was React klassegebaseerd, tegenwoordig is letterlijk alles een functie 
 
 **Hooks** hebben dit probleem opgelost. Het zijn functies die function components toelaten om state bij te houden alsook om in te haken ("hook into") op de lifecycle features van een component.
 
-De naam van een hooks begint altijd met `use`. React bevat een aantal **builtin hooks** maar je kan ook je eigen **custom hooks** bouwen. Ze zijn dus de ideal manier om code herbruikbaar te maken.
+De naam van een hook begint altijd met `use`. React bevat een aantal **builtin hooks** maar je kan ook je eigen **custom hooks** bouwen. Ze zijn dus de ideale manier om code herbruikbaar te maken.
 
 De [useState](https://react.dev/reference/react/useState) hook wordt gebruikt om een component stateful te maken. Hij geeft een component met andere woorden state.
 
@@ -387,9 +388,9 @@ export default PlacesList;
 ```
 
 1. Importeer de `useState` hook uit het `react` package.
-2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier noemen we deze variabele `places`. De `useState` functie neemt de initiële state (`PLACES_DATA`) als parameter en geeft een array terug. Deze array bevat:
+2. Met de `useState` hook kan je slechts één state variabele (van welk type ook) declareren. Hier noemen we deze variabele `places`. De `useState` functie neemt de initiële state (`PLACE_DATA`) als parameter en geeft een array terug. Deze array bevat:
    - als eerste element de **state-variabele**, deze bevat de huidige waarde.
-   - als tweede element de functie om de waarde van de state-variabele bij te werken, een zogezegde **setter**. Hierdoor zal de component opnieuw gerenderd worden.
+   - als tweede element de functie om de waarde van de state variabele bij te werken, een zogezegde **setter**. Hierdoor zal de component opnieuw gerenderd worden.
 
 Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de variabele en de set-functie instellen.
 
@@ -397,7 +398,7 @@ Door gebruik te maken van **array destructuring** kunnen we zelf de naam van de 
 
 3. Als de gebruiker op verwijder klikt, dient de functie `handleDeletePlace` te worden aangeroepen om de state aan te passen. Dus interacties van de gebruiker in een child component dienen de state in een parent aan te passen. We moeten de functie `handleDeletePlace` uit de parent doorgeven aan de child component. Hiervoor voegen we een prop `onDelete` toe.
 
-Om gegevens vanuit een kindcomponent naar de oudercomponent te sturen, kan de oudercomponent een functie (callback) via props aan de kindcomponent doorgeven. Wanneer de kindcomponent een actie uitvoert (zoals klikken op een knop), kan het die callback-functie aanroepen, die vervolgens een state-wijziging in de oudercomponent kan initiëren.
+Om gegevens vanuit een kindcomponent naar de oudercomponent te sturen, kan de oudercomponent een functie (callback) via props aan de kindcomponent doorgeven. Wanneer de kindcomponent een actie uitvoert (zoals klikken op een knop), kan die deze callback-functie aanroepen, die vervolgens een state wijziging in de oudercomponent kan initiëren.
 
 De `Place` component moet ook worden aangepast:
 
@@ -460,7 +461,7 @@ Er zijn 2 redenen voor een component om te renderen
 1. De initiële render (veroorzaakt in `main.tsx` door de `render` functie)
 2. De state van de component of één van zijn parents is aangepast (veroorzaakt door een `setState` functie)
 
-In het geval van een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de function component aan wiens state werd aangepast. Dit proces is recursief. De render-fase is enkel en alleen verantwoordelijk voor het berekenen van de nieuwe Virtual DOM. Tijdens de render fase worden kort gezegd alle function components aangeroepen en wordt de nieuwe Virtual DOM berekend.
+In het geval van een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de function component aan wiens state werd aangepast. Dit proces is recursief. De render fase is enkel en alleen verantwoordelijk voor het berekenen van de nieuwe Virtual DOM. Tijdens de render fase worden kort gezegd alle function components aangeroepen en wordt de nieuwe Virtual DOM berekend.
 
 In de commit fase werkt React de echte DOM bij. Bij een initiële render gebruikt React de `appendChild() DOM API` om alle DOM-knooppunten die het heeft gemaakt op het scherm te zetten. Voor re-renders zal React de minimaal noodzakelijke bewerkingen toepassen (berekend tijdens het renderen!) om de DOM te laten overeenkomen met de nieuwste rendering-uitvoer.
 
@@ -478,7 +479,7 @@ Een state snapshot verwijst naar de huidige "momentopname" van de state in een R
    `const [number, setNumber] = useState(0); // de initiële state snapshot van number is 0`
 2. State Update: Het bijwerken van de state vraagt om een nieuwe render en een nieuwe state snapshot wordt gemaakt die pas gebruikt wordt tijdens de volgende render.
    `setNumber(number + 1); // nieuwe state snapshot met waarde 1 voor number`.
-   De waarde van een statusvariabele verandert nooit binnen een render. Dus de waarde van de variabele _number_ verandert in de bestaande render niet. De component blijft renderen met de vorige waarde van number totdat de volgende render plaatsvindt. In een event handler 3 maal `setNumber(number + 1)` aanroepen zal het _number_ slechts met 1 verhogen!
+   De waarde van een state variabele verandert nooit binnen een render. Dus de waarde van de variabele _number_ verandert in de bestaande render niet. De component blijft renderen met de vorige waarde van number totdat de volgende render plaatsvindt. In een event handler 3 maal `setNumber(number + 1)` aanroepen zal het _number_ slechts met 1 verhogen!
 3. Render-fase: "Rendering" betekent dat React de component, die een functie is, aanroept. Wanneer React de component opnieuw rendert, wordt de component opnieuw opgebouwd met de laatst bekende snapshot van de state.
 
 React slaat de state op buiten de component, het 'leeft' in React! Variabelen en event handlers `overleven` geen re-render. Dat is ook zo bij "gewone" functies: variabelen in een functie zijn verdwenen nadat ze is uitgevoerd. Elke render heeft zijn eigen event handlers.
@@ -503,7 +504,7 @@ export default function StarRating() {
 }
 ```
 
-Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de icon library die ook gebruikt wordt in de Shadcn UI componenten.
+Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de icon library die ook gebruikt wordt in de Shadcn componenten.
 
 Implementeer de `StarRating` component als volgt:
 
@@ -966,6 +967,7 @@ interface StarRatingProps {
   selectedStars?: number;
   onRate: (rating: number) => void; // 👈 1
 }
+
 export default function StarRating({
   totalStars = 5,
   selectedStars = 0,
@@ -981,9 +983,9 @@ export default function StarRating({
             selected={selectedStars > i}
             index={i}
             onSelect={onRate}
+            // 👆 2
           />
         ))}
-        {/* 👆 2 */}
       </div>
       <p className='text-xs text-muted-foreground'>
         {selectedStars} of {totalStars} stars
@@ -995,19 +997,19 @@ export default function StarRating({
 
 1. `onRate` wordt via de props doorgegeven, samen met de andere props.
 2. Geef de functie door in de event handler prop `onSelect` van de `Star` component.
-3. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. ()=>{} is een nepfunctie die niets doet.
+3. Props worden doorgegeven van de parent aan de child component. We voegen een `onSelect` prop toe aan de `Star` component. `() => {}` is een nepfunctie die niets doet.
 4. Nu moet deze functie opgeroepen worden als de gebruiker op de ster klikt. De index van de geselecteerde ster + 1 wordt doorgegeven.
 
 #### Optional of required props?
 
 - **Star.onSelect (optioneel)**: De Star component is een laag-niveau, herbruikbaar component dat ook standalone kan gebruikt worden. Dit maakt het flexibel voor toekomstig gebruik. Een ster kan je zo ook gebruiken zonder callback.
-- **StarRating.onRate (verplicht)**: De StarRating component is een hoog-niveau component speciaal voor rating. Het doel van het component is om een rating te selecteren en door te geven. Het geeft geen zin om StarRating te gebruiken zonder ergens de rating heen te communiceren.
+- **StarRating.onRate (verplicht)**: De StarRating component is een hoog-niveau component speciaal voor rating. Het doel van de component is om een rating te selecteren en door te geven. Het geeft geen zin om StarRating te gebruiken zonder ergens de rating heen te communiceren.
 
-Dit is een **best practice**: lagere componenten zijn flexibel, hogere componenten stellen duidelijke eisen. Zo zorg je ervoor dat het component correct gebruikt wordt.
+Dit is een **best practice**: lagere componenten zijn flexibel, hogere componenten stellen duidelijke eisen. Zo zorg je ervoor dat de component correct gebruikt wordt.
 
 ### Gevulde sterren
 
-Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen we gebruik maken van de `cn` functie van Shadcn UI. `cn` is een helperfunctie om Tailwind CSS klasen samen te voegen, conflicten op te lossen (de laatste klasse wint) en conditioneel toe te passen(filtert automatisch de falsy waarden eruit). Meer op [deze blog](https://dev.to/ramunarasinga/cn-utility-function-in-shadcn-uiui-3c4k)
+Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen we gebruik maken van de `cn` functie van Shadcn. `cn` is een helperfunctie om Tailwind CSS klassen samen te voegen, conflicten op te lossen (de laatste klasse wint) en conditioneel toe te passen (filtert automatisch de falsy waarden eruit). Meer op [deze blog](https://dev.to/ramunarasinga/cn-utility-function-in-shadcn-uiui-3c4k)
 
 ```jsx
 // src/components/places/StarRating.tsx
@@ -1174,7 +1176,7 @@ export default function TransactionList() {
 }
 ```
 
-1. Voeg state `text` toe voor het inputveld (is een Controlled Component). De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld. Er moet een re-render geactiveerd worden bij klik op de `Search` knop vandaar de state `search`.
+1. Voeg state `text` toe voor het inputveld (is een Controlled Component). De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld. Er moet een re-render geactiveerd worden bij klik op de `Search` knop,  vandaar de state `search`.
 2. Verbind het inputelement met de component state via de `value` prop.
 3. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen.
 4. Nu kunnen we bij het klikken op de zoekknop de `search` tekst instellen, waardoor de component gererenderd wordt en de gefilterde transacties getoond moeten worden.
@@ -1185,7 +1187,7 @@ export default function TransactionList() {
 
 Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools, zie de logging 'filtering...'), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
 
-In een React applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
+In een React-applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
 
 Een oplossing voor dit probleem is **memoization**. [Wikipedia](https://en.wikipedia.org/wiki/Memoization) geeft hiervoor volgende definitie:
 
@@ -1240,7 +1242,7 @@ Belangrijk:
 
 ### Weergave tabel met transacties
 
-We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft. Maak een nieuwe component `TransactionsTable`in de `src/components/transactions` folder. Installeer ook de `Table` component van Shadcn UI:
+We refactoren de `TransactionList` component zodat die nu een tabel met transacties weergeeft. Maak een nieuwe component `TransactionsTable`in de `src/components/transactions` folder. Installeer ook de `Table` component van Shadcn:
 
 ```bash
 pnpm dlx shadcn@latest add table
@@ -1380,7 +1382,7 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
   import type { Transaction as TransactionType } from '../../types';
   import { TableRow, TableCell } from '../ui/table';
 
-  interface TransactionProps extends Omit<TransactionType, 'id'> {}
+  type TransactionProps = TransactionType;
 
   // kan ook met react-intl (<https://formatjs.io/docs/getting-started/installation/>)
   const dateFormat = new Intl.DateTimeFormat('nl-BE', {
@@ -1486,7 +1488,7 @@ Lees hierover meer in de [documentatie van de hook](https://react.dev/reference/
 
 ## React DevTools
 
-Na de initiële render wordt een nieuwe render wordt enkel veroorzaakt door een state wijziging. [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) is een browserextensie die ons helpt bij het debuggen, profileren en monitoren van de uitvoering van onze React applicatie.
+Na de initiële render wordt een nieuwe render wordt enkel veroorzaakt door een state wijziging. [React DevTools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi) is een browserextensie die ons helpt bij het debuggen, profileren en monitoren van de uitvoering van onze React-applicatie.
 
 Installeer de extensie en open de console. Ga naar het tabblad `components`. Daar kan je de componenten en bijhorende props inspecteren.
 
@@ -1502,7 +1504,7 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les2-opl f67787f
+> git checkout -b les2-opl TODO:
 > pnpm install
 > pnpm dev
 > ```
@@ -1516,7 +1518,7 @@ Verwijder de README.md in je frontend map - de README.md in de root is voldoende
 ## Oefening 5 - Eigen project
 
 - maak een mockup van een eenvoudige pagina in je project
-- ontwerp de componentenboom. Beslis wat als state moet bewaard worden, en wat als props moet worden doorgegeven. Welke eventhandlers zijn er nodig? Waar implementeer je die? En hoe worden die doorgegeven?
+- ontwerp de componentenboom. Beslis wat als state moet bewaard worden, en wat als props moet worden doorgegeven. Welke event handlers zijn er nodig? Waar implementeer je die? En hoe worden die doorgegeven?
 - voeg mock data toe
 - implementeer de componenten
 
@@ -1542,7 +1544,7 @@ Het `totaal` wordt met de waarde op de dobbelsteen verhoogd.
 
 Als de dobbelsteen één oog bevat, kan er niet meer op geklikt worden.
 
-Als alle dobbelstenen één oog bevatten, dan heb je "snake eyes". Er verschijnt een boodschap `Oeps you did it again!`. Het totaal wordt terug op 0 geplaatst. Nu kan je kiezen om opnieuw te spelen.
+Als alle dobbelstenen één oog bevatten dan heb je "snake eyes". Er verschijnt een boodschap `Oeps you did it again!`. Het totaal wordt terug op 0 geplaatst. Nu kan je kiezen om opnieuw te spelen.
 
 `Max total` bevat het maximaal aantal behaalde punten over alle spelletjes heen.
 

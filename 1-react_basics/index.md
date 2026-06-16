@@ -919,6 +919,8 @@ Experimenteer al een beetje met componenten, props, etc. en commit je wijziginge
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
+Styling is niet het doel van deze oefening, de code van de componenten is belangrijker. Het is daarom voldoende om Tailwind CSS te installeren, ShadCN is niet nodig. Je kan de styling van de componenten volledig zelf doen.
+
 ![To do app](/./images/todo-app-screenshot.png ':size=80%')
 
 Een `TodoItem` heeft volgende props:
