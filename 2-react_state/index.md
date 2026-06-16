@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les2 2355815
+> git checkout -b les2 TODO:
 > pnpm install
 > pnpm dev
 > ```
@@ -32,7 +32,7 @@ React gebruikt een **Virtual DOM (VDOM)** als een extra abstractielaag bovenop h
 
 ![Virtual DOM voorstelling](./images/VDOM.webp ':size=60%')
 
-Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toegepast op de VDOM. De React DOM-library wordt gebruikt om efficiënt te controleren welke delen van de UI echt visueel moeten worden bijgewerkt in de echte DOM. Het is nl. niet altijd zo dat een state-wijziging ervoor zorgt dat elk kind gewijzigd is. Dit proces wordt [**reconciliation**](https://reactjs.org/docs/reconciliation.html) genoemd en is gebaseerd op deze stappen:
+Wanneer de state van onze applicatie wijzigt, worden deze wijzigingen eerst toegepast op de VDOM. De React DOM-library wordt gebruikt om efficiënt te controleren welke delen van de UI echt visueel moeten worden bijgewerkt in de echte DOM. Het is nl. niet altijd zo dat een state-wijziging ervoor zorgt dat elk kind gewijzigd is. Dit proces wordt [**reconciliation**](https://react.dev/learn/preserving-and-resetting-state) genoemd en is gebaseerd op deze stappen:
 
 1. VDOM wordt bijgewerkt door een state-wijziging in de applicatie. In React is elk UI-stuk een component en elke component heeft een state. React volgt het **observable** patroon en luistert naar state-wijzigingen. Wanneer de state of props van een component verandert, werkt React de virtuele DOM-structuur bij.
 2. De nieuwe VDOM wordt vergeleken met een eerdere VDOM-snapshot (= **diffing**).
@@ -107,7 +107,7 @@ Wat moet er nu nog aangepast worden?
 
   In `App.tsx` vervangen we het import statement van `TRANSACTION_DATA` door:
 
-  ```tsx
+  ```jsx
   // src/App.tsx
   import { TRANSACTION_DATA } from './api/mock_data';
   ```
@@ -150,11 +150,11 @@ Je kan componenten opsplitsen in 2 hoofdtypes
 
 ### Place component
 
-We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.tsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props. De verwijder button implementeren we in de volgende sectie.
+We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.tsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props. De verwijderknop implementeren we in de volgende sectie.
 
 We maken gebruik van Shadcn UI Button en Card componenten. Je kan de documentatie raadplegen op <<https://ui.shadcn.com/>.
 
-Stap 1. Voeg de componenten toe aan je project:
+#### Stap 1. Voeg de componenten toe aan je project
 
 ```bash
  pnpm dlx shadcn@latest add button card
@@ -162,9 +162,9 @@ Stap 1. Voeg de componenten toe aan je project:
 
 Merk op dat de source code van de componenten nu toegevoegd werd aan je project in de folder `src/components/ui`.
 
-Stap 2. Importeer de componenten in `Place.tsx`:
+#### Stap 2. Importeer de componenten in `Place.tsx`
 
-```tsx
+```jsx
 // src/components/places/Place.tsx
 import type { Place as PlaceType } from '../../types';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -188,7 +188,7 @@ export default Place;
 
 Maak een bestand `PlacesList.tsx` aan in de map `src/components/places`. Deze component zorgt voor de weergave van alle plaatsen. We maken reeds gebruik van de `Place` component voor weergave van één plaats.
 
-```tsx
+```jsx
 // src/components/places/PlacesList.tsx
 import { PLACE_DATA } from '../../api/mock_data';
 import Place from './Place';
@@ -197,8 +197,6 @@ const PlacesList = () => {
   const places = PLACE_DATA;
   return (
     <>
-      {' '}
-      // 👈
       <h1 className='text-2xl font-semibold mb-6'>Places</h1>
       <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
         {places
@@ -209,7 +207,7 @@ const PlacesList = () => {
             <Place key={p.id} {...p} />
           ))}
       </div>
-    </> // 👈
+    </>
   );
 };
 
@@ -220,7 +218,7 @@ Merk op: React-components mogen maar één element retourneren. We wrappen de el
 
 Voeg de `PlacesList` component toe aan `App.tsx` en bekijk het resultaat.
 
-```tsx
+```jsx
 // src/App.tsx
 import Transaction from './components/transactions/Transaction';
 import { TRANSACTION_DATA } from './api/mock_data';
@@ -267,7 +265,7 @@ In pure HTML zou je dit schrijven:
 
 In TX schrijven we dit licht anders, maar je ziet wel de gelijkenis:
 
-```tsx
+```jsx
 <button onClick={handleClick} />
 ```
 
@@ -285,7 +283,7 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
 
 - Oplossing +
 
-  ```tsx
+  ```jsx
   // src/components/places/Place.tsx
   import type { Place as PlaceType } from '../../types';
   import {
@@ -299,14 +297,16 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   interface PlaceProps extends PlaceType {}
 
   const Place = ({ id, name, rating }: PlaceProps) => {
+    // 👇 1
     const handleClick = () => {
       console.log('you clicked the remove button');
-    }; // 👈1
+    };
     return (
       <Card>
         <CardHeader className='pb-2'>
           <CardTitle className='text-base'>{name}</CardTitle>
           <CardAction>
+            {/* 👇 2 */}
             <Button
               variant='link'
               onClick={handleClick}
@@ -315,7 +315,6 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
               Verwijder
             </Button>
           </CardAction>
-          {/*👆 2 */}
         </CardHeader>
       </Card>
     );
@@ -347,13 +346,13 @@ Vroeger was React klassegebaseerd, tegenwoordig is letterlijk alles een functie 
 
 De naam van een hooks begint altijd met `use`. React bevat een aantal **builtin hooks** maar je kan ook je eigen **custom hooks** bouwen. Ze zijn dus de ideal manier om code herbruikbaar te maken.
 
-De [useState](https://reactjs.org/docs/hooks-reference.html#usestate) hook wordt gebruikt om een component stateful te maken. Hij geeft een component met andere woorden state.
+De [useState](https://react.dev/reference/react/useState) hook wordt gebruikt om een component stateful te maken. Hij geeft een component met andere woorden state.
 
 ### Toevoegen van state aan de PlacesList component
 
 We starten met het bijhouden van de state in de `PlacesList` component. Indien een plaats verwijderd wordt, dan moet de state in de `PlacesList` component worden aangepast. Deze component zal dan ook een functie bevatten om de plaats uit de state te verwijderen. Deze geven we samen met de overige props door aan de child components. De component waar de interactiviteit plaatsvindt, kan dan deze functie aanroepen, die vervolgens de state zal wijzigen in de parent component.
 
-```tsx
+```jsx
 // src/components/places/PlacesList.tsx
 import { useState } from 'react'; // 👈 1
 import { PLACE_DATA } from '../../api/mock_data';
@@ -376,9 +375,9 @@ const PlacesList = () => {
             a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
           )
           .map((p) => (
+            // 👇 3
             <Place key={p.id} {...p} onDelete={handleDeletePlace} />
-          ))}{' '}
-        {/* 👈 3 */}
+          ))}
       </div>
     </>
   );
@@ -402,7 +401,7 @@ Om gegevens vanuit een kindcomponent naar de oudercomponent te sturen, kan de ou
 
 De `Place` component moet ook worden aangepast:
 
-```tsx
+```jsx
 // src/components/places/Place.tsx
 import type { Place as PlaceType } from '../../types';
 import { Card, CardAction, CardHeader, CardTitle } from '@/components/ui/card';
@@ -424,6 +423,7 @@ const Place = ({ id, name, rating, onDelete }: PlaceProps) => {
       <CardHeader className='pb-2'>
         <CardTitle className='text-base'>{name}</CardTitle>
         <CardAction>
+          {/* 👇 3 */}
           <Button
             variant='link'
             onClick={handleDelete}
@@ -431,7 +431,6 @@ const Place = ({ id, name, rating, onDelete }: PlaceProps) => {
           >
             Verwijder
           </Button>
-          {/* 👈 3 */}
         </CardAction>
       </CardHeader>
     </Card>
@@ -458,7 +457,7 @@ Alvorens de componenten getoond worden op het scherm moeten ze gerenderd worden 
 
 Er zijn 2 redenen voor een component om te renderen
 
-1. De initiële render (veroorzaakt in main.tsxdoor de `render` functie)
+1. De initiële render (veroorzaakt in `main.tsx` door de `render` functie)
 2. De state van de component of één van zijn parents is aangepast (veroorzaakt door een `setState` functie)
 
 In het geval van een initiële render, zal React de root component aanroepen. Bij een state wijziging roept React de function component aan wiens state werd aangepast. Dit proces is recursief. De render-fase is enkel en alleen verantwoordelijk voor het berekenen van de nieuwe Virtual DOM. Tijdens de render fase worden kort gezegd alle function components aangeroepen en wordt de nieuwe Virtual DOM berekend.
@@ -497,26 +496,27 @@ Lees [Queueing a Series of State Updates](https://react.dev/learn/queueing-a-ser
 
 Maak het bestand `StarRating.tsx` aan in de map `src/components/places`:
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 export default function StarRating() {
   return ();
 }
 ```
 
-Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de iconLibrary die ook gebruikt wordt in de Shadcn UI componenten.
+Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de icon library die ook gebruikt wordt in de Shadcn UI componenten.
 
 Implementeer de `StarRating` component als volgt:
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 import { StarIcon } from 'lucide-react'; // 👈 1
 
 function Star() {
+  // 👇 2
   return (
     <StarIcon size={22} className='text-amber-400 scale-110 drop-shadow-sm' />
   );
-} // 👈 2
+}
 
 export default function StarRating() {
   const stars = [...new Array(5)];
@@ -531,7 +531,7 @@ export default function StarRating() {
 }
 ```
 
-1. We maken gebruik van het `StarIcon` icon uit de lucide-react library (een open-source icon library).
+1. We maken gebruik van het `StarIcon` icon uit de `lucide-react` library (een open-source icon library).
 2. De `Star` component retourneert één gele ster.
 3. De `StarRating` component retourneert vijf sterren. We creëren een array met vijf elementen en mappen elk element naar een `Star` component. We voegen ook een `key` attribuut toe, hier gebruiken we de index.
 
@@ -541,7 +541,7 @@ Voeg de StarRating component toe aan de Place component (in het `CardContent` ge
 
 - Oplossing +
 
-  ```tsx
+  ```jsx
   // src/components/places/Place.tsx
   import type { Place as PlaceType } from '../../types';
   import {
@@ -593,7 +593,7 @@ Voeg de StarRating component toe aan de Place component (in het `CardContent` ge
 
 Vervolgens willen we het aantal sterren in de rating variabel maken. Dit doen we d.m.v. een prop, zodat de Rating component herbruikbaar is.
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 import { StarIcon } from 'lucide-react';
 
@@ -603,12 +603,13 @@ function Star() {
   );
 }
 
+// 👇 1
 interface StarRatingProps {
   totalStars?: number;
-} // 👆 1
+}
 
+// 👇 2
 export default function StarRating({ totalStars = 5 }: StarRatingProps) {
-  // 👈 2
   const stars = [...new Array(totalStars)]; // 👈 3
   return (
     <div className='flex flex-row items-center gap-0.5'>
@@ -616,7 +617,7 @@ export default function StarRating({ totalStars = 5 }: StarRatingProps) {
         <Star key={i} />
       ))}
     </div>
-  ); // 👈 3
+  );
 }
 ```
 
@@ -628,7 +629,7 @@ export default function StarRating({ totalStars = 5 }: StarRatingProps) {
 
 Ook de kleur van de ster kan verschillen. Hiervoor voegen we een `StarProps` interface toe met een `selected` prop en passen we de kleur aan op basis van deze prop.
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 import { StarIcon } from 'lucide-react';
 
@@ -657,7 +658,7 @@ function Star({ selected = false }: StarProps) {
 
 De `Place` component krijgt via een prop de `rating` door van de parent en zal die informatie moeten doorgeven aan de `StarRating` component.
 
-```tsx
+```jsx
 // src/components/places/Place.tsx
 //...
 interface PlaceProps extends PlaceType {
@@ -698,7 +699,7 @@ export default Place;
 
 De `StarRating` component zal die informatie via de prop `selected` doorgeven aan de `Star` component:
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 import { StarIcon } from 'lucide-react';
 
@@ -750,7 +751,7 @@ export default function StarRating({
 1. Het aantal geselecteerde sterren wordt via de prop `selectedStars` meegegeven.
 2. Een ster is geselecteerd als de rating groter is dan de index.
 3. We geven ook informatie weer over het aantal geselecteerde sterren.
-4. React-components mogen maar één element retourneren. We wrappen de elementen in een div tag en voegen een kleine gap toe tussen de sterren en de tekst.
+4. React-components mogen maar één element retourneren. We wrappen de elementen in een `div` tag en voegen een kleine gap toe tussen de sterren en de tekst.
 
 Bekijk het resultaat!
 
@@ -764,7 +765,7 @@ Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster
 
 - Oplossing +
 
-  ```tsx
+  ```jsx
   // src/components/places/StarRating.tsx
   import { StarIcon } from 'lucide-react';
 
@@ -774,12 +775,12 @@ Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster
   }
 
   function Star({ index, selected = false }: StarProps) {
-    // 👈 1
-    // 👇 2
+    // 👆 1 👇 2
     const handleClick = () => {
       console.log(`you clicked star ${index}`);
     };
 
+    // 👇 3
     return (
       <StarIcon
         size={22}
@@ -790,7 +791,6 @@ Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster
         }
         onClick={handleClick}
       />
-      // 👈 3
     );
   }
 
@@ -806,10 +806,10 @@ Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster
     return (
       <div className='flex flex-col gap-1'>
         <div className='flex flex-row items-center gap-0.5'>
+          {/* 👇 1 */}
           {stars.map((_, i) => (
             <Star key={i} selected={selectedStars > i} index={i} />
           ))}
-          {/* 👈 1 */}
         </div>
         <p className='text-xs text-muted-foreground'>
           {selectedStars} of {totalStars} stars
@@ -827,7 +827,7 @@ Voeg een event handler toe aan de `Star` component. Wanneer je klikt op een ster
 
 Wanneer we klikken op een ster moet de rating van de plaats worden aangepast. De rating van een plaats wordt bijgehouden in de state `places` in de `PlacesList` component. We voorzien hiervoor de functie `handleRatePlace`. Deze functie geven we via props door aan de child componenten tot aan de Star component waar de interactiviteit plaats vindt.
 
-```tsx
+```jsx
 import { useState } from 'react';
 import { PLACE_DATA } from '../../api/mock_data';
 import Place from './Place';
@@ -852,6 +852,7 @@ const PlacesList = () => {
           a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
         )
         .map((p) => (
+          // 👇 2
           <Place
             key={p.id}
             {...p}
@@ -859,7 +860,6 @@ const PlacesList = () => {
             onRate={handleRatePlace}
           />
         ))}
-      {/* 👈 2 */}
     </div>
   );
 };
@@ -872,7 +872,7 @@ export default PlacesList;
 
 De `Place` component moet ook worden aangepast:
 
-```tsx
+```jsx
 // src/components/places/Place.tsx
 import type { Place as PlaceType } from '../../types';
 import {
@@ -932,7 +932,7 @@ export default Place;
 
 De `StarRating`component en `Star` component worden:
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 import { StarIcon } from 'lucide-react';
 
@@ -1007,9 +1007,9 @@ Dit is een **best practice**: lagere componenten zijn flexibel, hogere component
 
 ### Gevulde sterren
 
-Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen we gebruik maken van de `cn` functie van Shadcn UI. `cn` is een helperfunctie om Tailwind CSS classes samen te voegen, conflicten op te lossen (de laatste class wint) en conditioneel toe te passen(filtert automatisch de falsy waarden eruit). Meer op [deze blog](https://dev.to/ramunarasinga/cn-utility-function-in-shadcn-uiui-3c4k)
+Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen we gebruik maken van de `cn` functie van Shadcn UI. `cn` is een helperfunctie om Tailwind CSS klasen samen te voegen, conflicten op te lossen (de laatste klasse wint) en conditioneel toe te passen(filtert automatisch de falsy waarden eruit). Meer op [deze blog](https://dev.to/ramunarasinga/cn-utility-function-in-shadcn-uiui-3c4k)
 
-```tsx
+```jsx
 // src/components/places/StarRating.tsx
 import { cn } from '@/lib/utils'; // 👈
 //...
@@ -1021,13 +1021,14 @@ function Star({ index, selected = false, onSelect = () => {} }: StarProps) {
   return (
     <StarIcon
       size={22}
+      // 👇
       className={cn('cursor-pointer transition-all duration-150 fill-current', {
         'text-amber-400 scale-110 drop-shadow-sm': selected,
         'text-muted-foreground/40': !selected,
       })}
       onClick={handleClick}
     />
-  ); // 👈
+  );
 }
 ```
 
@@ -1035,9 +1036,9 @@ function Star({ index, selected = false, onSelect = () => {} }: StarProps) {
 
 Momenteel wordt de lijst van transacties gegenereerd in de `App` component. Het is beter om hier een aparte component `TransactionList` voor aan te maken.
 
-Maak een bestand `TransactionList.tsx` aan in de map `src/components/transactions` en kopieer hier de code omtrent de lijst van transacties uit `App.tsx` naartoe. Voeg een h1 tag toe bovenaan de lijst.
+Maak een bestand `TransactionList.tsx` aan in de map `src/components/transactions` en kopieer hier de code omtrent de lijst van transacties uit `App.tsx` naartoe. Voeg een `h1` tag toe bovenaan de lijst.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionList.tsx
 import Transaction from './Transaction';
 import { TRANSACTION_DATA } from '../../api/mock_data';
@@ -1057,7 +1058,7 @@ export default function TransactionList() {
 
 Gebruik vervolgens deze component in `App.tsx`.
 
-```tsx
+```jsx
 import PlacesList from './components/places/PlacesList';
 import TransactionList from './components/transactions/TransactionList'; // 👈 1
 
@@ -1082,7 +1083,7 @@ export default App;
 
 In HTML houden formulierelementen zoals `input`, `textarea` en `select` doorgaans hun eigen state bij. Ze werken deze bij op basis van gebruikersinvoer.
 
-In React wordt de veranderlijke state bewaard in de **state variabele** van componenten en alleen bijgewerkt met bijhorende **set-functie**. We moeten dus de state van het formulier bijhouden en bijwerken wanneer een veld in het formulier wordt gewijzigd. Dit noemt men [**controlled components**](https://reactjs.org/docs/forms.html#controlled-components).
+In React wordt de veranderlijke state bewaard in de **state variabele** van componenten en alleen bijgewerkt met bijhorende **set-functie**. We moeten dus de state van het formulier bijhouden en bijwerken wanneer een veld in het formulier wordt gewijzigd. Dit noemt men [**controlled components**](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components).
 
 In onderstaand voorbeeld voegen we een zoekfunctie toe om de transacties te filteren o.b.v. de plaats. We voegen een formulier met zoekveld en -knop toe. Voeg eerst de input component toe aan je project:
 
@@ -1094,7 +1095,7 @@ pnpm dlx shadcn@latest add input
 
 Voeg deze code toe aan de `TransactionList` component:
 
-```tsx
+```jsx
 // src/components/transactions/TransactionList.tsx
 import Transaction from './Transaction';
 import { TRANSACTION_DATA } from '../../api/mock_data';
@@ -1125,7 +1126,7 @@ export default function TransactionList() {
 
 Formulierelementen in React zijn read-only. Door state toe te voegen, kan de component zich aanpassen.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionList.tsx
 import Transaction from './Transaction';
 import { TRANSACTION_DATA } from '../../api/mock_data';
@@ -1150,17 +1151,17 @@ export default function TransactionList() {
 
       <div className='flex justify-between mb-4 gap-2'>
         <div className='flex gap-2 w-1/2'>
+          {/* 👇 2 en 3 */}
           <Input
             type='search'
             placeholder='Search by place…'
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          {/* 👆 2 en 3 */}
+          {/* 👇 4 */}
           <Button variant='outline' onClick={() => setSearch(text)}>
             Search
           </Button>
-          {/* 👆 4 */}
         </div>
       </div>
 
@@ -1205,7 +1206,7 @@ Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal m
 `useMemo` is een React Hook waarmee je het resultaat van een berekening tussen renders kan cachen.
 Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze functie enkel en alleen uitvoeren als de dependencies gewijzigd zijn. In onderstaand voorbeeld wordt de filter pas uitgevoerd bij het laden van de component en bij het klikken op `Search`.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionList.tsx
 import { useState, useMemo } from 'react'; // 👈
 
@@ -1247,7 +1248,7 @@ pnpm dlx shadcn@latest add table
 
 Maak de `TransactionsTable` component aan zoals hieronder. Deze component verwacht een lijst van transacties als prop en geeft deze weer in een tabel. We maken gebruik van de `Transaction` component voor het weergeven van elke rij in de tabel.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionsTable.tsx
 import Transaction from './Transaction';
 import {
@@ -1303,7 +1304,7 @@ export default TransactionsTable;
 
 Pas de `TransactionsList` component aan:
 
-```tsx
+```jsx
 // src/components/transactions/TransactionList.tsx
 import { TRANSACTION_DATA } from '../../api/mock_data';
 import type { Transaction as TransactionType } from '../../types';
@@ -1372,10 +1373,10 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
 
 - Oplossing +
 
-  ```tsx
+  ```jsx
   // src/components/transactions/Transaction.tsx
   // kan ook met react-intl (https://formatjs.io/docs/getting-started/installation/)
-  // src/components/transaction/Transaction.tsx
+  // src/components/transactions/Transaction.tsx
   import type { Transaction as TransactionType } from '../../types';
   import { TableRow, TableCell } from '../ui/table';
 
@@ -1414,9 +1415,9 @@ const amountFormat = new Intl.NumberFormat('nl-BE', {
 
 ### Refactoring weergave van een datum
 
-Je kan ook een aparte component `LocalizedDate` aanmaken die een datum als prop verwacht en deze op de gewenste manier weergeeft. Deze component kan je dan overal in je applicatie gebruiken waar je een datum wilt weergeven.
+Je kan ook een aparte component `LocalizedDate` aanmaken die een datum als prop verwacht en deze op de gewenste manier weergeeft. Deze component kan je dan overal in je applicatie gebruiken waar je een datum wil weergeven.
 
-```tsx
+```jsx
 // src/components/LocalizedDate.tsx
 interface LocalizedDateProps {
   date?: string | Date | null;
@@ -1441,7 +1442,7 @@ export function LocalizedDate({ date }: LocalizedDateProps) {
 
 Je kan deze component vervolgens gebruiken in de `Transaction` component:
 
-```tsx
+```jsx
 // src/components/transactions/Transaction.tsx
 import type { Transaction as TransactionType } from '@/types';
 import { TableRow, TableCell } from '../ui/table';
@@ -1474,6 +1475,8 @@ export default function Transaction({
   );
 }
 ```
+
+Je zou hetzelfde kunnen doen voor de weergave van het bedrag.
 
 ## useReducer hook
 
@@ -1574,7 +1577,3 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 - [React re-renders guide: everything, all at once](https://www.developerway.com/posts/react-re-renders-guide)
 - [The new wave of React state management](https://frontendmastery.com/posts/the-new-wave-of-react-state-management/)
 - [Why You Should Use Redux in 2024](https://gitnation.com/contents/why-you-should-use-redux-in-2024)
-
-```
-
-```
