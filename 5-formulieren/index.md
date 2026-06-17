@@ -938,3 +938,4 @@ Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de 
 - [3 React Mistakes, 1 App Killer](https://youtu.be/QuLfCUh-iwI)
 - [Were React Hooks a Mistake?](https://jakelazaroff.com/words/were-react-hooks-a-mistake/)
 - [How React 18 Improves Application Performance](https://vercel.com/blog/how-react-18-improves-application-performance)
+- [Free & Open Source Animated ReactJS Components](https://animata.design/)
