@@ -217,6 +217,8 @@ export default PlacesList;
 
 Merk op: React-components mogen maar één element retourneren. We wrappen de elementen in een lege tag <></>. Dit genereert geen extra DOM element, enkel een virtuele knoop in de virtual DOM.
 
+Merk op: Shadcn voorziet geen aparte componenten voor [typografie](https://ui.shadcn.com/docs/components/base/typography). Ook voor layouts gebruik je rechtstreeks de Tailwind CSS utility-klassen. shadcn focust op UI-componenten zoals knoppen, dialogen, formuliervelden, etc. — geen layoutprimitieven. Die komen van Tailwind CSS.
+
 Voeg de `PlacesList` component toe aan `App.tsx` en bekijk het resultaat.
 
 ```jsx
@@ -1176,69 +1178,12 @@ export default function TransactionList() {
 }
 ```
 
-1. Voeg state `text` toe voor het inputveld (is een Controlled Component). De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld. Er moet een re-render geactiveerd worden bij klik op de `Search` knop,  vandaar de state `search`.
+1. Voeg state `text` toe voor het inputveld (is een Controlled Component). De filtering mag enkel gebeuren als de gebruiker op search klikt, niet bij ingave van een letter in het zoekveld. Er moet een re-render geactiveerd worden bij klik op de `Search` knop, vandaar de state `search`.
 2. Verbind het inputelement met de component state via de `value` prop.
 3. Gebruik de `onChange` event handler om de user input op te vangen en de state aan te passen.
 4. Nu kunnen we bij het klikken op de zoekknop de `search` tekst instellen, waardoor de component gererenderd wordt en de gefilterde transacties getoond moeten worden.
 5. We maken een variabele met de gefilterde transacties.
 6. We tonen enkel de gefilterde transacties.
-
-## Verbeteren van de performantie
-
-Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools, zie de logging 'filtering...'), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
-
-In een React-applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
-
-Een oplossing voor dit probleem is **memoization**. [Wikipedia](https://en.wikipedia.org/wiki/Memoization) geeft hiervoor volgende definitie:
-
-> In computing, memoization or memoisation is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
-
-React biedt een paar vormen van memoization:
-
-- `useMemo`: retourneert een memoized **waarde**
-- `useCallback`: retourneert een memoized **functie**
-- `memo`: creatie van pure componenten (let op: dit is **geen** hook)
-
-Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal memoization kan toepassen. Het is een vorm van optimalisatie en je weet wat Donald Knuth hierover zei:
-
-> Premature optimization is the root of all evil - Donald Knuth
-
-### useMemo hook
-
-`useMemo` is een React Hook waarmee je het resultaat van een berekening tussen renders kan cachen.
-Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze functie enkel en alleen uitvoeren als de dependencies gewijzigd zijn. In onderstaand voorbeeld wordt de filter pas uitgevoerd bij het laden van de component en bij het klikken op `Search`.
-
-```jsx
-// src/components/transactions/TransactionList.tsx
-import { useState, useMemo } from 'react'; // 👈
-
-//...
-
-// 👇
-const filteredTransactions = useMemo(
-  () =>
-    TRANSACTION_DATA.filter((t: TransactionType) => {
-      console.log('filtering...');
-      return t.place.name.toLowerCase().includes(search.toLowerCase());
-    }),
-  [search],
-);
-
-//...
-```
-
-De `useMemo` hook verwacht twee parameters:
-
-1. Een **calculation function** die het resultaat van de berekening retourneert. Het resultaat van die functie wordt bijgehouden in de cache, **niet** de functie zelf.
-2. Een **dependency array** die elke waarde bevat waarnaar verwezen wordt in de calculation function.
-
-Bij elke volgende render vergelijkt React de dependencies met de dependencies die je tijdens de laatste render hebt doorgegeven. Als geen van de dependencies is gewijzigd, retourneert `useMemo` de waarde die al eerder werd berekend. Anders zal React de berekening opnieuw uitvoeren en de nieuwe waarde retourneren.
-
-Belangrijk:
-
-- Je moet useMemo niet overal gebruiken.
-- Kleine berekeningen of eenvoudige objecten hoef je niet te memoizen: de overhead van useMemo kan dan zelfs trager zijn dan de berekening zelf. **React Compiler** zorgt in veel gevallen zelf voor optimalisatie.
-- Gebruik het vooral als je echte performanceproblemen merkt.
 
 ### Weergave tabel met transacties
 
@@ -1508,6 +1453,65 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 > pnpm install
 > pnpm dev
 > ```
+
+## Verbeteren van de performantie
+
+Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools, zie de logging 'filtering...'), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
+
+In een React-applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
+
+Een oplossing voor dit probleem is **memoization**. [Wikipedia](https://en.wikipedia.org/wiki/Memoization) geeft hiervoor volgende definitie:
+
+> In computing, memoization or memoisation is an optimization technique used primarily to speed up computer programs by storing the results of expensive function calls and returning the cached result when the same inputs occur again.
+
+React biedt een paar vormen van memoization:
+
+- `useMemo`: retourneert een memoized **waarde**
+- `useCallback`: retourneert een memoized **functie**
+- `memo`: creatie van pure componenten (let op: dit is **geen** hook)
+
+Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal memoization kan toepassen. Het is een vorm van optimalisatie en je weet wat Donald Knuth hierover zei:
+
+> Premature optimization is the root of all evil - Donald Knuth
+
+?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.js` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/#vite-configjs).
+
+### useMemo hook
+
+`useMemo` is een React Hook waarmee je het resultaat van een berekening tussen renders kan cachen.
+Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze functie enkel en alleen uitvoeren als de dependencies gewijzigd zijn. In onderstaand voorbeeld wordt de filter pas uitgevoerd bij het laden van de component en bij het klikken op `Search`.
+
+```jsx
+// src/components/transactions/TransactionList.tsx
+import { useState, useMemo } from 'react'; // 👈
+
+//...
+
+// 👇
+const filteredTransactions = useMemo(
+  () =>
+    TRANSACTION_DATA.filter((t: TransactionType) => {
+      console.log('filtering...');
+      return t.place.name.toLowerCase().includes(search.toLowerCase());
+    }),
+  [search],
+);
+
+//...
+```
+
+De `useMemo` hook verwacht twee parameters:
+
+1. Een **calculation function** die het resultaat van de berekening retourneert. Het resultaat van die functie wordt bijgehouden in de cache, **niet** de functie zelf.
+2. Een **dependency array** die elke waarde bevat waarnaar verwezen wordt in de calculation function.
+
+Bij elke volgende render vergelijkt React de dependencies met de dependencies die je tijdens de laatste render hebt doorgegeven. Als geen van de dependencies is gewijzigd, retourneert `useMemo` de waarde die al eerder werd berekend. Anders zal React de berekening opnieuw uitvoeren en de nieuwe waarde retourneren.
+
+Belangrijk:
+
+- Je moet useMemo niet overal gebruiken.
+- Kleine berekeningen of eenvoudige objecten hoef je niet te memoizen: de overhead van useMemo kan dan zelfs trager zijn dan de berekening zelf. **React Compiler** zorgt in veel gevallen zelf voor optimalisatie.
+- Gebruik het vooral als je echte performanceproblemen merkt.
 
 ## Oefening 4 - README eigen project
 

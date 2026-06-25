@@ -594,13 +594,25 @@ export default function Layout() {
 
 ### De navbar
 
-De `Navbar` component voorziet in het menu. We maken een responsive menu.
+De `Navbar` component voorziet in het menu. We maken een responsive menu gebruik makend van de [NavigationMenu](https://ui.shadcn.com/docs/components/radix/navigation-menu) van shadcn
 
 ```jsx
 // src/components/Navbar.tsx
 import { Link } from 'react-router';
 import { useState } from 'react';
 import { PiggyBankIcon, Menu, X } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu';
+
+const links = [
+  { to: '/transactions', label: 'Transactions' },
+  { to: '/places', label: 'Places' },
+  { to: '/about', label: 'About' },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false); // 👈1
@@ -617,11 +629,19 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className='hidden md:flex items-center gap-6 flex-1'>
-          <Link to='/transactions'>Transactions</Link>
-          <Link to='/places'>Places</Link>
-          <Link to='/about'>About</Link>
-        </nav>
+        <div className='hidden md:flex flex-1'>
+          <NavigationMenu>
+            <NavigationMenuList>
+              {links.map(({ to, label }) => (
+                <NavigationMenuItem key={to}>
+                  <NavigationMenuLink render={<Link to={to} />}>
+                    {label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
 
         {/* Mobile toggle */}
         <button
@@ -637,11 +657,19 @@ export default function Navbar() {
       {/* Mobile menu */}
       {isOpen && (
         <div className='border-t md:hidden bg-background'>
-          <nav className='container mx-auto flex flex-col gap-4 px-4 py-4 max-w-5xl'>
-            <Link to='/transactions'>Transactions</Link>
-            <Link to='/places'>Places</Link>
-            <Link to='/about'>About</Link>
-          </nav>
+          <div className='container mx-auto px-4 py-4 max-w-5xl'>
+            <NavigationMenu>
+              <NavigationMenuList className='flex-col items-start'>
+                {links.map(({ to, label }) => (
+                  <NavigationMenuItem key={to}>
+                    <NavigationMenuLink render={<Link to={to} />}>
+                      {label}
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
         </div>
       )}
     </header>
@@ -650,6 +678,13 @@ export default function Navbar() {
 ```
 
 1. We maken een state variabele `isOpen` aan om bij te houden of de navigatiebalk open of dicht is. Het klikken op de Mobile toggle button keert deze waarde om. We gebruiken deze waarde om de navigatiebalk te tonen of te verbergen.
+2. NavigationMenuLink rendert een `<a>` tag.
+
+   ```tsx
+   <NavigationMenuLink href={to}>{label}</NavigationMenuLink>
+   ```
+
+   Maar het nadeel is dat href de browser gebruikt voor navigatie — dus volledige pagina-herlaad in plaats van React Router's client-side navigatie. In een SPA verlies je daarmee de snelheid en de bewaard staat (scroll positie, etc.). De `render` prop is de juiste oplossing als je client-side navigatie wil behouden. De `render` vervangt het onderliggende `<a>` element van `NavigationMenuLink` door een `Link`, zodat er maar één `<a>` in de DOM staat.
 
 ### Integratie van de Layout component
 
@@ -719,116 +754,125 @@ In `main.tsx` kan je nu de `App` component verwijderen.
 
 ### Aanduiden van de actieve link in de navigatie
 
-Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` zet automatisch `aria-current="page"` op de actieve link. We voegen ook extra styling toe aan de (actieve) link zodat deze beter opvalt.
+Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` zet automatisch `aria-current="page"` op de actieve link.
 
 ```jsx
 // src/components/Navbar.tsx
 //...
-<NavLink
-  className={({ isActive }) =>
-    `text-sm font-medium transition-colors hover:text-primary ${
-      isActive ? 'text-foreground' : 'text-muted-foreground'
-    }`
-  }
-  to='/transactions'
+<NavigationMenuLink
+  render={<NavLink to={to} />}
+  active={pathname === to || pathname.startsWith(to + '/')}
 >
-  Transactions
-</NavLink>
+  {label}
+</NavigationMenuLink>
 //...
 ```
 
-De `NavLink` component heeft een `className` prop die een functie accepteert. Deze functie krijgt een object mee met de keys `isActive` en `isPending`. De key `isActive` is `true` wanneer de link actief is, anders is deze `false`. We kunnen deze waarde gebruiken om de juiste styling toe te passen op de link.
+`NavigationMenuLink` de actieve staat aan via het`data-active` attribuut dat de component zelf stijlt (data-active:bg-muted/50)
 
 ### Refactoring Navbar
 
-We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavItem` te maken voor de links. Voeg de code toe in `Navbar.tsx`:
+We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavMenu` te maken met een optionele `orientation` prop. Voeg de code toe in `Navbar.tsx`:
 
 ```jsx
 // src/components/Navbar.tsx
-interface NavItemProps {
-  to: string;
-  children: React.ReactNode;
+function NavMenu({ vertical = false }: { vertical?: boolean }) {
+  const { pathname } = useLocation();
+  return (
+    <NavigationMenu>
+      <NavigationMenuList
+        className={vertical ? 'flex-col items-start' : undefined}
+      >
+        {links.map(({ to, label }) => (
+          <NavigationMenuItem key={to}>
+            <NavigationMenuLink
+              render={<NavLink to={to} />}
+              active={pathname === to || pathname.startsWith(to + '/')}
+            >
+              {label}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
 }
-
-const NavItem = ({ to, children }: NavItemProps) => (
-  <NavLink
-    className={({ isActive }) =>
-      `text-sm font-medium transition-colors hover:text-primary ${
-        isActive ? 'text-foreground' : 'text-muted-foreground'
-      }`
-    }
-    to={to}
-  >
-    {children}
-  </NavLink>
-);
 ```
 
 Pas de `Navbar` component aan:
 
 ```jsx
 // src/components/Navbar.tsx
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useLocation } from 'react-router';
 import { useState } from 'react';
 import { PiggyBankIcon, Menu, X } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu';
 
-interface NavItemProps {
-  to: string;
-  children: React.ReactNode;
+const links = [
+  { to: '/transactions', label: 'Transactions' },
+  { to: '/places', label: 'Places' },
+  { to: '/about', label: 'About' },
+];
+
+function NavMenu({ vertical = false }: { vertical?: boolean }) {
+  const { pathname } = useLocation();
+  return (
+    <NavigationMenu>
+      <NavigationMenuList
+        className={vertical ? 'flex-col items-start' : undefined}
+      >
+        {links.map(({ to, label }) => (
+          <NavigationMenuItem key={to}>
+            <NavigationMenuLink
+              render={<NavLink to={to} />}
+              active={pathname === to || pathname.startsWith(to + '/')}
+            >
+              {label}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
 }
-
-const NavItem = ({ to, children }: NavItemProps) => (
-  <NavLink
-    className={({ isActive }) =>
-      `text-sm font-medium transition-colors hover:text-primary ${
-        isActive ? 'text-foreground' : 'text-muted-foreground'
-      }`
-    }
-    to={to}
-  >
-    {children}
-  </NavLink>
-);
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
-      <div className='container mx-auto flex h-14 max-w-5xl items-center px-4'>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+      <div className="container mx-auto flex h-14 max-w-5xl items-center px-4">
         <Link
-          to='/transactions'
-          className='flex items-center gap-2 font-semibold text-primary mr-6'
+          to="/transactions"
+          className="flex items-center gap-2 font-semibold text-primary mr-6"
         >
-          <PiggyBankIcon className='size-5' />
+          <PiggyBankIcon className="size-5" />
           Budget
         </Link>
 
-        {/* Desktop nav */}
-        <nav className='hidden md:flex items-center gap-6 flex-1'>
-          <NavItem to='/transactions'>Transactions</NavItem> {/* 👈 */}
-          <NavItem to='/places'>Places</NavItem> {/* 👈 */}
-          <NavItem to='/about'>About</NavItem> {/* 👈 */}
-        </nav>
+        <div className="hidden md:flex flex-1">
+          <NavMenu /> {/* 👈 */}
+        </div>
 
-        {/* Mobile toggle */}
         <button
-          className='ml-auto md:hidden'
+          className="ml-auto md:hidden"
           onClick={() => setIsOpen((prev) => !prev)}
-          aria-label='Toggle menu'
+          aria-label="Toggle menu"
         >
-          {isOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
-      {/* Mobile menu */}
       {isOpen && (
-        <div className='border-t md:hidden bg-background'>
-          <nav className='container mx-auto flex flex-col gap-4 px-4 py-4 max-w-5xl'>
-            <NavItem to='/transactions'>Transactions</NavItem> {/* 👈 */}
-            <NavItem to='/places'>Places</NavItem> {/* 👈 */}
-            <NavItem to='/about'>About</NavItem> {/* 👈 */}
-          </nav>
+        <div className="border-t md:hidden bg-background">
+          <div className="container mx-auto px-4 py-4 max-w-5xl">
+            <NavMenu vertical />  {/* 👈 */}
+          </div>
         </div>
       )}
     </header>
@@ -890,7 +934,9 @@ export default function NotFound() {
             variant='link'
             onClick={handleGoHome}
             className='text-destructive hover:text-destructive'
-          >go back home</Button>
+          >
+            go back home
+          </Button>
         </AlertDescription>
       </Alert>
     </>
