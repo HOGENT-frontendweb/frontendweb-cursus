@@ -925,7 +925,7 @@ export async function save(
 ): Promise<void> {
   await axios({
     method: id ? 'PUT' : 'POST',
-    url: `${url}/${id ?? ''}`,
+    url: `${baseUrl}/${url}/${id ?? ''}`,
     data,
   });
 }
@@ -1035,7 +1035,7 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
       : undefined,
   });// 👈 4
 
-  const { isSubmitting, isValid } = form.formState;// 👈 5
+  const {  isValid } = form.formState;// 👈 5
 
   const onSubmit = async (values: TransactionFormValues) => {
       if (!isValid) return;
@@ -1060,7 +1060,7 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
     {/* ... */}
     {/* 👇 3  */}
         <div className="flex justify-end gap-2 pt-6">
-          <Button type="submit" disabled={isSubmitting || !isValid}>
+          <Button type="submit">
             {transaction?.id ? 'Save transaction' : 'Add transaction'}
           </Button>
           <Link to="/transactions" className={cn(buttonVariants({ variant: 'outline' }))}>
