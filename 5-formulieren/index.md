@@ -115,7 +115,7 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en
   //..
   ```
 
-`cn(buttonVariants())` zorgt ervoor dat de <Link> er visueel uitziet als een knop.
+`cn(buttonVariants())` zorgt ervoor dat de `<Link>` er visueel uit ziet als een knop.
 
 - `buttonVariants()`: genereert de Tailwind CSS-klassen voor de standaard knopstijl (achtergrondkleur, padding, border-radius…)
 - `cn(...)`: combineert die klassen samen (en filtert eventuele conflicten weg)
@@ -157,7 +157,7 @@ import { cn } from '@/lib/utils'; // 👈
 
 ## Het formulier
 
-Maak een bestand `TransactionForm.tsx` aan in de map `src/components/transactions`. Dit bevat een formulier met 2 input velden (userId, amount), een datepicker en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop voor het vullen van de select lijst. We beginnen met een leeg formulier
+Maak een bestand `TransactionForm.tsx` aan in de map `src/components/transactions`. Dit bevat een formulier met twee input velden (userId, amount), een datepicker en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop voor het vullen van de select lijst. We beginnen met een leeg formulier
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -220,7 +220,7 @@ We maken gebruik van de React-hook-form voor het formulierbeheer in React. Dit b
 
 - `useForm` hook voor het beheren van de formulierstatus.
 - `<Controller />` component om controlled components te integreren in je formulier.
-- Client-side validatie met `Zod` en bijhorende `zodResolver`.
+- Client-side validatie met [zod](http://npmjs.com/package/zod) en bijhorende `zodResolver`.
 
 Voeg deze packages toe aan het project:
 
@@ -234,7 +234,7 @@ We beginnen met een eenvoudig formulier met 2 inputvelden `userId` en het `bedra
 
 ### Stap 1. Maak een formulierschema aan.
 
-We beginnen met het definiëren van de vorm van ons formulier met behulp van een `Zod`-schema. Het bepaalt:
+We beginnen met het definiëren van de vorm van ons formulier met behulp van een zod-schema. Het bepaalt:
 
 - Welke velden je formulier heeft
 - Welke types ze moeten hebben
@@ -302,12 +302,11 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 }
 ```
 
-1. importeer `useForm`.
-2. importeer `zodResolver`: Dit is een "brug" tussen `react-hook-form` en `zod`. `react-hook-form` weet op zich niet hoe hij met een zod-schema moet werken. `zodResolver` vertaalt het zod-schema zodat `react-hook-form` het kan gebruiken voor validatie.
+1. Importeer `useForm`.
+2. Importeer `zodResolver`. Dit is een "brug" tussen `react-hook-form` en `zod`. `react-hook-form` weet op zich niet hoe hij met een zod-schema moet werken. `zodResolver` vertaalt het zod-schema zodat `react-hook-form` het kan gebruiken voor validatie.
 3. Roep `useForm` aan. Configureer de hook met de optie `resolver: zodResolver(formSchema)`, zodat de validatie via het zod-schema moet verlopen. Het resultaat (`form`) bevat alle methodes, properties nodig om het formulier te besturen: veldregistratie, foutmeldingen, het indienen, enzovoort.
 4. `onSubmit` functie wordt uitgevoerd als het formulier succesvol gevalideerd en ingediend wordt. Ze krijgt automatisch de ingevulde waarden (`values`) binnen als parameter van het type `TransactionFormValues`. Log de `values` tijdelijk naar de console; later stuur je ze naar een API.
-
-5.`form.handleSubmit` is een wrapper van `react-hook-form`. Als de gebruiker het formulier indient, doet hij eerst de validatie. Pas als alles geldig is, roept hij `onSubmit` aan. Als er fouten zijn, worden die automatisch opgeslagen in `form.formState.errors` en wordt `onSubmit` niet opgeroepen.
+5. `form.handleSubmit` is een wrapper van `react-hook-form`. Als de gebruiker het formulier indient, doet hij eerst de validatie. Pas als alles geldig is, roept hij `onSubmit` aan. Als er fouten zijn, worden die automatisch opgeslagen in `form.formState.errors` en wordt `onSubmit` niet opgeroepen.
 
 ### Stap 3. Maak het formulier
 
@@ -320,7 +319,7 @@ Voor de bouw van het formulier maken we gebruik van
 pnpm dlx shadcn@latest add field input
 ```
 
-Voeg inputvelden toe voor User ID en amount
+Voeg inputvelden toe voor user ID en amount
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -411,7 +410,7 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
 
   `value/onChange` zorgen ervoor dat de state in het formulier gesynchroniseerd wordt.
 
-- `onChange={(e) => field.onChange(e.target.valueAsNumber)` overschrijft de standaard `onChange`. Normaal geeft een input een string terug, maar .`valueAsNumber` converteert het meteen naar een `number` — dat is nodig omdat het Zod schema `z.number()` verwacht en anders de conversie zou falen.
+- `onChange={(e) => field.onChange(e.target.valueAsNumber)` overschrijft de standaard `onChange`. Normaal geeft een input een string terug, maar .`valueAsNumber` converteert het meteen naar een `number` — dat is nodig omdat het zod-schema `z.number()` verwacht en anders de conversie zou falen.
 
 Het formulier wordt na toevoeging van de `Controller`:
 
@@ -494,7 +493,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 }
 ```
 
-1. importeer de `Controller`
+1. Importeer de `Controller`.
 2. `defaultValues`: de beginwaarden van de formuliervelden bij het laden van de pagina. Deze zijn 0 en niet leeg omdat het schema `z.number()` verwacht. Dit moet je opgeven als je met de Controller werkt , anders krijg je een fout in de Console: "installHook.js:1 Base UI: A component is changing the uncontrolled value state of Input to be controlled. Elements should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled Input element for the lifetime of the component. The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`."
 3. Voeg de `Controller` toe.
 
@@ -502,7 +501,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 In een applicatie kan je niet alleen werken met server-side validatie. In dat geval moet nl. de data eerst verzonden worden alvorens de validatie kan gebeuren. Je kan ook niet alleen vertrouwen op client-side validatie. Deze is eenvoudig uit te schakelen waardoor toch verkeerde data naar de server (en in de databank) kan komen.
 
-React-hook-form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. We maken gebruik van [zod](https://zod.dev/).
+React-hook-form ondersteunt ook schema-validatie met Yup, zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. We maken gebruik van [zod](https://zod.dev/).
 
 Neem eerst de [documentatie](https://zod.dev/basics) door
 
@@ -609,8 +608,8 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 ```
 
 1. Voeg de validatie toe aan het schema.
-   - userId — moet een getal zijn (minimaal 1), verplicht.
-   - amount — het bedrag, met twee extra checks via `.refine()`: Mag geen NaN zijn (niet-getal) — dit is een extra veiligheidscheck bovenop z.number() en mag niet 0 zijn
+   - `userId` — moet een getal zijn (minimaal 1), verplicht.
+   - `amount` — het bedrag, met twee extra checks via `.refine()`: Mag geen `NaN` zijn (niet-getal) — dit is een extra veiligheidscheck bovenop `z.number()` en mag niet 0 zijn
      De `{ error: '...' }` en`{ message: '...' }` opties bepalen de foutmeldingen die de gebruiker te zien krijgt als de validatie faalt.
 2. React-hook-form ondersteunt verschillende `validatiemodi`.
    - `onChange`: Bij elke wijziging wordt een validatie geactiveerd.
@@ -618,13 +617,12 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
    - `onSubmit`: Validatie wordt geactiveerd bij het verzenden (standaard).
    - `onTouched`: De validatie wordt geactiveerd bij de eerste keer dat het scherm de focus verliest, en vervolgens bij elke wijziging.
    - `all`: Validatie wordt geactiveerd bij het verlaten van het scherm en bij wijzigingen.
-3. We controlleren of er fouten voorkomen in het formulier
+3. We controlleren of er fouten voorkomen in het formulier.
 4. De Controller geeft nu ook de `fieldState` door. Di de validatiestatus van 1 specifiek veld.
-   - `fieldState.invalid`: true als het veld niet voldoet aan de Zod-validatieregels
+   - `fieldState.invalid`: true als het veld niet voldoet aan de zod-validatieregels
    - `fieldState.error`: het foutobject met de foutmelding (bv. { message: 'User is required' })
    - `fieldState.isDirty`: true als de gebruiker de waarde heeft gewijzigd t.o.v. de defaultValue
    - `fieldState.isTouched`: true als de gebruiker het veld heeft gefocust en er terug uit is gegaan
-
 5. Voeg de `data-invalid` prop toe aan het `<Field />`component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
 6. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.
 
@@ -633,8 +631,8 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 Voeg een extra formulierveld toe voor de keuze van een plaats. Maak hiervoor gebruik van de Select component. [Lees de documentatie voor integratie met react-form-hooks](https://ui.shadcn.com/docs/forms/react-hook-form#select).
 
 ```jsx
-// ...
 // src/components/transactions/TransactionForm.tsx
+// ...
 import {
   Select,
   SelectContent,
@@ -644,8 +642,9 @@ import {
 } from '@/components/ui/select';
 
 // ...
+
 const formSchema = z.object({
-// ...
+  // ...
   placeId: z.number({ error: 'Place is required' }).min(1, 'Place is required'),// 👈 1
 });
 
@@ -661,14 +660,15 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
   });
 
   // ...
+  // 👇 4
   const placesSelectItems = places.map((place) => ({
     value: place.id,
     label: place.name,
-  }));// 👈 4
+  }));
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      // ...
+        {/* ... */}
         {/* 👇 3 */}
         <Controller
           control={form.control}
@@ -706,12 +706,10 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 2. Voeg `placeId` toe aan de `defaultValues` in `useForm`.
 3. Voeg een `<Controller>` toe voor `placeId` met een [Select component](https://ui.shadcn.com/docs/components/radix/select). De Select component verwacht een lijst van het type `{value: number;label: string;}[]`, zie `placesSelectItems`. `SelectTrigger` is de zichtbare knop. `SelectContent` is het uitklapmenu en bevat de items.
 4. De places prop bevat de beschikbare plaatsen. Zet ze om naar het formaat { value: number; label: string }[] dat de Select verwacht.
-
-5.`<select>`:
-
-- `value` toont de waarde bijgehouden in react-hook-form. `field.value || null`: Base UI toont de placeholder "Place" als de value null is. (Indien 0 toont Base UI de waarde 0).
-- `onValueChange` stuurt de gekozen waarde terug naar react-hook-form (geen native event, maar een directe waarde — vandaar `onValueChange` i.p.v. `onChange`)
-- `onBlur` vertelt React-hook-form dat de gebruiker klaar is met dit veld, zodat validatie getriggerd wordt
+5. `<select>`:
+   - `value` toont de waarde bijgehouden in react-hook-form. `field.value || null`: Base UI toont de placeholder "Place" als de value null is. (Indien 0 toont Base UI de waarde 0).
+   - `onValueChange` stuurt de gekozen waarde terug naar react-hook-form (geen native event, maar een directe waarde — vandaar `onValueChange` i.p.v. `onChange`)
+   - `onBlur` vertelt React-hook-form dat de gebruiker klaar is met dit veld, zodat validatie getriggerd wordt
 
 ### Stap 7. Een datepicker voor de datum
 
@@ -753,7 +751,8 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
       date: new Date(),// 👈
     },
   });
-  // ...
+
+    // ...
     <Controller
       control={form.control}
       name='date'
@@ -1240,11 +1239,3 @@ Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook ee
 - [Were React Hooks a Mistake?](https://jakelazaroff.com/words/were-react-hooks-a-mistake/)
 - [How React 18 Improves Application Performance](https://vercel.com/blog/how-react-18-improves-application-performance)
 - [Free & Open Source Animated ReactJS Components](https://animata.design/)
-
-```
-
-```
-
-```
-
-```
