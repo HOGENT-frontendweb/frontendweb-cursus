@@ -576,11 +576,11 @@ We dienen er ook voor te zorgen dat na het inloggen genavigeerd wordt naar de pa
 ```jsx
 // src/pages/Login.jsx
 import { useNavigate, useLocation } from 'react-router'; // 👈
-//...
+// ...
 
 export default function Login() {
   const { search } = useLocation(); // 👈
-  //...
+  // ...
   const handleLogin = useCallback(
     async ({ email, password }) => {
       const loggedIn = await login(email, password);
@@ -598,7 +598,7 @@ export default function Login() {
     [login, navigate, search], // 👈
   );
 
-  //...
+  // ...
 }
 ```
 
@@ -632,17 +632,17 @@ export default function Navbar() {
   // ...
 
   return (
-    //...  👇 2
+    // ...  👇 2
     <div className="hidden lg:flex lg:items-center lg:space-x-4">
           <AuthButtons/>
           <ThemeToggle/>
         </div>
-    //...
+    // ...
      <div className="flex items-center mb-8">
         <Logo/>
         <AuthButtons/>
         <ThemeToggle/>
-     //...
+     // ...
   );
 }
 ```

@@ -82,12 +82,12 @@ In de navigatiebalk voorzien we een knop om het thema te kiezen. We maken in de 
 
 ```jsx
 // src/main.jsx
-//...
+// ...
 import { createContext } from 'react'; // 👈
 
 export const ThemeContext = createContext(); // 👈
 
-//...
+// ...
 }
 ```
 
@@ -97,7 +97,7 @@ Voeg toe in `main.jsx`:
 
 ```jsx
 // src/main.jsx
-//...
+// ...
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeContext.Provider value={{darkmode:true}}>
@@ -284,7 +284,7 @@ const NavItem = ({ to, children, options}) => {
   );
 };
 
-//...
+// ...
 
 {/* 👇 2*/}
 const ThemeToggle = () => {
@@ -422,7 +422,7 @@ import { IoMoonSharp, IoSunny } from 'react-icons/io5';
 
 const ThemeToggle = () => {
   const { darkmode, toggleDarkmode } = useTheme(); // 👈 2
-  //...
+  // ...
 };
 
 ```
@@ -591,7 +591,7 @@ export default function LabelInput({
     formState: { errors },
   } = useFormContext(); // 👈
 
-  //...
+  // ...
 }
 ```
 
@@ -715,12 +715,12 @@ export default function LabelInput({
   const hasError = name in errors;
 
   return (
-    //...
+    // ...
       <input ...
         disabled={isSubmitting}
 
       /> {/* 👆 */}
-    //...
+    // ...
   );
 }
 ```

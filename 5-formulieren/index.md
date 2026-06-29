@@ -34,7 +34,7 @@ We maken een component voor het toevoegen en wijzigen van een transactie en voor
 
 ### Oefening 1 - Routing
 
-Maak een bestand `AddOrEditTransaction.jsx` aan in de map `src/pages/transactions`. Voeg hieraan een placeholder toe zodat je weet dat de pagina correct wordt weergegeven.
+Maak een bestand `AddOrEditTransaction.tsx` aan in de map `src/pages/transactions`. Voeg hieraan een placeholder toe zodat je weet dat de pagina correct wordt weergegeven.
 
 Voorzie volgende bijkomende routes in de budget-applicatie:
 
@@ -48,32 +48,32 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
   De `AddOrEditTransaction` component:
 
   ```jsx
-  // src/pages/transactions/AddOrEditTransaction.jsx
+  // src/pages/AddOrEditTransaction.tsx
   export default function AddOrEditTransaction() {
     return <h1>Add transaction</h1>;
   }
   ```
 
-  De routes worden toegevoegd in `main.jsx`:
+  De routes worden toegevoegd in `main.tsx`:
 
   ```jsx
-  // src/main.jsx
-  import AddOrEditTransaction from './pages/transactions/AddOrEditTransaction.jsx';
-  //...
+  // src/main.tsx
+  import AddOrEditTransaction from './pages/transactions/AddOrEditTransaction.tsx';
+  // ...
   {
     path: '/transactions',
     children: [
       {
         index: true,
-        Component: TransactionList ,
+        element: <TransactionList /> ,
       },
       {
         path: 'add',
-        Component: AddOrEditTransaction,
+        element: <AddOrEditTransaction />,
       },
       {
         path: 'edit/:id',
-        Component: AddOrEditTransaction,
+        element: <AddOrEditTransaction />,
       },
     ],
   }
@@ -81,144 +81,94 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
 ### Oefening 2 - Toevoegen van knoppen
 
-Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.jsx` en een potloodknop in de lijst voor elke transactie (`Transaction.jsx`). Zorg dat de verwijderknop en edit knop niet getoond wordt als we de detail van een plaats bekijken.
+Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en een potloodknop in de lijst voor elke transactie (`Transaction.tsx`). Zorg dat de verwijderknop en editknop niet getoond worden als we de detailpagina van een plaats bekijken.
 
 - Oplossing +
 
-  In `TransactionList.jsx` voeg je onderstaande code toe:
+  In `TransactionList.tsx` voeg je onderstaande code toe:
 
   ```jsx
-  // src/pages/transactions/TransactionList.jsx
+  // src/pages/transactions/TransactionList.tsx
   import { Link } from 'react-router'; // 👈
-  //...
+  import { Button, buttonVariants } from '@/components/ui/button'; // 👈
+  // ...
 
-  <div className='flex justify-between mb-3 gap-2'>   {/* 👈 */}
-    <div className="w-1/2 flex gap-2">  {/* 👈 */}
-      <input
+  <div className='flex justify-between mb-4 gap-2'>
+    <div className='flex gap-2 w-1/2'>
+      <Input
         type='search'
-        id='search'
-        className='flex-1 rounded bg-white p-1 text-gray-900 placeholder:text-gray-400
-        outline-1 outline-gray-300 focus:outline-blue-600'
-        placeholder='Search'
+        placeholder='Search by place…'
         value={text}
-        onChange={(e)=> {
-          setText(e.target.value);
-        }}
+        onChange={handleSearchChange}
+        onKeyDown={handleKeyDown}
       />
-      <button type='button' className='py-2 px-2.5 rounded-md
-      text-blue-600 border border-blue-600'
-      onClick = {()=> {setSearch(text);}>
+      <Button variant='outline' onClick={() => setSearch(text)}>
         Search
-      </button>
+      </Button>
     </div>
-    <Link to='/transactions/add' className='py-2 px-2.5 rounded-md text-white border border-blue-600 bg-blue-600'>
+
+    <Link to='/transactions/add' className={cn(buttonVariants())}>
       Add transaction
-    </Link> {/* 👈 */}
+    </Link>
+    {/* 👈 */}
+  </div>;
+  //..
+  ```
+
+`cn(buttonVariants())` zorgt ervoor dat de `<Link>` er visueel uit ziet als een knop.
+
+- `buttonVariants()`: genereert de Tailwind CSS-klassen voor de standaard knopstijl (achtergrondkleur, padding, border-radius…)
+- `cn(...)`: combineert die klassen samen (en filtert eventuele conflicten weg)
+- `className={...}`: past die klassen toe op de `<Link>`
+
+In `Transaction.tsx` voeg je onderstaande code toe:
+
+```jsx
+// src/components/transactions/Transaction.tsx
+import { Button, buttonVariants } from '../ui/button'; // 👈
+import { Pencil, Trash2 } from 'lucide-react'; // 👈
+import { Link } from 'react-router'; // 👈
+import { cn } from '@/lib/utils'; // 👈
+// ...
+<TableCell className='text-right'>
+  <div className='flex justify-end gap-1'>
+    <Link
+      to={`/transactions/edit/${id}`}
+      className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))}
+    >
+      <Pencil className='h-4 w-4' />
+    </Link>
+    {/* 👈 */}
+    {onDelete && (
+      <Button
+        variant='ghost'
+        size='icon'
+        onClick={handleDelete}
+        aria-label='Delete transaction'
+        className='text-destructive hover:text-destructive'
+      >
+        <Trash2 className='h-4 w-4' />
+      </Button>
+    )}
   </div>
-      //..
-  ```
-
-  In `Transaction.jsx` voeg je onderstaande code toe:
-
-  ```jsx
-  // src/components/transactions/Transaction.jsx
-  import { IoTrashOutline, IoPencilOutline } from 'react-icons/io5'; //👈
-  import { Link } from 'react-router'; // 👈
-  //...
-      <td className="py-2 flex justify-end">  {/* 👈 */}
-        {onDelete ?
-          <>
-            <button className='py-2 px-2.5 rounded-md bg-blue-600' onClick={handleDelete}>
-              <IoTrashOutline />
-            </button>
-            <Link to={`/transactions/edit/${id}`} className='mx-2 py-2 px-2.5 rounded-md bg-blue-600'>
-              <IoPencilOutline />
-            </Link>
-          </>:''} {/* 👈 */}
-      </td>
-  //...
-  ```
+</TableCell>;
+// ...
+```
 
 ## Het formulier
 
-Maak een bestand `TransactionForm.jsx` aan in de map `src/components/transactions`. Dit bevat een formulier met drie input velden (userId, date en amount) en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop.
+Maak een bestand `TransactionForm.tsx` aan in de map `src/components/transactions`. Dit bevat een formulier met twee inputvelden (userId, amount), een datepicker en één selectlijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop voor het vullen van de select lijst. We beginnen met een leeg formulier.
 
 ```jsx
-// src/components/transactions/TransactionForm.jsx
-export default function TransactionForm({ places = [] }) {
-  return (
-    <>
-      <form>
-        <div className='mb-3'>
-          <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
-            User id
-          </label>
-          <input
-            id='userId'
-            name='userId'
-            type='number'
-            className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-          focus:outline-blue-600 w-full'
-            placeholder='userid'
-            required
-          />
-        </div>
-        <div className='mb-3'>
-          <label htmlFor='date' className="block text-sm/6 font-medium text-gray-900">
-            Date
-          </label>
-          <input
-            id='date'
-            name='date'
-            type='date'
-            className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-          focus:outline-blue-600 w-full'
-            placeholder='date'
-          />
-        </div>
+// src/components/transactions/TransactionForm.tsx
+import type { Place } from '../../types';
 
-        <div className='mb-3'>
-          <label htmlFor='places' className="block text-sm/6 font-medium text-gray-900">
-            Place
-          </label>
-          <select id='placeId' name='placeId' className="w-full appearance-none
-           rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900
-           outline-1 -outline-offset-1 outline-gray-300 focus:outline-2
-           focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
-          required>
-            <option value='' disabled>
-              -- Select a place --
-            </option>
-            {places.map(({ id, name }) => (
-              <option key={id} value={id}>
-                {name}
-              </option>
-            ))}
-          </select>
-        </div>
+interface TransactionFormProps {
+  places?: Place[];
+}
 
-        <div className='mb-3'>
-          <label htmlFor='amount' className="block text-sm/6 font-medium text-gray-900">
-            Amount
-          </label>
-          <input
-            id='amount'
-            name='amount'
-            type='number'
-            className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-          focus:outline-blue-600 w-full'
-            required
-          />
-        </div>
-
-        <div className='flex justify-end'>
-          <button type='submit' className='py-2 px-2.5 rounded-md text-white bg-blue-600'>
-            Add transaction
-          </button>
-        </div>
-      </form>
-    </>
-  );
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  return <form>Hier komt het formulier</form>;
 }
 ```
 
@@ -233,314 +183,638 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
 - Oplossing +
 
   ```jsx
-  // src/pages/transactions/AddOrEditTransaction.jsx
+  // src/pages/transactions/AddOrEditTransaction.tsx
   import useSWR from 'swr'; // 👈 1
   import { getAll } from '../../api'; // 👈 1
   import TransactionForm from '../../components/transactions/TransactionForm'; // 👈 2
   import AsyncData from '../../components/AsyncData'; // 👈 3
+  import type { Place } from '../../types'; // 👈 1
 
   export default function AddOrEditTransaction() {
     const {
       data: places = [],
       error: placesError,
       isLoading: placesLoading,
-    } = useSWR('places', getAll); // 👈 1
+    } = useSWR<Place[]>('places', getAll); // 👈 1
 
     return (
-       <div className='w-full max-w-sm'>
-        <h1>Add transaction</h1>
-
+      <>
+        <h1 className='text-2xl font-semibold mb-6'>Add transaction</h1>
         {/* 👇 3 */}
         <AsyncData error={placesError} loading={placesLoading}>
           {/* 👇 2 */}
           <TransactionForm places={places} />
         </AsyncData>
-      </div>
+      </>
     );
   }
   ```
 
-  1. We maken gebruik van swr om alle plaatsen op te halen.
-  2. De `TransactionForm` component bevat het formulier voor de ingave van een transactie. We geven de plaatsen door.
-  3. Zorg voor foutafhandeling en loading indicator.
+1. We maken gebruik van swr om alle plaatsen op te halen.
+2. De `TransactionForm` component bevat het formulier voor de ingave van een transactie. We geven de plaatsen door.
+3. Zorg voor foutafhandeling en loading indicator.
 
 ### React-hook-form
 
-Voeg dit package toe aan het project:
+We maken gebruik van de React-hook-form voor het formulierbeheer in React. Dit bevat:
+
+- `useForm` hook voor het beheren van de formulierstatus.
+- `<Controller />` component om controlled components te integreren in je formulier.
+- Client-side validatie met [zod](http://npmjs.com/package/zod) en bijhorende `zodResolver`.
+
+Voeg deze packages toe aan het project:
 
 ```bash
-pnpm add react-hook-form
+pnpm add react-hook-form zod @hookform/resolvers
 ```
 
-We maken gebruik van de [useForm](https://react-hook-form.com/docs/useform) hook uit het `react-hook-form` package.
+Neem eerst de [documentatie over React-hook-form en shadcn](https://ui.shadcn.com/docs/forms/react-hook-form) door.
+
+We beginnen met een eenvoudig formulier met 2 inputvelden `userId` en het `bedrag`. Later voegen we ook een selectlijst en datepicker toe.
+
+### Stap 1. Maak een formulierschema aan.
+
+We beginnen met het definiëren van de vorm van ons formulier met behulp van een zod-schema. Het bepaalt:
+
+- Welke velden je formulier heeft
+- Welke types ze moeten hebben
+- Welke validatieregels gelden (zie verder)
 
 ```jsx
-// src/components/transactions/TransactionForm.jsx
+// src/components/transactions/TransactionForm.tsx
+import type { Place } from '../../types';
+import * as z from 'zod'; // 👈 1
+
+interface TransactionFormProps {
+  places?: Place[];
+}
+
+const formSchema = z.object({
+  userId: z.number(),
+  amount: z.number(),
+}); // 👈 2
+
+type TransactionFormValues = z.infer<typeof formSchema>; // 👈 3
+
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  return <form>Hier komt het formulier</form>;
+}
+```
+
+1. Importeer zod
+2. Zod laat je een schema definiëren dat beschrijft hoe de data er moet uitzien a.d.h.v. `z.object({})`. Het zegt uit welke velden je formulier bestaat en welk type ze hebben. Later breiden we dit verder uit met validatieregels.
+3. Genereer automatisch een TypeScript type op basis van je schema. Het schema en het type blijven zo automatisch gesynchroniseerd.
+
+### Stap 2. Stel het formulier in
+
+We maken gebruik van de [useForm](https://react-hook-form.com/docs/useform) hook uit het `react-hook-form` package. De hook beheert de volledige toestand van je formulier: de ingevulde waarden, of er fouten zijn, of het formulier al ingediend is, enzovoort. Zonder deze hook moet je dat allemaal zelf bijhouden met `useState`.
+
+```jsx
+// src/components/transactions/TransactionForm.tsx
+import type { Place } from '../../types';
+import * as z from 'zod';
 import { useForm } from 'react-hook-form'; // 👈 1
+import { zodResolver } from '@hookform/resolvers/zod'; // 👈 2
 
-export default function TransactionForm({ places = [] }) {
-  const { register, handleSubmit, reset } = useForm(); // 👈 2, 4 en 6
+interface TransactionFormProps {
+  places?: Place[];
+}
 
-  // 👇 5
-  const onSubmit = (values) => {
+const formSchema = z.object({
+  userId: z.number(),
+  amount: z.number(),
+});
+
+type TransactionFormValues = z.infer<typeof formSchema>;
+
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  const form = useForm<TransactionFormValues>({
+    resolver: zodResolver(formSchema), // 👈 2
+  }); // 👈 1
+
+  const onSubmit = (values: TransactionFormValues) => {
     console.log(JSON.stringify(values));
-    // Nieuwe transactie moet nog worden opgeslagen
-    reset(); // 👈 6
-  };
+  }; // 👈 4
 
   return (
-    {/* 👇 4*/}
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='mb-3'>
-        <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
-          User id
-        </label>
-        {/* 👇 3 */}
-        <input
-          {...register('userId')}
-          id='userId'
-          name='userId'
-          type='number'
-          className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-        focus:outline-blue-600 w-full'
-          placeholder='userid'
-          required
-        />
-      </div>
-      <div className='mb-3'>
-        <label htmlFor='date' className="block text-sm/6 font-medium text-gray-900">
-          Date
-        </label>
-        {/* 👇 3 */}
-        <input
-          {...register('date')}
-          id='date'
-          name='date'
-          type='date'
-          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-        focus:outline-blue-600 w-full'
-          placeholder='date'
-        />
-      </div>
-        <div className='mb-3'>
-        <label htmlFor='places' className="block text-sm/6 font-medium text-gray-900">
-          Place
-        </label>
-        {/* 👇 3 */}
-        <select
-          {...register('placeId')}
-          id='placeId'
-          name='placeId'
-          className="w-full appearance-none
-          rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900
-          outline-1 -outline-offset-1 outline-gray-300 focus:outline-2
-          focus:-outline-offset-2 focus:outline-blue-600 sm:text-sm/6"
-          required>
-          <option value='' disabled>
-            -- Select a place --
-          </option>
-          {places.map(({ id, name }) => (
-            <option key={id} value={id}>
-              {name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className='mb-3'>
-        <label htmlFor='amount' className="block text-sm/6 font-medium text-gray-900">
-          Amount
-        </label>
-        {/* 👇 3 */}
-        <input
-          {...register('amount')}
-          id='amount'
-          name='amount'
-          type='number'
-          className='rounded grow-1 bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-        focus:outline-blue-600 w-full'
-          required
-        />
-      </div>
-      <div className='flex justify-end'>
-        <button type='submit' className='py-2 px-2.5 rounded-md text-white bg-blue-600'>
-          Add transaction
-        </button>
-      </div>
-    </form>
-  );
+    <form onSubmit={form.handleSubmit(onSubmit)}>Hier komt het formulier</form>
+  ); // 👈 5
 }
 ```
 
-1. `useForm` is een **custom hook** om forms te beheren. Het geeft allerlei nuttige functies en andere info over het formulier terug. Neem maar een kijkje in de [documentatie](https://react-hook-form.com/docs/useform).
-2. [register](https://react-hook-form.com/docs/useform/register): met deze functie registreer je velden in het formulier en geef je een naam mee voor het veld. De waarden van de velden kunnen zo gebruikt worden voor zowel formuliervalidatie als het verzenden van het formulier. We hoeven zelf geen state bij te houden. Achterliggend wordt [React.ref](https://react.dev/learn/referencing-values-with-refs) gebruikt.
-3. Registreer de formuliervelden in de `useForm` hook.
-4. [handleSubmit](https://react-hook-form.com/docs/useform/handlesubmit): deze functie zorgt ervoor dat de formuliergegevens verzameld worden bij het verzenden van het formulier.
-5. De `onSubmit` functie logt de verstuurde waarden naar de console. `values` bevat de ingevulde waarden per formulierveld: `register('userId')` wordt doorgegeven als `{ userId:'value' }`.
-6. [reset](https://react-hook-form.com/docs/useform/reset): deze functie zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
+1. Importeer `useForm`.
+2. Importeer `zodResolver`. Dit is een "brug" tussen `react-hook-form` en `zod`. `react-hook-form` weet op zich niet hoe hij met een zod-schema moet werken. `zodResolver` vertaalt het zod-schema zodat `react-hook-form` het kan gebruiken voor validatie.
+3. Roep `useForm` aan. Configureer de hook met de optie `resolver: zodResolver(formSchema)`, zodat de validatie via het zod-schema moet verlopen. Het resultaat (`form`) bevat alle methodes, properties nodig om het formulier te besturen: veldregistratie, foutmeldingen, het indienen, enzovoort.
+4. `onSubmit` functie wordt uitgevoerd als het formulier succesvol gevalideerd en ingediend wordt. Ze krijgt automatisch de ingevulde waarden (`values`) binnen als parameter van het type `TransactionFormValues`. Log de `values` tijdelijk naar de console; later stuur je ze naar een API.
+5. `form.handleSubmit` is een wrapper van `react-hook-form`. Als de gebruiker het formulier indient, doet hij eerst de validatie. Pas als alles geldig is, roept hij `onSubmit` aan. Als er fouten zijn, worden die automatisch opgeslagen in `form.formState.errors` en wordt `onSubmit` niet opgeroepen.
 
-### Default values
+### Stap 3. Maak het formulier
 
-De `useForm` hook heeft één optioneel argument, een object met o.a. de property `defaultValue`:
+Voor de bouw van het formulier maken we gebruik van:
 
-```jsx
-// ...
-// 👇 1
-const EMPTY_TRANSACTION = {
-  id: undefined,
-  amount: undefined,
-  date: new Date(),
-  user: {
-    id: '',
-    name: '',
-  },
-  place: {
-    id: '',
-    name: '',
-  },
-};
+- [field](https://ui.shadcn.com/docs/components/base/field) component voor het combineren van de labels en de inputvelden
+- [input](https://ui.shadcn.com/docs/components/radix/input) component voor de ingave van tekst
 
-// 👇 3
-const toDateInputString = (date) => {
-  // ISO String without the trailing 'Z' is fine 🙄
-  // (toISOString returns something like 2020-12-05T14:15:74Z,
-  // datetime-local HTML5 input elements expect 2020-12-05T14:15:74, without the (timezone) Z)
-  //
-  // the best thing about standards is that we have so many to chose from!
-  if (!date) return null;
-  if (typeof date !== Object) {
-    date = new Date(date);
-  }
-  let asString = date.toISOString();
-  return asString.substring(0, asString.indexOf('T'));
-};
-
-export default function TransactionForm({ places = [] }) {
-  const transaction = EMPTY_TRANSACTION; // 👈 2
-
-  const { register, handleSubmit, reset } = useForm({
-    // 👇 3
-    defaultValues: {
-      date: toDateInputString(transaction?.date),
-      placeId: transaction?.place.id,
-      amount: transaction?.amount,
-      userId: transaction?.user.id,
-    },
-  });
-  // ...
-}
+```bash
+pnpm dlx shadcn@latest add field input
 ```
 
-1. Definieer een leeg transaction object. Plaats dit buiten de component!
-   - We plaatsen dit buiten de component omdat we geen nieuwe objecten willen aanmaken bij elke render. Dit object blijft steeds hetzelfde.
-2. Definieer een constante transaction en stel gelijk aan `EMPTY_TRANSACTION`. Bij de edit zullen we dit vervangen door een prop.
-3. Geef dit mee als standaardwaarde aan de `useForm` hook. We dienen de datum te formatteren. Hiervoor voorzien we de functie `toDateInputString`. Definieer geen pure functies in de component (functies zonder afhankelijkheden van variabelen). Plaats deze buiten de component (zelfde reden als bij de constante `EMPTY_TRANSACTION`).
-
-### Validatie
-
-In een applicatie kan je niet alleen werken met server-side validatie. In dat geval moet nl. de data eerst eens verzonden worden alvorens de validatie kan gebeuren. Echter kan je ook niet alleen vertrouwen op client-side validatie. Deze is eenvoudig uit te schakelen waardoor toch verkeerde data naar de server (en in de databank) kan komen.
-
-We geven een voorbeeld voor het inputveld van de gebruiker, dit is vrij gelijkaardig voor de overige velden.
+Voeg inputvelden toe voor user ID en amount.
 
 ```jsx
-// src/components/transactions/TransactionForm.jsx
+// src/components/transactions/TransactionForm.tsx
+import type { Place } from '../../types';
+import * as z from 'zod';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Field, FieldLabel, FieldGroup } from '@/components/ui/field'; // 👈
+import { Input } from '@/components/ui/input'; // 👈
+import { Button } from '@/components/ui/button'; // 👈
 
-// 👇 1
-const validationRules = {
-  userId: {
-    required: 'User is required',
-    min: { value: 1, message: 'UserId must be minimum 1' },
-  },
-};
+interface TransactionFormProps {
+  places?: Place[];
+}
 
-export default function TransactionForm({places = []}) {
-  // ...
+const formSchema = z.object({
+  userId: z.number(),
+  amount: z.number(),
+});
 
-  // 👇 2 en 3 en 4
-  const { register, handleSubmit, formState: { errors, isValid }, reset } = useForm({
-    mode: 'onBlur',
-    defaultValues:  {
-      date: toDateInputString(transaction?.date),
-      placeId: transaction?.place.id,
-      amount: transaction?.amount,
-      userId: transaction?.user.id,
-    },
+type TransactionFormValues = z.infer<typeof formSchema>;
+
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  const form = useForm<TransactionFormValues>({
+    resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = (values) => {
-    if (!isValid) return; // 👈 3
+  const onSubmit = (values: TransactionFormValues) => {
     console.log(JSON.stringify(values));
-    // Nieuwe transactie moet nog worden opgeslagen
-    reset(); // 👈 7
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='mb-3'>
-        <label htmlFor='userId' className="block text-sm/6 font-medium text-gray-900">
-          User id
-        </label>
-        {/* 👇 1 */}
-        <input
-          {...register('userId', validationRules.userId)}
-          id='userId'
-          name='userId'
-          type='number'
-          className='rounded bg-white p-1 text-gray-900 placeholder:text-gray-400 outline-1 outline-gray-300
-          focus:outline-blue-600 w-full'
-          placeholder='userid'
-          required
-        />
-         {/* 👇 2 */}
-        {errors.userId && <p className="text-red-500 text-sm mt-1">{errors.userId.message}</p> }
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor='userId'>User ID</FieldLabel>
+          <Input id='userId' type='number' />
+        </Field>
+        <Field>
+          <FieldLabel htmlFor='amount'>Bedrag</FieldLabel>
+          <Input id='amount' type='number' placeholder='0.00' />
+        </Field>
+      </FieldGroup>
+      <div className='flex justify-end gap-2 pt-6'>
+        <Button type='submit'>Add transaction</Button>
       </div>
-      {/*... */}
     </form>
-  );
+  ); // 👈
+}
 ```
 
-1. Als tweede parameter van de `register` functie kan je de validatieregels meegeven (`required`, `min`, `max`, `minLength`, `maxLength`, `pattern`, `validate`). Je kan ook de bijhorende foutmelding opgeven. Hiervoor definiëren we een constante `validationRules`. Gebruik geen constante object literals/arrays in de component, zoals bv. validatieregels. Plaats deze buiten de component. Anders wordt dit bij elke render opnieuw aangemaakt.
-   - React Hook Form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. Meer hierover in de documentatie van [register](https://react-hook-form.com/docs/useform/register). Voor inputveld met als type `number` dien je `valueAsNumber` in te stellen zodat je een getal i.p.v. een string terugkrijgt.
-2. Voor de weergave van de fouten maken we gebruik van het `errors` object. Aan de hand van het `type` property kan je het type van de fout opvragen (bv. `errors.userId.type === 'required'`). Merk op dat we hier gebruik maken van `&&`, dit wordt wel eens gezien als een anti-pattern in React. Het is eigenlijk beter om de ternary operator (`voorwaarde ? true : false`) te gebruiken. Dit wordt dus: `{errors.userId ? <p className="form-text text-danger">{errors.userId.message}</p> : null}`.
-3. Als het formulier niet geldig is beëindigen we het afhandelen van de submit.
-4. `mode`: validatie strategie alvorens submit. onBlur validatie wordt getriggerd bij het blur event.
+De inputvelden zijn nog niet gekoppeld aan react-hook-form. Dit doen we in de volgende stap.
 
-### Oefening 4 - validatie
+### Stap 4. Controller
 
-Definieer de validatieregels voor de andere inputvelden
+React-hook-form houdt de state bij voor elke control. [Controller](https://react-hook-form.com/docs/useform/register) is een wrapper van react-hook-form die een UI-library component integreert met het formulier. De `Controller` toevoegen doe je als volgt:
 
-- Oplossing +
+```jsx
+<Controller
+  control={form.control}
+  name='theName' //naam overeenkomstig formObject
+  render={({ field }) => (
+    <Input
+      {...field}
+      type='number'
+      onChange={(e) => field.onChange(e.target.valueAsNumber)} // overschrijft onChange voor type conversie
+    />
+  )}
+/>
+```
+
+- `form.control` is het "brein" van het formulier, het bevat alle waarden en validatieregels.
+- `name` is de naam van het overeenkomstig form object.
+- Het `render` prop is een functie die je component rendert en een `field` object doorgeeft aan je component. Dit bevat volgende props:
+  - `field.value`: de huidige waarde uit de form state
+  - `field.onChange`: update de form state bij een wijziging
+  - `field.name`: de naam van het veld
+  - `field.ref`: verbindt het element met react-hook-form voor focus bij errors
+  - `field.onBlur`: geeft door dat het veld 'touched' is. Zo kan de validatie getriggerd worden afhankelijk van de modus
+- `{...field}` spreidt alle field props uit op de input. Dus o.a.
 
   ```jsx
-  const validationRules = {
-    userId: {
-      required: 'User is required',
-      min: { value: 1, message: 'UserId must be minimum 1' },
-    },
-    date: {
-      required: 'Date is required',
-      valueAsDate: true,
-      validate: (value) => {
-        if (value >new Date()) return 'Date cannot be in the future';
-        return null;
-      },
-    },
-    placeId: {
-      valueAsNumber: true,
-      required: 'Place is required',
-    },
-    amount: {
-      required: 'Amount is required',
-      valueAsNumber: true,
-      validate: (value) => {
-        if (value === 0) return '0 is not a valid amount';
-        return null;
-      },
-    },
-  };
+  <Input
+    value={field.value} // waarde komt uit React-hook-form's state
+    onChange={field.onChange} // elke toetsaanslag updatet React-hook-form's state
+  />
   ```
 
+  `value/onChange` zorgen ervoor dat de state in het formulier gesynchroniseerd wordt.
+
+- `onChange={(e) => field.onChange(e.target.valueAsNumber)` overschrijft de standaard `onChange`. Normaal geeft een input een string terug, maar `valueAsNumber` converteert het meteen naar een `number` — dat is nodig omdat het zod-schema `z.number()` verwacht en anders de conversie zou falen.
+
+Het formulier wordt na toevoeging van de `Controller`:
+
+```jsx
+// src/components/transactions/TransactionForm.tsx
+import type { Place } from '../../types';
+import * as z from 'zod';
+import { Controller, useForm } from 'react-hook-form'; // 👈 1
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Field, FieldLabel, FieldGroup } from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+interface TransactionFormProps {
+  places?: Place[];
+}
+
+const formSchema = z.object({
+  userId: z.number(),
+  amount: z.number(),
+});
+
+type TransactionFormValues = z.infer<typeof formSchema>;
+
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  const form = useForm<TransactionFormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userId: 0,
+      amount: 0,
+    }, // 👈 2
+  });
+
+  const onSubmit = (values: TransactionFormValues) => {
+    console.log(JSON.stringify(values));
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        {/* 👇 3 */}
+        <Controller
+          control={form.control}
+          name='userId'
+          render={({ field }) => (
+            <Field>
+              <FieldLabel htmlFor={field.name}>User Id</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type='number'
+                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+              />
+            </Field>
+          )}
+        />
+        {/* 👇 3 */}
+        <Controller
+          control={form.control}
+          name='amount'
+          render={({ field }) => (
+            <Field>
+              <FieldLabel htmlFor={field.name}>Amount</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type='number'
+                placeholder='0.00'
+                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+              />
+            </Field>
+          )}
+        />
+      </FieldGroup>
+      <div className='flex justify-end gap-2 pt-6'>
+        <Button type='submit'>Add transaction</Button>
+      </div>
+    </form>
+  );
+}
+```
+
+1. Importeer de `Controller`.
+2. `defaultValues`: de beginwaarden van de formuliervelden bij het laden van de pagina. Deze zijn 0 en niet leeg omdat het schema `z.number()` verwacht. Dit moet je opgeven als je met de Controller werkt, anders krijg je een fout in de Console: "installHook.js:1 Base UI: A component is changing the uncontrolled value state of Input to be controlled. Elements should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled Input element for the lifetime of the component. The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`."
+3. Voeg de `Controller` toe.
+
+### Stap 5. Validatie
+
+In een applicatie kan je niet alleen werken met server-side validatie. In dat geval moet nl. de data eerst verzonden worden alvorens de validatie kan gebeuren. Je kan ook niet alleen vertrouwen op client-side validatie. Deze is eenvoudig uit te schakelen waardoor toch verkeerde data naar de server (en in de databank) kan komen.
+
+React-hook-form ondersteunt ook schema-validatie met Yup, zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. We maken gebruik van [zod](https://zod.dev/).
+
+Neem eerst de [documentatie](https://zod.dev/basics) door.
+
+```jsx
+// src/components/transactions/TransactionForm.tsx
+import type { Place } from '../../types';
+import * as z from 'zod';
+import { Controller, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Field,
+  FieldLabel,
+  FieldGroup,
+  FieldError,
+} from '@/components/ui/field';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+
+interface TransactionFormProps {
+  places?: Place[];
+}
+
+const formSchema = z.object({
+  userId: z
+    .number({ error: 'User Id is required and must be a number' })
+    .min(1, 'User Id must be minimum 1'),
+  amount: z
+    .number({ error: 'Amount is required and must be a number' })
+    .refine((value) => !isNaN(value), {
+      message: 'Amount is required and must be a number',
+    })
+    .refine((value) => value !== 0, { message: '0 is not a valid amount' }),
+}); // 👈 1
+
+type TransactionFormValues = z.infer<typeof formSchema>;
+
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  const form = useForm<TransactionFormValues>({
+    mode: 'onBlur', // 👈 2
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userId: 0,
+      amount: 0,
+    },
+  });
+
+  const onSubmit = (values: TransactionFormValues) => {
+    if (!form.formState.isValid) return; // 👈 3
+    console.log(JSON.stringify(values));
+  };
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <Controller
+          control={form.control}
+          name='userId'
+          render={(
+            { field, fieldState }, //👈 4
+          ) => (
+            <Field data-invalid={fieldState.invalid}>
+              {/* 👈 5 */}
+              <FieldLabel htmlFor={field.name}>User Id</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type='number'
+                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              {/* 👈 6 */}
+            </Field>
+          )}
+        />
+
+        <Controller
+          control={form.control}
+          name='amount'
+          render={(
+            { field, fieldState }, //👈 4
+          ) => (
+            <Field data-invalid={fieldState.invalid}>
+              {/* 👈 5 */}
+              <FieldLabel htmlFor={field.name}>Amount</FieldLabel>
+              <Input
+                {...field}
+                id={field.name}
+                type='number'
+                placeholder='0.00'
+                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}{' '}
+              {/* 👈 6 */}
+            </Field>
+          )}
+        />
+      </FieldGroup>
+      <div className='flex justify-end gap-2 pt-6'>
+        <Button type='submit'>Add transaction</Button>
+      </div>
+    </form>
+  );
+}
+```
+
+1. Voeg de validatie toe aan het schema.
+   - `userId` — moet een getal zijn (minimaal 1), verplicht.
+   - `amount` — het bedrag, met twee extra checks via `.refine()`: Mag geen `NaN` zijn (niet-getal) — dit is een extra veiligheidscheck bovenop `z.number()` en mag niet 0 zijn
+     De `{ error: '...' }` en `{ message: '...' }` opties bepalen de foutmeldingen die de gebruiker te zien krijgt als de validatie faalt.
+2. React-hook-form ondersteunt verschillende `validatiemodi`.
+   - `onChange`: Bij elke wijziging wordt een validatie geactiveerd.
+   - `onBlur`: Validatie wordt geactiveerd bij het verlaten van het scherm.
+   - `onSubmit`: Validatie wordt geactiveerd bij het verzenden (standaard).
+   - `onTouched`: De validatie wordt geactiveerd bij de eerste keer dat het scherm de focus verliest, en vervolgens bij elke wijziging.
+   - `all`: Validatie wordt geactiveerd bij het verlaten van het scherm en bij wijzigingen.
+3. We controleren of er fouten voorkomen in het formulier.
+4. De Controller geeft nu ook de `fieldState` door. Dit is de validatiestatus van 1 specifiek veld.
+   - `fieldState.invalid`: true als het veld niet voldoet aan de zod-validatieregels
+   - `fieldState.error`: het foutobject met de foutmelding (bv. { message: 'User is required' })
+   - `fieldState.isDirty`: true als de gebruiker de waarde heeft gewijzigd t.o.v. de defaultValue
+   - `fieldState.isTouched`: true als de gebruiker het veld heeft gefocust en er terug uit is gegaan
+5. Voeg de `data-invalid` prop toe aan het `<Field />` component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
+6. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.
+
+### Stap 6. Select voor plaatsen
+
+Voeg een extra formulierveld toe voor de keuze van een plaats. Maak hiervoor gebruik van de Select component. [Lees de documentatie voor integratie met react-hook-form](https://ui.shadcn.com/docs/forms/react-hook-form#select).
+
+```jsx
+// src/components/transactions/TransactionForm.tsx
+// ...
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from '@/components/ui/select';
+
+// ...
+
+const formSchema = z.object({
+  // ...
+  placeId: z.number({ error: 'Place is required' }).min(1, 'Place is required'),// 👈 1
+});
+
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  const form = useForm<TransactionFormValues>({
+    mode: 'onBlur',
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userId: 0,
+      amount: 0,
+      placeId: 0, // 👈 2
+    },
+  });
+
+  // ...
+  // 👇 4
+  const placesSelectItems = places.map((place) => ({
+    value: place.id,
+    label: place.name,
+  }));
+
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+        {/* ... */}
+        {/* 👇 3 */}
+        <Controller
+          control={form.control}
+          name="placeId"
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor={field.name}>Place</FieldLabel>
+              <Select
+                value={field.value || null}
+                items={placesSelectItems}
+                onValueChange={field.onChange}
+                onOpenChange={() => field.onBlur()}
+              > {/* 👈 5 */}
+                <SelectTrigger id={field.name} className="w-45">
+                  <SelectValue placeholder="Place" />
+                </SelectTrigger>
+                <SelectContent>
+                  {placesSelectItems.map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}{/* 👈 4 */}
+                </SelectContent>
+              </Select>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+     // ...
+  );
+}
+```
+
+1. Voeg een `placeId` veld toe aan het `formSchema` (verplicht getal, minimaal 1).
+2. Voeg `placeId` toe aan de `defaultValues` in `useForm`.
+3. Voeg een `<Controller>` toe voor `placeId` met een [Select component](https://ui.shadcn.com/docs/components/radix/select). De Select component verwacht een lijst van het type `{value: number;label: string;}[]`, zie `placesSelectItems`. `SelectTrigger` is de zichtbare knop. `SelectContent` is het uitklapmenu en bevat de items.
+4. De places prop bevat de beschikbare plaatsen. Zet ze om naar het formaat { value: number; label: string }[] dat de Select verwacht.
+5. `<select>`:
+   - `value` toont de waarde bijgehouden in react-hook-form. `field.value || null`: Base UI toont de placeholder "Place" als de value null is. (Indien 0 toont Base UI de waarde 0).
+   - `onValueChange` stuurt de gekozen waarde terug naar react-hook-form (geen native event, maar een directe waarde — vandaar `onValueChange` i.p.v. `onChange`)
+   - `onBlur` vertelt React-hook-form dat de gebruiker klaar is met dit veld, zodat validatie getriggerd wordt
+
+### Stap 7. Een datepicker voor de datum
+
+Maak gebruik van de [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker) voor de datum, die op zijn beurt gebruik maakt van de [Calendar](https://ui.shadcn.com/docs/components/base/calendar) en [Popover](https://ui.shadcn.com/docs/components/base/popover) component. `Popover` toont/verbergt de calendar. `PopoverTrigger` is de knop die je aanklikt, het toont de gekozen datum. `PopoverContent` klapt uit en toont de kalender.
+
+```bash
+pnpm dlx shadcn@latest add field popover calendar
+```
+
+En voeg toe aan het formulier.
+
+```jsx
+// src/components/transactions/TransactionForm.tsx
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { ChevronDownIcon } from 'lucide-react';
+import { LocalizedDate } from '../LocalizedDate';
+// ...
+// In het zod schema
+  date: z
+    .date()
+    .max(
+      new Date().setDate(new Date().getDate() + 1),
+      'Date cannot be in the future',
+    ),
+// ...
+export default function TransactionForm({ places = [] }: TransactionFormProps) {
+  const form = useForm<TransactionFormValues>({
+    mode: 'onBlur',
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      userId: 0,
+      amount: 0,
+      placeId: 0,
+      date: new Date(),// 👈
+    },
+  });
+
+    // ...
+    <Controller
+      control={form.control}
+      name='date'
+      render={({ field, fieldState }) => (
+        <Field data-invalid={fieldState.invalid}>
+          <FieldLabel id={field.name}>Date</FieldLabel>
+          <Popover>
+            <PopoverTrigger
+              render={
+                <Button
+                  variant='outline'
+                  data-empty={!field.value}
+                  className='justify-start text-left font-normal data-[empty=true]:text-muted-foreground'
+                />
+              }
+              className='flex w-full justify-between'
+            >
+              {field.value ? (
+                <LocalizedDate date={field.value} />
+              ) : (
+                <span>Pick a date</span>
+              )}
+              <ChevronDownIcon className='size-4' />
+            </PopoverTrigger>
+            <PopoverContent className='w-auto p-0'>
+              <Calendar
+                mode='single'
+                selected={field.value}
+                onSelect={field.onChange}
+                weekStartsOn={1}
+                disabled={{ after: new Date() }}
+              />
+            </PopoverContent>
+          </Popover>
+          {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+        </Field>
+      )}
+    />
+  ));
+```
+
+1. Voeg een `date` veld toe aan het `formSchema` (verplicht, moet een Date-object zijn, en mag niet in de toekomst liggen).
+2. Voeg `date` toe aan de `defaultValues` in `useForm` en stel in op de datum van vandaag.
+3. Voeg een `<Controller>` toe voor `amount` met een [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker).
+4. Maak gebruik van `LocalizedDate` voor weergave van de datum in de `Button`.
+5. `selected/onSelect` prop voor de synchronisatie met de state in react-hook-form.
+
+### Stap 8: Reset
+
+[reset](https://react-hook-form.com/docs/useform/reset) zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
+
+```jsx
+// src/components/transactions/TransactionForm.tsx
+const onSubmit = (values: TransactionFormValues) => {
+  if (!form.formState.isValid) return;
+  console.log(JSON.stringify(values));
+  form.reset();
+};
+```
+
 Vermits er meerdere invoervelden op ons formulier voorkomen en we steeds dezelfde code moeten schrijven, zouden we een aparte component moeten maken. Deze component zal gebruik moeten maken van [useFormContext](https://react-hook-form.com/docs/useformcontext). Dit komt in het volgende hoofdstuk aan bod.
+In React-hook-form zijn dit twee verschillende concepten:
 
 ## POST /api/transactions
 
@@ -549,41 +823,50 @@ De volgende stap van de CRUD operaties is de 'C', een nieuwe transactie aanmaken
 ```jsx
 // src/api/index.js
 // 👇 1
-export const save = async (url, { arg: body }) => {
-  await axios.post(`${baseUrl}/${url}`, body); // 👈 2
+export const save = async <T>(
+  url: string,
+  { arg }: { arg: T },
+): Promise<void> => {
+    await axios.post(`${baseUrl}/${url}`, arg);
 };
 ```
 
-1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook de `transaction` mee als argument, we hernoemen de `arg` optie voor de duidelijkheid.
+1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook de `transaction` mee als argument `arg`.
 2. We voeren een `POST` request uit naar de API. Axios zal de `transaction` automatisch omzetten naar JSON en versturen als body van het HTTP request. Het antwoord heeft als HTTP status code 201 en als response body de nieuw gecreëerde transactie. We negeren dat antwoord hier.
 
-De creatie van een transactie gebeurt in de `AddOrEditTransaction` component. De callback functie wordt doorgegeven aan de `TransactionForm`. De state (= de transacties) wordt bijgehouden in de `TransactionList` component, maar die zal automatisch geüpdatet worden als we dezelfde key doorgeven aan `swr`. We maken een nieuwe mutation in `AddOrEditTransaction`:
+We maken een nieuwe mutation in `TransactionForm`:
 
 ```jsx
-// src/pages/transactions/AddOrEditTransaction.jsx
+// src/components/transactions/TransactionForm.tsx
 // ... (imports)
 import useSWRMutation from 'swr/mutation'; // 👈 1
 import { getAll, save } from '../../api'; // 👈 1
+import Error from '../Error'; // 👈 2
 
-export default function AddOrEditTransaction() {
-  // 👇 2
-  const { trigger: saveTransaction, error: saveError } = useSWRMutation(
-    'transactions',
-    save,
-  );
+export default function TransactionForm({places = []) {
 
-  // ...
-  return (
+const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', api.save);// 👈 2
+
+const onSubmit = async (values: TransactionFormValues) => {
+      if (!form.formState.isValid) return;
+    // 👇 3
+      await saveTransaction(
+        {
+          ...values,
+        },
+        {
+          throwOnError: false,
+          onSuccess: () => form.reset()
+        },
+      );
+    };
+// ...
+   return (
     <>
-      <h1>Add transaction</h1>
-      {/* 👇 4 */}
-      <AsyncData error={saveError || placesError} loading={placesLoading}>
-        {/* 👇3 */}
-        <TransactionForm places={places} saveTransaction={saveTransaction} />
-      </AsyncData>
-      {/* ... */}
+      <Error error={saveError} />{/* 👈 2 */}
+
+      <form onSubmit={form.handleSubmit(onSubmit)}>
     </>
-  );
 }
 ```
 
@@ -591,45 +874,21 @@ export default function AddOrEditTransaction() {
 2. Maak een trigger-functie die een transactie zal opslaan. We gebruiken dezelfde key als bij het ophalen van de transacties, dus `transactions`. We geven als fetcher onze `save` functie mee. We krijgen o.a. terug:
    - `trigger`: een functie die we kunnen aanroepen om het request effectief uit te voeren en dus de transactie toe te voegen. Deze functie ontvangt de `transaction` als argument. We hernoemen dit naar `saveTransaction`.
    - `error`: een eventuele fout die zich voordoet bij het opslaan van de transactie. We hernoemen deze naar `saveError`.
-3. Geef de callback functie door aan `TransactionForm`component
-4. We tonen een eventuele fout na het opslaan
+3. Wijzig de `onSubmit` zodat `saveTransaction` aangeroepen wordt. We geven de values mee als argument. **Let op:** de functie is `async`, dus we moeten `await` gebruiken. Het optioneel 2de argument definieert dat `throw error` niet moet worden aangeroepen als de update faalt, en bij succes wordt het formulier gereset.
 
-```jsx
-// src/components/transactions/TransactionForm.jsx
-// ...
-
-// 👇 1
-export default function TransactionForm({ places = [], saveTransaction }) {
-  // 👇 2
-  const onSubmit = async (values) => {
-    if (!isValid) return;
-
-    // 👇 2
-    await saveTransaction(values, {
-      throwOnError: false,
-      onSuccess: () => reset(),
-    });
-  };
-  // ...
-}
-```
-
-1. Voeg `saveTransaction` toe aan de props
-2. Wijzig de `onSubmit` zodat `saveTransaction` aangeroepen wordt. We geven de values mee als argument . **Let op:** de functie is `async`, dus we moeten `await` gebruiken. Het optioneel 2de argument definieert dat `throw error` niet moet worden aangeroepen als de update faalt, en bij succes wordt het formulier gereset.
-
-Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee.
+Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee. 4. We tonen een eventuele fout na het opslaan
 
 ### Oefening 5 - POST in je eigen project
 
 Implementeer een formulier om een entiteit te creëren in je eigen project:
 
-- Maak een functie die een POST request uitvoert aan in `api/index.js`.
+- Maak een functie die een POST request uitvoert in `api/index.ts`.
 - Gebruik de `useSWRMutation` hook om de data toe te voegen.
 - Controleer of je formulier een item kan toevoegen.
 
 ## PUT /api/transactions/:id
 
-Dan rest nog de 'U' van CRUD, maar die is een beetje speciaal. De API call zelf is geen probleem, dit is basically hetzelfde als het toevoegen maar met een extra `id` parameter.
+Dan rest nog de 'U' van CRUD, maar die is een beetje speciaal. De API call zelf is geen probleem, dit is in feite hetzelfde als het toevoegen maar met een extra `id` parameter.
 
 Maar we willen natuurlijk niet dat een gebruiker een volledig object juist moet invoeren om het aan te passen. We willen dat hij ergens op 'bewerk' kan klikken bij een bestaand element.
 
@@ -637,18 +896,21 @@ In de API hebben we een functie nodig om de aan te passen transactie op te halen
 
 ```jsx
 // src/api/index.js
-export const getById = async (url) => {
+
+export async function getById<T>(url: string): Promise<T> {
   const { data } = await axios.get(`${baseUrl}/${url}`);
   return data;
-};
+}
 ```
 
 In de API kan je een aparte functie aanmaken om iets te updaten:
 
 ```jsx
-export const updateById = async (url, { arg: body }) => {
-  const { id, ...values } = body;
-  await axios.put(`${baseUrl}/${url}/${id}`, values);
+export const updateById = async (
+  url: string,
+  { arg: { id, ...data } }: { arg: { id?: number } & Record<string, unknown> },
+) => {
+  await axios.put(`${baseUrl}/${url}/${id}`, data);
 };
 ```
 
@@ -656,7 +918,10 @@ Of we kunnen de `save` functie aanpassen:
 
 ```jsx
 // src/api/index.js
-export async function save(url, { arg: { id, ...data } }) {
+export async function save(
+  url: string,
+  { arg: { id, ...data } }: { arg: { id?: number } & Record<string, unknown> },
+): Promise<void> {
   await axios({
     method: id ? 'PUT' : 'POST',
     url: `${baseUrl}/${url}/${id ?? ''}`,
@@ -665,42 +930,46 @@ export async function save(url, { arg: { id, ...data } }) {
 }
 ```
 
-Wij kiezen voor de laatste (compacte) oplossing. Pas ook `PlacesList.jsx` aan zodat nu van de `save` methode gebruik gemaakt wordt.
+Wij kiezen voor de laatste (compacte) oplossing. Pas ook `PlacesList.tsx` aan zodat nu van de `save` methode gebruik gemaakt wordt.
 
-Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we `null` door. Indien swr `null` ontvangt, zal het geen request uitvoeren.
+Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we `null` door. Indien `swr` `null` ontvangt, zal het geen request uitvoeren.
 
 ```jsx
-// src/pages/transactions/AddOrEditTransaction.jsx
-// ... (imports)
+// src/pages/transactions/AddOrEditTransaction.tsx
 import { useParams } from 'react-router'; // 👈 1
-import { getAll, save, getById } from '../../api'; // 👈 3
+import useSWR from 'swr';
+import { getById, getAll } from '../api'; // 👈 3
+import TransactionForm from '../../components/transactions/TransactionForm';
+import AsyncData from '../../components/AsyncData';
+import type { Transaction, Place } from '../../types';
 
 export default function AddOrEditTransaction() {
-  const { id } = useParams(); // 👈 2
+  const { id } = useParams<{ id: string }>(); // 👈 2
 
   const {
     data: transaction,
     error: transactionError,
     isLoading: transactionLoading,
-  } = useSWR(id ? `transactions/${id}` : null, getById); // 👈 3
+  } = useSWR<Transaction>(id ? `transactions/${id}` : null, getById); // 👈 3
 
-  // ...
+  const {
+    data: places = [],
+    error: placesError,
+    isLoading: placesLoading,
+  } = useSWR<Place[]>('places', getAll);
 
   return (
     <>
-      <h1>Add transaction</h1>
-
+      <h1 className='text-2xl font-semibold mb-6'>
+        {id ? 'Edit transaction' : 'Add transaction'}
+      </h1>
       {/* 👇 5 */}
       <AsyncData
-        error={transactionError || placesError || saveError}
+        error={transactionError ?? placesError}
         loading={transactionLoading || placesLoading}
       >
         {/* 👇 4 */}
-        <TransactionForm
-          places={places}
-          transaction={transaction}
-          saveTransaction={saveTransaction}
-        />
+        <TransactionForm places={places} transaction={transaction} />
       </AsyncData>
     </>
   );
@@ -708,62 +977,107 @@ export default function AddOrEditTransaction() {
 ```
 
 1. Importeer `useParams`.
-2. Extraheer de id uit de url.
+2. Extraheer de id uit de URL.
 3. Maak gebruik van `useSWR` om de aan te passen transactie op te halen. Indien geen id parameter werd meegegeven wordt `null` meegegeven.
 4. Geef de aan te passen transactie door aan `TransactionForm`.
 5. Zorg voor foutafhandeling en laadindicator.
 
-In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `EMPTY_TRANSACTION` en passen we de code verder aan.
+In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `EMPTY_TRANSACTION`, zo werkt het aanmaken van een nieuwe transactie ook en passen we de code verder aan.
 
 ```jsx
-// src/components/transactions/TransactionForm.jsx
+// src/components/transactions/TransactionForm.tsx
 // ... (imports)
-import { useNavigate } from 'react-router'; // 👈 3
+import { useNavigate, Link } from 'react-router'; // 👈 3,5
+import { Button, buttonVariants } from '@/components/ui/button';// 👈 2
+import { cn } from '@/lib/utils';// 👈 2
+//..
+interface TransactionFormProps {
+  places?: Place[];
+  transaction?:Transaction// 👈 1
+}
 
-export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION, saveTransaction}) {  // 👈 1
+const EMPTY_TRANSACTION: Partial<Transaction> = {
+  id: undefined,
+  amount: 0,
+  date: new Date().toISOString(),
+  place: { id: 0, name: '', rating: 0 },
+  user: { id: 0, name: ''},
+};// 👈 1
+
+export default function TransactionForm({
+  places = [],
+  transaction = EMPTY_TRANSACTION as Transaction,// 👈 2
+}: TransactionFormProps) {
+
+
+export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION}) {
   const navigate = useNavigate(); // 👈 3
 
- const { register, handleSubmit, formState: { errors, isValid } } = useForm( {
+  const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', api.save);
+
+  const form = useForm<TransactionFormValues>({
     mode: 'onBlur',
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      date: toDateInputString(transaction?.date),
+      date: transaction?.date ? new Date(transaction.date) : new Date(),
       placeId: transaction?.place.id,
-      amount: transaction?.amount,
-      userId: transaction?.user.id,
+      amount: transaction?.amount ?? 0,
+      userId:transaction?.user.id
     },
-  }); // 👈 3
+    values: transaction
+      ? {
+          date: transaction?.date ? new Date(transaction.date) : new Date(),
+          placeId: transaction.place.id,
+          amount: transaction.amount,
+          userId: transaction.user.id
+        }
+      : undefined,
+  });// 👈 4
 
-  // 👇 3
-  const onSubmit = async (values) => {
-    if (!isValid) return;
+  const {  isValid } = form.formState;// 👈 5
 
-    await saveTransaction({
-      id: transaction?.id,
-      ...values,
-    }, {
-      throwOnError: false,
-      onSuccess: () => navigate('/transactions'),
-    });
-  };
+  const onSubmit = async (values: TransactionFormValues) => {
+      if (!isValid) return;
+
+      await saveTransaction(
+        {
+          id: transaction?.id,
+          ...values,
+        },
+        {
+          throwOnError: false,
+          onSuccess: () => {
+            void navigate('/transactions');
+          },
+        },
+      );
+    } // 👈 5
 
 
   //..
   return (
     {/* ... */}
-    {/* 👇 2  */}
-        <button type='submit' className='py-2 px-2.5 rounded-md text-white bg-blue-600'>
-          {transaction?.id
-            ? 'Save transaction'
-            : 'Add transaction'}
-        </button>
+    {/* 👇 3  */}
+        <div className="flex justify-end gap-2 pt-6">
+          <Button type="submit">
+            {transaction?.id ? 'Save transaction' : 'Add transaction'}
+          </Button>
+          <Link to="/transactions" className={cn(buttonVariants({ variant: 'outline' }))}>
+            Cancel
+          </Link>
+        </div>
     {/* ... */}
   );
 }
 ```
 
-1. Ontvang `transaction` als prop. Stel de standaardwaarde in op `EMPTY_TRANSACTION`. Verwijder de constante `transaction`.
-2. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat.
-3. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
+1. `EMPTY_TRANSACTION`: Definieer een leeg transaction object. Plaats dit buiten de component omdat we geen nieuwe objecten willen aanmaken bij elke render! Dit object blijft steeds hetzelfde.
+2. Ontvang `transaction` als prop. Stel de standaardwaarde in op `EMPTY_TRANSACTION`.
+3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat en voeg een `Cancel`-knop toe.
+4. Pas `useForm` aan
+   - `defaultValues`: Worden éénmalig ingesteld bij de eerste render van het formulier. Deze worden niet bijgewerkt als transaction van buiten verandert.
+   - `values`: Worden gesynchroniseerd met de huidige waarde van de prop, als transaction van buiten verandert, wordt het formulier automatisch gereset met de nieuwe waarden. Bedoeld voor gecontroleerde formulieren waarbij de externe data kan wijzigen (bijv. na een fetch of navigatie naar een andere transactie).
+5. Bij het opslaan van de transactie geven we ook de id mee. En we navigeren terug naar de `TransactionList` pagina. We hoeven het formulier niet meer te resetten.
 
 Pas ook de titel `Add transaction` aan in de `AddOrEditTransaction` component.
 
@@ -777,7 +1091,7 @@ React biedt een paar vormen van memoization:
 - `useMemo`: retourneert een memoized **waarde**
 - `useCallback`: retourneert een memoized **functie**
 
-We hebben reeds `useMemo` gebruikt. Nu komen de andere vormen aan bod.
+We hebben reeds `useMemo` uitgelegd. Nu komen de andere vormen aan bod.
 
 ### Hooks
 
@@ -787,7 +1101,7 @@ Een veel gemaakte denkfout is dat alle waarden (i.e. variabelen) in een componen
 
 **Events** zijn functies binnen de component die worden uitgevoerd als reactie op een actie van een gebruiker. Een event handler kan state aanpassen, bv. een HTTP POST request uitvoeren om een transactie toe te voegen. Event handlers bevatten **side-effects** veroorzaakt door een interactie. React biedt daarnaast ook de mogelijkheid voor side-effects na bv. een state-wijziging. Hierover in een volgend hoofdstuk meer.
 
-In een vorige hoofdstuk hebben we kennis gemaakt met de `useState`, `useReducer`, `useMemo` en `useEffect` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
+In een vorig hoofdstuk hebben we kennis gemaakt met de `useState`, `useReducer`, `useMemo` en `useEffect` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
 
 Hooks hebben ervoor gezorgd dat je met function components hetzelfde kan bereiken als met class components. Toch kan het zijn alsof hooks vreemd aanvoelen, alsof React de bal mis geslagen heeft in vergelijking met andere frameworks als [Solid.js](https://www.solidjs.com/) (zie <https://jakelazaroff.com/words/were-react-hooks-a-mistake/>).
 
@@ -806,14 +1120,14 @@ Hooks maken gebruik van closures, let dus op voor stale closures! [Zie hier voor
 Voeg een `console.log` instructie toe voor elke `return` in onderstaande componenten:
 
 ```jsx
-// src/pages/transactions/TransactionList.jsx
+// src/pages/transactions/TransactionList.tsx
 export default function TransactionList() {
   // ...
   console.log('Rendering transactionlist...');
   return (...);
 }
 
-// src/components/transactions/Transaction.jsx
+// src/components/transactions/Transaction.tsx
 export default function Transaction(props) {
   // ...
   console.log('Rendering transaction...');
@@ -826,7 +1140,7 @@ Telkens als we een letter ingeven in het zoekveld worden alle componenten opnieu
 Een **pure component** is een component die gegeven dezelfde props dezelfde output genereert. `Transaction` is een pure component. Gegeven dezelfde props, wordt dezelfde output gegenereerd. We willen een pure component niet opnieuw renderen als de properties niet gewijzigd zijn. De `memo` functie wordt gebruikt om een component te creëren die enkel opnieuw zal renderen als de props wijzigen.
 
 ```jsx
-// src/components/transactions/Transaction.jsx
+// src/components/transactions/Transaction.tsx
 import { memo } from 'react'; // 👈
 
 // 👇
@@ -838,12 +1152,12 @@ const TransactionMemoized = memo(function Transaction({
   place,
   onDelete,
 }) {
-  //...
+  // ...
 });
 export default TransactionMemoized;
 ```
 
-Start de app en bekijk de console. Verwijder nadien de toegevoegd `console.log` statements.
+Start de app en bekijk de console. Verwijder nadien de toegevoegde `console.log` statements.
 
 ### useCallback hook
 
@@ -856,7 +1170,7 @@ const handleDeleteTransaction = async (id) => {
 };
 ```
 
-Geef deze door als property `onDelete` aan de `TransactionTable` component:
+Geef deze door als property `onDelete` aan de `TransactionsTable` component:
 
 ```jsx
 <TransactionsTable
@@ -867,12 +1181,12 @@ Geef deze door als property `onDelete` aan de `TransactionTable` component:
 
 Van zodra we een letter ingeven in de zoekbalk worden alle transacties toch opnieuw gerenderd.
 
-`TransactionTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDeleteTransaction` is de event handler functie. JavaScript gaat er vanuit dat de functie `handleDeleteTransaction` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
+`TransactionsTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDeleteTransaction` is de event handler functie. JavaScript gaat er vanuit dat de functie `handleDeleteTransaction` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
 
 Pas de code van de functie in de `TransactionList` component aan:
 
 ```jsx
-// src/components/transactions/TransactionList.jsx
+// src/components/transactions/TransactionList.tsx
 import { useState, useMemo, useCallback } from 'react'; // 👈
 
 // ...
@@ -889,21 +1203,7 @@ const handleDeleteTransaction = useCallback(
 
 Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr dit ook doet.
 
-Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook een beetje overhead. Gebruik useCallback enkel als je een functie doorgeeft als prop (bij grote lijsten) of als dependency van een andere hook (bv. useEffect, useMemo, useCallback). Dit is nodig omdat functies in JavaScript referentietypes zijn. Bij elke render wordt een nieuwe functie aangemaakt, ook al is de code identiek. Hierdoor worden pure componenten onnodig opnieuw gerenderd of worden hooks onnodig opnieuw uitgevoerd.
-
-### Oefening 6 - Memoization
-
-Ook `Place` is een pure componenten en dient enkel gererenderd te worden als zijn state wordt aangepast. Gebruik `memo` om de `Place` component te memoizen.
-
-Voeg in de budget-applicatie `useCallback` toe waar nodig.
-
-### Oefening 7 - Memoization in je eigen project
-
-Pas memoization toe in je eigen project. Let wel op het volgende:
-
-> Premature optimization is the root of all evil - Donald Knuth
-
-Het is dus niet de bedoeling om elke component te wrappen in `memo`. Gebruik de React DevTools om te achterhalen welke component (te) vaak renderen en pas daar memoization toe.
+Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook een beetje overhead. Gebruik `useCallback` enkel als je een functie doorgeeft als prop (bij grote lijsten) of als dependency van een andere hook (bv. useEffect, useMemo, useCallback). Dit is nodig omdat functies in JavaScript referentietypes zijn. Bij elke render wordt een nieuwe functie aangemaakt, ook al is de code identiek. Hierdoor worden pure componenten onnodig opnieuw gerenderd of worden hooks onnodig opnieuw uitgevoerd.
 
 > **Oplossing voorbeeldapplicatie**
 >

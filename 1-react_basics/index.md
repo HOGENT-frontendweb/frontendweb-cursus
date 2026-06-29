@@ -285,6 +285,24 @@ Je kan VS Code zo instellen dat automatisch herstel van fouten wordt uitgevoerd 
 
 Run voor elke commit `pnpm lint`. Dit zal je code linten, sommige problemen zelf oplossen en fouten geven omtrent manueel op te lossen problemen.
 
+### vite.config.js
+
+Dit is het configuratiebestand van Vite. Hier worden twee plugins geconfigureerd:
+
+- **`@vitejs/plugin-react`**: voegt React-ondersteuning toe aan Vite, zoals de transformatie van JSX naar JavaScript en Hot Module Replacement (HMR) tijdens development.
+- **`@rolldown/plugin-babel` met `reactCompilerPreset`**: activeert de [React Compiler](https://react.dev/learn/react-compiler). De React Compiler is een build-time tool die automatisch je componenten en hooks optimaliseert, zodat je zelf geen `useMemo`, `useCallback` of `React.memo` meer hoeft te schrijven voor performantie-optimalisaties. De compiler analyseert je code en voegt deze memoization automatisch toe waar nodig.
+
+```js
+import { defineConfig } from 'vite';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
+});
+```
+
 ## Transaction
 
 In onze budget applicatie willen we uitgaven en inkomsten beheren via transacties. We maken een eerste component aan voor de weergave van één transactie.
@@ -643,10 +661,7 @@ Hoewel je altijd de **index van een array** kan gebruiken is dat **zelden een go
 Als je met 'echte' data werkt, die via een backend komt, heeft elk element heel vaak een **unieke id (uit de databank)**. Dit id gebruik je dan ook om het element te identificeren in API calls. Dit vormt meteen een uitstekende key voor React-lijsten. Als je niets meegeeft, gebruikt React onderliggend sowieso een index als key. Functioneel maakt het geen verschil of we het expliciet maken of niet. In ons eenvoudig voorbeeld hebben we ook unieke id's, dus we kunnen deze meteen gebruiken:
 
 ```jsx
-<Transaction
-  key={trans.id}
-  {...trans}
-/>
+<Transaction key={trans.id} {...trans} />
 ```
 
 Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
@@ -658,9 +673,11 @@ In dit project maken we gebruik van [shadcn](https://ui.shadcn.com). shadcn is g
 shadcn daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten zijn opgebouwd op basis van [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) voor toegankelijkheid en [Tailwind CSS](https://tailwindcss.com/) voor styling, wat ervoor zorgt dat ze zowel flexibel als consistent zijn.
 
 Tailwind CSS is een utility-first CSS framework. In plaats van zelf telkens nieuwe CSS-klassen te schrijven, kunnen we met Tailwind gebruikmaken van kant-en-klare klassen.
+TODO: Andreas: meer motiveren waarom we shadcn gebruiken. De voordelen
+TODO: Andreas : bekijkt om eerst tailwind te gebruiken en dan de overstap naar shadcn
 
 ```jsx
-<button className="flex p-4 bg-blue-500">Klik mij</button>
+<button className='flex p-4 bg-blue-500'>Klik mij</button>
 ```
 
 Tailwind CSS lijkt op een framework als Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of tsx kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
@@ -677,7 +694,7 @@ Installeer eerst Tailwind CSS en de Vite plugin:
 
 ```bash
 pnpm install tailwindcss @tailwindcss/vite
-  ```
+```
 
 #### Stap 2 - Gebruik Tailwind CSS in je project
 
@@ -694,7 +711,7 @@ Voeg de volgende paths toe aan `compilerOptions` in `tsconfig.json`:
 
 ```json
 {
-  //...
+  // ...
   "compilerOptions": {
     // ...
     "paths": {
