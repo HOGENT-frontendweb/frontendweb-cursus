@@ -441,7 +441,7 @@ Als we naar de `/about` pagina navigeren, zal de `About` component getoond worde
       index: true,
       element: <Navigate to='/about/services' replace />,
     },
-    //...
+    // ...
   ],
 }
 ```
@@ -458,7 +458,7 @@ Definieer de nieuwe route in `main.tsx`:
 
 ```jsx
 import PlaceDetail from './pages/places/PlaceDetail.tsx';
-//...
+// ...
 {
   path: '/places',
   children: [
@@ -562,13 +562,13 @@ Pas hiervoor de code in de component `Place` aan.
   ```jsx
   // src/components/places/Place.tsx
   import { Link } from 'react-router';
-  //...
+  // ...
   <CardTitle className='text-base'>
     <Link to={`/places/${id}`} className='hover:underline'>
       {name}
     </Link>
   </CardTitle>;
-  //...
+  // ...
   ```
 
 ## De Layout component
@@ -680,7 +680,7 @@ export default function Navbar() {
 1. We maken een state variabele `isOpen` aan om bij te houden of de navigatiebalk open of dicht is. Het klikken op de Mobile toggle button keert deze waarde om. We gebruiken deze waarde om de navigatiebalk te tonen of te verbergen.
 2. NavigationMenuLink rendert een `<a>` tag.
 
-   ```tsx
+   ```jsx
    <NavigationMenuLink href={to}>{label}</NavigationMenuLink>
    ```
 
@@ -693,7 +693,7 @@ Pas `main.tsx` aan. Alle paden zijn nu kinderen van de `Layout` component en ver
 ```jsx
 // src/main.tsx
 import Layout from './components/Layout.tsx'; // 👈
-//...
+// ...
 const router = createBrowserRouter([
   {
     element: <Layout />, // 👈
@@ -747,7 +747,7 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-//...
+// ...
 ```
 
 In `main.tsx` kan je nu de `App` component verwijderen.
@@ -758,17 +758,17 @@ Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` z
 
 ```jsx
 // src/components/Navbar.tsx
-//...
+// ...
 <NavigationMenuLink
   render={<NavLink to={to} />}
   active={pathname === to || pathname.startsWith(to + '/')}
 >
   {label}
 </NavigationMenuLink>
-//...
+// ...
 ```
 
-`NavigationMenuLink` de actieve staat aan via het`data-active` attribuut dat de component zelf stijlt (data-active:bg-muted/50)
+`NavigationMenuLink` de actieve staat aan via het`data-active` attribuut dat de component zelf stijlt (`data-active:bg-muted/50`).
 
 ### Refactoring Navbar
 

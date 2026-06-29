@@ -47,7 +47,7 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
   De `AddOrEditTransaction` component:
 
-  ```tsx
+  ```jsx
   // src/pages/AddOrEditTransaction.tsx
   export default function AddOrEditTransaction() {
     return <h1>Add transaction</h1>;
@@ -56,10 +56,10 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
   De routes worden toegevoegd in `main.tsx`:
 
-  ```tsx
+  ```jsx
   // src/main.tsx
   import AddOrEditTransaction from './pages/transactions/AddOrEditTransaction.tsx';
-  //...
+  // ...
   {
     path: '/transactions',
     children: [
@@ -87,11 +87,11 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en
 
   In `TransactionList.tsx` voeg je onderstaande code toe:
 
-  ```tsx
+  ```jsx
   // src/pages/transactions/TransactionList.tsx
   import { Link } from 'react-router'; // 👈
   import { Button, buttonVariants } from '@/components/ui/button'; // 👈
-  //...
+  // ...
 
   <div className='flex justify-between mb-4 gap-2'>
     <div className='flex gap-2 w-1/2'>
@@ -123,13 +123,13 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en
 
 In `Transaction.tsx` voeg je onderstaande code toe:
 
-```tsx
+```jsx
 // src/components/transactions/Transaction.tsx
 import { Button, buttonVariants } from '../ui/button'; // 👈
 import { Pencil, Trash2 } from 'lucide-react'; // 👈
 import { Link } from 'react-router'; // 👈
 import { cn } from '@/lib/utils'; // 👈
-//...
+// ...
 <TableCell className='text-right'>
   <div className='flex justify-end gap-1'>
     <Link
@@ -152,14 +152,14 @@ import { cn } from '@/lib/utils'; // 👈
     )}
   </div>
 </TableCell>;
-//...
+// ...
 ```
 
 ## Het formulier
 
 Maak een bestand `TransactionForm.tsx` aan in de map `src/components/transactions`. Dit bevat een formulier met 2 input velden (userId, amount), een datepicker en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop voor het vullen van de select lijst. We beginnen met een leeg formulier
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import type { Place } from '../../types';
 
@@ -182,7 +182,7 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
 
 - Oplossing +
 
-  ```tsx
+  ```jsx
   // src/pages/transactions/AddOrEditTransaction.tsx
   import useSWR from 'swr'; // 👈 1
   import { getAll } from '../../api'; // 👈 1
@@ -240,7 +240,7 @@ We beginnen met het definiëren van de vorm van ons formulier met behulp van een
 - Welke types ze moeten hebben
 - Welke validatieregels gelden (zie verder)
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import type { Place } from '../../types';
 import * as z from 'zod'; // 👈 1
@@ -269,7 +269,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 We maken gebruik van de [useForm](https://react-hook-form.com/docs/useform) hook uit het `react-hook-form` package. De hook beheert de volledige toestand van je formulier: de ingevulde waarden, of er fouten zijn, of het formulier al ingediend is, enzovoort. Zonder deze hook moet je dat allemaal zelf bijhouden met `useState`.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import type { Place } from '../../types';
 import * as z from 'zod';
@@ -322,7 +322,7 @@ pnpm dlx shadcn@latest add field input
 
 Voeg inputvelden toe voor User ID en amount
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import type { Place } from '../../types';
 import * as z from 'zod';
@@ -378,7 +378,7 @@ De input velden zijn nog niet gekoppeld aan ract-hook-form. Dit doen we in de vo
 
 React-hook-form houdt de state bij voor elke control. [Controller](https://react-hook-form.com/docs/useform/register) is een wrapper van react-hook-form die een UI-library component integreert met het formulier. De `Controller` toevoegen doe je als volgt:
 
-```tsx
+```jsx
 <Controller
   control={form.control}
   name='theName' //naam overeenkomstig formObject
@@ -402,7 +402,7 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
   - `field.onBlur`: geeft door dat het veld 'touched' is. Zo kan de validatie getriggerd worden afhankelijk van de modus
 - `{...field}` spreidt alle field props uit op de input. Dus o.a.
 
-  ```tsx
+  ```jsx
   <Input
     value={field.value} // waarde komt uit React-hook-form's state
     onChange={field.onChange} // elke toetsaanslag updatet React-hook-form's state
@@ -415,7 +415,7 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
 
 Het formulier wordt na toevoeging van de `Controller`:
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import type { Place } from '../../types';
 import * as z from 'zod';
@@ -506,7 +506,7 @@ React-hook-form ondersteunt ook schema-validatie met Yup, Zod, Superstruct & Joi
 
 Neem eerst de [documentatie](https://zod.dev/basics) door
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import type { Place } from '../../types';
 import * as z from 'zod';
@@ -632,8 +632,8 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 Voeg een extra formulierveld toe voor de keuze van een plaats. Maak hiervoor gebruik van de Select component. [Lees de documentatie voor integratie met react-form-hooks](https://ui.shadcn.com/docs/forms/react-hook-form#select).
 
-```tsx
-//...
+```jsx
+// ...
 // src/components/transactions/TransactionForm.tsx
 import {
   Select,
@@ -643,9 +643,9 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 
-//...
+// ...
 const formSchema = z.object({
-//...
+// ...
   placeId: z.number({ error: 'Place is required' }).min(1, 'Place is required'),// 👈 1
 });
 
@@ -660,7 +660,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
     },
   });
 
-  //...
+  // ...
   const placesSelectItems = places.map((place) => ({
     value: place.id,
     label: place.name,
@@ -668,7 +668,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      //...
+      // ...
         {/* 👇 3 */}
         <Controller
           control={form.control}
@@ -697,7 +697,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
             </Field>
           )}
         />
-     //...
+     // ...
   );
 }
 ```
@@ -723,7 +723,7 @@ pnpm dlx shadcn@latest add field popover calendar
 
 En voeg toe aan het formulier.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 import {
   Popover,
@@ -733,7 +733,7 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { ChevronDownIcon } from 'lucide-react';
 import { LocalizedDate } from '../LocalizedDate';
-//...
+// ...
 // In het zod schema
   date: z
     .date()
@@ -741,7 +741,7 @@ import { LocalizedDate } from '../LocalizedDate';
       new Date().setDate(new Date().getDate() + 1),
       'Date cannot be in the future',
     ),
-//...
+// ...
 export default function TransactionForm({ places = [] }: TransactionFormProps) {
   const form = useForm<TransactionFormValues>({
     mode: 'onBlur',
@@ -753,7 +753,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
       date: new Date(),// 👈
     },
   });
-  //...
+  // ...
     <Controller
       control={form.control}
       name='date'
@@ -805,7 +805,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 [reset](https://react-hook-form.com/docs/useform/reset) zet alle velden terug op de standaardwaarde (indien opgegeven) of maakt ze leeg.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 const onSubmit = (values: TransactionFormValues) => {
   if (!form.formState.isValid) return;
@@ -821,7 +821,7 @@ In React-hook-form zijn dit twee verschillende concepten:
 
 De volgende stap van de CRUD operaties is de 'C', een nieuwe transactie aanmaken. Pas `index.js` in de map `api` aan:
 
-```tsx
+```jsx
 // src/api/index.js
 // 👇 1
 export const save = async <T>(
@@ -837,7 +837,7 @@ export const save = async <T>(
 
 We maken een nieuwe mutation in `TransactionForm`:
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 // ... (imports)
 import useSWRMutation from 'swr/mutation'; // 👈 1
@@ -895,7 +895,7 @@ Maar we willen natuurlijk niet dat een gebruiker een volledig object juist moet 
 
 In de API hebben we een functie nodig om de aan te passen transactie op te halen:
 
-```tsx
+```jsx
 // src/api/index.js
 
 export async function getById<T>(url: string): Promise<T> {
@@ -906,7 +906,7 @@ export async function getById<T>(url: string): Promise<T> {
 
 In de API kan je een aparte functie aanmaken om iets te updaten:
 
-```tsx
+```jsx
 export const updateById = async (
   url: string,
   { arg: { id, ...data } }: { arg: { id?: number } & Record<string, unknown> },
@@ -917,7 +917,7 @@ export const updateById = async (
 
 Of we kunnen de `save` functie aanpassen:
 
-```tsx
+```jsx
 // src/api/index.js
 export async function save(
   url: string,
@@ -935,7 +935,7 @@ Wij kiezen voor de laatste (compacte) oplossing. Pas ook `PlacesList.tsx` aan zo
 
 Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we `null` door. Indien swr `null` ontvangt, zal het geen request uitvoeren.
 
-```tsx
+```jsx
 // src/pages/transactions/AddOrEditTransaction.tsx
 import { useParams } from 'react-router'; // 👈 1
 import useSWR from 'swr';
@@ -985,7 +985,7 @@ export default function AddOrEditTransaction() {
 
 In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `EMPTY_TRANSACTION`, zo werkt het aanmaken van een nieuwe transactie ook en passen we de code verder aan.
 
-```tsx
+```jsx
 // src/components/transactions/TransactionForm.tsx
 // ... (imports)
 import { useNavigate, Link } from 'react-router'; // 👈 3,5
@@ -1120,7 +1120,7 @@ Hooks maken gebruik van closures, let dus op voor stale closures! [Zie hier voor
 
 Voeg een `console.log` instructie toe voor elke `return` in onderstaande componenten:
 
-```tsx
+```jsx
 // src/pages/transactions/TransactionList.tsx
 export default function TransactionList() {
   // ...
@@ -1140,7 +1140,7 @@ Telkens als we een letter ingeven in het zoekveld worden alle componenten opnieu
 
 Een **pure component** is een component die gegeven dezelfde props dezelfde output genereert. `Transaction` is een pure component. Gegeven dezelfde props, wordt dezelfde output gegenereerd. We willen een pure component niet opnieuw renderen als de properties niet gewijzigd zijn. De `memo` functie wordt gebruikt om een component te creëren die enkel opnieuw zal renderen als de props wijzigen.
 
-```tsx
+```jsx
 // src/components/transactions/Transaction.tsx
 import { memo } from 'react'; // 👈
 
@@ -1153,7 +1153,7 @@ const TransactionMemoized = memo(function Transaction({
   place,
   onDelete,
 }) {
-  //...
+  // ...
 });
 export default TransactionMemoized;
 ```
@@ -1173,7 +1173,7 @@ const handleDeleteTransaction = async (id) => {
 
 Geef deze door als property `onDelete` aan de `TransactionTable` component:
 
-```tsx
+```jsx
 <TransactionsTable
   transactions={filteredTransactions}
   onDelete={handleDeleteTransaction}
@@ -1186,7 +1186,7 @@ Van zodra we een letter ingeven in de zoekbalk worden alle transacties toch opni
 
 Pas de code van de functie in de `TransactionList` component aan:
 
-```tsx
+```jsx
 // src/components/transactions/TransactionList.tsx
 import { useState, useMemo, useCallback } from 'react'; // 👈
 

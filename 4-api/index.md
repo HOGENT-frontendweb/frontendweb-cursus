@@ -52,7 +52,7 @@ In deze sectie werken we richting een voorbeeld van data fetching m.b.v. `useEff
 
 In onderstaand voorbeeld wordt een boodschap naar de console gelogd nadat de `TransactionList` gerenderd is. Deze instructie zouden we na de return kunnen plaatsen, maar die code wordt niet uitgevoerd. `useEffect` is hier de oplossing.
 
-```tsx
+```jsx
 // src/pages/TransactionList.tsx
 import { TRANSACTION_DATA } from '../api/mock_data';
 import { Input } from '@/components/ui/input';
@@ -69,7 +69,7 @@ export default function TransactionList() {
     console.log('transactions are rendered');
   });
 
-  //...
+  // ...
 }
 ```
 
@@ -88,7 +88,7 @@ Aan de hand van een **dependency array** kan je het uitvoeren van een `useEffect
 
 - **[]**: een lege dependency array. `useEffect` wordt enkel bij de initiële render uitgevoerd
 
-```tsx
+```jsx
 useEffect(() => {
   console.log('transactions after the initial render');
 }, []);
@@ -96,7 +96,7 @@ useEffect(() => {
 
 - **[search]**: `useEffect` wordt bij de initiële render en telkens de waarde van de variabele `search` wijzigt uitgevoerd. React zal het effect overslaan als `search` dezelfde waarde heeft als tijdens de laatste render.
 
-```tsx
+```jsx
 useEffect(() => {
   console.log('transactions after initial render or transaction added');
 }, [search]);
@@ -106,7 +106,7 @@ useEffect(() => {
 
 Stel dat de user via een prop wordt doorgegeven aan de `TransactionList` en ook naar de console gelogd dient te worden.
 
-```tsx
+```jsx
 export default function TransactionList({ user = 'Louis' }: { user: string }) {
   // 👆 de prop user
 
@@ -116,7 +116,7 @@ export default function TransactionList({ user = 'Louis' }: { user: string }) {
     ); // 👆 maakt gebruik van user
   }, [search]); // Warning: React Hook useEffect has a missing dependency
 
-  //...
+  // ...
 }
 ```
 
@@ -124,7 +124,7 @@ Merk op: We hebben ESLint geconfigureerd zodat die een waarschuwing (`React Hook
 
 Oplossing:
 
-```tsx
+```jsx
 export default function TransactionList({ user = 'Louis' }: { user: string }) {
 
   useEffect(() => {
@@ -142,7 +142,7 @@ Een side-effect kan een **cleanup functie** retourneren. React roept de cleanup 
 
 Verwijder eerst de code m.b.t. de prop user en voeg dan een cleanup functie met een simpele `console.log` toe.
 
-```tsx
+```jsx
 useEffect(() => {
   console.log('transactions after initial render or search changed');
   return () => console.log('unmounted...'); // 👈 de cleanup functie
@@ -182,12 +182,12 @@ export const getAll = async (): Promise<AxiosResponse> => {
 
 Pas de `TransactionList` component aan. Het ophalen van de transacties is een side-effect, we maken hier voorlopig gebruik van de `useEffect` hook.
 
-```tsx
+```jsx
 import { useState, useEffect } from 'react'; // 👈 1
 // andere imports...
 import * as transactionsApi from '../api/transactions'; // 👈 2
 
-//...
+// ...
 export default function TransactionList() {
   // state
 
@@ -207,7 +207,7 @@ export default function TransactionList() {
 ```
 
 1. Importeer `useEffect`.
-2. Importeer ook alle functies uit de Transaction API met `import * as`. Dit zal een object met alle geëxporteerde functies uit `transactions.js` maken.
+2. Importeer ook alle functies uit de Transaction API met `import * as`. Dit zal een object met alle geëxporteerde functies uit `transactions.ts` maken.
 3. Het ophalen van de transacties is een side-effect en dient enkel bij de eerste render te worden uitgevoerd. Daarom hebben we voor een lege dependency array.
 4. Een `useEffect` mag geen async functie als argument krijgen.
    - Het probleem is nl. dat het eerste argument van `useEffect` een functie moet zijn die ofwel niets ofwel een functie retourneert (de cleanup functie). Maar een asynchrone functie retourneert een `Promise`, die niet als functie kan worden aangeroepen! Het is gewoon niet wat de `useEffect` hook verwacht als eerste argument.
@@ -230,7 +230,7 @@ We zijn enkel geïnteresseerd in de `data.items` uit het response.
 
 De transactions API voor `getAll` wordt dus:
 
-```tsx
+```jsx
 import axios from 'axios';
 import type { Transaction } from '../types'; // 👈 2
 
@@ -248,9 +248,9 @@ export const getAll = async (): Promise<Transaction[]> => {
 
 De `TransactionList` component wordt daardoor:
 
-```tsx
+```jsx
 // src/pages/transactions/TransactionList.tsx
-//...
+// ...
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState([]); // 👈 1
@@ -268,7 +268,7 @@ export default function TransactionList() {
     fetchTransactions();
   }, []);
 
-  //...
+  // ...
 }
 ```
 
@@ -286,7 +286,7 @@ Je merkt misschien dat je heel kort de melding krijgt dat er geen transacties zi
 
 Omdat we de laadindicator in meerdere componenten nodig hebben, maken we hiervoor een aparte component `Loader` aan in een nieuw bestand `components/Loader.tsx`:
 
-```tsx
+```jsx
 // src/components/Loader.tsx
 export default function Loader() {
   return (
@@ -304,7 +304,7 @@ Deze `Loader` component toont een simpele loading indicator van tailwindcss.
 
 Ook zullen we foutafhandeling in meerdere componenten nodig hebben. Daarom maken we hiervoor een aparte component `Error` aan in een nieuw bestand `components/Error.tsx`:
 
-```tsx
+```jsx
 // src/components/Error.tsx
 import { isAxiosError } from 'axios';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
@@ -357,7 +357,7 @@ export default function Error({ error }: ErrorProps) {
 
 Als laatste definiëren we een `AsyncData` component in een nieuw bestand `components/AsyncData.tsx`:
 
-```tsx
+```jsx
 // src/components/AsyncData.tsx
 import Loader from './Loader'; // 👈 1
 import Error from './Error'; // 👈 1
@@ -393,7 +393,7 @@ export default function AsyncData({
 
 Pas dan volgende onderdelen van de `TransactionList` verder aan:
 
-```tsx
+```jsx
 // src/pages/TransactionList.tsx
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -489,11 +489,11 @@ Om data op te halen, moeten we gebruik maken van de `useSWR` hook. Deze hook hee
 - `fetcher`: een functie die de data ophaalt. Deze functie wordt asynchroon uitgevoerd en retourneert een Promise. De functie ontvangt de `key` als parameter.
 - `options` (optioneel): een object met opties voor swr.
 
-Eerst en vooral maken we een algemene functie voor een GET all request. Hernoem het bestand `transactions.js` naar `index.ts`. Een GET all request zal in een RESTful API altijd hetzelfde response hebben, aanpassingen kunnen we altijd nog meegeven via de `key` of de `options`.
+Eerst en vooral maken we een algemene functie voor een GET all request. Hernoem het bestand `transactions.ts` naar `index.ts`. Een GET all request zal in een RESTful API altijd hetzelfde response hebben, aanpassingen kunnen we altijd nog meegeven via de `key` of de `options`.
 
 Pas het bestand aan als volgt:
 
-```tsx
+```jsx
 // src/api/index.ts
 import axios from 'axios';
 
@@ -514,7 +514,7 @@ export async function getAll<T>(url: string): Promise<T> {
 
 Vervolgens gebruiken we de `useSWR` hook om onze transacties op te halen:
 
-```tsx
+```jsx
 // src/pages/TransactionList.tsx
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -595,7 +595,7 @@ De volgende stap van de CRUD operaties is de 'D', een transactie verwijderen. En
 
 Voeg een `deleteById` functie toe in `index.ts` in de map `api`:
 
-```tsx
+```jsx
 // src/api/index.ts
 // 👇 1
 export const deleteById = async (
@@ -611,7 +611,7 @@ export const deleteById = async (
 
 De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. Echter is het niet zijn verantwoordelijkheid om de effectieve API call uit te voeren, die is voor de `TransactionList`. We voegen een verwijderknop toe aan deze component:
 
-```tsx
+```jsx
 // src/components/transactions/Transaction.tsx
 import { Button } from '@/components/ui/button'; // 👈 1
 import { Trash2 } from 'lucide-react'; // 👈 1
@@ -670,9 +670,9 @@ export default function Transaction({
 
 We breiden de `TransactionTable` uit met een `onDelete` prop die we meteen doorgeven aan de `Transaction` component:
 
-```tsx
+```jsx
 // src/components/transactions/TransactionsTable.tsx
-//...
+// ...
 interface TransactionsTableProps {
   transactions?: TransactionType[];
   onDelete?: (id: number) => void; //👈
@@ -680,7 +680,7 @@ interface TransactionsTableProps {
 
 function TransactionsTable({ transactions, onDelete }: TransactionsTableProps) {
   //👈
-  //...
+  // ...
 
   return (
     <div className='rounded-md border'>
@@ -715,7 +715,7 @@ export default TransactionsTable;
 
 Nu zijn we klaar om de transactie effectief te verwijderen, we passen de `TransactionList` component aan. Het probleem van de `useSWR` hook is dat die meteen het request uitvoert als de component rendert. We willen dit pas doen als de gebruiker op de verwijderknop klikt. Daarom maken we gebruik van de `mutate` functie die we van `swr` krijgen. Deze functie zal de data in de cache aanpassen en de component opnieuw renderen.
 
-```tsx
+```jsx
 // src/pages/TransactionList.tsx
 // imports...
 import useSWRMutation from 'swr/mutation'; // 👈 1
@@ -796,7 +796,7 @@ Open de console en inspecteer het `Network` tabblad. Je zal zien dat er een `DEL
 
 De tabel wordt vervangen door de loader tijdens het verwijderen van een transactie, wat slechter UX is. We kunnen dit oplossen door een extra property door te geven aan `AsyncData`
 
-```tsx
+```jsx
 import Loader from './Loader';
 import Error from './Error';
 
@@ -828,8 +828,8 @@ export default function AsyncData({
 
 We passen de TransactionList aan
 
-```tsx
-      <AsyncData loading={isLoading} error={error ?? deleteError} hasData={data !== undefined}>...</AsynData>
+```jsx
+<AsyncData loading={isLoading} error={error ?? deleteError} hasData={data !== undefined}>...</AsynData>
 ```
 
 Zo blijft de tabel weergegeven en gebeurt het laden op de achtergrond.
@@ -858,7 +858,7 @@ De backend leest die parameter uit en filtert de data voordat hij antwoordt.
 
 `useSWR` gebruikt de eerste parameter (de _key_) als URL voor de API-call. Tot nu toe was dat gewoon `transactions`. We maken die URL nu dynamisch:
 
-```tsx
+```jsx
 const { data, isLoading, error } = useSWR(
   `transactions?${search ? `search=${search}` : ''}`,
   getAll<Transaction[]>,
@@ -870,7 +870,7 @@ const { data, isLoading, error } = useSWR(
 
 Elke keer dat `search` verandert, verandert de URL-sleutel en doet `useSWR` automatisch een nieuw request. De `filteredTransactions` is nu dus **niet meer nodig** — die mag je verwijderen. Geef de `transactions` data rechtstreeks mee aan `TransactionsTable`.
 
-```tsx
+```jsx
 <TransactionsTable transactions={data} onDelete={handleDeleteTransaction} />
 ```
 
@@ -878,9 +878,9 @@ Elke keer dat `search` verandert, verandert de URL-sleutel en doet `useSWR` auto
 
 In de vorige versie zocht de gebruiker door op de "Search" knop te klikken. We willen nu ook zoeken wanneer de gebruiker op **Enter** drukt of het zoekveld **leegmaakt**. Daarvoor vervangen we de knop door twee event handlers:
 
-```tsx
+```jsx
 // src/pages/TransactionList.tsx
-//...
+// ...
 import type { KeyboardEvent, ChangeEvent } from 'react';
 
 const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -896,7 +896,7 @@ const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     setSearch(text);
   }
 };
-//...
+// ...
 <Input
   type='search'
   placeholder='Search by place…'
@@ -904,7 +904,7 @@ const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
   onChange={handleSearchChange}
   onKeyDown={handleKeyDown}
 />;
-//...
+// ...
 ```
 
 Herinner je dat er twee states zijn:
@@ -922,7 +922,7 @@ Die splitsing is bewust: we willen niet bij _elke_ toetsaanslag een API-request 
 
 De verwijderde transactie is nog steeds zichtbaar in de lijst, omdat SWR de gecachte data blijft tonen totdat er een nieuwe reden is om te herfetchen. De reden is dat SWR data bijhoudt per URL-sleutel. Het ophalen van transacties gebeurt via `transactions?search=...`, terwijl het verwijderen gebeurt via een andere URL, bv. `transactions/5`. SWR heeft dus geen manier om automatisch te weten dat de gecachte lijst van transacties verouderd is na een delete. Door expliciet `mutate()` aan te roepen, geven we SWR de hint dat de cache ongeldig is en dat er een nieuw request moet worden uitgestuurd naar de fetch-URL.
 
-```tsx
+```jsx
 const { data, isLoading, error, mutate } = useSWR(
   `transactions?${search ? `search=${search}` : ''}`,
   getAll<Transaction[]>,
@@ -934,7 +934,7 @@ const handleDeleteTransaction = async (id: number) => {
     await mutate(); // 👈
     toast.success('Transaction removed');
   } catch {
-    //...
+    // ...
   }
 };
 ```
@@ -957,7 +957,7 @@ GET /transactions?page=1&pageSize=10&search=HoGent
 
 De API geeft niet langer een gewone array terug, maar een gepagineerd antwoord. We definiëren daarvoor een generische interface `PaginatedResponse<T>`:
 
-```tsx
+```jsx
 // src/types.ts
 export interface PaginatedResponse<T> {
   items: T[];
@@ -974,7 +974,7 @@ export interface PaginatedResponse<T> {
 
 We voegen ook een nieuwe fetcher-functie `getAllWithPaging` toe die het gepagineerde antwoord van de API teruggeeft.
 
-```tsx
+```jsx
 // src/api/index.ts
 import type { PaginatedResponse } from '../types';
 //..
@@ -988,27 +988,33 @@ export async function getAllWithPaging<T>(
 
 ### Stap 2: API call met paginatie info
 
-```tsx
-//...
+Pas de `TransactionList` component aan om de `page` en `pageSize` state bij te houden. We schakelen ook over naar de nieuwe fetcher-functie `getAllWithPaging<Transaction>` zodat het gepagineerde antwoord correct wordt geparset.
+
+```jsx
+// src/pages/TransactionList.tsx
+// ...
 import { deleteById, getAllWithPaging } from '../api';
 
 export default function TransactionsList() {
 
-  //...
-const [page, setPage] = useState(1);
-const [pageSize, setPageSize] = useState(10);
+  // ...
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   const { data, isLoading, error, mutate } = useSWR(
     `transactions?page=${page}&pageSize=${pageSize}${search ? `&search=${search}` : ''}`,
     getAllWithPaging<Transaction>,
   );
+
+  // ...
+}
 ```
 
 We voegen twee nieuwe state-variabelen toe: `page` (de huidige pagina, standaard 1) en `pageSize` (het aantal items per pagina, standaard 10). De SWR-sleutel bevat nu ook `page` en `pageSize` als query parameters. Wanneer een van die waarden wijzigt, bouwt SWR automatisch een nieuwe URL en stuurt een nieuw request naar de API. We schakelen ook over van `getAll` naar `getAllWithPaging<Transaction>` als fetcher, zodat het gepagineerde antwoord correct wordt geparset.
 
 En dan dienen we natuurlijk ook de data die we doorgeven aan de `TransactionTable` aan te passen
 
-```tsx
+```jsx
 <TransactionsTable
   transactions={data?.items}
   onDelete={handleDeleteTransaction}
@@ -1017,7 +1023,7 @@ En dan dienen we natuurlijk ook de data die we doorgeven aan de `TransactionTabl
 
 ### Stap 3 : Paginatie knoppen
 
-Voor de paginatie knoppen maken we gebruik van de [Pagination component](https://ui.shadcn.com/docs/components/radix/pagination)
+Voor de paginatie knoppen maken we gebruik van de [Pagination component](https://ui.shadcn.com/docs/components/radix/pagination):
 
 ```bash
 pnpm dlx shadcn@latest add pagination select field
@@ -1025,7 +1031,8 @@ pnpm dlx shadcn@latest add pagination select field
 
 We dienen ook een aantal methodes te schrijven om te navigeren naar volgende/vorige pagina.
 
-```tsx
+```jsx
+// src/pages/TransactionList.tsx
 import {
   Pagination,
   PaginationContent,
@@ -1044,7 +1051,7 @@ import {
 import { Field, FieldLabel } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
 
-//...
+// ...
 const handlePageSizeChange = (newPageSize: number) => {
   setPageSize(newPageSize);
   setPage(1);
@@ -1062,7 +1069,7 @@ const handleNextPage = () => {
   }
 };
 
-//...
+// ...
 <AsyncData loading={isLoading} error={error || deleteError}>
   <TransactionsTable
     transactions={data?.items}
@@ -1129,7 +1136,7 @@ Voor de JSX gebruiken we de `Pagination`-component van shadcn en een `Select` vo
 
 We introduceren een aparte `handleSearch`-functie die zowel `search` instelt als `page` terugzet naar 1. Dit is nodig omdat een nieuwe zoekterm een andere resultatenset oplevert — de gebruiker moet dan automatisch op de eerste pagina beginnen.
 
-```tsx
+```jsx
 const handleSearch = (value: string) => {
   setSearch(value);
   setPage(1);
@@ -1162,7 +1169,7 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
 
 - Oplossing +
 
-  ```tsx
+  ```jsx
   //src/components/PaginationControls.tsx
   import {
     Pagination,
@@ -1260,7 +1267,7 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
   - Bij een pageSize-wijziging roept de component zelf al `onPageChange(1)` aan — de reset naar pagina 1 zit dus ingebakken in de child, niet in de parent.
   - `{totalPages > 1 && ...}` — de navigatieknoppen worden alleen getoond als er meer dan één pagina is.
 
-  ```tsx
+  ```jsx
   // src/pages/transactionList.tsx
   import { Input } from '@/components/ui/input';
   import { Button, buttonVariants } from '@/components/ui/button';

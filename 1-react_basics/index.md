@@ -289,7 +289,7 @@ Run voor elke commit `pnpm lint`. Dit zal je code linten, sommige problemen zelf
 
 Dit is het configuratiebestand van Vite. Hier worden twee plugins geconfigureerd:
 
-- **`@vitejs/plugin-react`**: voegt React-ondersteuning toe aan Vite, zoals de transformatie van JSX naar JavaScript en hot module replacement (HMR) tijdens development.
+- **`@vitejs/plugin-react`**: voegt React-ondersteuning toe aan Vite, zoals de transformatie van JSX naar JavaScript en Hot Module Replacement (HMR) tijdens development.
 - **`@rolldown/plugin-babel` met `reactCompilerPreset`**: activeert de [React Compiler](https://react.dev/learn/react-compiler). De React Compiler is een build-time tool die automatisch je componenten en hooks optimaliseert, zodat je zelf geen `useMemo`, `useCallback` of `React.memo` meer hoeft te schrijven voor performantie-optimalisaties. De compiler analyseert je code en voegt deze memoization automatisch toe waar nodig.
 
 ```js
@@ -711,7 +711,7 @@ Voeg de volgende paths toe aan `compilerOptions` in `tsconfig.json`:
 
 ```json
 {
-  //...
+  // ...
   "compilerOptions": {
     // ...
     "paths": {

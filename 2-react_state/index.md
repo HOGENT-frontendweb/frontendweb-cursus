@@ -217,7 +217,7 @@ export default PlacesList;
 
 Merk op: React-components mogen maar één element retourneren. We wrappen de elementen in een lege tag <></>. Dit genereert geen extra DOM element, enkel een virtuele knoop in de virtual DOM.
 
-Merk op: Shadcn voorziet geen aparte componenten voor [typografie](https://ui.shadcn.com/docs/components/base/typography). Ook voor layouts gebruik je rechtstreeks de Tailwind CSS utility-klassen. shadcn focust op UI-componenten zoals knoppen, dialogen, formuliervelden, etc. — geen layoutprimitieven. Die komen van Tailwind CSS.
+Merk op: Shadcn voorziet geen aparte componenten voor [typografie](https://ui.shadcn.com/docs/components/base/typography). Ook voor layouts gebruik je rechtstreeks de Tailwind CSS utility-klassen. Shadcn focust op UI-componenten zoals knoppen, dialogen, formuliervelden, etc. — geen layoutprimitieven. Die komen van Tailwind CSS.
 
 Voeg de `PlacesList` component toe aan `App.tsx` en bekijk het resultaat.
 
@@ -654,7 +654,7 @@ function Star({ selected = false }: StarProps) {
   );
 }
 
-//...
+// ...
 ```
 
 ### Rating functionaliteit afwerken
@@ -663,7 +663,7 @@ De `Place` component krijgt via een prop de `rating` door van de parent en zal d
 
 ```jsx
 // src/components/places/Place.tsx
-//...
+// ...
 interface PlaceProps extends PlaceType {
   onDelete: (id: number) => void;
 }
@@ -1016,7 +1016,7 @@ Willen we vaste klassenamen combineren met conditionele klassenamen, dan kunnen 
 ```jsx
 // src/components/places/StarRating.tsx
 import { cn } from '@/lib/utils'; // 👈
-//...
+// ...
 function Star({ index, selected = false, onSelect = () => {} }: StarProps) {
   const handleClick = () => {
     onSelect(index + 1);
@@ -1474,7 +1474,7 @@ Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal m
 
 > Premature optimization is the root of all evil - Donald Knuth
 
-?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.js` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/#vite-configjs).
+?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.js` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/index.md#viteconfigjs).
 
 ### useMemo hook
 
@@ -1485,19 +1485,18 @@ Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze f
 // src/components/transactions/TransactionList.tsx
 import { useState, useMemo } from 'react'; // 👈
 
-//...
+// ...
 
 // 👇
 const filteredTransactions = useMemo(
   () =>
     TRANSACTION_DATA.filter((t: TransactionType) => {
-      console.log('filtering...');
       return t.place.name.toLowerCase().includes(search.toLowerCase());
     }),
   [search],
 );
 
-//...
+// ...
 ```
 
 De `useMemo` hook verwacht twee parameters:
@@ -1511,7 +1510,7 @@ Belangrijk:
 
 - Je moet useMemo niet overal gebruiken.
 - Kleine berekeningen of eenvoudige objecten hoef je niet te memoizen: de overhead van useMemo kan dan zelfs trager zijn dan de berekening zelf. **React Compiler** zorgt in veel gevallen zelf voor optimalisatie.
-- Gebruik het vooral als je echte performanceproblemen merkt.
+- Gebruik het vooral als je echte performantieproblemen merkt.
 
 ## Oefening 4 - README eigen project
 
