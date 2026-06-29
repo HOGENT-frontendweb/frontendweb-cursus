@@ -10,7 +10,7 @@
 > pnpm dev
 > ```
 >
-> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig. Maak een database `budget` aan. Zie instructies in de [cursus Webservices](https://hogent-frontendweb.github.io/webservices-cursus/#/4-datalaag/deel1?id=mysql-databank) :
+> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig. Maak een database `budget` aan. Zie instructies in de [cursus Web Services](https://hogent-frontendweb.github.io/webservices-cursus/#/4-datalaag/deel1?id=mysql-databank):
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
@@ -24,7 +24,7 @@
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie.
 
-In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:3000/api/).
+In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
 Voor de communicatie met de API, m.a.w. het versturen van HTTP requests, kan je gebruik maken van de [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) of van HTTP client libraries die je kan vinden op bv. <https://www.npmjs.com>.
 
@@ -155,7 +155,7 @@ Start de app en bekijk de console. Je kan de cleanup functie triggeren door te z
 
 Er zijn een aantal opmerkingen om rekening mee te houden bij het gebruik van `useEffect`:
 
-- Gebruik `useEffect` niet voor het aanbrengen van DOM-wijzigingen die zichtbaar zijn voor de gebruiker. Een `useEffect` wordt pas geactiveerd nadat de browser klaar is met de lay-out en het tekenen. Dit is dus te laat als je een visuele wijziging wilde aanbrengen. Voor die gevallen biedt React de hook `useLayoutEffect` die op dezelfde manier werken als `useEffect`. Ze verschillen enkel in het moment van 'afvuren'.
+- Gebruik `useEffect` niet voor het aanbrengen van DOM-wijzigingen die zichtbaar zijn voor de gebruiker. Een `useEffect` wordt pas geactiveerd nadat de browser klaar is met de lay-out en het tekenen. Dit is dus te laat als je een visuele wijziging wilde aanbrengen. Voor die gevallen biedt React de hook `useLayoutEffect` die op dezelfde manier werkt als `useEffect`. Ze verschillen enkel in het moment van 'afvuren'.
 - Beperk het gebruik van `useEffect`, in de meeste gevallen heb je deze hook niet nodig. Je hebt het enkel nodig als je "uit de React code" wil stappen, bv. synchronisatie met een systeem in de cloud, synchronisatie met een niet-React DOM element... Probeer dus eerst je probleem op te lossen met andere hooks voor je terugvalt op `useEffect`, of gebruik een library die specifiek ontworpen is voor jouw probleem.
   - Voor extra uitleg en voorbeelden: [Synchronizing with Effects](https://react.dev/learn/synchronizing-with-effects)
 - `useEffect` laat **niet** toe om het keyword `async` toe te voegen in de callback function. Dit kan opgelost worden door in de effect-code een `async` functie te maken en die vervolgens aan te roepen. Dit is trouwens nog een reden waarom je best een library gebruikt voor het ophalen van data.
@@ -208,7 +208,7 @@ export default function TransactionList() {
 
 1. Importeer `useEffect`.
 2. Importeer ook alle functies uit de Transaction API met `import * as`. Dit zal een object met alle geëxporteerde functies uit `transactions.ts` maken.
-3. Het ophalen van de transacties is een side-effect en dient enkel bij de eerste render te worden uitgevoerd. Daarom hebben we voor een lege dependency array.
+3. Het ophalen van de transacties is een side-effect en dient enkel bij de eerste render te worden uitgevoerd. Daarom kiezen we voor een lege dependency array.
 4. Een `useEffect` mag geen async functie als argument krijgen.
    - Het probleem is nl. dat het eerste argument van `useEffect` een functie moet zijn die ofwel niets ofwel een functie retourneert (de cleanup functie). Maar een asynchrone functie retourneert een `Promise`, die niet als functie kan worden aangeroepen! Het is gewoon niet wat de `useEffect` hook verwacht als eerste argument.
    - We lossen dit op door een asynchrone functie te definiëren en deze vervolgens aan te roepen.
@@ -272,7 +272,7 @@ export default function TransactionList() {
 }
 ```
 
-1. We maken niet langer gebruik van mock data, we bewaren onze transacties in state. De initiële state is een lege array. Als de data asynchroon is opgehaald dient de lijst te worden getoond (rerender)
+1. We maken niet langer gebruik van mock data, we bewaren onze transacties in state. De initiële state is een lege array. Als de data asynchroon is opgehaald dient de lijst te worden getoond (rerender).
 2. Haal de data asynchroon op. Omwille van performantieredenen kan je eventueel het aantal records beperken (server side). Dat laten we hier achterwege.
 3. Pas de state aan nadat je de lijst terugkrijgt van de API.
    - Een effect met een `setState` is vaak de trigger van een oneindige lus. Dit is niet het geval hier, omdat de `useEffect` enkel bij de initiële render wordt uitgevoerd. De state wordt enkel aangepast bij de initiële render.
@@ -300,7 +300,7 @@ export default function Loader() {
 }
 ```
 
-Deze `Loader` component toont een simpele loading indicator van tailwindcss.
+Deze `Loader` component toont een simpele loading indicator van Tailwind CSS.
 
 Ook zullen we foutafhandeling in meerdere componenten nodig hebben. Daarom maken we hiervoor een aparte component `Error` aan in een nieuw bestand `components/Error.tsx`:
 
@@ -508,7 +508,7 @@ export async function getAll<T>(url: string): Promise<T> {
 ```
 
 1. We houden het gemeenschappelijke deel van alle URLs bij in `baseUrl`.
-2. We maken een generieke functie. `T` is het type dat je later kiest. Bvb `getAll<Transaction[]>("transactions")`
+2. We maken een generieke functie. `T` is het type dat je later kiest. Bv. `getAll<Transaction[]>("transactions")`
 3. De parameter `url` zal van `swr` de `key` ontvangen. Zo hebben we meteen een uniek id voor elk request. We geven dus straks het laatste deel van de URL mee als `key`.
 4. We voegen de `baseUrl` en de `url` samen om de volledige URL te bekomen.
 
@@ -569,10 +569,10 @@ export default function TransactionList() {
 }
 ```
 
-1. Importeer de `useSWR` hook en verwijder de import van `useEffect`
+1. Importeer de `useSWR` hook en verwijder de import van `useEffect`.
 2. Importeer de `getAll` functie uit de `api/index.ts`. Als je de naam van een map opgeeft, zal de `index.ts` in die map geïmporteerd worden.
 3. We gebruiken de `useSWR` hook met `transactions` als key en de `getAll` functie als `fetcher`. De `useSWR` hook retourneert een object met volgende properties:
-   - `data`: de data die we ophalen. Dit is `undefined` als de data nog niet is opgehaald en van het type `Transaction[]` als de data is opgehaald. Als de data geladen maar er is geen data beschikbaar dan hebben we een lege array
+   - `data`: de data die we ophalen. Dit is `undefined` als de data nog niet is opgehaald en van het type `Transaction[]` als de data is opgehaald. Als de data geladen is maar er is geen data beschikbaar dan hebben we een lege array.
    - `error`: de error die we ontvangen. Dit is `undefined` als er geen error is.
    - `isLoading`: een boolean die aangeeft of de data aan het ophalen is.
      We hoeven niet langer zelf state bij te houden voor de transactions, error en loading. Deze lijnen code mag je schrappen
@@ -607,7 +607,7 @@ export const deleteById = async (
 ```
 
 1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook het `id` mee als argument, we halen dit uit de `arg` optie die we van `swr` krijgen.
-2. We bouwen de url (`/api/transactions/:id`) op en voeren de `DELETE` uit. Net zoals `axios.get()` kan je ook `axios.delete()` uitvoeren. Het antwoord is de HTTP status code 204. Bijgevolg is de HTTP response body ook leeg (m.a.w. `{}` in JavaScript). We negeren dat antwoord hier.
+2. We bouwen de URL (`/api/transactions/:id`) op en voeren de `DELETE` uit. Net zoals `axios.get()` kan je ook `axios.delete()` uitvoeren. Het antwoord is de HTTP status code 204. Bijgevolg is de HTTP response body ook leeg (m.a.w. `{}` in JavaScript). We negeren dat antwoord hier.
 
 De `Transaction` component zelf is het meest geschikt om zijn eigen transactie te verwijderen. Echter is het niet zijn verantwoordelijkheid om de effectieve API call uit te voeren, die is voor de `TransactionList`. We voegen een verwijderknop toe aan deze component:
 
@@ -668,7 +668,7 @@ export default function Transaction({
 2. Implementeer de `handleDelete` functie. Deze functie roept de `onDelete` functie aan met het `id` van de transactie.
 3. De `Transaction` component ontvangt nu ook een `id` en `onDelete` prop.
 
-We breiden de `TransactionTable` uit met een `onDelete` prop die we meteen doorgeven aan de `Transaction` component:
+We breiden de `TransactionsTable` uit met een `onDelete` prop die we meteen doorgeven aan de `Transaction` component:
 
 ```jsx
 // src/components/transactions/TransactionsTable.tsx
@@ -794,7 +794,7 @@ Bekijk het resultaat in de applicatie, je zou een transactie moeten kunnen verwi
 
 Open de console en inspecteer het `Network` tabblad. Je zal zien dat er een `DELETE` request wordt uitgevoerd naar de API en dat meteen daarna de lijst van transacties opnieuw wordt opgehaald. Dit is de `stale-while-revalidate` strategie die `swr` gebruikt. De data wordt eerst uit de cache gehaald (stale), dan wordt de request uitgevoerd (revalidate) en tenslotte wordt de up-to-date data opnieuw geretourneerd. `swr` weet dat er iets gewijzigd is aangezien een mutation uitgevoerd is met dezelfde key als de hook die onze data ophaalt. Handig, he?
 
-De tabel wordt vervangen door de loader tijdens het verwijderen van een transactie, wat slechter UX is. We kunnen dit oplossen door een extra property door te geven aan `AsyncData`
+De tabel wordt vervangen door de loader tijdens het verwijderen van een transactie, wat slechte UX is. We kunnen dit oplossen door een extra property door te geven aan `AsyncData`
 
 ```jsx
 import Loader from './Loader';
@@ -826,10 +826,10 @@ export default function AsyncData({
 }
 ```
 
-We passen de TransactionList aan
+We passen de `TransactionList` aan.
 
 ```jsx
-<AsyncData loading={isLoading} error={error ?? deleteError} hasData={data !== undefined}>...</AsynData>
+<AsyncData loading={isLoading} error={error ?? deleteError} hasData={data !== undefined}>...</AsyncData>
 ```
 
 Zo blijft de tabel weergegeven en gebeurt het laden op de achtergrond.
@@ -942,12 +942,12 @@ const handleDeleteTransaction = async (id: number) => {
 In `handleDeleteTransaction` gebeurt het volgende:
 
 1. De transactie wordt verwijderd via `deleteTransaction(id)`.
-2. Daarna roepen we `mutate()` aan — dit triggert een nieuw request naar de API zodat de lijst automatisch ververst wordt zonder dat de gebruiker de pagina moet herladen. De methode `mutate` destructureren we uit de returnwaarde van useSWR.
+2. Daarna roepen we `mutate()` aan — dit triggert een nieuw request naar de API zodat de lijst automatisch ververst wordt zonder dat de gebruiker de pagina moet herladen. De methode `mutate` destructureren we uit de returnwaarde van `useSWR`.
 3. Tot slot toont een toast-melding dat de transactie verwijderd is.
 
 ## Pagineren door de transacties
 
-Naast de zoekterm geven we nu ook de `page`en `pageSize` mee in de URL als een **querystring**. Bijvoorbeeld:
+Naast de zoekterm geven we nu ook de `page` en `pageSize` mee in de URL als een **querystring**. Bijvoorbeeld:
 
 ```http
 GET /transactions?page=1&pageSize=10&search=HoGent
@@ -1012,7 +1012,7 @@ export default function TransactionsList() {
 
 We voegen twee nieuwe state-variabelen toe: `page` (de huidige pagina, standaard 1) en `pageSize` (het aantal items per pagina, standaard 10). De SWR-sleutel bevat nu ook `page` en `pageSize` als query parameters. Wanneer een van die waarden wijzigt, bouwt SWR automatisch een nieuwe URL en stuurt een nieuw request naar de API. We schakelen ook over van `getAll` naar `getAllWithPaging<Transaction>` als fetcher, zodat het gepagineerde antwoord correct wordt geparset.
 
-En dan dienen we natuurlijk ook de data die we doorgeven aan de `TransactionTable` aan te passen
+En dan dienen we natuurlijk ook de data die we doorgeven aan de `TransactionsTable` aan te passen.
 
 ```jsx
 <TransactionsTable
@@ -1021,7 +1021,7 @@ En dan dienen we natuurlijk ook de data die we doorgeven aan de `TransactionTabl
 />
 ```
 
-### Stap 3 : Paginatie knoppen
+### Stap 3: Paginatieknoppen
 
 Voor de paginatie knoppen maken we gebruik van de [Pagination component](https://ui.shadcn.com/docs/components/radix/pagination):
 
@@ -1431,4 +1431,4 @@ Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. M
 
 - [react-query](https://www.npmjs.com/package/react-query)
 - [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
-- [nuqs](https://nuqs.dev/):type-safe query params state management. Zo worden de query parameters ook aan de url toegevoegd. Pagina vernieuwen behoudt igv TransactionList de zoekopdracht en de terug knop werkt zoals verwacht.
+- [nuqs](https://nuqs.dev/): type-safe query params state management. Zo worden de query parameters ook aan de URL toegevoegd. Pagina vernieuwen behoudt bij de `TransactionList` de zoekopdracht en de terugknop werkt zoals verwacht.

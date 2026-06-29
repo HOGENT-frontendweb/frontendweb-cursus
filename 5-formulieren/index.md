@@ -81,7 +81,7 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
 
 ### Oefening 2 - Toevoegen van knoppen
 
-Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en een potloodknop in de lijst voor elke transactie (`Transaction.tsx`). Zorg dat de verwijderknop en edit knop niet getoond wordt als we de detail van een plaats bekijken.
+Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en een potloodknop in de lijst voor elke transactie (`Transaction.tsx`). Zorg dat de verwijderknop en editknop niet getoond worden als we de detailpagina van een plaats bekijken.
 
 - Oplossing +
 
@@ -157,7 +157,7 @@ import { cn } from '@/lib/utils'; // 👈
 
 ## Het formulier
 
-Maak een bestand `TransactionForm.tsx` aan in de map `src/components/transactions`. Dit bevat een formulier met twee input velden (userId, amount), een datepicker en één select lijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop voor het vullen van de select lijst. We beginnen met een leeg formulier
+Maak een bestand `TransactionForm.tsx` aan in de map `src/components/transactions`. Dit bevat een formulier met twee inputvelden (userId, amount), een datepicker en één selectlijst (placeId). Het userId zal later geschrapt worden en vervangen worden door het id van de aangemelde gebruiker. Deze component krijgt de `places` door als prop voor het vullen van de select lijst. We beginnen met een leeg formulier.
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -216,7 +216,7 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
 
 ### React-hook-form
 
-We maken gebruik van de React-hook-form voor het formulierbeheer in React. Dit bevat
+We maken gebruik van de React-hook-form voor het formulierbeheer in React. Dit bevat:
 
 - `useForm` hook voor het beheren van de formulierstatus.
 - `<Controller />` component om controlled components te integreren in je formulier.
@@ -230,7 +230,7 @@ pnpm add react-hook-form zod @hookform/resolvers
 
 Neem eerst de [documentatie over React-hook-form en shadcn](https://ui.shadcn.com/docs/forms/react-hook-form) door.
 
-We beginnen met een eenvoudig formulier met 2 inputvelden `userId` en het `bedrag`. Later voegen we ook een Select lijst en datepicker toe.
+We beginnen met een eenvoudig formulier met 2 inputvelden `userId` en het `bedrag`. Later voegen we ook een selectlijst en datepicker toe.
 
 ### Stap 1. Maak een formulierschema aan.
 
@@ -262,7 +262,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 ```
 
 1. Importeer zod
-2. Zod laat je een schema definiëren dat beschrijft hoe de data er moet uitzien adhv `z.object({})`. Het zegt uit welke velden je formulier bestaat en welk type ze hebben. Later breiden we dit verder uit met validatieregels
+2. Zod laat je een schema definiëren dat beschrijft hoe de data er moet uitzien a.d.h.v. `z.object({})`. Het zegt uit welke velden je formulier bestaat en welk type ze hebben. Later breiden we dit verder uit met validatieregels.
 3. Genereer automatisch een TypeScript type op basis van je schema. Het schema en het type blijven zo automatisch gesynchroniseerd.
 
 ### Stap 2. Stel het formulier in
@@ -310,16 +310,16 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 ### Stap 3. Maak het formulier
 
-Voor de bouw van het formulier maken we gebruik van
+Voor de bouw van het formulier maken we gebruik van:
 
-- [field](https://ui.shadcn.com/docs/components/base/field) component voor het combineren van de labels en de input velden
+- [field](https://ui.shadcn.com/docs/components/base/field) component voor het combineren van de labels en de inputvelden
 - [input](https://ui.shadcn.com/docs/components/radix/input) component voor de ingave van tekst
 
 ```bash
 pnpm dlx shadcn@latest add field input
 ```
 
-Voeg inputvelden toe voor user ID en amount
+Voeg inputvelden toe voor user ID en amount.
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -371,7 +371,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 }
 ```
 
-De input velden zijn nog niet gekoppeld aan ract-hook-form. Dit doen we in de volgende stap.
+De inputvelden zijn nog niet gekoppeld aan react-hook-form. Dit doen we in de volgende stap.
 
 ### Stap 4. Controller
 
@@ -392,8 +392,8 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
 ```
 
 - `form.control` is het "brein" van het formulier, het bevat alle waarden en validatieregels.
-- `name` is de naam van het overeenkomstig form object
-- Het `render` prop is een functie die je component rendert en een `field` object doorgeeft aan je component. Dit bevat volgende props :
+- `name` is de naam van het overeenkomstig form object.
+- Het `render` prop is een functie die je component rendert en een `field` object doorgeeft aan je component. Dit bevat volgende props:
   - `field.value`: de huidige waarde uit de form state
   - `field.onChange`: update de form state bij een wijziging
   - `field.name`: de naam van het veld
@@ -410,7 +410,7 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
 
   `value/onChange` zorgen ervoor dat de state in het formulier gesynchroniseerd wordt.
 
-- `onChange={(e) => field.onChange(e.target.valueAsNumber)` overschrijft de standaard `onChange`. Normaal geeft een input een string terug, maar .`valueAsNumber` converteert het meteen naar een `number` — dat is nodig omdat het zod-schema `z.number()` verwacht en anders de conversie zou falen.
+- `onChange={(e) => field.onChange(e.target.valueAsNumber)` overschrijft de standaard `onChange`. Normaal geeft een input een string terug, maar `valueAsNumber` converteert het meteen naar een `number` — dat is nodig omdat het zod-schema `z.number()` verwacht en anders de conversie zou falen.
 
 Het formulier wordt na toevoeging van de `Controller`:
 
@@ -494,7 +494,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 ```
 
 1. Importeer de `Controller`.
-2. `defaultValues`: de beginwaarden van de formuliervelden bij het laden van de pagina. Deze zijn 0 en niet leeg omdat het schema `z.number()` verwacht. Dit moet je opgeven als je met de Controller werkt , anders krijg je een fout in de Console: "installHook.js:1 Base UI: A component is changing the uncontrolled value state of Input to be controlled. Elements should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled Input element for the lifetime of the component. The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`."
+2. `defaultValues`: de beginwaarden van de formuliervelden bij het laden van de pagina. Deze zijn 0 en niet leeg omdat het schema `z.number()` verwacht. Dit moet je opgeven als je met de Controller werkt, anders krijg je een fout in de Console: "installHook.js:1 Base UI: A component is changing the uncontrolled value state of Input to be controlled. Elements should not switch from uncontrolled to controlled (or vice versa). Decide between using a controlled or uncontrolled Input element for the lifetime of the component. The nature of the state is determined during the first render. It's considered controlled if the value is not `undefined`."
 3. Voeg de `Controller` toe.
 
 ### Stap 5. Validatie
@@ -503,7 +503,7 @@ In een applicatie kan je niet alleen werken met server-side validatie. In dat ge
 
 React-hook-form ondersteunt ook schema-validatie met Yup, zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. We maken gebruik van [zod](https://zod.dev/).
 
-Neem eerst de [documentatie](https://zod.dev/basics) door
+Neem eerst de [documentatie](https://zod.dev/basics) door.
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -610,25 +610,25 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 1. Voeg de validatie toe aan het schema.
    - `userId` — moet een getal zijn (minimaal 1), verplicht.
    - `amount` — het bedrag, met twee extra checks via `.refine()`: Mag geen `NaN` zijn (niet-getal) — dit is een extra veiligheidscheck bovenop `z.number()` en mag niet 0 zijn
-     De `{ error: '...' }` en`{ message: '...' }` opties bepalen de foutmeldingen die de gebruiker te zien krijgt als de validatie faalt.
+     De `{ error: '...' }` en `{ message: '...' }` opties bepalen de foutmeldingen die de gebruiker te zien krijgt als de validatie faalt.
 2. React-hook-form ondersteunt verschillende `validatiemodi`.
    - `onChange`: Bij elke wijziging wordt een validatie geactiveerd.
    - `onBlur`: Validatie wordt geactiveerd bij het verlaten van het scherm.
    - `onSubmit`: Validatie wordt geactiveerd bij het verzenden (standaard).
    - `onTouched`: De validatie wordt geactiveerd bij de eerste keer dat het scherm de focus verliest, en vervolgens bij elke wijziging.
    - `all`: Validatie wordt geactiveerd bij het verlaten van het scherm en bij wijzigingen.
-3. We controlleren of er fouten voorkomen in het formulier.
-4. De Controller geeft nu ook de `fieldState` door. Di de validatiestatus van 1 specifiek veld.
+3. We controleren of er fouten voorkomen in het formulier.
+4. De Controller geeft nu ook de `fieldState` door. Dit is de validatiestatus van 1 specifiek veld.
    - `fieldState.invalid`: true als het veld niet voldoet aan de zod-validatieregels
    - `fieldState.error`: het foutobject met de foutmelding (bv. { message: 'User is required' })
    - `fieldState.isDirty`: true als de gebruiker de waarde heeft gewijzigd t.o.v. de defaultValue
    - `fieldState.isTouched`: true als de gebruiker het veld heeft gefocust en er terug uit is gegaan
-5. Voeg de `data-invalid` prop toe aan het `<Field />`component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
+5. Voeg de `data-invalid` prop toe aan het `<Field />` component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
 6. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.
 
 ### Stap 6. Select voor plaatsen
 
-Voeg een extra formulierveld toe voor de keuze van een plaats. Maak hiervoor gebruik van de Select component. [Lees de documentatie voor integratie met react-form-hooks](https://ui.shadcn.com/docs/forms/react-hook-form#select).
+Voeg een extra formulierveld toe voor de keuze van een plaats. Maak hiervoor gebruik van de Select component. [Lees de documentatie voor integratie met react-hook-form](https://ui.shadcn.com/docs/forms/react-hook-form#select).
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -713,7 +713,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 ### Stap 7. Een datepicker voor de datum
 
-Maak gebruik van de [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker) voor de datum, die op zijn beurt gebruik maakt van de [Calendar](https://ui.shadcn.com/docs/components/base/calendar) en [PopOver](https://ui.shadcn.com/docs/components/base/popover) component. `PopOver` toont/verbergt de calender. `PopoverTrigger` is de knop die je aanklikt, het toont de gekozen datum. `PopoverContent` klapt uit en toont de kalender.
+Maak gebruik van de [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker) voor de datum, die op zijn beurt gebruik maakt van de [Calendar](https://ui.shadcn.com/docs/components/base/calendar) en [Popover](https://ui.shadcn.com/docs/components/base/popover) component. `Popover` toont/verbergt de calendar. `PopoverTrigger` is de knop die je aanklikt, het toont de gekozen datum. `PopoverContent` klapt uit en toont de kalender.
 
 ```bash
 pnpm dlx shadcn@latest add field popover calendar
@@ -794,11 +794,11 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
   ));
 ```
 
-1. Voeg een `date` veld toe aan het `formSchema` (verplicht, moet een Date-object zijn, en mag niet in de toekomst liggen )
+1. Voeg een `date` veld toe aan het `formSchema` (verplicht, moet een Date-object zijn, en mag niet in de toekomst liggen).
 2. Voeg `date` toe aan de `defaultValues` in `useForm` en stel in op de datum van vandaag.
 3. Voeg een `<Controller>` toe voor `amount` met een [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker).
-4. Maak gebruik van `LocalizedDate`voor weergave van de datum in de `Button`.
-5. `selected/onSelected` prop voor de synchronisatie met de state in react-hook-form
+4. Maak gebruik van `LocalizedDate` voor weergave van de datum in de `Button`.
+5. `selected/onSelect` prop voor de synchronisatie met de state in react-hook-form.
 
 ### Stap 8: Reset
 
@@ -831,7 +831,7 @@ export const save = async <T>(
 };
 ```
 
-1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook de `transaction` mee als argument `arg` .
+1. De parameter `url` zal van `swr` de `key` ontvangen. We krijgen ook de `transaction` mee als argument `arg`.
 2. We voeren een `POST` request uit naar de API. Axios zal de `transaction` automatisch omzetten naar JSON en versturen als body van het HTTP request. Het antwoord heeft als HTTP status code 201 en als response body de nieuw gecreëerde transactie. We negeren dat antwoord hier.
 
 We maken een nieuwe mutation in `TransactionForm`:
@@ -874,7 +874,7 @@ const onSubmit = async (values: TransactionFormValues) => {
 2. Maak een trigger-functie die een transactie zal opslaan. We gebruiken dezelfde key als bij het ophalen van de transacties, dus `transactions`. We geven als fetcher onze `save` functie mee. We krijgen o.a. terug:
    - `trigger`: een functie die we kunnen aanroepen om het request effectief uit te voeren en dus de transactie toe te voegen. Deze functie ontvangt de `transaction` als argument. We hernoemen dit naar `saveTransaction`.
    - `error`: een eventuele fout die zich voordoet bij het opslaan van de transactie. We hernoemen deze naar `saveError`.
-3. Wijzig de `onSubmit` zodat `saveTransaction` aangeroepen wordt. We geven de values mee als argument . **Let op:** de functie is `async`, dus we moeten `await` gebruiken. Het optioneel 2de argument definieert dat `throw error` niet moet worden aangeroepen als de update faalt, en bij succes wordt het formulier gereset.
+3. Wijzig de `onSubmit` zodat `saveTransaction` aangeroepen wordt. We geven de values mee als argument. **Let op:** de functie is `async`, dus we moeten `await` gebruiken. Het optioneel 2de argument definieert dat `throw error` niet moet worden aangeroepen als de update faalt, en bij succes wordt het formulier gereset.
 
 Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebruiker op te zoeken. We geven gewoon het id mee. 4. We tonen een eventuele fout na het opslaan
 
@@ -882,13 +882,13 @@ Later verwijderen we het userId-veld, daarom doen we hier geen moeite om de gebr
 
 Implementeer een formulier om een entiteit te creëren in je eigen project:
 
-- Maak een functie die een POST request uitvoert aan in `api/index.js`.
+- Maak een functie die een POST request uitvoert in `api/index.ts`.
 - Gebruik de `useSWRMutation` hook om de data toe te voegen.
 - Controleer of je formulier een item kan toevoegen.
 
 ## PUT /api/transactions/:id
 
-Dan rest nog de 'U' van CRUD, maar die is een beetje speciaal. De API call zelf is geen probleem, dit is basically hetzelfde als het toevoegen maar met een extra `id` parameter.
+Dan rest nog de 'U' van CRUD, maar die is een beetje speciaal. De API call zelf is geen probleem, dit is in feite hetzelfde als het toevoegen maar met een extra `id` parameter.
 
 Maar we willen natuurlijk niet dat een gebruiker een volledig object juist moet invoeren om het aan te passen. We willen dat hij ergens op 'bewerk' kan klikken bij een bestaand element.
 
@@ -932,7 +932,7 @@ export async function save(
 
 Wij kiezen voor de laatste (compacte) oplossing. Pas ook `PlacesList.tsx` aan zodat nu van de `save` methode gebruik gemaakt wordt.
 
-Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we `null` door. Indien swr `null` ontvangt, zal het geen request uitvoeren.
+Als we in de `Transaction` component klikken op de potlood-knop, navigeren we naar `/transactions/edit/${id}`. In `AddOrEditTransaction` kijken we of het om een add of edit gaat (id al dan niet gekend). In het laatste geval halen we de betreffende transactie op en geven dit door aan de `TransactionForm`, anders geven we `null` door. Indien `swr` `null` ontvangt, zal het geen request uitvoeren.
 
 ```jsx
 // src/pages/transactions/AddOrEditTransaction.tsx
@@ -977,7 +977,7 @@ export default function AddOrEditTransaction() {
 ```
 
 1. Importeer `useParams`.
-2. Extraheer de id uit de url.
+2. Extraheer de id uit de URL.
 3. Maak gebruik van `useSWR` om de aan te passen transactie op te halen. Indien geen id parameter werd meegegeven wordt `null` meegegeven.
 4. Geef de aan te passen transactie door aan `TransactionForm`.
 5. Zorg voor foutafhandeling en laadindicator.
@@ -1071,9 +1071,9 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
 }
 ```
 
-1. `EMPTY_TRANSACTION`: Definieer een leeg transaction object. Plaats dit buiten de component omdat we geen nieuwe objecten willen aanmaken bij elke render! Di t object blijft steeds hetzelfde.
+1. `EMPTY_TRANSACTION`: Definieer een leeg transaction object. Plaats dit buiten de component omdat we geen nieuwe objecten willen aanmaken bij elke render! Dit object blijft steeds hetzelfde.
 2. Ontvang `transaction` als prop. Stel de standaardwaarde in op `EMPTY_TRANSACTION`.
-3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat en voeg een `Cancel`knop toe
+3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat en voeg een `Cancel`-knop toe.
 4. Pas `useForm` aan
    - `defaultValues`: Worden éénmalig ingesteld bij de eerste render van het formulier. Deze worden niet bijgewerkt als transaction van buiten verandert.
    - `values`: Worden gesynchroniseerd met de huidige waarde van de prop, als transaction van buiten verandert, wordt het formulier automatisch gereset met de nieuwe waarden. Bedoeld voor gecontroleerde formulieren waarbij de externe data kan wijzigen (bijv. na een fetch of navigatie naar een andere transactie).
@@ -1101,7 +1101,7 @@ Een veel gemaakte denkfout is dat alle waarden (i.e. variabelen) in een componen
 
 **Events** zijn functies binnen de component die worden uitgevoerd als reactie op een actie van een gebruiker. Een event handler kan state aanpassen, bv. een HTTP POST request uitvoeren om een transactie toe te voegen. Event handlers bevatten **side-effects** veroorzaakt door een interactie. React biedt daarnaast ook de mogelijkheid voor side-effects na bv. een state-wijziging. Hierover in een volgend hoofdstuk meer.
 
-In een vorige hoofdstuk hebben we kennis gemaakt met de `useState`, `useReducer`, `useMemo` en `useEffect` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
+In een vorig hoofdstuk hebben we kennis gemaakt met de `useState`, `useReducer`, `useMemo` en `useEffect` hooks. React heeft nog heel wat meer hooks (zie <https://react.dev/reference/react>) en er zijn reeds heel wat nuttige custom hooks te vinden op internet (zie bv. <https://nikgraf.github.io/react-hooks/>).
 
 Hooks hebben ervoor gezorgd dat je met function components hetzelfde kan bereiken als met class components. Toch kan het zijn alsof hooks vreemd aanvoelen, alsof React de bal mis geslagen heeft in vergelijking met andere frameworks als [Solid.js](https://www.solidjs.com/) (zie <https://jakelazaroff.com/words/were-react-hooks-a-mistake/>).
 
@@ -1157,7 +1157,7 @@ const TransactionMemoized = memo(function Transaction({
 export default TransactionMemoized;
 ```
 
-Start de app en bekijk de console. Verwijder nadien de toegevoegd `console.log` statements.
+Start de app en bekijk de console. Verwijder nadien de toegevoegde `console.log` statements.
 
 ### useCallback hook
 
@@ -1170,7 +1170,7 @@ const handleDeleteTransaction = async (id) => {
 };
 ```
 
-Geef deze door als property `onDelete` aan de `TransactionTable` component:
+Geef deze door als property `onDelete` aan de `TransactionsTable` component:
 
 ```jsx
 <TransactionsTable
@@ -1181,7 +1181,7 @@ Geef deze door als property `onDelete` aan de `TransactionTable` component:
 
 Van zodra we een letter ingeven in de zoekbalk worden alle transacties toch opnieuw gerenderd.
 
-`TransactionTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDeleteTransaction` is de event handler functie. JavaScript gaat er vanuit dat de functie `handleDeleteTransaction` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
+`TransactionsTable` bevat een prop `onDelete`. Deze wordt doorgegeven door de parent component `TransactionList`. `handleDeleteTransaction` is de event handler functie. JavaScript gaat er vanuit dat de functie `handleDeleteTransaction` bij elke render verschillend is. Echter is dit niet het geval. `useCallback` cachet een functie tussen twee renders en dit totdat de dependency array wijzigt.
 
 Pas de code van de functie in de `TransactionList` component aan:
 
@@ -1203,7 +1203,7 @@ const handleDeleteTransaction = useCallback(
 
 Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr dit ook doet.
 
-Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook een beetje overhead. Gebruik useCallback enkel als je een functie doorgeeft als prop (bij grote lijsten) of als dependency van een andere hook (bv. useEffect, useMemo, useCallback). Dit is nodig omdat functies in JavaScript referentietypes zijn. Bij elke render wordt een nieuwe functie aangemaakt, ook al is de code identiek. Hierdoor worden pure componenten onnodig opnieuw gerenderd of worden hooks onnodig opnieuw uitgevoerd.
+Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook een beetje overhead. Gebruik `useCallback` enkel als je een functie doorgeeft als prop (bij grote lijsten) of als dependency van een andere hook (bv. useEffect, useMemo, useCallback). Dit is nodig omdat functies in JavaScript referentietypes zijn. Bij elke render wordt een nieuwe functie aangemaakt, ook al is de code identiek. Hierdoor worden pure componenten onnodig opnieuw gerenderd of worden hooks onnodig opnieuw uitgevoerd.
 
 > **Oplossing voorbeeldapplicatie**
 >

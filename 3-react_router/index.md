@@ -95,7 +95,7 @@ Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`.
 
 ## Routes definiëren
 
-We voorzien volgende basis routes in de voorbeeldapplicatie
+We voorzien volgende basisroutes in de voorbeeldapplicatie
 
 - `/`: de home page (`App.tsx`) met links naar de andere pagina's (later voegen we een navigatiebalk toe)
 - `/transactions`: een lijst van transacties
@@ -275,7 +275,7 @@ Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
 ## Routes nesten
 
-Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We passen de about page aan zodat de active tab uit de link gehaald kan worden.
+Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We passen de about page aan zodat de actieve tab uit de link gehaald kan worden.
 
 ```jsx
 // src/pages/about/About.tsx
@@ -594,7 +594,7 @@ export default function Layout() {
 
 ### De navbar
 
-De `Navbar` component voorziet in het menu. We maken een responsive menu gebruik makend van de [NavigationMenu](https://ui.shadcn.com/docs/components/radix/navigation-menu) van shadcn
+De `Navbar` component voorziet in het menu. We maken een responsive menu gebruikmakend van de [NavigationMenu](https://ui.shadcn.com/docs/components/radix/navigation-menu) van shadcn.
 
 ```jsx
 // src/components/Navbar.tsx
@@ -684,11 +684,11 @@ export default function Navbar() {
    <NavigationMenuLink href={to}>{label}</NavigationMenuLink>
    ```
 
-   Maar het nadeel is dat href de browser gebruikt voor navigatie — dus volledige pagina-herlaad in plaats van React Router's client-side navigatie. In een SPA verlies je daarmee de snelheid en de bewaard staat (scroll positie, etc.). De `render` prop is de juiste oplossing als je client-side navigatie wil behouden. De `render` vervangt het onderliggende `<a>` element van `NavigationMenuLink` door een `Link`, zodat er maar één `<a>` in de DOM staat.
+   Maar het nadeel is dat href de browser gebruikt voor navigatie — dus volledige pagina-herlaad in plaats van React Router's client-side navigatie. In een SPA verlies je daarmee de snelheid en de bewaarde staat (scrollpositie, etc.). De `render` prop is de juiste oplossing als je client-side navigatie wil behouden. De `render` vervangt het onderliggende `<a>` element van `NavigationMenuLink` door een `Link`, zodat er maar één `<a>` in de DOM staat.
 
 ### Integratie van de Layout component
 
-Pas `main.tsx` aan. Alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
+Pas `main.tsx` aan. Alle paden zijn nu kinderen van de `Layout` component. Verwijder de `App` component.
 
 ```jsx
 // src/main.tsx
@@ -768,7 +768,7 @@ Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` z
 // ...
 ```
 
-`NavigationMenuLink` de actieve staat aan via het`data-active` attribuut dat de component zelf stijlt (`data-active:bg-muted/50`).
+`NavigationMenuLink` geeft de actieve staat aan via het `data-active` attribuut dat de component zelf stijlt (`data-active:bg-muted/50`).
 
 ### Refactoring Navbar
 
@@ -1061,7 +1061,7 @@ Wil je begrijpen hoe iets werkt of welke props beschikbaar zijn, dan moet je naa
 - `value`: huidig actieve tab (controlled)
 - `onValueChange`: callback bij wijziging
 
-Controlled gedrag werkt als volgt
+Controlled gedrag werkt als volgt:
 
 ```jsx
 // 1. State aanmaken voor actieve tab
@@ -1073,7 +1073,7 @@ const [activeTab, setActiveTab] = useState("tab1")
 
 ### Stap 3: Actieve tab afleiden uit de routing
 
-In deze stap bepaalt de url de tab die getoond zal worden.
+In deze stap bepaalt de URL de tab die getoond zal worden.
 
 1. Haal het path op en extraheer het segment.
 2. Definieer een constante TABS. Door `as const` ziet TypeScript dit als `readonly ['services', 'history', 'location']` (exact deze 3 waarden) en niet als een `string[]`.
@@ -1151,7 +1151,7 @@ Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles d
 }
 ```
 
-Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een TailWind CSS directive.
+Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een Tailwind CSS directive.
 
 Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
 
