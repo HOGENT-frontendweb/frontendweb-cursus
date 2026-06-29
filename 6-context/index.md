@@ -737,7 +737,7 @@ const { isSubmitting, isValid } = form.formState; // 👆
 // ...
 return (
   <>
-    <FormProvider {...methods}>
+    <FormProvider {...form}>
       {/* ... */}
       <div className='flex justify-end'>
             <button
