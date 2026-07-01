@@ -80,7 +80,7 @@ import { createContext } from 'react'; // 👈 1
 
 // 👇 2
 interface ThemeContextType {
-  darkmode: boolean;
+  isDark: boolean;
 }
 
 export const ThemeContext = createContext<ThemeContextType>({
@@ -93,7 +93,7 @@ export const ThemeContext = createContext<ThemeContextType>({
 
 1. Importeer `createContext` uit React.
 2. `ThemeContextType` is een TypeScript interface die de vorm van de context beschrijft. Door dit type te definiëren krijg je autocomplete en typeveiligheid in alle consumers.
-3. `createContext<ThemeContextType>` koppelt het type aan de context. De verplichte standaardwaarde `{ darkmode: false }` wordt enkel gebruikt als een consumer de context aanroept **buiten** een provider — in de praktijk zal dit zelden voorkomen, maar TypeScript vereist een waarde die aan `ThemeContextType` voldoet.
+3. `createContext<ThemeContextType>` koppelt het type aan de context. De verplichte standaardwaarde `{ isDark: false }` wordt enkel gebruikt als een consumer de context aanroept **buiten** een provider — in de praktijk zal dit zelden voorkomen, maar TypeScript vereist een waarde die aan `ThemeContextType` voldoet.
 
 ### Stap 2: Bied de context aan
 
