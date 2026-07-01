@@ -111,13 +111,13 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
-Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst word. We overschrijven hier de default waarde. Geef een object door (vandaar `{{}}`). Alle kinderen onder de provider zullen opnieuw renderen wanneer de waarde van de `Provider` verandert.
+Elk **context object** wordt beschikbaar gemaakt met een **context provider** component waarin de data geplaatst wordt. Een context provider plaats je rond de volledige component tree of bepaalde secties ervan. Alle kinderen (de **context consumers**) binnen de context provider hebben toegang tot de data en kunnen zich abonneren op wijzigingen. De `value` property bevat de data die in de context geplaatst wordt. We overschrijven hier de default waarde. Geef een object door (vandaar `{{}}`). Alle kinderen onder de provider zullen opnieuw renderen wanneer de waarde van de `Provider` verandert.
 
 > Het is niet verplicht om een context steeds in de hoogste component uit de component tree te zetten, je zet hem zo laag mogelijk zodat de nodige child componenten aan de data kunnen.
 
 ### Stap 3: Consume de context
 
-De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. de darkmode in de `Star` component. De `Star` component zal de data consumeren, en is een context consumer. De `dark` mode zal de kleur van de ster bepalen.
+De data hoeft niet langer doorgegeven te worden via props. Gebruik bv. de `isDark` in de `Star` component. De `Star` component zal de data consumeren, en is een context consumer. De `dark` mode zal de kleur van de ster bepalen.
 
 ```tsx
 // src/components/places/StarRating.tsx
@@ -146,7 +146,7 @@ function Star({ index, selected = false, onSelect = () => {} }: StarProps) {
 ```
 
 1. De `useContext` hook wordt gebruikt om met de context te connecteren en heeft als parameter een context object `ThemeContext`. Het retourneert de `value` van de huidige context (zie value property van de context provider).
-2. De kleur van de geselecteerde ster hangt af van de `darkmode` waarde uit de context. Zo demonstreren we visueel dat de context de UI beïnvloedt.
+2. De kleur van de geselecteerde ster hangt af van de `isDark` waarde uit de context. Zo demonstreren we visueel dat de context de UI beïnvloedt.
 
 De context provider kan data in de context plaatsen, maar het kan de data in de context niet aanpassen. Willen we ook nog functies toevoegen aan de Context om te wisselen van dark naar light mode of omgekeerd? Dan moeten we een aparte component aanmaken.
 
@@ -355,7 +355,7 @@ In elke component die gebruik maakt van de context dienen we volgende code te sc
 ```tsx
 import { ThemeContext } from '../../contexts/Theme.context';
 
-const { darkmode, toggleDarkmode } = useContext(ThemeContext);
+const { isDark, toggleTheme } = useContext(ThemeContext);
 ```
 
 Om duplicate code te vermijden kunnen we gebruik maken van een **custom hook**. Neem hiervoor eerst [Reusing Logic with Custom Hooks](https://react.dev/learn/reusing-logic-with-custom-hooks) door.
@@ -396,7 +396,7 @@ Zo kan de code in `Navbar.tsx` als volgt aangepast worden:
 import { useTheme } from '../contexts/theme'; // 👈 1
 
 const ThemeToggle = () => {
-  const { darkmode, toggleDarkmode } = useTheme(); // 👈 2
+  const { isDark, toggleTheme } = useTheme(); // 👈 2
   //...
 };
 ```
