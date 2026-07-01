@@ -114,10 +114,17 @@ Dankzij `storageState` starten alle testen automatisch als aangemelde gebruiker 
 Voer de testen uit:
 
 ```bash
-pnpm test
+pnpm test:ui
 ```
 
 Playwright voert eerst het `setup`-project uit (inloggen + opslaan), daarna alle andere testen met de opgeslagen sessie.
+Als de andere testen niet langer getoond worden: In de Playwright UI staat er linksboven een Projects filter. Momenteel staat waarschijnlijk alleen setup aangevinkt. Vink ook chromium aan om alle testbestanden te zien.
+
+Als `auth.setup` faalt, controleer dan `playwright/.auth/` map bestaat. Indien niet, maak hem aan:
+
+```bash
+mkdir -p playwright/.auth
+```
 
 ## Oefening - Foutboodschappen in TransactionForm
 

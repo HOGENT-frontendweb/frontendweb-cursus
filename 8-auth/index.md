@@ -37,7 +37,7 @@ Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we i
 ```js
 // src/api/index.ts
 export const post = async <T, U>(url: string, { arg }: { arg: T }): Promise<U> => {
-  const { data } = await axios.post(url, arg);
+  const { data } = await axios.post(`${baseUrl}/${url}, arg);
   return data;
 };
 ```
@@ -57,18 +57,25 @@ import {
   useState, // 👈 4
 } from 'react';
 import useSWRMutation from 'swr/mutation'; // 👈 8
-import * as api from '../api'; // 👈 8
+import * as api from '../../api'; // 👈 8
 import useSWR from 'swr';
 
 export const JWT_TOKEN_KEY = 'jwtToken'; // 👈 12
-export const AuthContext = createContext(); // 👈 1
+export const AuthContext = createContext(undefined); // 👈 1
 
+// 👇 12
+export interface AuthUser {
+  id: string;
+  name: string;
+  email: string;
+}
 // 👇 2
-export const AuthProvider = ({ children }) => {
-  export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState<string | null>(localStorage.getItem(JWT_TOKEN_KEY)); // 👈 4 en 12
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem(JWT_TOKEN_KEY),
+  ); // 👈 4
 
-  // 👇 13
+  // 👇 12
   const {
     data: user,
     isLoading: userLoading,
@@ -81,18 +88,24 @@ export const AuthProvider = ({ children }) => {
     error: loginError,
   } = useSWRMutation('sessions', api.post); // 👈 6
 
+  const setSession = (newToken: string) => {
+    setToken(newToken);
+    localStorage.setItem(JWT_TOKEN_KEY, newToken);
+  }; // 👈 7
+
   // 👇 5
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const { token: newToken } = await doLogin({ email, password }) as { token: string };// 👈 6
-      setSession(newToken);// 👈 7
-      return true;// 👈 8
+      const { token: newToken } = (await doLogin({ email, password })) as {
+        token: string;
+      }; // 👈 6
+      setSession(newToken); // 👈 7
+      return true; // 👈 8
     } catch (error) {
       console.error(error);
-      return false;// 👈 8
+      return false; // 👈 8
     }
   };
-
 
   // 👇 10
   const logout = () => {
@@ -100,29 +113,35 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(JWT_TOKEN_KEY);
   };
 
-  // 👇 5 en 9 en 11 en 13
-  const value = [user, error: loginError||userError, loading:loginLoading||userLoading, login, logout];
+  // 👇 5 en 9 en 11 en 12
+  const value = {
+    token,
+    user,
+    error: loginError || userError,
+    loading: loginLoading || userLoading,
+    login,
+    logout,
+  };
 
   // 👇 3
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 ```
 
-1. Creëer een nieuwe context.
+1. Creëer een nieuwe context. Voorlopig defaulten we de waarde naar `undefined`. We zullen later een type toevoegen.
 2. Maak een `AuthProvider` aan.
 3. Retourneer reeds de kinderen gewrapped in de `AuthContext.Provider`.
-4. Definieer een state-variabelen om onze JWT bij te houden.
+4. Definieer een state-variabelen om onze JWT bij te houden. We moeten zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`. We halen de huidige token uit `localStorage` als initiële waarde van onze state-variabele. We houden de `localStorage` key bij in een globale constante.
 5. We definiëren een functie waarmee we een gebruiker kunnen aanmelden.
 6. Roep de API aan om een gebruiker aan te melden. We maken hiervoor gebruik van de `useSWRMutation` hook. Deze hook handelt automatisch de loading (via `isMutating`) en error state voor ons af. Voeg `error` en `loading` toe aan de context.
-7. Als alles goed ging, houden we de JWT bij.
+7. Als alles goed ging, houden we de JWT bij en plaatsen we deze in `localStorage`.
 8. We retourneren ook `true` zodat we kunnen weten of het aanmelden gelukt is. Indien iets fout ging, retourneren we `false`.
 9. Voeg ook deze `login`functie toe aan de context.
 10. We voorzien ook een functie om een gebruiker terug uit te loggen. Uitloggen is zo eenvoudig als de token verwijderen. Herinner je: een JWT is stateful, de server stateless. Met andere woorden een JWT bevat alle nodige informatie, een server valideert deze. Gooien we de JWT weg, dan kunnen we niet meer aan de beveiligde routes.
 11. We voegen ook deze functie toe aan de context.
-12. Nu moeten we er enkel nog voor zorgen dat de token behouden blijft tussen de verschillende keren dat we naar de website gaan. Hiervoor moeten we de token opslaan in `localStorage`. We voegen de huidige token uit `localStorage` toe als initiële waarde van onze state-variabele. We houden de `localStorage` key bij in een globale constante.
-13. We halen ook de `user` gegevens op en voegen de waarde toe aan de context. Vervolledig `error` en `loading` in de context.
+12. We halen ook de `user` gegevens op en voegen de waarde toe aan de context. Vervolledig `error` en `loading` in de context.
 
-Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan onze volledige Context waarde kunnen ophalen. Maak een file `index.ts` aan in de `contexts` folder. Plaats ook de andere exports uit `Auth.context.tsx` in deze file en pas de imports in `Auth.context.tsx` aan.
+Dan moeten we uiteraard ook nog een hook voorzien waarmee we aan onze volledige Context waarde kunnen ophalen. Maak een file `index.ts` aan in de `contexts/auth` folder. Plaats ook de andere exports uit `Auth.context.tsx` in deze file en pas de imports in `Auth.context.tsx` aan.
 
 ```ts
 // src/contexts/auth/index.ts
@@ -141,21 +160,16 @@ interface AuthContextType {
   user: AuthUser | undefined;
   error: Error | undefined;
   loading: boolean;
-  isAuthed: boolean;
-  ready: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
-  register: (data: {
-    name: string;
-    email: string;
-    password: string;
-  }) => Promise<boolean>;
 }
 
 export const JWT_TOKEN_KEY = 'jwtToken'; // 👈 3
+
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined,
 ); // 👈 4
+
 export const useAuth = (): AuthContextType => {
   // 👈 5
   const context = useContext(AuthContext);
@@ -172,7 +186,7 @@ export const useAuth = (): AuthContextType => {
    - `isAuthed`: `true` als er een geldige token aanwezig is — handig om snel te controleren of de gebruiker ingelogd is.
    - `ready`: `true` zodra de initiële check (bv. token uit `localStorage` laden en valideren) afgerond is. Voorkomt dat de UI kort een "niet ingelogd"-staat toont terwijl de token nog geladen wordt.
    - `login` / `logout` / `register`: de acties die consumers kunnen aanroepen om de authenticatiestatus te wijzigen.
-3. `JWT_TOKEN_KEY` is een constante voor de sleutelnaam in `localStorage`. Door dit op één plaats te definiëren voorkom je typefouten als dezelfde sleutel op meerdere plaatsen gebruikt wordt.
+3. `JWT_TOKEN_KEY` is een constante voor de sleutelnaam in `localStorage`.
 4. `AuthContext` wordt aangemaakt met `undefined` als standaardwaarde en het type `AuthContextType | undefined`. Dit dwingt consumers via de `useAuth` hook te gaan — wie de context buiten een `AuthProvider` gebruikt krijgt een duidelijke fout.
 5. `useAuth` is de custom hook die consumers gebruiken in plaats van `useContext(AuthContext)` rechtstreeks. De check `if (!context)` gooit een begrijpelijke foutmelding als de hook buiten de `AuthProvider` aangeroepen wordt.
 
@@ -181,7 +195,7 @@ We wrappen de hele app in de `AuthProvider` (in `src/main.tsx`):
 ```tsx
 // src/main.tsx
 // ...
-import { AuthProvider } from './contexts/auth/Auth.context';
+import { AuthProvider } from './contexts/auth/Auth.contex.tsx';
 
 // ...
 createRoot(document.getElementById('root')).render(
@@ -210,6 +224,7 @@ Vervolgens gaan we een instantie van axios configureren voor het gebruik van een
 ```tsx
 // src/api/index.ts
 import axiosRoot from 'axios'; // 👈 1
+import { JWT_TOKEN_KEY } from '@/contexts/auth'; // 👈 3
 import { JWT_TOKEN_KEY } from '../contexts/auth';
 import type { PaginatedResponse } from '../types';
 
@@ -263,8 +278,7 @@ Voeg de `Login` component toe in `src/pages/Login.tsx`:
 
 ```tsx
 // src/pages/Login.tsx
-import { useNavigate, useLocation } from 'react-router';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
@@ -275,13 +289,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import { FieldGroup } from '@/components/ui/field';
+import LabelInput from '../components/LabelInput';
 
 const loginSchema = z.object({
   email: z.email('Invalid email address'),
@@ -291,9 +300,6 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const navigate = useNavigate();
-  const { search } = useLocation();
-
   const {
     control,
     handleSubmit,
@@ -310,63 +316,37 @@ export default function Login() {
   return (
     <div className='flex justify-center pt-12'>
       <Card className='w-full max-w-sm'>
-        <form onSubmit={handleSubmit(handleLogin)}>
-          <CardHeader>
-            <CardTitle className='text-2xl'>Sign in</CardTitle>
-          </CardHeader>
+        <FormProvider {...form}>
+          <form>
+            <CardHeader>
+              <CardTitle className='text-2xl'>Sign in</CardTitle>
+            </CardHeader>
 
-          <CardContent className='py-4'>
-            <Error error={error} />
-            <FieldGroup>
-              <Controller
-                control={control}
-                name='email'
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Email</FieldLabel>
-                    <Input
-                      {...field}
-                      type='text'
-                      placeholder='your@email.com'
-                      disabled={isSubmitting}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+            <CardContent className='py-4'>
+              <FieldGroup>
+                <LabelInput
+                  label='Email'
+                  name='email'
+                  placeholder='your@email.com'
+                  type='text'
+                />
+                <LabelInput
+                  label='Password'
+                  name='password'
+                  placeholder='password'
+                  type='password'
+                />
+              </FieldGroup>
+            </CardContent>
 
-              <Controller
-                control={control}
-                name='password'
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Password</FieldLabel>
-                    <Input
-                      {...field}
-                      type='password'
-                      placeholder='password'
-                      disabled={isSubmitting}
-                    />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          </CardContent>
-
-          <CardFooter className='flex justify-end gap-2'>
-            <Button type='submit' disabled={loading}>
-              Sign in
-            </Button>
-            <Button type='button' variant='outline' onClick={() => reset()}>
-              Cancel
-            </Button>
-          </CardFooter>
-        </form>
+            <CardFooter className='flex justify-end gap-2'>
+              <Button type='submit'>Sign in</Button>
+              <Button type='button' variant='outline'>
+                Cancel
+              </Button>
+            </CardFooter>
+          </form>
+        </FormProvider>
       </Card>
     </div>
   );
@@ -384,19 +364,24 @@ Zorg ervoor dat deze component getoond wordt op de URL `/login`. Voeg deze route
 
 Om aan te melden maken we gebruik van onze `useAuth` hook. Pas `src/pages/Login.tsx` als volgt aan:
 
-````tsx
+```tsx
 // src/pages/Login.tsx
-import { useCallback } from 'react';
 import { useNavigate } from 'react-router';
-import { Controller, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAuth } from '../contexts/auth';// 👈 1
+import { useAuth } from '../contexts/auth'; // 👈 1
 import Error from '../components/Error';
 import { Button } from '../components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
-import { Field, FieldError, FieldGroup, FieldLabel } from '../components/ui/field';
-import { Input } from '../components/ui/input';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '../components/ui/card';
+import { FieldGroup } from '../components/ui/field';
+import LabelInput from '../components/LabelInput';
 
 const loginSchema = z.object({
   email: z.email('Invalid email address'),
@@ -406,73 +391,70 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const { error, loading, login } = useAuth();// 👈 1
-  const navigate = useNavigate();
+  const { error, loading, login } = useAuth(); // 👈 1
+  const navigate = useNavigate(); // 👈 3
 
   // 👇 7
-  const { control, handleSubmit, reset, formState: { isSubmitting } } = useForm<LoginFormValues>({
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: {
+      email: 'thomas.aelbrecht@hogent.be',
+      password: '12345678',
+    },
   });
 
-  const handleLogin = useCallback(
-    async ({ email, password }: LoginFormValues) => {
-      const loggedIn = await login(email, password);// 👈 2
-      if (loggedIn) {
-        navigate({
-          pathname: '/',
-          replace: true,
-        });// 👈 3
-      }
-    },
-    [login, navigate, search],// 👈 1
-  );
+  const handleLogin = async ({ email, password }: LoginFormValues) => {
+    const loggedIn = await login(email, password); // 👈 2
+    if (loggedIn) {
+      navigate('/', { replace: true }); // 👈 3
+    }
+  }; // 👈 1
 
   return (
-    <div className="flex justify-center pt-12">
-      <Card className="w-full max-w-sm">
-        <form onSubmit={handleSubmit(handleLogin)}>
-              {/* 👆 1*/}
-          <CardHeader>
-            <CardTitle className="text-2xl">Sign in</CardTitle>
-          </CardHeader>
+    <div className='flex justify-center pt-12'>
+      <Card className='w-full max-w-sm'>
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(handleLogin)}>
+            {/* 👆 1*/}
+            <CardHeader>
+              <CardTitle className='text-2xl'>Sign in</CardTitle>
+            </CardHeader>
 
-          <CardContent className="py-4">
-            <Error error={error} />{/* 👈 5 */}
-            <FieldGroup>
-              <Controller
-                control={control}
-                name="email"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Email</FieldLabel>
-                    <Input {...field} type="text" placeholder="your@email.com" disabled={isSubmitting} />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
+            <CardContent className='py-4'>
+              <Error error={error} />
+              {/* 👈 5 */}
+              <FieldGroup>
+                <LabelInput
+                  label='Email'
+                  name='email'
+                  placeholder='your@email.com'
+                  type='text'
+                />
+                <LabelInput
+                  label='Password'
+                  name='password'
+                  placeholder='password'
+                  type='password'
+                />
+              </FieldGroup>
+            </CardContent>
 
-              <Controller
-                control={control}
-                name="password"
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel>Password</FieldLabel>
-                    <Input {...field} type="password" placeholder="password" disabled={isSubmitting} />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          </CardContent>
-
-          <CardFooter className="flex justify-end gap-2">
-            <Button type="submit" disabled={loading}>Sign in</Button>
-            {/* 👆 4*/}
-            <Button type="button" variant="outline" onClick={() => reset()}>Cancel</Button>
-                     {/* 👆 6*/}
-          </CardFooter>
-        </form>
+            <CardFooter className='flex justify-end gap-2'>
+              <Button type='submit' disabled={loading}>
+                Sign in
+              </Button>
+              {/* 👆 4*/}
+              <Button
+                type='button'
+                variant='outline'
+                onClick={() => form.reset()}
+              >
+                Cancel
+              </Button>
+              {/* 👆 6*/}
+            </CardFooter>
+          </form>
+        </FormProvider>
       </Card>
     </div>
   );
@@ -502,14 +484,23 @@ Hiervoor dienen we de `AuthProvider` eerst aan te passen. We moeten weten wannee
 
 ?> Je kan de `isAuthed` nog uitbreiden met een check of de token niet verlopen is. Zie de bachelorproef van [Joren Vermeersch](https://catalogus.hogent.be/catalog/hog01:003132172) voor meer informatie.
 
+Pas de interface aan in `src/contexts/auth/index.ts`. Voeg deze 2 props toe aan de `AuthContextType` interface:
+
+```ts
+    isAuthed: Boolean(token),
+    ready: !userLoading,
+```
+
+en pas dan de AuthProvider aan in `src/contexts/auth/Auth.context.tsx`:
+
 ```tsx
 // src/contexts/auth/Auth.context.tsx
 // // ...
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-//...
+  //...
   // 👇
- const value = {
+  const value = {
     token,
     user,
     error: loginError || userError || registerError,
@@ -518,8 +509,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     ready: !userLoading,
     login,
     logout,
-    register,
-  }
+  };
 
   // ...
 };
@@ -529,20 +519,23 @@ Nu kunnen we de `PrivateRoute` component aanmaken. Maak een bestand `src/compone
 
 ```tsx
 // src/components/PrivateRoute.tsx
-import { Navigate, Outlet, useLocation } from 'react-router';// 👈 3 en 4
+import { Navigate, Outlet, useLocation } from 'react-router'; // 👈 3 en 4
 import { useAuth } from '../contexts/auth'; // 👈 2
 
 // 👇 1
 export default function PrivateRoute() {
-  const { ready, isAuthed } = useAuth();// 👈 2
-  const { pathname } = useLocation();// 👈 4
+  const { ready, isAuthed } = useAuth(); // 👈 2
+  const { pathname } = useLocation(); // 👈 4
 
   // 👇 2
   if (!ready) {
     return (
       <div>
         <h1>Loading...</h1>
-        <p>Please wait while we are checking your credentials and loading the application.</p>
+        <p>
+          Please wait while we are checking your credentials and loading the
+          application.
+        </p>
       </div>
     );
   }
@@ -551,7 +544,7 @@ export default function PrivateRoute() {
     return <Outlet />;
   }
 
-  return <Navigate replace to={`/login?redirect=${pathname}`} />;// 👈 4
+  return <Navigate replace to={`/login?redirect=${pathname}`} />; // 👈 4
 }
 ```
 
@@ -565,7 +558,7 @@ Tot slot maken we gebruik van deze component om onze routes af te schermen. `Tra
 ```tsx
 // src/main.tsx
 // ...
-import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/PrivateRoute.tsx'; // 👈
 
 const router = createBrowserRouter([
   {
@@ -573,7 +566,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate replace to="/transactions" />,
+        element: <Navigate replace to='/transactions' />,
       },
       {
         path: '/login',
@@ -585,7 +578,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/transactions',
-        element: <PrivateRoute />,// 👈
+        element: <PrivateRoute />, // 👈
         children: [
           {
             index: true,
@@ -603,7 +596,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/places',
-        element: <PrivateRoute />,// 👈
+        element: <PrivateRoute />, // 👈
         children: [
           {
             index: true,
@@ -621,7 +614,7 @@ const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <Navigate to="services" replace />,
+            element: <Navigate to='services' replace />,
           },
           {
             path: 'services',
@@ -639,7 +632,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/services',
-        element: <Navigate to="/about/services" replace />,
+        element: <Navigate to='/about/services' replace />,
       },
       {
         path: '*',
@@ -660,16 +653,19 @@ import { useNavigate, useLocation } from 'react-router'; // 👈
 export default function Login() {
   const { search } = useLocation(); // 👈
   //...
-   const handleLogin = async ({ email, password }: LoginFormValues) => {
-      const loggedIn = await login(email, password);
-      // 👇
-      if (loggedIn) {
-        const params = new URLSearchParams(search);
-        const redirect = params.get('redirect');
-        const safePath = redirect?.startsWith('/') && !redirect.startsWith('//') ? redirect : '/';
-        navigate(safePath, { replace: true });
-      }
-    };
+  const handleLogin = async ({ email, password }: LoginFormValues) => {
+    const loggedIn = await login(email, password);
+    // 👇
+    if (loggedIn) {
+      const params = new URLSearchParams(search);
+      const redirect = params.get('redirect');
+      const safePath =
+        redirect?.startsWith('/') && !redirect.startsWith('//')
+          ? redirect
+          : '/';
+      navigate(safePath, { replace: true });
+    }
+  };
 
   //...
 }
@@ -684,7 +680,9 @@ Als laatste voegen we nog een login- en logout-knop toe aan onze navbar. Deze kn
 ```tsx
 // src/components/Navbar.tsx
 // ...
+import { Button , buttonVariants} from './ui/button';// 👈 1
 import { useAuth } from '../contexts/auth';// 👈 1
+import { cn } from '@/lib/utils';// 👈 1
 
 export default function Navbar() {
 
@@ -732,12 +730,12 @@ We dienen nog een `Logout` component aan te maken. Maak een nieuw bestand `src/p
 
 ```tsx
 // src/pages/Logout.tsx
-import { useEffect } from 'react';// 👈 1
-import { useAuth } from '../contexts/auth';// 👈 1
+import { useEffect } from 'react'; // 👈 1
+import { useAuth } from '../contexts/auth'; // 👈 1
 
 export default function Logout() {
-  const { isAuthed, logout } = useAuth();// 👈 1
- // 👇 1
+  const { isAuthed, logout } = useAuth(); // 👈 1
+  // 👇 1
   useEffect(() => {
     logout();
   }, [logout]);
@@ -813,4 +811,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
 - Gebruik van een externe authenticatieprovider (bv. [Auth0](https://auth0.com/), [Userfront](https://userfront.com/)...)
 - Voeg een wachtwoordsterkte-indicator toe
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
-````
+
+```
+
+```
