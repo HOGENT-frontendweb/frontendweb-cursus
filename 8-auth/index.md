@@ -648,7 +648,7 @@ We dienen er ook voor te zorgen dat na het inloggen genavigeerd wordt naar de pa
 ```tsx
 // src/pages/Login.tsx
 import { useNavigate, useLocation } from 'react-router'; // 👈
-//...
+// ...
 
 export default function Login() {
   const { search } = useLocation(); // 👈
@@ -667,7 +667,7 @@ export default function Login() {
     }
   };
 
-  //...
+  // ...
 }
 ```
 
