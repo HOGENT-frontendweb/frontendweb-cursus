@@ -399,7 +399,7 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
   - `field.name`: de naam van het veld
   - `field.ref`: verbindt het element met react-hook-form voor focus bij errors
   - `field.onBlur`: geeft door dat het veld 'touched' is. Zo kan de validatie getriggerd worden afhankelijk van de modus
-- `{...field}` spreidt alle field props uit op de input. Dus o.a.
+- `{...field}` spreidt alle field props uit op de input voor synchronisatie met de formulierstate. Dit komt overeen met:
 
   ```jsx
   <Input
@@ -408,7 +408,7 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
   />
   ```
 
-  `value/onChange` zorgen ervoor dat de state in het formulier gesynchroniseerd wordt.
+  waarbij de `value` de huidige waarde uit React-hook-form's state is en de `onChange` elke toetsaanslag aanpast in React-hook-form's state.
 
 - `onChange={(e) => field.onChange(e.target.valueAsNumber)` overschrijft de standaard `onChange`. Normaal geeft een input een string terug, maar `valueAsNumber` converteert het meteen naar een `number` — dat is nodig omdat het zod-schema `z.number()` verwacht en anders de conversie zou falen.
 
