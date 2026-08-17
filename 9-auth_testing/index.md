@@ -27,135 +27,109 @@
 
 Momenteel moet je voor elke pagina in onze budgetapplicatie aangemeld zijn (behalve de `/login` en `/logout`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze één voor één falen.
 
-## Cypress commands
+## Authenticatie
 
-Neem eerst [Building Cypress Commands](https://learn.cypress.io/advanced-cypress-concepts/building-the-right-cypress-commands) door.
+Playwright biedt een ingebouwde manier om authenticatie te hergebruiken via **`storageState`**. Het idee is eenvoudig: één keer inloggen, de browsertoestand (cookies + localStorage) opslaan in een bestand, en daarna alle testen met die opgeslagen toestand starten. Zo vermijd je dat elke test opnieuw moet inloggen.
 
-Met Cypress commands kunnen we zelf functies toevoegen aan het `cy` object. Hiermee is het bv. eenvoudig om veel gebruikte code te abstraheren en te hergebruiken. Hier gaan we dus ook gebruik van maken voor het aanmelden.
+Neem de documentatie [Authentication](https://playwright.dev/docs/auth) door.
 
-Aangezien Cypress per test de hele browseromgeving reset, hebben we hiervoor een command nodig. We zullen dus steeds uitgelogd zijn aan het begin van elke test. Daarom zetten we de code om aan te melden apart, dan kunnen we deze code hergebruiken in elke test.
+### Setup project
 
-Maak een nieuw commando aan in het bestand `cypress/support/commands.js`:
+Voeg een apart **setup project** toe aan `playwright.config.ts`:
 
-```js
-// cypress/support/commands.js
-// 👇 1
-Cypress.Commands.add('login', (email, password) => {
-  // 👇 5
-  Cypress.log({
-    displayName: 'login',
-  });
+```ts
+// playwright.config.ts
+import { defineConfig, devices } from '@playwright/test';
+import path from 'node:path';
 
-  cy.visit('http://localhost:5173/login'); // 👈 2
-
-  cy.get('[data-cy=email_input]').clear(); // 👈 3
-  cy.get('[data-cy=email_input]').type(email); // 👈 3
-
-  cy.get('[data-cy=password_input]').clear(); // 👈 3
-  cy.get('[data-cy=password_input]').type(password); // 👈 3
-
-  cy.get('[data-cy=submit_btn]').click(); // 👈 4
+export default defineConfig({
+  // ...
+  projects: [
+    // 👇 1
+    {
+      name: 'setup',
+      testMatch: /.*\.setup\.ts/,
+    },
+    {
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json', // 👈 2
+      },
+      dependencies: ['setup'], // 👈 3
+    },
+  ],
 });
 ```
 
-1. We maken een nieuw commando met de naam `login`. Dit commando heeft twee parameters: `email` en `password`.
-2. Als eerste gaat dit commando naar de juiste URL.
-3. Vervolgens wordt het e-mailadres en wachtwoord ingevuld. Eerst worden de inputvelden leeggemaakt.
-   - **Voorzie de nodige `data-cy` attributen in de `Login` component.**
-4. Dan wordt geklikt op de login-knop. Daarna zijn we normaal ingelogd.
-5. Eventueel kan je nog een displayName toevoegen. Dit is handig voor de logging in de Cypress testrunner.
+1. Het `setup`-project voert alle bestanden uit die eindigen op `.setup.ts`. Deze worden uitgevoerd **vóór** de eigenlijke testen.
+2. `storageState` laadt de opgeslagen browserstate (cookies, localStorage) zodat elke test als aangemelde gebruiker start.
+3. `dependencies: ['setup']` zorgt ervoor dat het `chromium`-project pas start nadat het `setup`-project volledig uitgevoerd is.
 
-We kunnen dit commando snel even uittesten door een test toe te voegen aan `spec.cy.js`:
+Voeg ook de gegenereerde bestanden toe aan `.gitignore` — ze bevatten sessiedata die je niet wil committen:
 
-```jsx
-// cypress/e2e/spec.cy.js
-describe('General', () => {
-  it('draait de applicatie', () => {
-    cy.visit('http://localhost:5173');
-    cy.get('h1').should('exist');
-  });
+```gitignore
+playwright/.auth/
+```
 
-  // 👇 1
-  it('should login', () => {
-    cy.login('pieter.vanderhelst@hogent.be', '12345678'); // 👈 2
-  });
+### Auth setup bestand
+
+Maak het bestand `tests/setup/auth.setup.ts` aan:
+
+```ts
+// tests/setup/auth.setup.ts
+import { test as setup } from '@playwright/test'; // 👈 1
+import path from 'node:path';
+import process from 'node:process';
+
+const authFile = path.join(process.cwd(), 'playwright/.auth/user.json'); // 👈 2
+
+setup('authenticate', async ({ page }) => {
+  // 👈 3
+  await page.goto('/login'); // 👈 4
+  await page
+    .getByPlaceholder('your@email.com')
+    .fill('thomas.aelbrecht@hogent.be'); // 👈 5
+  await page.getByPlaceholder('password').fill('12345678'); // 👈 5
+  await page.getByRole('button', { name: 'Sign in' }).click(); // 👈 5
+
+  await page.waitForURL('/'); // 👈 6
+
+  await page.context().storageState({ path: authFile }); // 👈 7
 });
 ```
 
-1. Maak een nieuwe test met als naam `should login`.
-2. Hier gebruiken we het `login` command.
-
-Voer dit testbestand uit. Je zou Cypress moeten zien inloggen.
-
-Eventueel kan je ook een `logout` commando toevoegen:
-
-```js
-// cypress/support/commands.js
-Cypress.Commands.add('logout', () => {
-  Cypress.log({
-    displayName: 'logout',
-  });
-
-  cy.visit('http://localhost:5173');
-  cy.get('[data-cy=logout_btn]').click();
-});
-```
-
-Voeg ook een `data-cy` attribuut toe aan de logout knop.
+1. We importeren `test` onder de alias `setup` om duidelijk te maken dat dit geen gewone test is maar een voorbereidingsstap.
+2. Het pad naar het bestand waar de browserstate opgeslagen wordt. De map `playwright/.auth/` wordt automatisch aangemaakt.
+3. De setup-test heeft een beschrijvende naam (`'authenticate'`) die zichtbaar is in de testoutput.
+4. Navigeer naar de loginpagina. De `baseURL` uit de config wordt als prefix gebruikt.
+5. Vul het e-mailadres en wachtwoord in via placeholder-tekst en klik op de inlogknop. Dit zijn robuuste selectors die niet afhangen van `data-testid` of CSS.
+6. Wacht tot de navigatie naar de homepage voltooid is — dan weten we zeker dat het inloggen gelukt is.
+7. Sla de volledige browserstate op (cookies, localStorage, sessionStorage) naar het JSON-bestand. Playwright laadt dit bestand automatisch voor elke test in projecten die `storageState` configureren.
 
 ## Testen aanpassen
 
-Voeg bovenaan elke test suite een `beforeEach` toe die de testgebruiker aanmeldt in de applicatie. `beforeEach` wordt uitgevoerd voor elke test. Dit is nodig aangezien Cypress steeds o.a. `localStorage` leegmaakt voor elke test.
+Dankzij `storageState` starten alle testen automatisch als aangemelde gebruiker — je hoeft geen `beforeEach` met een loginactie toe te voegen. De bestaande testen in `tests/addTransaction.spec.ts` en `tests/transactions.spec.ts` werken daardoor zonder aanpassingen.
 
-```js
-describe('...', () => {
-  beforeEach(() => {
-    cy.login('pieter.vanderhelst@hogent.be', '12345678');
-  });
+Voer de testen uit:
 
-  // de testen
-});
+```bash
+pnpm test:ui
 ```
 
-Voer de testen uit: ze falen, waarom?
+Playwright voert eerst het `setup`-project uit (inloggen + opslaan), daarna alle andere testen met de opgeslagen sessie.
+Als de andere testen niet langer getoond worden: In de Playwright UI staat er linksboven een Projects filter. Momenteel staat waarschijnlijk alleen setup aangevinkt. Vink ook chromium aan om alle testbestanden te zien.
 
-- **Antwoord** +
+Als `auth.setup` faalt, controleer dan `playwright/.auth/` map bestaat. Indien niet, maak hem aan:
 
-  Er wordt niet gewacht tot het inloggen voltooid is. We moeten Cypress laten wachten totdat het login request voltooid is.
-
-We moeten ons `login` commando aanpassen.
-
-```jsx
-// cypress/support/commands.js
-Cypress.Commands.add('login', (email, password) => {
-  Cypress.log({
-    displayName: 'login',
-  });
-
-  cy.intercept('/api/sessions').as('login'); // 👈 1
-  cy.visit('http://localhost:5173/login');
-
-  cy.get('[data-cy=email_input]').clear();
-  cy.get('[data-cy=email_input]').type(email);
-
-  cy.get('[data-cy=password_input]').clear();
-  cy.get('[data-cy=password_input]').type(password);
-
-  cy.get('[data-cy=submit_btn]').click();
-  cy.wait('@login'); // 👈 2
-});
+```bash
+mkdir -p playwright/.auth
 ```
-
-1. Vang elk login-request op en geef dit de naam `login`.
-2. Laat Cypress wachten tot dit request afgerond is.
-
-Voer de testen opnieuw uit. Bekijk ook de mock-data en ga na of dit nu overeenstemt met de transacties die je terug zou krijgen van de backend voor de aangemelde gebruiker. Je kan ook een versie maken voor de admin en voor de gebruiker.
 
 ## Oefening - Foutboodschappen in TransactionForm
 
-- Deze testen falen om verschillende redenen: bv. het `userId` veld is verdwenen.
+- De bestaande testen falen mogelijk om verschillende redenen nu authenticatie vereist is: bv. het `userId`-veld is verdwenen omdat de backend de gebruiker nu uit de token haalt.
 - Los alle fouten op en zorg dat de testen slagen.
-- De test op een ongeldige userId vervang je door een test voor een ongeldige amount.
 
 > **Oplossing voorbeeldapplicatie**
 >
