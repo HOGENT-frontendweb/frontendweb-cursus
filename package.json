@@ -1,16 +1,16 @@
 {
-  "name": "frontendweb-cursus",
-  "version": "1.0.0",
-  "license": "UNLICENSED",
-  "scripts": {
-    "start": "docsify serve ."
-  },
-  "dependencies": {
-    "docsify-cli": "^4.4.4"
-  },
-  "engines": {
-    "node": ">=20.6.0",
-    "pnpm": ">=10.0.0"
-  },
-  "packageManager": "pnpm@10.15.0"
+	"name": "frontendweb-cursus",
+	"version": "2.0.0",
+	"license": "UNLICENSED",
+	"scripts": {
+		"start": "docsify serve ."
+	},
+	"dependencies": {
+		"docsify-cli": "^5.0.0"
+	},
+	"engines": {
+		"node": ">=20.6.0",
+		"pnpm": "11.22.0"
+	},
+	"packageManager": "pnpm@11.22.0"
 }
