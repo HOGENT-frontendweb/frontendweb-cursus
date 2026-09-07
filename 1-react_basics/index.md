@@ -866,17 +866,7 @@ Onderstaande wordt aangepast in je project:
 - In de `package.json` worden een aantal dependencies toegevoegd, zoals `@base-ui/react` en `lucide-react` packages.
 - Ook wordt `src/index.css` aangepast zodat dit het design-systeem voor je hele app bevat. Alle kleuren van je app worden gedefinieerd in [OKLCH formaat](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl), wat een modern kleurformaat is dat zorgt voor consistente kleuren op verschillende schermen en apparaten. Je kan deze kleuren gebruiken in je eigen CSS of Tailwind klassen.
 
-#### Stap 7 - Componenten toevoegen
-
-Je kan nu componenten toevoegen aan je project met de CLI tool van shadcn. Om een `Button` component toe te voegen:
-
-```bash
-pnpm dlx shadcn@latest add button
-```
-
-De broncode van de component wordt nu toegevoegd aan je project in de folder `./src/components/ui`. Je kan deze component vervolgens importeren en gebruiken in je eigen componenten. Je kan de code van de component volledig aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later.
-
-#### Stap 8 - Linting uitschakelen voor shadcn code
+#### Stap 7 - Linting uitschakelen voor shadcn code
 
 Pas de linting aan zodat de code van shadcn niet gelint wordt. Voeg hiervoor de volgende regel toe aan de array in `eslint.config.js`:
 
@@ -931,7 +921,7 @@ globalIgnores(['dist', 'src/components/ui/**']),
     amount,
   }: TransactionProps) {
     return (
-      <div className='bg-blue-800 text-blue-100 border-blue-900 border rounded-lg text-center m-2'>
+      <div className='text-blue-800 text-center m-2'>
         {/* 👆 1*/}
         {user.name} gaf €{amount} uit bij {place.name}
       </div>
@@ -939,7 +929,40 @@ globalIgnores(['dist', 'src/components/ui/**']),
   }
   ```
 
-- Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
+- Definieer de  tekstkleur, centreer de tekst, en geef een marge.
+
+### Componenten toevoegen
+
+Je kan nu componenten toevoegen aan je project met de CLI tool van shadcn. Om een `Separator` component toe te voegen:
+
+```bash
+pnpm dlx shadcn@latest add separator
+```
+
+De broncode van de component wordt nu toegevoegd aan je project in de folder `./src/components/ui`. Je kan deze component vervolgens importeren en gebruiken in je eigen componenten. Je kan de code van de component volledig aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later.
+
+We voegen een seperator toe na elke tranasactie in Transaction.tsx:
+
+```jsx
+import type { Transaction as TransactionType } from '../../types';
+import { Separator } from '@/components/ui/separator';//👈 1
+
+type TransactionProps = Omit<TransactionType, 'id' | 'date'>;
+
+export default function Transaction({ user, place, amount }: TransactionProps) {
+  return (
+    <>     {/* 👈 2*/}
+      <div className='text-blue-800 text-center m-2'>
+        {user.name} gaf €{amount} uit bij {place.name}
+      </div>
+      <Separator /> {/* 👈 1*/}
+    </>); {/* 👈 2*/ }
+
+}
+```
+
+1. Voeg de seperator toe na de transactie.
+2. Omdat we nu twee elementen renderen, moeten we deze in een gedeelde bovenliggende parent plaatsen. We gebruiken hier een lege wrapper `<>...</>` zodat er geen extra div in de DOM wordt toegevoegd.
 
 ### het style attribuut
 
