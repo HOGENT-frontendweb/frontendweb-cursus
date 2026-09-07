@@ -640,7 +640,7 @@ test('should show a loading indicator for a very slow response', async ({
   });
 
   await page.goto('/'); // 👈 4
-
+  await expect(page.getByTestId('loader')).toBeVisible();// 👈 4
   await expect(page.getByTestId('loader')).not.toBeVisible({ timeout: 3000 }); // 👈 5
 });
 ```
