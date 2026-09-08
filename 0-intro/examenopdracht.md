@@ -214,7 +214,7 @@ Alle code zal voor de start van het volgend academiejaar verwijderd worden uit d
 
 Veel succes!
 
-TODO: Andreas, sectie ook toevoegen aan webservices
+<!-- TODO: Andreas, sectie ook toevoegen aan webservices-->
 
 ## 10. Feature Branch Workflow
 
@@ -365,7 +365,47 @@ main
 
 Met deze workflow blijft de `main`-branch steeds stabiel en kunnen beide teamleden onafhankelijk van elkaar aan nieuwe functionaliteiten werken zonder elkaars werk te verstoren.
 
-## 11. Code Review
+## 11. Hoe commit ik best?
+
+Een commit zou idealiter één logische wijziging bevatten. Commit dus niet alles in één keer op het einde van de dag, maar commit regelmatig na elke afgeronde stap. Enkele richtlijnen:
+
+- **Klein en gefocust**: één commit = één reden om te wijzigen. Vermeng geen bugfix met een nieuwe feature in dezelfde commit.
+- **Werkende toestand**: elke commit zou de code in een werkende toestand moeten achterlaten. Commit geen halfafgewerkte code.
+- **Niet te klein**: het heeft weinig zin om elke typtfout als aparte commit te registreren. Groepeer gerelateerde kleine wijzigingen.
+
+### Conventional Commits
+
+Een goede commitboodschap maakt duidelijk *wat* er veranderd is en *waarom*. De [Conventional Commits](https://www.conventionalcommits.org/)-specificatie is een veelgebruikte standaard die een gestructureerd formaat oplegt:
+
+```text
+<type>(<scope>): <beschrijving>
+```
+
+De meest gebruikte types zijn:
+
+| Type       | Gebruik                                    |
+| ---------- | ------------------------------------------ |
+| `feat`     | Een nieuwe feature                         |
+| `fix`      | Een bugfix                                 |
+| `refactor` | Herstructurering zonder gedragswijziging   |
+| `test`     | Toevoegen of aanpassen van tests           |
+| `docs`     | Documentatiewijzigingen                    |
+| `chore`    | Onderhoudstaken (bv. dependencies updaten) |
+
+Enkele voorbeelden:
+
+```text
+feat(auth): add JWT-based login endpoint
+fix(places): return 404 when place is not found
+refactor(users): extract password hashing to helper function
+docs(readme): update setup instructions
+```
+
+De `scope` is optioneel maar helpt om snel te zien welk onderdeel van de codebase geraakt wordt.
+
+Meer info vind je op <https://www.conventionalcommits.org/>.
+
+## 12. Code Review
 
 Een code review is een gestructureerde controle van code die door een teamlid werd geschreven. Het doel is om fouten vroegtijdig op te sporen, de kwaliteit van de code te verbeteren en kennis binnen het team te delen.
 
@@ -471,3 +511,5 @@ Door elkaars code te reviewen:
 - zorg je ervoor dat beide teamleden de volledige applicatie begrijpen.
 
 Code review is daarom een essentieel onderdeel van professionele softwareontwikkeling.
+
+> Meer info over git kan je vinden in de appendix van de cursus Webservices [git appendix](https://HOGENT-frontendweb.github.io/webservices-cursus/#/./appendices/2-github/index).
