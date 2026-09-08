@@ -5,10 +5,13 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les2 TODO:
+> git checkout -b les2 791c5ce
 > pnpm install
 > pnpm dev
 > ```
+
+<!--TODO: Andreas  -->
+> Tip: In dit hoofdstuk komen er veel nieuwe concepten aan bod. Je kan AI gebruiken om concepten uit te leggen en voorbeelden te genereren. Controleer de informatie wel steeds in de officiële documentatie.
 
 ## Props en state
 
@@ -153,7 +156,7 @@ Je kan componenten opsplitsen in 2 hoofdtypes
 
 We implementeren de `Place` component, voorlopig nog zonder rating. Deze component geeft de "card" van één plaats weer. Maak het bestand `Place.tsx` aan in de map `src/components/places`. We zien dat deze component alle attributen van een plaats meekrijgt als props. De verwijderknop implementeren we in de volgende sectie.
 
-We maken gebruik van ShadB Button en Card componenten. Je kan de documentatie raadplegen op <https://ui.shadcn.com/>.
+We maken gebruik van shadcn Button en Card componenten. Je kan de documentatie raadplegen op <https://ui.shadcn.com/>.
 
 #### Stap 1. Voeg de componenten toe aan je project
 
@@ -170,9 +173,9 @@ Merk op dat de source code van de componenten nu toegevoegd werd aan je project 
 import type { Place as PlaceType } from '../../types';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface PlaceProps extends PlaceType {}
+type PlaceProps = PlaceType;
 
-const Place = ({ id, name, rating }: PlaceProps) => {
+const Place = ({  name }: PlaceProps) => {
   return (
     <Card>
       <CardHeader className='pb-2'>
@@ -184,6 +187,8 @@ const Place = ({ id, name, rating }: PlaceProps) => {
 
 export default Place;
 ```
+
+Voorlopig zijn de props dezelfde als het PlaceType. Later voegen we hier extra props toe.
 
 ### PlacesList component
 
@@ -297,9 +302,9 @@ Voeg een event handler toe aan de `Place` component. Wanneer je klikt op de verw
   } from '@/components/ui/card'; // 👈2
   import { Button } from '@/components/ui/button'; // 👈2
 
-  interface PlaceProps extends PlaceType {}
+  type PlaceProps = PlaceType;
 
-  const Place = ({ id, name, rating }: PlaceProps) => {
+  const Place = ({ name }: PlaceProps) => {
     // 👇 1
     const handleClick = () => {
       console.log('you clicked the remove button');
@@ -415,7 +420,7 @@ interface PlaceProps extends PlaceType {
   onDelete: (id: number) => void;
 }
 
-const Place = ({ id, name, rating, onDelete }: PlaceProps) => {
+const Place = ({ id, name, onDelete }: PlaceProps) => {
   // 👆 1  👇 2
   const handleDelete = () => {
     onDelete(id);
@@ -444,7 +449,7 @@ export default Place;
 ```
 
 1. Props worden doorgegeven van de parent aan de child component. We passen `PlaceProps`aan en breiden de `PlaceType` interface uit met de prop `onDelete`. Deze prop is een functie die een id van een plaats als parameter neemt en niets teruggeeft.
-2. Voeg de `onDelete` functie toe aan de `Place` component.
+2. Voeg de `onDelete` functie en de `id` toe aan de props van de `Place` component.
 3. `handleDelete` zal het verwijderen van de plaats afhandelen. We geven het id van de plaats mee.
 4. Nu moet deze functie opgeroepen worden als de gebruiker op de verwijder knop klikt. Hierdoor zal de parent zijn state aanpassen. De parent zal opnieuw gerenderd worden!
 
@@ -508,7 +513,7 @@ export default function StarRating() {
 
 Voor de weergave van de sterren maken we gebruik van [Lucide](https://lucide.dev/icons/). Dit is de icon library die ook gebruikt wordt in de shadcn componenten.
 
-Implementeer de `StarRating` component als volgt:
+Implementeer de `StarRating` component als volgt: we definieren eerst een `Star` component die één ster weergeeft. De `StarRating` component maakt gebruik van de `Star` component en geeft vijf sterren weer.
 
 ```jsx
 // src/components/places/StarRating.tsx
@@ -534,13 +539,13 @@ export default function StarRating() {
 }
 ```
 
-1. We maken gebruik van het `StarIcon` icon uit de `lucide-react` library (een open-source icon library).
+1. De `Star`component gebruikt het `StarIcon` icon uit de `lucide-react` library (een open-source icon library).
 2. De `Star` component retourneert één gele ster.
 3. De `StarRating` component retourneert vijf sterren. We creëren een array met vijf elementen en mappen elk element naar een `Star` component. We voegen ook een `key` attribuut toe, hier gebruiken we de index.
 
 ### Oefening 2 - StarRating in Place component
 
-Voeg de StarRating component toe aan de Place component (in het `CardContent` gedeelte van de `Card`) en bekijk het resultaat. Maak ook in de Place component gebruik van `Trash2` voor de verwijder knop.
+Voeg de StarRating component toe aan de Place component (in het `CardContent` gedeelte van de `Card`) en bekijk het resultaat. Maak ook in de Place component gebruik van `Trash2`-icon voor de verwijder knop.
 
 - Oplossing +
 
@@ -562,7 +567,7 @@ Voeg de StarRating component toe aan de Place component (in het `CardContent` ge
     onDelete: (id: number) => void;
   }
 
-  const Place = ({ id, name, rating, onDelete }: PlaceProps) => {
+  const Place = ({ id, name, onDelete }: PlaceProps) => {
     const handleDelete = () => {
       onDelete(id);
     };
@@ -594,7 +599,7 @@ Voeg de StarRating component toe aan de Place component (in het `CardContent` ge
 
 ### Een variabel aantal sterren
 
-Vervolgens willen we het aantal sterren in de rating variabel maken. Dit doen we d.m.v. een prop, zodat de Rating component herbruikbaar is.
+Vervolgens willen we het aantal sterren in de rating variabel maken. Dit doen we d.m.v. een prop `totalStars`, zodat de Rating component herbruikbaar is.
 
 ```jsx
 // src/components/places/StarRating.tsx
@@ -624,7 +629,7 @@ export default function StarRating({ totalStars = 5 }: StarRatingProps) {
 }
 ```
 
-1. We voegen een interface `StarRatingProps` toe met een optionele prop `totalStars` toe.
+1. We voegen een interface `StarRatingProps` toe met een optionele prop `totalStars` toe. Het ? geeft aan dat deze prop optioneel is.
 2. We voegen de props toe aan de `StarRating`component en geven `totalStars` een default waarde van 5.
 3. En maken het aantal sterren variabel.
 
@@ -668,7 +673,7 @@ interface PlaceProps extends PlaceType {
   onDelete: (id: number) => void;
 }
 
-const Place = ({ id, name, rating, onDelete }: PlaceProps) => {
+const Place = ({ id, name, rating, onDelete }: PlaceProps) => {// 👈 1
   const handleDelete = () => {
     onDelete(id);
   };
@@ -849,21 +854,24 @@ const PlacesList = () => {
   };
 
   return (
-    <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-      {places
-        .sort((a, b) =>
-          a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
-        )
-        .map((p) => (
-          // 👇 2
-          <Place
-            key={p.id}
-            {...p}
-            onDelete={handleDeletePlace}
-            onRate={handleRatePlace}
-          />
-        ))}
-    </div>
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Places</h1>
+      <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+        {places
+          .sort((a, b) =>
+            a.name.toUpperCase().localeCompare(b.name.toUpperCase()),
+          )
+          .map((p) => (
+            // 👇 2
+            <Place
+              key={p.id}
+              {...p}
+              onDelete={handleDeletePlace}
+              onRate={handleRatePlace}
+            />
+          ))}
+      </div>
+    </>
   );
 };
 
@@ -1035,6 +1043,11 @@ function Star({ index, selected = false, onSelect = () => {} }: StarProps) {
   );
 }
 ```
+
+De vaste klassen worden altijd toegevoegd. Daarna wordt één van deze twee sets toegevoegd:
+
+- selected === true: amberkleurig, groter en schaduw
+- selected === false: grijs en transparanter
 
 ## Refactoring Transactions
 
@@ -1449,7 +1462,7 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les2-opl TODO:
+> git checkout -b les2-opl 58ab2F6
 > pnpm install
 > pnpm dev
 > ```
@@ -1562,6 +1575,8 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 - Oplossing +
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/SnakeEyes>.
+
+  <!-- TODO:Ans -->
 
 ## Mogelijke extra's voor de examenopdracht
 
