@@ -1,3 +1,9 @@
+# TypeScript
+
+Binnen Frontend Web Development zullen we werken met TypeScript. TypeScript is een superset van JavaScript die statische types toevoegt aan de taal. Dit betekent dat je variabelen, functies en objecten kunt annoteren met types, waardoor je fouten kunt opsporen tijdens het ontwikkelen in plaats van tijdens runtime. TypeScript biedt ook geavanceerde functies zoals interfaces, generics en decorateurs, die helpen bij het schrijven van robuuste en onderhoudbare code. TypeScript wordt vaak gebruikt in combinatie met Node.js en frameworks zoals NestJS, omdat het de ontwikkelaar een betere tooling en foutopsporing biedt.
+
+In deze cursus zullen we geleidelijk aan TypeScript features introduceren, maar het is aan te raden om zelf ook wat tijd te investeren in het leren van TypeScript. Er zijn veel online bronnen beschikbaar, zoals de officiële [TypeScript-documentatie](https://www.typescriptlang.org/docs/) en interactieve tutorials zoals [TypeScript for Beginners](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html). Daarnaast hebben we ook een [appendix over TypeScript](https://HOGENT-frontendweb.github.io/webservices-cursus/#/./appendices/1-typescript/index.md) in de cursus webservices, waar je het absolute minimum aan TypeScript-kennis kan terugvinden die je nodig hebt voor deze cursus.
+
 # React basics
 
 Neem volgende HTML-code als voorbeeld:
@@ -557,7 +563,7 @@ export default function Transaction() {
 
 `{user}` zorgt ervoor dat de waarde van de variable `user` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken (zoals `if`, `for`). De uitvoer van deze code zal gerenderd worden in de HTML.
 
-TODO: Andreas
+<!-- TODO: Andreas -->
 > Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina of vraag het aan AI. AI is ook uitermate geschikt om documentatie op te zoeken en moeilijke concepten te verduidelijken. Controleer de informatie wel steeds in de officiële documentatie.
 
 Deze component is nog steeds niet herbruikbaar. De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
@@ -662,7 +668,7 @@ export default function Transaction({ user, place, amount }: TransactionProps) {
 }
 ```
 
-TODO: Andreas kunnen we hier AI gebruiken om het juiste type voor TransactionProps te genereren?
+<!-- TODO: Andreas kunnen we hier AI gebruiken om het juiste type voor TransactionProps te genereren? -->
 
 1. Importeer de `Transaction` interface. We geven een alias aan deze interface omdat we al een component `Transaction` hebben, zo vermijden we naamconflicten.
 2. `Omit<TransactionType, 'id' | 'date'>` maakt een nieuw type op basis van `TransactionType`, maar zonder de properties `id` en `date`. Omdat `Omit` een samengesteld type teruggeeft, definiëren we `TransactionProps` met `type` in plaats van met `interface`.
@@ -880,6 +886,7 @@ globalIgnores(['dist', 'src/components/ui/**']),
 
 - Pas de `App` component aan.
 
+  Voeg Tailwind CSS-klassen toe aan de `div` zodat de achtergrond wit is en de tekst donkergrijs.
   Voeg een `h1` tag toe en maak gebruik van Tailwind CSS-klassen om de tekst groter en vetter te maken, te centreren en er een marge onder toe te voegen.
 
   De bijhorende `App.css` kan je dan ook verwijderen. We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
@@ -892,8 +899,8 @@ globalIgnores(['dist', 'src/components/ui/**']),
 
   function App() {
     return (
-      <div>
-        {/* 👇 */}
+      {/* 👇 */}
+      <div className='bg-white text-gray-900'>
         <h1 className='text-2xl font-bold text-center mb-4'>
           Mijn Budget App
         </h1>
@@ -921,15 +928,15 @@ globalIgnores(['dist', 'src/components/ui/**']),
     amount,
   }: TransactionProps) {
     return (
-      <div className='text-blue-800 text-center m-2'>
-        {/* 👆 1*/}
+      <div className='text-center m-2'>
+        {/* 👆 */}
         {user.name} gaf €{amount} uit bij {place.name}
       </div>
     );
   }
   ```
 
-- Definieer de  tekstkleur, centreer de tekst, en geef een marge.
+- Centreer de tekst, en geef een marge.
 
 ### Componenten toevoegen
 
@@ -952,7 +959,7 @@ type TransactionProps = Omit<TransactionType, 'id' | 'date'>;
 export default function Transaction({ user, place, amount }: TransactionProps) {
   return (
     <>     {/* 👈 2*/}
-      <div className='text-blue-800 text-center m-2'>
+      <div className='text-center m-2'>
         {user.name} gaf €{amount} uit bij {place.name}
       </div>
       <Separator /> {/* 👈 1*/}
@@ -1080,6 +1087,8 @@ end note
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>.
 
+  <!-- TODO: ANs vermelden -->
+
 ## Mogelijke extra's voor de examenopdracht
 
 - UI Component library gebruiken, bv.
@@ -1093,6 +1102,7 @@ end note
   - [Emotion](https://emotion.sh/)
   - [JSS](https://cssinjs.org/)
   - ...
+   <!-- TODO: Alternatief Biome ???->
 
 ## Must read/watch
 
