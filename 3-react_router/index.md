@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 TODO:
+> git checkout -b les3 8ff4a9f
 > pnpm install
 > pnpm dev
 > ```
@@ -102,31 +102,29 @@ We voorzien volgende basisroutes in de voorbeeldapplicatie
 - `/places`: een lijst van places
 - `/about`: over ons pagina
 
-Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL of route plaatsen we in de `pages` map. Maak een map `pages`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan.
+Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL of route plaatsen we in de `pages` map. Maak een map `pages` met daarin een `transactions` map en een `places` map. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan. We kiezen voor een submap daar er later nog extra pagina's zullen toegevoegd worden die gerelateerd zijn aan de `places` en `transactions`.
 
-Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `@faker-js/faker`.
-
-Installeer dit package:
-
-```bash
-pnpm add @faker-js/faker
-```
+Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om de About zelf te vullen met tekst, maken we gebruik van AI.
+<!-- TODO: Andreas -->
+> Maak een About component aan in de pages/about folder. De component gebruikt dezelfde styling als PlacesList en bevat naast de titel About, 1 paragraaf met uitleg over de site en gepaste styling. De tekst kan je genereren met ChatGPT of een andere AI tool. De tekst moet in het Engels zijn.
 
 Maak de `About` page aan in de map `src/pages/about`. We maken gebruik van een submap 'about' omdat deze pagina geneste routes zal bevatten die we later zullen implementeren.
 
 ```jsx
 // src/pages/about/About.tsx
-import { faker } from '@faker-js/faker';
-
-const About = () => (
-  <>
-    <h1 className='text-2xl font-semibold mb-6'>About</h1>
-    <div>
-      <p className='mb-4'>{faker.lorem.paragraph(10)}</p>
-      <p>{faker.lorem.paragraph(10)}</p>
-    </div>
-  </>
-);
+const About = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>About</h1>
+      <p className="text-muted-foreground leading-relaxed max-w-2xl">
+        This website gives you a clear and friendly way to keep track of your
+        budget. Browse your transactions, explore your favorite places, and
+        manage your financial overview in one simple space designed to make
+        everyday budgeting feel more organized.
+      </p>
+    </>
+  );
+};
 
 export default About;
 ```
@@ -166,8 +164,8 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { RouterProvider, createBrowserRouter } from 'react-router';
-import TransactionList from './pages/TransactionList'; // 👈 1
-import PlacesList from './pages/PlacesList'; // 👈 1
+import TransactionList from './pages/transactionsTransactionList'; // 👈 1
+import PlacesList from './pages/places/PlacesList'; // 👈 1
 import About from './pages/about/About'; // 👈 1
 import NotFound from './pages/NotFound'; // 👈 1
 
@@ -209,25 +207,25 @@ import { Link } from 'react-router'; //👈
 function App() {
   return (
     <div className='bg-white text-gray-900 m-3'>
-      <h1 className='text-2xl font-bold text-center mb-4'>Mijn Budget App</h1>
-      <p>Kies één van de volgende links:</p>
+      <h1 className='text-2xl font-bold text-center mb-4'>My Budget App</h1>
+      <p>Choose one of the following links:</p>
       <ul>
         <li>
           {/* 👇 */}
           <Link to='/transactions' className='text-blue-600 underline'>
-            Transacties
+            Transactions
           </Link>
         </li>
         <li>
           {/* 👇 */}
           <Link to='/places' className='text-blue-600 underline'>
-            Plaatsen
+            Places
           </Link>
         </li>
         <li>
           {/* 👇 */}
           <Link to='/about' className='text-blue-600 underline'>
-            Over ons
+            About us
           </Link>
         </li>
       </ul>
@@ -279,38 +277,41 @@ Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes
 
 ```jsx
 // src/pages/about/About.tsx
-import { faker } from '@faker-js/faker';
-import { Link } from 'react-router'; // 👈
+import { Link } from 'react-router';
 
-const About = () => (
-  <>
-    <h1 className='text-2xl font-semibold mb-6'>About</h1>
-    <div>
-      <p className='mb-4'>{faker.lorem.paragraph(10)}</p>
-      <p>{faker.lorem.paragraph(10)}</p>
-    </div>
-    <ul className='p-4 mb-4'>
-      <li>
-        {/* 👇 */}
-        <Link to='/about/services' className='text-blue-600 underline'>
-          Services
-        </Link>
-      </li>
-      <li>
-        {/* 👇 */}
-        <Link to='/about/history' className='text-blue-600 underline'>
-          History
-        </Link>
-      </li>
-      <li>
-        {/* 👇 */}
-        <Link to='/about/location' className='text-blue-600 underline'>
-          Location
-        </Link>
-      </li>
-    </ul>
-  </>
-);
+const About = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>About</h1>
+      <p className="text-muted-foreground leading-relaxed max-w-2xl">
+        This website gives you a clear and friendly way to keep track of your
+        budget. Browse your transactions, explore your favorite places, and
+        manage your financial overview in one simple space designed to make
+        everyday budgeting feel more organized.
+      </p>
+      <ul className='p-4 mb-4'>
+        <li>
+          {/* 👇 */}
+          <Link to='/about/services' className='text-blue-600 underline'>
+            Services
+          </Link>
+        </li>
+        <li>
+          {/* 👇 */}
+          <Link to='/about/history' className='text-blue-600 underline'>
+            History
+          </Link>
+        </li>
+        <li>
+          {/* 👇 */}
+          <Link to='/about/location' className='text-blue-600 underline'>
+            Location
+          </Link>
+        </li>
+      </ul>
+    </>
+  );
+}
 
 export default About;
 ```
@@ -318,26 +319,43 @@ export default About;
 En we voegen deze pagina's toe aan `About.tsx`.
 
 ```jsx
-export const Services = () => (
-  <>
-    <h1 className='text-2xl font-semibold mb-6'>Services</h1>
-    <p>{faker.lorem.paragraph(10)}</p>
-  </>
-);
+export const Services = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Services</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+        posuere erat a ante venenatis dapibus posuere velit aliquet.
+      </p>
+    </>
+  );
+};
 
-export const History = () => (
-  <>
-    <h1 className='text-2xl font-semibold mb-6'>History</h1>
-    <p>{faker.lorem.paragraph(10)}</p>
-  </>
-);
+export const History = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>History</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
+        consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed
+        consectetur.
+      </p>
+    </>
+  );
+};
 
-export const Location = () => (
-  <>
-    <h1 className='text-2xl font-semibold mb-6'>Location</h1>
-    <p>{faker.lorem.paragraph(10)}</p>
-  </>
-);
+export const Location = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Location</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed odio
+        dui. Maecenas faucibus mollis interdum. Nullam id dolor id nibh
+        ultricies vehicula ut id elit.
+      </p>
+    </>
+  );
+};
 ```
 
 Daarna passen we de definitie van `/about` aan, de drie nieuwe routes dienen als kind van de `/about` route te worden aangemaakt (vergeet de nodige imports niet):
@@ -349,8 +367,8 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App.tsx';
 import { RouterProvider, createBrowserRouter } from 'react-router';
-import TransactionList from './pages/TransactionList.tsx';
-import PlacesList from './pages/PlacesList.tsx';
+import TransactionList from './pages/transactionsTransactionList.tsx';
+import PlacesList from './pages/places/PlacesList.tsx';
 import NotFound from './pages/NotFound.tsx';
 import About, { Services, History, Location } from './pages/about/About.tsx'; // 👈
 
@@ -522,16 +540,17 @@ import { useParams } from 'react-router';
 import { PLACE_DATA } from '../../api/mock_data';
 
 const PlaceDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const idAsNumber = Number(id);
+  const { id } = useParams<{ id: string }>();// 👈 1
+  const idAsNumber = Number(id);// 👈 1
 
-  const place = PLACE_DATA.find((p) => p.id === idAsNumber);
+  const place = PLACE_DATA.find((p) => p.id === idAsNumber);// 👈 2
 
+  // 👇 3
   if (!place) {
     return (
       <>
-        <h1 className='text-2xl font-semibold mb-6'>Plaats niet gevonden</h1>
-        <p>Er is geen plaats met id {id}.</p>
+        <h1 className='text-2xl font-semibold mb-6'>Place not found</h1>
+        <p>No place was found with id {id}.</p>
       </>
     );
   }
@@ -539,7 +558,7 @@ const PlaceDetail = () => {
   return (
     <>
       <h1 className='text-2xl font-semibold mb-6'>Place {place.name}</h1>
-      <p>Hier komen de transacties van {place.name}</p>
+      <p>Transactions for {place.name} will appear here.</p>
     </>
   );
 };
@@ -547,7 +566,9 @@ const PlaceDetail = () => {
 export default PlaceDetail;
 ```
 
-Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`. Daarna zoekt deze een plaats met het opgegeven id. Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
+1. Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`.
+2. Daarna zoekt deze een plaats met het opgegeven id.
+3.Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
 
 ### Oefening 1 - Navigeren naar een place
 
@@ -591,6 +612,8 @@ export default function Layout() {
   );
 }
 ```
+
+We kiezen voor een maximale breedte rond 1024px. Dit houdt tabellen, formulieren en tekst goed leesbaar op brede schermen.
 
 ### De navbar
 
@@ -684,7 +707,7 @@ export default function Navbar() {
    <NavigationMenuLink href={to}>{label}</NavigationMenuLink>
    ```
 
-   Maar het nadeel is dat href de browser gebruikt voor navigatie — dus volledige pagina-herlaad in plaats van React Router's client-side navigatie. In een SPA verlies je daarmee de snelheid en de bewaarde staat (scrollpositie, etc.). De `render` prop is de juiste oplossing als je client-side navigatie wil behouden. De `render` vervangt het onderliggende `<a>` element van `NavigationMenuLink` door een `Link`, zodat er maar één `<a>` in de DOM staat.
+   Maar het nadeel is dat href de browser gebruikt voor navigatie — dus de volledige pagina herlaadt in plaats van React Router's client-side navigatie. In een SPA verlies je daarmee de snelheid en de bewaarde staat (scrollpositie, etc.). De `render` prop is de juiste oplossing als je client-side navigatie wil behouden. De `render` vervangt het onderliggende `<a>` element van `NavigationMenuLink` door een `Link`, zodat er maar één `<a>` in de DOM staat.
 
 ### Integratie van de Layout component
 
@@ -758,7 +781,10 @@ Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` z
 
 ```jsx
 // src/components/Navbar.tsx
+import { NavLink, Link, useLocation } from 'react-router';
 // ...
+ const { pathname } = useLocation();
+//...
 <NavigationMenuLink
   render={<NavLink to={to} />}
   active={pathname === to || pathname.startsWith(to + '/')}
@@ -772,7 +798,10 @@ Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` z
 
 ### Refactoring Navbar
 
-We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavMenu` te maken met een optionele `orientation` prop. Voeg de code toe in `Navbar.tsx`:
+We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavMenu` te maken met een optionele `vertical` prop. Voeg de code toe in `Navbar.tsx`.
+
+<!-- TODO: Andreas -->
+Tip: Vraag aan AI om de code van de navigatiebalk op te schonen. Vergelijk de oplossing met onderstaande code.
 
 ```jsx
 // src/components/Navbar.tsx
@@ -933,7 +962,7 @@ export default function NotFound() {
           <Button
             variant='link'
             onClick={handleGoHome}
-            className='text-destructive hover:text-destructive'
+            className='text-destructive hover:text-destructive pl-0'
           >
             go back home
           </Button>
@@ -960,7 +989,13 @@ import { Link } from 'react-router';
 
 ## Tabs in shadcn: controlled vs uncontrolled
 
-Bij het gebruik van de [Tabs component](https://ui.shadcn.com/docs/components/base/tabs) in shadcn werk je standaard met een **uncontrolled component** via `defaultValue`. Voor meer controle (bv. synchroniseren met state, routing, filters…) moet je overschakelen naar een **controlled component**. Dit betekent dat je zelf de actieve tab in state beheert.
+Neem de [Tabs component documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Tabs heeft altijd een actieve waarde, bijvoorbeeld `'services'`. In `defaultValue` geef je de beginwaarde op. Daarna onthoudt de `Tabs` component zelf welke tab de gebruiker selecteert (de actieve tab). Dit noemen we een **uncontrolled component**.
+
+```jsx
+<Tabs defaultValue='services' />
+```
+
+ Voor meer controle (bv. synchroniseren met state, routing, filters…) moet je overschakelen naar een **controlled component**. Dit betekent dat je zelf de actieve tab in state zal beheren en dat dit niet langer door de Tabs component zelf gebeurt.
 
 ### Stap 1: Tabs component toevoegen aan de About page
 
@@ -968,7 +1003,6 @@ Neem de [documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Ma
 
 ```jsx
 // src/pages/about/AboutTabs.tsx
-import { faker } from '@faker-js/faker';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Briefcase, Clock, MapPin } from 'lucide-react';
 
@@ -978,7 +1012,10 @@ const About = () => {
       <h1 className='text-2xl font-semibold mb-6'>About</h1>
       <div>
         <p className='text-muted-foreground leading-relaxed'>
-          {faker.lorem.paragraph(10)}
+          This website gives you a clear and friendly way to keep track of your
+          budget. Browse your transactions, explore your favorite places, and
+          manage your financial overview in one simple space designed to make
+          everyday budgeting feel more organized.
         </p>
       </div>
       <Tabs defaultValue='services'>
@@ -996,9 +1033,15 @@ const About = () => {
             Location
           </TabsTrigger>
         </TabsList>
-        <Services />
-        <History />
-        <Location />
+        <TabsContent value='services'>
+          <Services />
+        </TabsContent>
+        <TabsContent value='history'>
+          <History />
+        </TabsContent>
+        <TabsContent value='location'>
+          <Location />
+        </TabsContent>
       </Tabs>
     </div>
   );
@@ -1006,29 +1049,43 @@ const About = () => {
 
 export default About;
 
-export const Services = () => (
-  <TabsContent value='services' className='pt-4 space-y-3'>
-    <p className='text-sm text-muted-foreground leading-relaxed'>
-      {faker.lorem.paragraph(10)}
-    </p>
-  </TabsContent>
-);
+export const Services = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Services</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+        posuere erat a ante venenatis dapibus posuere velit aliquet.
+      </p>
+    </>
+  );
+};
 
-export const History = () => (
-  <TabsContent value='history' className='pt-4 space-y-3'>
-    <p className='text-sm text-muted-foreground leading-relaxed'>
-      {faker.lorem.paragraph(10)}
-    </p>
-  </TabsContent>
-);
+export const History = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>History</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
+        consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed
+        consectetur.
+      </p>
+    </>
+  );
+};
 
-export const Location = () => (
-  <TabsContent value='location' className='pt-4 space-y-3'>
-    <p className='text-sm text-muted-foreground leading-relaxed'>
-      {faker.lorem.paragraph(10)}
-    </p>
-  </TabsContent>
-);
+export const Location = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Location</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed odio
+        dui. Maecenas faucibus mollis interdum. Nullam id dolor id nibh
+        ultricies vehicula ut id elit.
+      </p>
+    </>
+  );
+};
 ```
 
 De tabs beheren hier zelf hun state. Dit is **uncontrolled gedrag**. Maar wat als:
@@ -1042,13 +1099,11 @@ We moeten overschakelen naar een **controlled component** waar we zelf de state 
 
 shadcn is geen volledige component library, maar een gestylede wrapper rond primitives. Het gedrag (logica, state, events) komt van de libraries `Base UI / Radix UI`. shadcn voegt vooral styling en structuur toe.
 
-De shadcn docs tonen meestal enkel een basisgebruik, voor de Tabs met de prop `defaultValue`. De `defaultValue` is de initiële actieve tab. Daarna beheert de component **zelf de state**.
+De shadcn docs tonen meestal enkel een basisgebruik, voor de Tabs is dit met de prop `defaultValue`. De component beheert **zelf de state**.
 
-```jsx
-<Tabs defaultValue='tab1' />
-```
+Maar dat is slechts een deel van de mogelijkheden. Wil je de actieve tab ook buiten de component gebruiken, bijvoorbeeld om ze te koppelen aan filters of de URL, dan maak je de tabs **controlled**.
 
-Maar dat is slechts een deel van de mogelijkheden. Onderaan de shadcn documentatie vind je: "See the Basic Tabs documentation". Daar word je doorgestuurd naar:
+Onderaan de shadcn documentatie vind je: "See the Basic Tabs documentation". Daar word je doorgestuurd naar:
 
 - [Base UI](https://base-ui.com/react/components/tabs)
 - of [Radix UI](https://www.radix-ui.com/primitives/docs/components/tabs#api-reference).
@@ -1063,15 +1118,24 @@ Wil je begrijpen hoe iets werkt of welke props beschikbaar zijn, dan moet je naa
 
 Controlled gedrag werkt als volgt:
 
+Jouw component bewaart de actieve waarde en geeft ze door via `value`. Wanneer de gebruiker een andere tab kiest, roept Tabs `onValueChange` op zodat jij die waarde kunt bijwerken.
+
 ```jsx
 // 1. State aanmaken voor actieve tab
-const [activeTab, setActiveTab] = useState("tab1")
+const [activeTab, setActiveTab] = useState("services")
 
 // 2. Tabs component controlled maken door de waarde en onValueChange te koppelen aan state
 <Tabs value={activeTab} onValueChange={setActiveTab} />
 ```
 
+Hier is `activeTab` dus de bron van waarheid: `value` bepaalt welke tab zichtbaar is en `onValueChange` ontvangt de gekozen tab.
+
+<!-- TODO: Andreas -->
+Tip: je kan ook aan AI vragen om controlled tabs uit te leggen en een voorbeeld te geven.
+
 ### Stap 3: Actieve tab afleiden uit de routing
+
+We hoeven de actieve tab niet in state te bewaren. We kunnen de actieve tab afleiden uit de URL.
 
 In deze stap bepaalt de URL de tab die getoond zal worden.
 
@@ -1084,9 +1148,9 @@ In deze stap bepaalt de URL de tab die getoond zal worden.
 7. De content wordt bepaald door React Router
 
 ```jsx
-import { faker } from '@faker-js/faker';
+// src/pages/about/AboutTabs.tsx
 import { Outlet, useLocation, useNavigate } from 'react-router'; // 👈 1, 5, 7
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Briefcase, Clock, MapPin } from 'lucide-react';
 
 const TABS = ['services', 'history', 'location'] as const; // 👈 2
@@ -1109,7 +1173,10 @@ const About = () => {
       <h1 className='text-2xl font-semibold mb-6'>About</h1>
       <div>
         <p className='text-muted-foreground leading-relaxed'>
-          {faker.lorem.paragraph(10)}
+          This website gives you a clear and friendly way to keep track of your
+          budget. Browse your transactions, explore your favorite places, and
+          manage your financial overview in one simple space designed to make
+          everyday budgeting feel more organized.
         </p>
       </div>
       {/* 👇 6 */}
@@ -1141,7 +1208,7 @@ export default About;
 
 ## Custom styles
 
-Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css`:
+Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css` door deze toe te voegen aan Tailwinds basislaag :
 
 ```css
 @layer base {
@@ -1159,12 +1226,37 @@ Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
 import './index.css';
 ```
 
+Verwijder de className attributen van de h1-tags in alle page componenten.
+<!-- TODO: Andreas -->
+Merk op dergelijke repititieve taken kan je ook aan AI vragen. Bijvoorbeeld: "Verwijder de className attributen van alle h1-tags in de src/pages folder en subfolders."
+
+<!-- TODO: Andreas: AI stelt iets anders voor die ook werkt -->
+Je krijgt mogelijk de editorwaarschuwing `Unknown at rule @apply.` Dat betekent niet dat je code fout is: VS Code herkent @apply niet standaard als een Tailwind CSS-directive.
+
+Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog niet is gebeurd. Blijft de waarschuwing bestaan, vraag AI naar een oplossing voor deze waarschuwing. Controleer of dit overeenkomt met onderstaande oplossing.
+
+- Oplossing +
+
+  Maak een `settings.json` bestand aanmaken in de `.vscode` map van je project met volgende inhoud:
+
+  ```json
+  {
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+  }
+  ```
+
+  Herlaad dan de editor (`Ctrl+Shift+P`, Kies `Developer: Reload Window`). De waarschuwing verdwijnt.
+
+  Zorg ervoor dat dit ook op git komt zodat iedereen die aan het project werkt dezelfde instellingen heeft. Pas `.gitignore` aan zodat de settings.json file in de `.vscode` map niet genegeerd wordt: `!.vscode/settings.json`
+
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl TODO:
+> git checkout -b les3-opl cdfa38a
 > pnpm install
 > pnpm dev
 > ```
