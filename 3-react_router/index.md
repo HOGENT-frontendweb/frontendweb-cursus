@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 8ff4a9f
+> git checkout -b les3 58ab2f6
 > pnpm install
 > pnpm dev
 > ```
@@ -1249,14 +1249,12 @@ Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog
 
   Herlaad dan de editor (`Ctrl+Shift+P`, Kies `Developer: Reload Window`). De waarschuwing verdwijnt.
 
-  Zorg ervoor dat dit ook op git komt zodat iedereen die aan het project werkt dezelfde instellingen heeft. Pas `.gitignore` aan zodat de settings.json file in de `.vscode` map niet genegeerd wordt: `!.vscode/settings.json`
-
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl cdfa38a
+> git checkout -b les3-opl 31d488a
 > pnpm install
 > pnpm dev
 > ```
@@ -1265,6 +1263,7 @@ Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog
 
 Denk voor je eigen applicatie na over de navigatie en implementeer deze met React Router.
 
+<!-- TODO: ANS toevoegen -->
 ## Mogelijke extra's voor de examenopdracht
 
 - Gebruik de nieuwe [loader](https://reactrouter.com/start/data/data-loading) en [action](https://reactrouter.com/start/data/actions) attributen van de `Route` component van `react-router` om de data op te halen.

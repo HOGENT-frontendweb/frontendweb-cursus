@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4 5a31e56
+> git checkout -b les4 31d488a
 > pnpm install
 > pnpm dev
 > ```
@@ -15,14 +15,14 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les5 d486627
+> git checkout -b les5 03ffd29
 > pnpm install
 > pnpm db:migrate
 > pnpm db:seed
 > pnpm start:dev
 > ```
 >
-> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie.
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie. We gaan er in dit hoofdstuk van uit dat de API draait op poort 9000 (`PORT`).Maak ook een database `budget` aan in MySQL.
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
 
@@ -53,7 +53,7 @@ In deze sectie werken we richting een voorbeeld van data fetching m.b.v. `useEff
 In onderstaand voorbeeld wordt een boodschap naar de console gelogd nadat de `TransactionList` gerenderd is. Deze instructie zouden we na de return kunnen plaatsen, maar die code wordt niet uitgevoerd. `useEffect` is hier de oplossing.
 
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 import { TRANSACTION_DATA } from '../api/mock_data';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -394,14 +394,14 @@ export default function AsyncData({
 Pas dan volgende onderdelen van de `TransactionList` verder aan:
 
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
-import TransactionsTable from '../components/transactions/TransactionsTable';
-import * as transactionsApi from '../api/transactions';
+import TransactionsTable from '../../components/transactions/TransactionsTable';
+import * as transactionsApi from '../../api/transactions';
 import type { Transaction } from '@/types';
-import AsyncData from '../components/AsyncData'; // 👈 5
+import AsyncData from '../../components/AsyncData'; // 👈 5
 
 export default function TransactionList() {
   const [transactions, setTransactions] = useState<Transaction[]>([]); // 👈 1
@@ -437,7 +437,7 @@ export default function TransactionList() {
 
   return (
     <>
-      <h1 className='text-2xl font-semibold mb-6'>Transactions</h1>
+      <h1>Transactions</h1>
 
       <div className='flex justify-between mb-4 gap-2'>
         <div className='flex gap-2 w-1/2'>
@@ -515,15 +515,15 @@ export async function getAll<T>(url: string): Promise<T> {
 Vervolgens gebruiken we de `useSWR` hook om onze transacties op te halen:
 
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
-import TransactionsTable from '../components/transactions/TransactionsTable';
-import type { Transaction } from '../types';
-import AsyncData from '../components/AsyncData';
+import TransactionsTable from '../../components/transactions/TransactionsTable';
+import type { Transaction } from '../../types';
+import AsyncData from '../../components/AsyncData';
 import useSWR from 'swr'; // 👈 1
-import { getAll } from '../api'; // 👈 2
+import { getAll } from '../../api'; // 👈 2
 
 export default function TransactionList() {
   const [text, setText] = useState('');
@@ -545,7 +545,7 @@ export default function TransactionList() {
 
   return (
     <>
-      <h1 className='text-2xl font-semibold mb-6'>Transactions</h1>
+      <h1>Transactions</h1>
 
       <div className='flex justify-between mb-4 gap-2'>
         <div className='flex gap-2 w-1/2'>
@@ -571,7 +571,7 @@ export default function TransactionList() {
 
 1. Importeer de `useSWR` hook en verwijder de import van `useEffect`.
 2. Importeer de `getAll` functie uit de `api/index.ts`. Als je de naam van een map opgeeft, zal de `index.ts` in die map geïmporteerd worden.
-3. We gebruiken de `useSWR` hook met `transactions` als key en de `getAll` functie als `fetcher`. De `useSWR` hook retourneert een object met volgende properties:
+3. We gebruiken de `useSWR` hook met `transactions` als key en de `getAll` functie als `fetcher`. Bij useSWR geef je het type mee omdat de fetcher een lijst terugstuurt: `Transaction[]`. Daarmee weet TypeScript dat data van het type `Transaction[] | undefined` is. De `useSWR` hook retourneert een object met volgende properties:
    - `data`: de data die we ophalen. Dit is `undefined` als de data nog niet is opgehaald en van het type `Transaction[]` als de data is opgehaald. Als de data geladen is maar er is geen data beschikbaar dan hebben we een lege array.
    - `error`: de error die we ontvangen. Dit is `undefined` als er geen error is.
    - `isLoading`: een boolean die aangeeft of de data aan het ophalen is.
@@ -715,11 +715,17 @@ export default TransactionsTable;
 
 Nu zijn we klaar om de transactie effectief te verwijderen, we passen de `TransactionList` component aan. Het probleem van de `useSWR` hook is dat die meteen het request uitvoert als de component rendert. We willen dit pas doen als de gebruiker op de verwijderknop klikt. Daarom maken we gebruik van de `mutate` functie die we van `swr` krijgen. Deze functie zal de data in de cache aanpassen en de component opnieuw renderen.
 
+Voor het weergeven van een toast bij het verwijderen van een transactie, installeren we de `sonner` component van shadcn (een externe package).
+
+  ```bash
+  pnpm dlx shadcn@latest add https://www.shadcn.io/r/radix/sonner.json
+  ```
+
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 // imports...
 import useSWRMutation from 'swr/mutation'; // 👈 1
-import { getAll, deleteById } from '../api'; // 👈 1
+import { getAll, deleteById } from '../../api'; // 👈 1
 import { toast } from 'sonner'; // 👈 3
 
 export default function TransactionList() {
@@ -732,14 +738,10 @@ export default function TransactionList() {
   );
 
   // 👇 2
-  const handleDeleteTransaction = async (id: number) => {
-    try {
-      await deleteTransaction(id);
-      toast.success('Transaction removed');
-    } catch {
-      // deleteError wordt bijgewerkt door useSWRMutation
-    }
-  };
+  const {
+    trigger: deleteTransaction, error: deleteError,
+  } = useSWRMutation('transactions', deleteById);
+
 
   const filteredTransactions =
     data?.filter((t) =>
@@ -754,7 +756,7 @@ export default function TransactionList() {
 
   return (
     <>
-      <h1 className='text-2xl font-semibold mb-6'>Transactions</h1>
+      <h1>Transactions</h1>
 
       <div className='flex justify-between mb-4 gap-2'>
         <div className='flex gap-2 w-1/2'>
@@ -797,6 +799,7 @@ Open de console en inspecteer het `Network` tabblad. Je zal zien dat er een `DEL
 De tabel wordt vervangen door de loader tijdens het verwijderen van een transactie, wat slechte UX is. We kunnen dit oplossen door een extra property door te geven aan `AsyncData`
 
 ```jsx
+// src/components/AsyncData.tsx
 import Loader from './Loader';
 import Error from './Error';
 
@@ -859,13 +862,14 @@ De backend leest die parameter uit en filtert de data voordat hij antwoordt.
 `useSWR` gebruikt de eerste parameter (de _key_) als URL voor de API-call. Tot nu toe was dat gewoon `transactions`. We maken die URL nu dynamisch:
 
 ```jsx
-const { data, isLoading, error } = useSWR(
+// src/pages/transactions/TransactionList.tsx
+const { data, isLoading, error } = useSWR<Transaction[]>(
   `transactions?${search ? `search=${search}` : ''}`,
-  getAll<Transaction[]>,
+  getAll,
 );
 ```
 
-- Als `search` leeg is, wordt de URL gewoon `transactions?` (geen filter, alle transacties).
+- Als `search` leeg is, wordt de URL gewoon `transactions?` (geen filter, alle transacties ).
 - Als `search` de waarde `"HoGent"` heeft, wordt de URL `transactions?search=HoGent`.
 
 Elke keer dat `search` verandert, verandert de URL-sleutel en doet `useSWR` automatisch een nieuw request. De `filteredTransactions` is nu dus **niet meer nodig** — die mag je verwijderen. Geef de `transactions` data rechtstreeks mee aan `TransactionsTable`.
@@ -879,10 +883,10 @@ Elke keer dat `search` verandert, verandert de URL-sleutel en doet `useSWR` auto
 In de vorige versie zocht de gebruiker door op de "Search" knop te klikken. We willen nu ook zoeken wanneer de gebruiker op **Enter** drukt of het zoekveld **leegmaakt**. Daarvoor vervangen we de knop door twee event handlers:
 
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 // ...
 import type { KeyboardEvent, ChangeEvent } from 'react';
-
+//...
 const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
   setText(e.target.value);
 
@@ -918,14 +922,16 @@ Die splitsing is bewust: we willen niet bij _elke_ toetsaanslag een API-request 
 
 2. **`handleKeyDown`** wordt aangeroepen bij elke toetsaanslag, maar kijkt enkel of de ingedrukte toets `Enter` is. Zo ja, wordt de huidige waarde van `text` gekopieerd naar `search`. Die wijziging in `search` zorgt ervoor dat `useSWR` een nieuw API-request uitstuurt met de zoekterm.
 
+De search-knop is nu overbodig en mag verwijderd worden.
+
 ### Problemen met delete
 
 De verwijderde transactie is nog steeds zichtbaar in de lijst, omdat SWR de gecachte data blijft tonen totdat er een nieuwe reden is om te herfetchen. De reden is dat SWR data bijhoudt per URL-sleutel. Het ophalen van transacties gebeurt via `transactions?search=...`, terwijl het verwijderen gebeurt via een andere URL, bv. `transactions/5`. SWR heeft dus geen manier om automatisch te weten dat de gecachte lijst van transacties verouderd is na een delete. Door expliciet `mutate()` aan te roepen, geven we SWR de hint dat de cache ongeldig is en dat er een nieuw request moet worden uitgestuurd naar de fetch-URL.
 
 ```jsx
-const { data, isLoading, error, mutate } = useSWR(
+const { data, isLoading, error, mutate } = useSWR<Transaction[]>(
   `transactions?${search ? `search=${search}` : ''}`,
-  getAll<Transaction[]>,
+  getAll,
 ); // 👈
 
 const handleDeleteTransaction = async (id: number) => {
@@ -991,9 +997,10 @@ export async function getAllWithPaging<T>(
 Pas de `TransactionList` component aan om de `page` en `pageSize` state bij te houden. We schakelen ook over naar de nieuwe fetcher-functie `getAllWithPaging<Transaction>` zodat het gepagineerde antwoord correct wordt geparset.
 
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 // ...
 import { deleteById, getAllWithPaging } from '../api';
+import type { PaginatedResponse, Transaction } from '../../types';
 
 export default function TransactionsList() {
 
@@ -1001,9 +1008,9 @@ export default function TransactionsList() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
 
-  const { data, isLoading, error, mutate } = useSWR(
+  const { data, isLoading, error, mutate } = useSWR<PaginatedResponse<Transaction>>(
     `transactions?page=${page}&pageSize=${pageSize}${search ? `&search=${search}` : ''}`,
-    getAllWithPaging<Transaction>,
+    getAllWithPaging,
   );
 
   // ...
@@ -1032,7 +1039,7 @@ pnpm dlx shadcn@latest add pagination select field
 We dienen ook een aantal methodes te schrijven om te navigeren naar volgende/vorige pagina.
 
 ```jsx
-// src/pages/TransactionList.tsx
+// src/pages/transactions/TransactionList.tsx
 import {
   Pagination,
   PaginationContent,
@@ -1070,7 +1077,7 @@ const handleNextPage = () => {
 };
 
 // ...
-<AsyncData loading={isLoading} error={error || deleteError}>
+<AsyncData loading={isLoading} error={error || deleteError} hasData={data !== undefined}>
   <TransactionsTable
     transactions={data?.items}
     onDelete={handleDeleteTransaction}
@@ -1172,23 +1179,25 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
   ```jsx
   //src/components/PaginationControls.tsx
   import {
-    Pagination,
-    PaginationContent,
-    PaginationItem,
-    PaginationNext,
-    PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationPrevious,
   } from '@/components/ui/pagination';
   import {
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
     SelectTrigger,
     SelectValue,
   } from '@/components/ui/select';
+  import { Field, FieldLabel } from '@/components/ui/field';
 
-  const PAGE_SIZE_OPTIONS = [5, 10, 25, 50];
+  const PAGE_SIZE_OPTIONS = [2, 5, 10, 25, 50];
 
-  interface PaginationProps {
+  interface PaginationControlsProps {
     page: number;
     totalPages: number;
     pageSize: number;
@@ -1196,17 +1205,18 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
     onPageSizeChange: (pageSize: number) => void;
   }
 
-  export default function Pagination({
+  export default function PaginationControls({
     page,
     totalPages,
     pageSize,
     onPageChange,
     onPageSizeChange,
-  }: PaginationProps) {
+  }: PaginationControlsProps) {
+
     return (
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-2 text-sm'>
-          <span>Rows per page</span>
+      <div className='flex w-full items-center justify-between gap-4'>
+        <Field orientation='horizontal' className='w-fit'>
+          <FieldLabel htmlFor='select-rows-per-page'>Rows per page</FieldLabel>
           <Select
             value={pageSize}
             onValueChange={(value) => {
@@ -1214,21 +1224,23 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
               onPageChange(1);
             }}
           >
-            <SelectTrigger className='w-16'>
+            <SelectTrigger className='w-20' id='select-rows-per-page'>
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
-              {PAGE_SIZE_OPTIONS.map((size) => (
-                <SelectItem key={size} value={size}>
-                  {size}
-                </SelectItem>
-              ))}
+            <SelectContent align='start'>
+              <SelectGroup>
+                {PAGE_SIZE_OPTIONS.map((size) => (
+                  <SelectItem key={size} value={size}>
+                    {size}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
-        </div>
+        </Field>
 
         {totalPages > 1 && (
-          <Pagination>
+          <Pagination className='mx-0 w-auto'>
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
@@ -1255,34 +1267,33 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-        )}
-      </div>
+        )
+        }
+      </div >
     );
   }
   ```
 
   De `PaginationControls`-component bevat geen eigen state. Alle waarden komen van de parent via props, en alle wijzigingen gaan terug via callbacks. Een paar dingen om op te letten:
   - `PAGE_SIZE_OPTIONS` is een constante buiten de component gedefinieerd. Zo wordt de array niet bij elke render opnieuw aangemaakt.
-  - De `PaginationProps`-interface maakt het contract expliciet: `page`, `totalPages` en `pageSize` zijn leeswaarden; `onPageChange` en `onPageSizeChange` zijn callbacks waarmee de component de parent op de hoogte stelt van een wijziging.
+  - De `PaginationControlsProps`-interface maakt het contract expliciet: `page`, `totalPages` en `pageSize` zijn leeswaarden; `onPageChange` en `onPageSizeChange` zijn callbacks waarmee de component de parent op de hoogte stelt van een wijziging.
   - Bij een pageSize-wijziging roept de component zelf al `onPageChange(1)` aan — de reset naar pagina 1 zit dus ingebakken in de child, niet in de parent.
   - `{totalPages > 1 && ...}` — de navigatieknoppen worden alleen getoond als er meer dan één pagina is.
 
   ```jsx
-  // src/pages/transactionList.tsx
+  // src/pages/transactions/TransactionList.tsx
   import { Input } from '@/components/ui/input';
-  import { Button, buttonVariants } from '@/components/ui/button';
-  import { cn } from '@/lib/utils';
   import { useState } from 'react';
-  import TransactionsTable from '../components/transactions/TransactionsTable';
-  import type { Transaction } from '../types';
-  import AsyncData from '../components/AsyncData';
+  import TransactionsTable from '../../components/transactions/TransactionsTable';
+  import type { PaginatedResponse, Transaction } from '../../types';
+  import AsyncData from '../../components/AsyncData';
   import useSWR from 'swr';
-  import { deleteById, getAllWithPaging } from '../api';
   import useSWRMutation from 'swr/mutation';
+  import { deleteById, getAllWithPaging } from '../../api';
   import { toast } from 'sonner';
-  import { Link } from 'react-router';
   import type { KeyboardEvent, ChangeEvent } from 'react';
-  import PaginationControls from '../components/PaginationControls';
+  import { Button } from '@/components/ui/button';
+  import PaginationControls from '../../components/PaginationControls';
 
   export default function TransactionList() {
     const [text, setText] = useState('');
@@ -1290,21 +1301,14 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
 
-    const { data, isLoading, error, mutate } = useSWR(
+    const { data, isLoading, error, mutate } = useSWR<PaginatedResponse<Transaction>>(
       `transactions?page=${page}&pageSize=${pageSize}${search ? `&search=${search}` : ''}`,
-      getAllWithPaging<Transaction>,
+      getAllWithPaging,
     );
 
-    const { trigger: deleteTransaction, error: deleteError } = useSWRMutation(
-      'transactions',
-      deleteById,
-    );
-
-    const handleDeleteTransaction = async (id: number) => {
-      await deleteTransaction(id);
-      mutate();
-      toast.success('Transaction removed');
-    };
+    const {
+      trigger: deleteTransaction, error: deleteError,
+    } = useSWRMutation('transactions', deleteById);
 
     const handleSearch = (value: string) => {
       setSearch(value);
@@ -1325,11 +1329,17 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
       }
     };
 
+    const handleDeleteTransaction = async (id: number) => {
+      await deleteTransaction(id);
+      await mutate();
+      toast.success('Transaction removed');
+    };
+
     const totalPages = data ? Math.ceil(data.total / pageSize) : 1;
 
     return (
       <>
-        <h1 className='text-2xl font-semibold mb-6'>Transactions</h1>
+        <h1>Transactions</h1>
 
         <div className='flex justify-between mb-4 gap-2'>
           <div className='flex gap-2 w-1/2'>
@@ -1338,23 +1348,15 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
               placeholder='Search by place…'
               value={text}
               onChange={handleSearchChange}
-              onKeyDown={handleKeyDown}
-            />
-            <Button variant='outline' onClick={() => handleSearch(text)}>
+              onKeyDown={handleKeyDown} />
+            <Button variant="outline" onClick={() => handleSearch(text)} className='w-24'>
               Search
             </Button>
           </div>
-
-          <Link to='/transactions/add' className={cn(buttonVariants())}>
-            Add transaction
-          </Link>
         </div>
 
-        <AsyncData loading={isLoading} error={error || deleteError}>
-          <TransactionsTable
-            transactions={data?.items}
-            onDelete={handleDeleteTransaction}
-          />
+        <AsyncData loading={isLoading} error={error ?? deleteError} hasData={data !== undefined}>
+          <TransactionsTable transactions={data?.items} onDelete={handleDeleteTransaction} />
           <div className='mt-4'>
             <PaginationControls
               page={page}
@@ -1368,9 +1370,11 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
       </>
     );
   }
+
   ```
 
   In de gerefactorde `TransactionList` zijn een aantal zaken gewijzigd:
+
   - **`totalPages`** wordt berekend in de parent: `Math.ceil(data.total / pageSize)`. Deze waarde wordt doorgegeven aan de `Pagination`-component.
   - **`onPageChange={setPage}`** en **`onPageSizeChange={setPageSize}`** — de state-setters worden rechtstreeks als callback doorgegeven. Wanneer de `Pagination`-component `onPageChange(2)` aanroept, roept die eigenlijk `setPage(2)` aan in de parent.
 
@@ -1404,22 +1408,23 @@ Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt
 
 ## Oefening 4 - PlacesList via API
 
-Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.tsx` die de lijst van `Places` weergeeft. `PlacesList.tsx` communiceert met de API en geeft de data door via props aan `PlacesCards.tsx`.
+Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.tsx` die de lijst van `Places` weergeeft. `PlacesList.tsx` communiceert met de API en geeft de data door via props aan `PlacesCards.tsx`. Merk op : alle methodes worden nu asynchroon uitgevoerd via de API, dus de signatuur van de methodes die via props wordt doorgegeven zal moeten worden aangepast. Ook voor het opslaan van de rating zal een API call moeten gebeuren en dient een Place object te worden meegestuurd. De onRate functie zal dus een `Place` object ontvangen in plaats van enkel de `id` en de `rating`.
 
-Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. Maak hiervoor gebruik van de `TransactionTable` component.
+Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. Maak hiervoor gebruik van de `TransactionTable` component. De transacties worden opgehaald via de API.
 
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4-opl 6d60fc7
+> git checkout -b les4-opl 853c50c
 > pnpm install
 > pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
+<!-- TODO: ANS toevoegen-->
 ## Must reads
 
 - [JavaScript Visualized: Promises & Async/Await](https://medium.com/@lydiahallie/javascript-visualized-promises-async-await-a3f1aad8a943)

@@ -210,6 +210,14 @@ Wanneer je `pnpm install` uitvoert, gebeurt dit stap voor stap:
   - De pnpm store vind je meestal in je home-directory. Gebruik `pnpm store path` om het pad te vinden.
 - Maakt een strikte `node_modules`-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in de `package.json` heeft staan.
 
+### .gitignore
+
+Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `pnpm install`.
+
+Download de `.gitignore` van <https://github.com/github/gitignore/blob/main/Node.gitignore> en plaats deze in de root van je project. Het is belangrijk dat je het bestand exact de naam `.gitignore` heeft.
+
+Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestand ook aanpassen naar eigen wens, maar dit is een vrij complete voor een Node.js project.
+
 ### src
 
 Start de applicatie met het commando
@@ -1008,7 +1016,7 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les1-opl TODO:
+> git checkout -b les1-opl c869bcc
 > pnpm install
 > pnpm dev
 > ```
