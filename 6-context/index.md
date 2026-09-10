@@ -57,7 +57,22 @@ shadcn maakt gebruik van **CSS-variabelen**. In `index.css` worden kleuren gedef
 }
 ```
 
-shadcn-componenten gebruiken semantische utility klassen zoals `bg-background` en `text-foreground` die naar deze variabelen verwijzen. Hierdoor schakelen **alle** shadcn-componenten automatisch tussen light en dark mode zonder dat je per component `dark:bg-gray-900` hoeft te schrijven.
+Waarom is dit handig? Vergelijk twee manieren om een component in beide thema's te laten werken:
+
+```jsx
+{/* Zonder CSS-variabelen: je somt voor elke kleur zowel de light- als de dark-waarde op */}
+<div className="bg-white text-black dark:bg-gray-900 dark:text-white">...</div>
+
+{/* Met shadcn: één semantische klasse per kleur, geen dark:-varianten nodig */}
+<div className="bg-background text-foreground">...</div>
+```
+
+Dit werkt omdat de klasse `bg-background` niet een vaste kleur is, maar verwijst naar de CSS-variabele: het is kort voor `background-color: var(--background)`. Die variabele heeft een **andere waarde** naargelang de context:
+
+- Standaard (light) geldt het `:root`-blok → `--background` is wit.
+- Zodra de class `dark` op `<html>` staat, geldt het `.dark`-blok → `--background` wordt donker, voor alles wat binnen `<html>` zit.
+
+Je verandert dus op één plek (de class op `<html>`) de waarde van de variabelen, en **elke** shadcn-component die `bg-background`, `text-foreground`, `border-border`, … gebruikt, kleurt automatisch mee. Je hoeft nergens per component een `dark:`-variant te schrijven.
 
 ## Licht of donker thema in onze applicatie
 
@@ -162,7 +177,8 @@ interface ThemeContextType {
   isDark: boolean;
   toggleTheme: () => void;
 } // 👈 1
-createContext<ThemeContextType>({
+
+export const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   toggleTheme: () => {},
 }); // 👈 1
@@ -245,8 +261,6 @@ export const ThemeContext = createContext<ThemeContextType>({
   isDark: false,
   toggleTheme: () => {},
 });
-
-);
 ```
 
 ### Providing ThemeContext
@@ -282,7 +296,7 @@ import { useState } from 'react';
 import { useContext } from 'react'; //👈 1
 import { ThemeContext } from '../contexts/theme'; // 👈 1
 import { PiggyBankIcon, Moon, Sun, Menu, X } from 'lucide-react'; // 👈 4
-import { Button } from './ui/button';// 👈 2
+import { Button } from '@/components/ui/button';// 👈 2
 //...
 
 {/* 👇 2*/}
@@ -384,7 +398,7 @@ export const useTheme = (): ThemeContextType => {
 ```
 
 1. Importeer `useContext`.
-2. **Waarom nu `undefined` en daarvoor een object?** In de eerste versie (`Theme.context.tsx`) gebruikten we een concrete standaardwaarde `{ isDark: false, toggleTheme: () => {} }`. Dat werkt, maar heeft een nadeel: als een consumer per ongeluk buiten de `ThemeProvider` gebruikt wordt, krijgt hij de standaardwaarde — zonder enige foutmelding. De bug is dan moeilijk te vinden. In deze `index.ts` kiezen we bewust voor `undefined` als standaardwaarde. Daardoor moet het type `ThemeContextType | undefined` zijn. Het voordeel: de `useTheme` hook kan nu controleren of de context wel degelijk voorzien werd. Ontbreekt de provider, dan gooit de hook onmiddellijk een duidelijke fout (zie punt 2) in plaats van verder te werken met een stille placeholder.
+2. **Waarom nu `undefined` en daarvoor een object?** In de eerste versie (`Theme.context.tsx`) gebruikten we een concrete standaardwaarde `{ isDark: false, toggleTheme: () => {} }`. Dat werkt, maar heeft een nadeel: als een consumer per ongeluk buiten de `ThemeProvider` gebruikt wordt, krijgt hij de standaardwaarde — zonder enige foutmelding. De bug is dan moeilijk te vinden. In deze `index.ts` kiezen we bewust voor `undefined` als standaardwaarde. Daardoor moet het type `ThemeContextType | undefined` zijn. Het voordeel: de `useTheme` hook kan nu controleren of de context wel degelijk voorzien werd. Ontbreekt de provider, dan gooit de hook onmiddellijk een duidelijke fout (zie punt 3) in plaats van verder te werken met een stille placeholder.
 3. `useTheme` is een **custom hook** die de ruwe `useContext`-aanroep verbergt. De check `if (!context)` gooit een duidelijke fout als de hook per ongeluk buiten de `ThemeProvider` gebruikt wordt — veel nuttiger dan de cryptische `Cannot destructure property of undefined` die je anders zou krijgen. Consumers importeren voortaan `useTheme` in plaats van `useContext(ThemeContext)` rechtstreeks aan te roepen.
 
 Zo kan de code in `Navbar.tsx` als volgt aangepast worden:
@@ -432,7 +446,7 @@ import { Input } from '@/components/ui/input'; // 👈 2
 import { Controller } from 'react-hook-form'; // 👈 3
 
 // 👇 4
-interface LabelInputInterface extends ComponentPropsWithoutRef<'input'> {
+interface LabelInputProps extends ComponentPropsWithoutRef<'input'> {
   label: string;
   name: string;
 }
@@ -444,7 +458,7 @@ const LabelInput = ({
   placeholder,
   type,
   ...rest
-}: LabelInputInterface) => {
+}: LabelInputProps) => {
   return (
     <Controller
       control={control}
@@ -476,7 +490,7 @@ export default LabelInput;
 1. Import van het type `ComponentPropsWithoutRef`.
 2. Import shadcn-componenten .
 3. Import `Controller` uit `react-hook-form`
-4. `LabelInputInterface` erft alle standaard HTML `<input>` attributen via `React.ComponentPropsWithoutRef<'input'>` en voegt `label` en `name` als verplichte props toe. Zo kan de component gebruikt worden met alle `<input>` attributen die HTML ondersteunt (bv. `min`, `max`, `disabled`).
+4. `LabelInputInterface` erft alle standaard HTML `<input>` attributen via `React.ComponentPropsWithoutRef<'input'>` voegt `label` en `name` als verplichte props toe. Zo kan de component gebruikt worden met alle `<input>` attributen die HTML ondersteunt (bv. `min`, `max`, `disabled`).
 5. We maken een component `LabelInput`. We destructuren alle props(`label`, `name`, `placeholder`) die we nodig hebben. `...rest` vangt alle overige props op (bv. `disabled`, `min`, `max`) en geeft ze door aan het `<Input>` element. Zo hoef je de component niet aan te passen als je een extra attribuut wil doorgeven.
 6. We spreiden ook alle rest props
 7. Voor `type='number'` geeft `e.target.value` altijd een string terug. `e.target.valueAsNumber` converteert dit naar een getal, wat nodig is voor correcte validatie en verwerking van numerieke velden.
@@ -507,7 +521,7 @@ In de documentatie lezen we ook het volgende over de `FormProvider`:
 
 ```tsx
 // src/components/transactions/TransactionForm.tsx
-import { useForm, FormProvider } from 'react-hook-form'; // 👈 1
+import { Controller, useForm, FormProvider } from 'react-hook-form'; // 👈 1
 // ...
 
 export default function TransactionForm({
@@ -526,8 +540,6 @@ export default function TransactionForm({
 }
 ```
 
-Plaats eventjes de `select` lijst in commentaar. Verderop wordt dit ook een aparte component.
-
 1. Importeer de `FormProvider`.
 2. Plaats de `FormProvider` rond het formulier en geef alles door om de `useFormContext` correct te laten werken voor gebruik in `LabelInput`.
 
@@ -542,7 +554,7 @@ const LabelInput = ({
   placeholder,
   type,
   ...rest
-}: LabelInputInterface) => {
+}: LabelInputProps) => {
   const { control } = useFormContext();// 👈
   return (
     <Controller
@@ -579,7 +591,7 @@ Maak een `LabelSelectList` component aan.
   }
 
   // 👇 2
-  interface LabelSelectList extends Omit<
+  interface LabelSelectListProps extends Omit<
     ComponentPropsWithoutRef<typeof Select>, // 👈 3
     'value' | 'items' | 'onValueChange' | 'onOpenChange' // 👈 4
   > {
@@ -595,7 +607,7 @@ Maak een `LabelSelectList` component aan.
     items,
     placeholder,
     ...rest
-  }: SelectListProps) => {
+  }: LabelSelectListProps) => {
     const { control } = useFormContext();
     return (
       <Controller
@@ -732,7 +744,7 @@ Je kan er ook voor zorgen dat de inputvelden en knoppen in het formulier _disabl
 ```tsx
 export default function TransactionForm({...}){
 // ...
-const { isSubmitting, isValid } = form.formState; // 👆
+const { isSubmitting, isValid } = form.formState; // 👈
 
 // ...
 return (
@@ -743,11 +755,10 @@ return (
             <button
             type='submit'
             disabled={isSubmitting}
-            className='bg-blue-500 text-white font-medium py-2 px-4 rounded'
           >
             {transaction?.id ? 'Save transaction' : 'Add transaction'}
           </button>
-          {/* 👇 */}
+          {/* 👆 */}
        <Link to="/transactions" className={cn(buttonVariants({ variant: 'outline' }))}>
             Cancel
           </Link>
@@ -789,7 +800,7 @@ export default function LabelInput({...}) {
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6-opl 5d642b4
+> git checkout -b les6-opl 1f9c109
 > pnpm install
 > pnpm dev
 > ```
@@ -800,3 +811,5 @@ export default function LabelInput({...}) {
 
 Controleer je eigen project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
+
+<!--TODO:ANS-->
