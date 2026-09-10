@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les5 6d60fc7
+> git checkout -b les5 8cd2a63
 > pnpm install
 > pnpm dev
 > ```
@@ -17,7 +17,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les5 13add05
+> git checkout -b les5 03ffd29
 > pnpm install
 > pnpm db:migrate
 > pnpm db:seed
@@ -48,7 +48,7 @@ Voorzie volgende bijkomende routes in de budget-applicatie:
   De `AddOrEditTransaction` component:
 
   ```jsx
-  // src/pages/AddOrEditTransaction.tsx
+  // src/pages/transactions/AddOrEditTransaction.tsx
   export default function AddOrEditTransaction() {
     return <h1>Add transaction</h1>;
   }
@@ -199,7 +199,7 @@ De pagina `AddOrEditTransaction` gebruikt de component `TransactionForm` die het
 
     return (
       <>
-        <h1 className='text-2xl font-semibold mb-6'>Add transaction</h1>
+        <h1>Add transaction</h1>
         {/* 👇 3 */}
         <AsyncData error={placesError} loading={placesLoading}>
           {/* 👇 2 */}
@@ -320,6 +320,7 @@ pnpm dlx shadcn@latest add field input
 ```
 
 Voeg inputvelden toe voor user ID en amount.
+<!-- TODO: Andreas: AI voor het toevoegen van de inputvelden -->
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -375,7 +376,7 @@ De inputvelden zijn nog niet gekoppeld aan react-hook-form. Dit doen we in de vo
 
 ### Stap 4. Controller
 
-React-hook-form houdt de state bij voor elke control. [Controller](https://react-hook-form.com/docs/useform/register) is een wrapper van react-hook-form die een UI-library component integreert met het formulier. De `Controller` toevoegen doe je als volgt:
+React-hook-form houdt de state bij voor elke control. [Controller](https://react-hook-form.com/docs/usecontroller/controller) is een wrapper van react-hook-form die een UI-library component integreert met het formulier. De `Controller` toevoegen doe je als volgt:
 
 ```jsx
 <Controller
@@ -548,8 +549,9 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
     },
   });
 
+  const {isValid} = form.formState; // 👈 6
   const onSubmit = (values: TransactionFormValues) => {
-    if (!form.formState.isValid) return; // 👈 3
+    if (!isValid) return;// 👈 6
     console.log(JSON.stringify(values));
   };
 
@@ -560,10 +562,10 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
           control={form.control}
           name='userId'
           render={(
-            { field, fieldState }, //👈 4
+            { field, fieldState }, //👈 3
           ) => (
             <Field data-invalid={fieldState.invalid}>
-              {/* 👈 5 */}
+              {/* 👈 4 */}
               <FieldLabel htmlFor={field.name}>User Id</FieldLabel>
               <Input
                 {...field}
@@ -572,7 +574,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
                 onChange={(e) => field.onChange(e.target.valueAsNumber)}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-              {/* 👈 6 */}
+              {/* 👈 5 */}
             </Field>
           )}
         />
@@ -581,10 +583,10 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
           control={form.control}
           name='amount'
           render={(
-            { field, fieldState }, //👈 4
+            { field, fieldState }, //👈 3
           ) => (
             <Field data-invalid={fieldState.invalid}>
-              {/* 👈 5 */}
+              {/* 👈 4 */}
               <FieldLabel htmlFor={field.name}>Amount</FieldLabel>
               <Input
                 {...field}
@@ -594,7 +596,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
                 onChange={(e) => field.onChange(e.target.valueAsNumber)}
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}{' '}
-              {/* 👈 6 */}
+              {/* 👈 5 */}
             </Field>
           )}
         />
@@ -617,14 +619,14 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
    - `onSubmit`: Validatie wordt geactiveerd bij het verzenden (standaard).
    - `onTouched`: De validatie wordt geactiveerd bij de eerste keer dat het scherm de focus verliest, en vervolgens bij elke wijziging.
    - `all`: Validatie wordt geactiveerd bij het verlaten van het scherm en bij wijzigingen.
-3. We controleren of er fouten voorkomen in het formulier.
-4. De Controller geeft nu ook de `fieldState` door. Dit is de validatiestatus van 1 specifiek veld.
+3. De Controller geeft nu ook de `fieldState` door. Dit is de validatiestatus van 1 specifiek veld.
    - `fieldState.invalid`: true als het veld niet voldoet aan de zod-validatieregels
    - `fieldState.error`: het foutobject met de foutmelding (bv. { message: 'User is required' })
    - `fieldState.isDirty`: true als de gebruiker de waarde heeft gewijzigd t.o.v. de defaultValue
    - `fieldState.isTouched`: true als de gebruiker het veld heeft gefocust en er terug uit is gegaan
-5. Voeg de `data-invalid` prop toe aan het `<Field />` component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
-6. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.
+4. Voeg de `data-invalid` prop toe aan het `<Field />` component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
+5. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.
+6. Voeg `isValid` toe aan de form state. Dit is true als alle velden geldig zijn. In de `onSubmit` functie checken we dit nogmaals. Als er validatiefouten zijn, wordt de functie niet uitgevoerd.
 
 ### Stap 6. Select voor plaatsen
 
@@ -713,12 +715,12 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 ### Stap 7. Een datepicker voor de datum
 
-Maak gebruik van de [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker) voor de datum, die op zijn beurt gebruik maakt van de [Calendar](https://ui.shadcn.com/docs/components/base/calendar) en [Popover](https://ui.shadcn.com/docs/components/base/popover) component. `Popover` toont/verbergt de calendar. `PopoverTrigger` is de knop die je aanklikt, het toont de gekozen datum. `PopoverContent` klapt uit en toont de kalender.
+Maak gebruik van de [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker) voor de datum, die op zijn beurt gebruik maakt van de [Calendar](https://ui.shadcn.com/docs/components/base/calendar) en [Popover](https://ui.shadcn.com/docs/components/base/popover) component. `Popover` toont/verbergt de calendar. `PopoverTrigger` is de knop die je aanklikt, het toont de gekozen datum. `PopoverContent` klapt uit en toont de kalender. Gebruik 'LocalizedDate' voor de weergave van de datum in de knop. De gebruiker kan enkel een datum kiezen die kleiner of gelijk is aan vandaag.
 
 ```bash
 pnpm dlx shadcn@latest add field popover calendar
 ```
-
+<!-- TODO:Andreas: AI voor het toevoegen van de datepicker, laten vragen wat ze stap per stap moeten doen? -->
 En voeg toe aan het formulier.
 
 ```jsx
@@ -796,7 +798,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 1. Voeg een `date` veld toe aan het `formSchema` (verplicht, moet een Date-object zijn, en mag niet in de toekomst liggen).
 2. Voeg `date` toe aan de `defaultValues` in `useForm` en stel in op de datum van vandaag.
-3. Voeg een `<Controller>` toe voor `amount` met een [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker).
+3. Voeg een `<Controller>` toe voor `date` met een [DatePicker component](https://ui.shadcn.com/docs/components/base/date-picker).
 4. Maak gebruik van `LocalizedDate` voor weergave van de datum in de `Button`.
 5. `selected/onSelect` prop voor de synchronisatie met de state in react-hook-form.
 
@@ -807,7 +809,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 ```jsx
 // src/components/transactions/TransactionForm.tsx
 const onSubmit = (values: TransactionFormValues) => {
-  if (!form.formState.isValid) return;
+  if (!isValid) return;
   console.log(JSON.stringify(values));
   form.reset();
 };
@@ -821,7 +823,7 @@ In React-hook-form zijn dit twee verschillende concepten:
 De volgende stap van de CRUD operaties is de 'C', een nieuwe transactie aanmaken. Pas `index.js` in de map `api` aan:
 
 ```jsx
-// src/api/index.js
+// src/api/index.ts
 // 👇 1
 export const save = async <T>(
   url: string,
@@ -840,16 +842,15 @@ We maken een nieuwe mutation in `TransactionForm`:
 // src/components/transactions/TransactionForm.tsx
 // ... (imports)
 import useSWRMutation from 'swr/mutation'; // 👈 1
-import { getAll, save } from '../../api'; // 👈 1
+import { save } from '../../api'; // 👈 1
 import Error from '../Error'; // 👈 2
 
 export default function TransactionForm({places = []) {
 
-const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', api.save);// 👈 2
+const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', save);// 👈 2
 
 const onSubmit = async (values: TransactionFormValues) => {
-      if (!form.formState.isValid) return;
-    // 👇 3
+      if (!isValid) return;
       await saveTransaction(
         {
           ...values,
@@ -938,7 +939,7 @@ Als we in de `Transaction` component klikken op de potlood-knop, navigeren we na
 // src/pages/transactions/AddOrEditTransaction.tsx
 import { useParams } from 'react-router'; // 👈 1
 import useSWR from 'swr';
-import { getById, getAll } from '../api'; // 👈 3
+import { getById, getAll } from '../../api'; // 👈 3
 import TransactionForm from '../../components/transactions/TransactionForm';
 import AsyncData from '../../components/AsyncData';
 import type { Transaction, Place } from '../../types';
@@ -960,7 +961,7 @@ export default function AddOrEditTransaction() {
 
   return (
     <>
-      <h1 className='text-2xl font-semibold mb-6'>
+      <h1>
         {id ? 'Edit transaction' : 'Add transaction'}
       </h1>
       {/* 👇 5 */}
@@ -987,6 +988,7 @@ In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `
 ```jsx
 // src/components/transactions/TransactionForm.tsx
 // ... (imports)
+import type { Place, Transaction } from '../../types';// 👈 1
 import { useNavigate, Link } from 'react-router'; // 👈 3,5
 import { Button, buttonVariants } from '@/components/ui/button';// 👈 2
 import { cn } from '@/lib/utils';// 👈 2
@@ -1004,16 +1006,11 @@ const EMPTY_TRANSACTION: Partial<Transaction> = {
   user: { id: 0, name: ''},
 };// 👈 1
 
-export default function TransactionForm({
-  places = [],
-  transaction = EMPTY_TRANSACTION as Transaction,// 👈 2
-}: TransactionFormProps) {
 
-
-export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION}) {
+export default function TransactionForm({places = [], transaction = EMPTY_TRANSACTION as Transaction}: TransactionFormProps) {
   const navigate = useNavigate(); // 👈 3
 
-  const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', api.save);
+  const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', save);
 
   const form = useForm<TransactionFormValues>({
     mode: 'onBlur',
@@ -1034,10 +1031,11 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
       : undefined,
   });// 👈 4
 
-  const {  isValid } = form.formState;// 👈 5
+  const {  isValid } = form.formState;
 
   const onSubmit = async (values: TransactionFormValues) => {
       if (!isValid) return;
+      console.log(JSON.stringify(values));
 
       await saveTransaction(
         {
@@ -1047,7 +1045,7 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
         {
           throwOnError: false,
           onSuccess: () => {
-            void navigate('/transactions');
+            navigate('/transactions');
           },
         },
       );
@@ -1071,7 +1069,7 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
 }
 ```
 
-1. `EMPTY_TRANSACTION`: Definieer een leeg transaction object. Plaats dit buiten de component omdat we geen nieuwe objecten willen aanmaken bij elke render! Dit object blijft steeds hetzelfde.
+1. `EMPTY_TRANSACTION`: Definieer een leeg transaction object. Plaats dit buiten de component omdat we geen nieuwe objecten willen aanmaken bij elke render! Dit object blijft steeds hetzelfde. Het is een `Partial<Transaction>` omdat `id` undefined is.
 2. Ontvang `transaction` als prop. Stel de standaardwaarde in op `EMPTY_TRANSACTION`.
 3. Pas de tekst op de knop aan i.f.v. of het om een update of een create gaat en voeg een `Cancel`-knop toe.
 4. Pas `useForm` aan
@@ -1081,7 +1079,19 @@ export default function TransactionForm({places = [], transaction = EMPTY_TRANSA
 
 Pas ook de titel `Add transaction` aan in de `AddOrEditTransaction` component.
 
-## Verbeteren van de performantie
+> **Oplossing voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les5-opl 0e39109
+> pnpm install
+> pnpm dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+
+## Verbeteren van de performantie (Niet nodig bij gebruik van de React Compiler, concepten belangrijk om te begrijpen)
 
 In een React applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt. Een oplossing voor dit probleem is **memoization**.
 
@@ -1091,7 +1101,7 @@ React biedt een paar vormen van memoization:
 - `useMemo`: retourneert een memoized **waarde**
 - `useCallback`: retourneert een memoized **functie**
 
-We hebben reeds `useMemo` uitgelegd. Nu komen de andere vormen aan bod.
+?> **Enkel ter info — NIET toepassen bij gebruik van de React Compiler**: In dit project staat de React Compiler aan (zie de `vite.config.ts` en het hoofdstuk [React basics](../1-react_basics/index.md#react-compiler)). De compiler memoiseert je componenten automatisch, inclusief de props-vergelijking die `React.memo` normaal doet én de interne `useMemo`/`useCallback`. Handmatig `memo`, `useMemo` of `useCallback` toevoegen is dan meestal **redundant**. De onderstaande technieken zijn belangrijk om te kennen (voor projecten zonder compiler en om te begrijpen wat de compiler voor je doet), maar je hoeft ze in de voorbeeldapplicatie niet zelf te schrijven. Verderop lees je hoe je controleert of de compiler zijn werk doet en wanneer handmatige memoization tóch nog zin heeft.
 
 ### Hooks
 
@@ -1114,6 +1124,8 @@ Hooks zijn niet meer dan JavaScript functies. Echter moet je twee regels volgen 
 - Roep hooks enkel aan vanuit React functies. Dit wil zeggen: enkel vanuit function components of vanuit eigen geschreven hooks.
 
 Hooks maken gebruik van closures, let dus op voor stale closures! [Zie hier voor enkele voorbeelden](https://dmitripavlutin.com/react-hooks-stale-closures/).
+
+Onderstaande voorbeelden zijn enkel ter illustratie van de werking van React.memo en useCallback en useMemo. In dit project is de React Compiler aan, waardoor deze optimalisaties automatisch gebeuren en er geen extra rerenders zijn.
 
 ### React.memo en pure functions
 
@@ -1205,17 +1217,59 @@ Start de app en bekijk de console. De functie wordt nu gecachet. Merk op dat swr
 
 Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook een beetje overhead. Gebruik `useCallback` enkel als je een functie doorgeeft als prop (bij grote lijsten) of als dependency van een andere hook (bv. useEffect, useMemo, useCallback). Dit is nodig omdat functies in JavaScript referentietypes zijn. Bij elke render wordt een nieuwe functie aangemaakt, ook al is de code identiek. Hierdoor worden pure componenten onnodig opnieuw gerenderd of worden hooks onnodig opnieuw uitgevoerd.
 
-> **Oplossing voorbeeldapplicatie**
->
-> ```bash
-> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
-> cd frontendweb-budget
-> git checkout -b les5-opl 53ef032
-> pnpm install
-> pnpm dev
-> ```
->
-> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+### useMemo hook
+
+`useMemo` is een React Hook waarmee je het resultaat van een berekening tussen renders kan cachen.
+Hiermee kan React de returnwaarde van de zoekfunctie onthouden en zal het deze functie enkel en alleen uitvoeren als de dependencies gewijzigd zijn. In onderstaand voorbeeld wordt de filter pas uitgevoerd bij het laden van de component en bij het klikken op `Search`.
+
+```jsx
+// src/components/transactions/TransactionList.jsx
+import { useState, useMemo } from 'react'; // 👈
+
+//...
+
+// 👇
+const filteredTransactions = useMemo(
+  () =>
+    TRANSACTION_DATA.filter((t) => {
+      console.log('filtering...');
+      return t.place.name.toLowerCase().includes(search.toLowerCase());
+    }),
+  [search],
+);
+
+//...
+```
+
+De `useMemo` hook verwacht twee parameters:
+
+1. Een **calculation function** die het resultaat van de berekening retourneert. Het resultaat van die functie wordt bijgehouden in de cache, **niet** de functie zelf.
+2. Een **dependency array** die elke waarde bevat waarnaar verwezen wordt in de calculation function.
+
+Bij elke volgende render vergelijkt React de dependencies met de dependencies die je tijdens de laatste render hebt doorgegeven. Als geen van de dependencies is gewijzigd, retourneert `useMemo` de waarde die al eerder werd berekend. Anders zal React de berekening opnieuw uitvoeren en de nieuwe waarde retourneren.
+
+### Heb je dit nog nodig met de React Compiler?
+
+Met de React Compiler aan (zoals in dit project) heb je `memo` op `Transaction` **niet** nodig. De compiler memoiseert `Transaction` automatisch, inclusief de props-vergelijking die `React.memo` normaal doet, plus de interne `useMemo`/`useCallback`. Ook de `useCallback` rond `handleDeleteTransaction` regelt de compiler zelf, idem voor de `filteredTransactions`. De code hierboven is dus vooral leerstof: je moet begrijpen wélk probleem memoization oplost, maar je hoeft het in de voorbeeldapplicatie niet handmatig te schrijven.
+
+**Hoe weet je zeker dat de compiler op deze component draait?**
+
+De compiler slaat een component over ("bailout") als die de [Rules of React](https://react.dev/reference/rules) breekt (mutatie tijdens render, conditionele hooks, een ref lezen tijdens render …). Je controleert dat zo:
+
+- `pnpm lint`: `eslint-plugin-react-hooks` (zie hoofdstuk [React basics](../1-react_basics/index.md#eslintconfigjs)) bevat de React Compiler-regels en meldt bailouts.
+- **React DevTools**: componenten die de compiler geoptimaliseerd heeft, krijgen een ✨-badge naast hun naam in de component tree.
+- [playground.react.dev](https://playground.react.dev): plak de component en je ziet meteen of hij compileert en welke code eruit komt.
+
+`Transaction` is een pure functie zonder mutaties, dus de compiler pikt hem gewoon op.
+
+**Wanneer dan wél handmatig `memo`/`useMemo`/`useCallback`?**
+
+Zeldzaam, en enkel op basis van een **gemeten** probleem (React DevTools Profiler):
+
+- de compiler bailout't op de component en je krijgt de oorzaak niet weggewerkt;
+- een externe library-component die de compiler niet raakt.
+
+<!-- TODO: ANS-->
 
 ## Mogelijke extra's voor de examenopdracht
 
@@ -1231,6 +1285,7 @@ Gebruik `useCallback` niet zomaar overal: `useCallback` introduceert zelf ook ee
 
 ## Must reads
 
+- [React Compiler Explained: Do You Still Need useMemo, useCallback, and React.memo?](https://www.syncfusion.com/blogs/post/react-compiler-usememo-usecallback)
 - [Collection of React Hooks](https://nikgraf.github.io/react-hooks/)
 - [react-use: Collection of essential React Hooks.](https://github.com/streamich/react-use)
 - [Are You Making This React State Mistake?](https://www.youtube.com/watch?v=NZqMVUEiDIw)

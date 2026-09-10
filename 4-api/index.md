@@ -1170,6 +1170,7 @@ const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
 
 ### Oefening: Refactor de paginatie. Maak een aparte component
 
+<!-- TODO: Andreas: AI voor de refactoring, maar is wel een complex stukje met heel wat denkwerk vooraf-->
 De paginatielogica staat nu volledig in `TransactionList`, wat de component groot en moeilijk leesbaar maakt. Een goede refactor is om de paginatiecontrols (de knoppen en de rijen-selector) te verplaatsen naar een aparte `Pagination`-component.
 
 Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component verhuizen. Die waarden maken deel uit van de SWR-sleutel in `TransactionList` — als ze wijzigen, moet SWR een nieuw request uitsturen. De **state blijft dus in de parent**. De `Pagination`-component krijgt die waarden via props en geeft wijzigingen terug via callback-props (`onPageChange`, `onPageSizeChange`). Dit is het patroon van een **controlled component**: de child toont en reageert op data, maar de parent beslist wat er mee gebeurt.
@@ -1410,6 +1411,8 @@ Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt
 
 Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.tsx` die de lijst van `Places` weergeeft. `PlacesList.tsx` communiceert met de API en geeft de data door via props aan `PlacesCards.tsx`. Merk op : alle methodes worden nu asynchroon uitgevoerd via de API, dus de signatuur van de methodes die via props wordt doorgegeven zal moeten worden aangepast. Ook voor het opslaan van de rating zal een API call moeten gebeuren en dient een Place object te worden meegestuurd. De onRate functie zal dus een `Place` object ontvangen in plaats van enkel de `id` en de `rating`.
 
+> `PlacesCards.tsx`:  .sort() muteert de array in-place. places zal nu uit de SWR-cache komen, dus je muteert tijdens render gedeelde state. Dat is een schending van de Rules of React ([pure functions](https://react.dev/learn/keeping-components-pure)). Los het op met een kopie: toSorted
+
 Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. Maak hiervoor gebruik van de `TransactionTable` component. De transacties worden opgehaald via de API.
 
 > **Oplossing voorbeeldapplicatie**
@@ -1417,7 +1420,7 @@ Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. M
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4-opl 853c50c
+> git checkout -b les4-opl 8cd2a63
 > pnpm install
 > pnpm dev
 > ```
