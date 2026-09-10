@@ -5,19 +5,19 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7 6b8dff1
+> git checkout -b les7 1f9c109
 > pnpm install
 > pnpm dev
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 >
-> Vanaf nu heb je ook de bijbehorende backend nodig:
+> En de bijbehorende backend nodig:
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
-> git checkout -b les6 3386a40
+> git checkout -b les7 03ffd29
 > pnpm install
 > pnpm db:migrate
 > pnpm db:seed
@@ -28,7 +28,7 @@
 
 Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Playwright](https://playwright.dev/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten (m.b.v. [Vitest](https://vitest.dev/)), maar deze testen vallen buiten de scope van deze cursus.
 
-TODO: @Andreas : Playwright CLI en Playwright MCP???
+<!--TODO: @Andreas : AI voor de testen toevoegen. Kan je iets aanvangen metPlaywright CLI en Playwright MCP???-->
 
 ## Playwright
 
@@ -46,7 +46,7 @@ Beantwoord de onderstaande vragen
 - Add a GitHub Actions workflow? (Y/n) · false
 - Install Playwright browsers (can be done manually via 'pnpm exec playwright install')? (Y/n) · true
 
-Playwright genereert een configuratiebestand `playwright.config.ts` in de root van het project. Een minimale configuratie voor onze applicatie:
+Playwright genereert een configuratiebestand `playwright.config.ts` in de root van het project. Pas aan en zorg voor onderstaande minimale configuratie voor onze applicatie:
 
 ```ts
 // playwright.config.ts
@@ -82,7 +82,7 @@ export default defineConfig({
 7. **`projects`**: welke browsers en apparaten Playwright gebruikt. `devices['Desktop Chrome']` is een preset met de viewport en user-agent van een desktop Chrome-browser. Je kan meerdere projecten toevoegen (bv. ook Firefox of mobiele viewports) om cross-browser te testen.
 8. **`webServer`**: Playwright start automatisch de Vite dev-server vóór de testen en stopt hem daarna. `reuseExistingServer: !process.env.CI` zorgt ervoor dat een reeds draaiende server lokaal hergebruikt wordt (handig tijdens ontwikkeling), terwijl op CI altijd een nieuwe server opgestart wordt. Pas url aan in `http://localhost:5173`
 
-Opdat `process.env` geen fout meer zou geven, pas je `tsnode.config.json`aan. Voeg onderstaande toe aan de include prop
+Opdat `process.env` geen fout meer zou geven, pas je `tsconfig.node.json`aan. Voeg onderstaande toe aan de include prop
 
 ```ts
  "include": ["vite.config.ts", "playwright.config.ts", "tests/**/*.ts"]
@@ -108,26 +108,32 @@ pnpm test:ui
 
 Pas de code aan en zorg dat de test faalt. Bekijk de foutmelding in de terminal en in de Playwright UI. Herstel de code en zorg dat de test opnieuw slaagt.
 
-De `playwright-report` folder bevat het HTML-rapport van de laatste test run. Het wordt bij elke test run volledig overschreven. Playwright maakt dit automatisch aan door de reporter: 'html' instelling in `playwright.config.ts`. De inhoud:
+**De playwright-report folder** bevat het HTML-rapport van de laatste test run. Het wordt bij elke test run volledig overschreven. Playwright maakt dit automatisch aan door de reporter: 'html' instelling in `playwright.config.ts`. De inhoud:
 
 - index.html: visueel rapport met een overzicht van alle tests (geslaagd/gefaald)
 - trace: screenshots, traces en videos gekoppeld aan elke test
 - data: JSON-bestanden met testresultaten
-  Je kan het rapport openen met:
+  Je kan het rapport openen met onderstaand commando of rechtsklik op index.html > open with Live Server
 
 ```bash
 pnpm playwright show-report
 ```
 
-De `test-results` folder wordt automatisch aangemaakt door Playwright wanneer een test mislukt. Hij bevat debuginformatie om de fout te analyseren:
+**De test-results folder** wordt automatisch aangemaakt door Playwright. Per test wordt er alleen een submap aangemaakt als die test artefacten produceert: trace, screenshot, video, error-context.
 
-- error-context.md: beschrijving van de fout met stacktrace
+Per submap = één test die is uitgevoerd. De naam wordt samengesteld uit het testbestand + de testtitel + het browserproject, bijvoorbeeld `example-has-title-chromium`. Die komt uit de standaard voorbeeldtest `tests/example.spec.ts` (testtitels _has title_ en _get started link_), project `chromium`. Elke submap kan bevatten:
+
+- `error-context.md`: beschrijving van de fout met stacktrace
 - screenshots: snapshot van de pagina op het moment van de fout
-- traces (trace.zip) : een opname van de volledige test die je kan bekijken via `pnpm playwright show-trace
-videos` als video opname geconfigureerd is
-  Bij een geslaagde test wordt er niets bewaard (of de folder wordt opgeruimd).
+- `trace.zip`: een Playwright-trace, een opname van de testrun (DOM-snapshots, screenshots, netwerk, console, acties). Je opent hem met:
 
-Negeer beide folders in git:
+```bash
+pnpm playwright show-trace test-results/example-has-title-chromium/trace.zip
+```
+
+- videos: een video-opname van de test, als dit geconfigureerd is
+
+Negeer beide folders in git indien dit nog niet gebeurd is.
 
 ```gitignore
 test-results/
@@ -155,6 +161,9 @@ test('app loads', async ({ page }) => {
 2. Elke test is een `test()` functie met een beschrijving en een `async` callback. De callback ontvangt `{ page }` als parameter: het `page`-object stelt de browsertab voor en biedt alle methodes om met de pagina te interageren.
 3. De meeste testen starten met het [navigeren](https://playwright.dev/docs/writing-tests#navigation) naar een url. `page.goto('/')` navigeert naar de `baseURL` die in `playwright.config.ts` geconfigureerd is. Je hoeft de volledige URL niet te herhalen in elke test.
 4. `expect(page.getByText('Budget')).toBeVisible()` is een [**assertion**](https://playwright.dev/docs/writing-tests#assertions). Playwright wacht automatisch tot het element zichtbaar (`toBeVisible`) is of tot de timeout verloopt — je hoeft niet handmatig te wachten.
+`getByText`is een locator die op basis van de tekst een element zoekt. Een locator doet zelf niets: `page.getByText('Budget')` voert geen actie uit, het beschrijft enkel een element.
+
+Je combineert een locator altijd met een actie (`.click()`, `.fill()`...) of een assertion (`expect(...).toBeVisible()`). Locators zijn bovendien "lazy": het element wordt pas opgezocht op het moment dat je de actie of assertion uitvoert, met automatische wachttijd (auto-waiting/retry) tot het element beschikbaar is of de timeout verloopt.
 
 !> **Zorg er voor dat de back-end draait** voor de testen die echte API calls maken, anders falen ze.
 
@@ -164,7 +173,7 @@ Onze testen zullen vaak een gelijkaardig stramien hebben: een URL bezoeken, inte
 
 In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon checken of er 'een' `h1` aanwezig is zal niet volstaan. Als er meerdere inputs, buttons, etc. zijn, moeten we zeker zijn dat we met de juiste elementen interageren.
 
-Playwright voorziet in een aantal locators. Hieronder vind je de meest gebruikte.
+Playwright voorziet in een aantal **locators**. Hieronder vind je de meest gebruikte.
 
 ### getByTestId: via `data-testid` attribuut
 
@@ -206,6 +215,8 @@ page.getByText('Budget');
 ```
 
 Handig voor een snelle check of bepaalde tekst zichtbaar is op de pagina. Minder precies dan `getByTestId`: als de tekst verandert, breekt de test.
+
+Gebruik `getByText` voor niet-interactieve inhoud (`div`, `span`, paragrafen). Voor knoppen, links, inputs en dergelijke gebruik je bij voorkeur `getByRole`, `getByLabel` of `getByPlaceholder`, omdat die dichter aanleunen bij hoe gebruikers en assistieve technologie de pagina ervaren.
 
 ### getByPlaceholder: via placeholder-tekst
 
@@ -253,7 +264,7 @@ Als voorbeeld zullen we het toevoegen van een transactie testen. Eerst en vooral
             name="placeId"
             items={placesSelectItems}
             placeholder="Place"
-          />// 👈 3
+          />// 👈 2
         </FieldGroup>
         <div className="flex justify-end gap-2 pt-6">
           <Button type="submit" disabled={isSubmitting}>
@@ -493,17 +504,14 @@ Bekijk de [Playwright assertions documentatie](https://playwright.dev/docs/test-
 
   ```ts
   test('should show error message for an invalid amount', async ({ page }) => {
-    await page.goto('/transactions/add');
+  await page.goto('/transactions/add');
+  await page.getByTestId('amount-input').fill('0');
+  await page.getByTestId('amount-input').blur();
+  await expect(page.getByText('0 is not a valid amount')).toBeVisible();
 
-    await page.getByTestId('amount-input').fill('0');
-    await page.getByTestId('amount-input').blur();
-    await expect(
-      page.getByRole('button', { name: 'Add transaction' }),
-    ).toBeDisabled();
   });
-  ```
 
-  TODO: @Thomas. IK heb de test op IsValid bij de knop weggehaald, want als ik niks heb ingevuld kan ik niet klikken op de Add knop en krijg ik geen melding te zien. Dus dan toch testen of ik de juiste melding krijg, of terug !isValid toevoegen aan de knop?
+  ```
 
 ## Mocks
 
@@ -583,7 +591,7 @@ Pas de test aan om het fixture-bestand te laden:
 ```ts
 // tests/transactions.spec.ts
 import { test, expect } from '@playwright/test';
-import { mockGetAllTransactions } from './fixtures/transactions'; // 👈
+import { mockGetAllTransactions } from './fixtures/transactions.ts'; // 👈
 
 test('should show the transactions', async ({ page }) => {
   await page.route('**/api/transactions?page=1&pageSize=10', (route) =>
@@ -604,9 +612,9 @@ Zo is de testdata makkelijker te hergebruiken en aan te passen. Het fixture-best
 
 We wensen de json op te halen voor elke test:
 
-```tsx
+```ts
 import { test, expect } from '@playwright/test';
-import { mockGetAllTransactions } from './fixtures/transactions';
+import { mockGetAllTransactions } from './fixtures/transactions.ts';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/transactions?page=1&pageSize=10', (route) =>
@@ -727,7 +735,7 @@ Als de back-end een fout geeft, zijn er geen transacties zichtbaar maar wel een 
   });
 
   test('should show an error if the API call fails', async ({ page }) => {
-    await page.route('\*\*/api/transactions?page=1&pageSize=10', (route) =>
+    await page.route('**/api/transactions?page=1&pageSize=10', (route) =>
       route.fulfill({ status: 500, json: { error: 'Internal server error' } }),
     );
 
@@ -807,6 +815,24 @@ Pas `README.md` aan zodat de gebruiker weet hoe de testen uitgevoerd moeten word
 pnpm test          # alle testen in de terminal
 pnpm test:ui       # interactieve UI mode
 ```
+
+> **Oplossing voorbeeldapplicatie**
+>
+> ```bash
+> git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
+> cd frontendweb-budget
+> git checkout -b les7-opl 548e34a
+> pnpm install
+> pnpm dev
+> ```
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+
+## Oefening - Je eigen project
+
+Voeg tests toe aan je eigen project. Test minstens één component of pagina (normale scenarios en edge cases), test een Add functionaliteit, maak in minstens 1 test gebruik van fixtures. Zorg dat je testen geen blijvende wijzigingen veroorzaken in de database.
+
+<!--TODO:ANS-->
 
 ## Mogelijke extra's voor de examenopdracht
 
