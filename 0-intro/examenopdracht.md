@@ -8,9 +8,9 @@ Je bent volledig vrij om te kiezen welke applicatie je ontwikkelt, maar het is w
 
 ?> Er wordt enkel feedback gegeven op ideeën tijdens semester 1. Indien je een idee hebt dat je graag wil bespreken, doe dit dan tijdig.
 
-De examenopdrachtwordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 8](#8-groepswerk) voor meer informatie.
+De examenopdrachtwordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 7](#7-groepswerk) voor meer informatie.
 
-Alle code moet in een GitHub classroom repository terecht komen (zie Chamilo voor een link naar de classroom). Enkel de `main` branch van deze repository zal geëvalueerd worden. Er wordt automatisch een template van de `README.md` aangemaakt als je de opdracht accepteert, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development.
+Alle code moet in een GitHub classroom repository terecht komen (zie Chamilo voor een link naar de classroom). Enkel de `main` branch van deze repository zal geëvalueerd worden. Er wordt automatisch een template van de `README.md` aangemaakt als je de opdracht accepteert, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development. Check zeker onze [appendix over Git & GitHub](../appendices/2-github/index.md) als je hiermee nog niet vertrouwd bent.
 
 Het is belangrijk dat de applicatie significant verschilt van de voorbeeldapplicatie die tijdens de les gemaakt wordt.
 
@@ -90,7 +90,7 @@ Deze criteria zijn:
 
 Voor de examenopdracht werk je in groepen van twee. Je maakt één repository aan in de GitHub classroom en werkt samen aan dezelfde codebase. Volg de instructies op Orion voor het aanmaken van een repository.
 
-Jullie worden samen geëvalueerd en krijgen (normaal) dezelfde score. Zorg ervoor dat jullie beiden voldoende commits maken zodat duidelijk is dat jullie beiden aan het project gewerkt hebben. Indien niet iedereen voldoende bijgedragen heeft, kan dit gevolgen hebben voor de score van de persoon die minder bijgedragen heeft.
+Jullie worden tegelijkertijd geëvalueerd. Zorg ervoor dat jullie beiden voldoende commits maken zodat duidelijk is dat jullie beiden aan het project gewerkt hebben. Indien niet iedereen voldoende bijgedragen heeft, kan dit gevolgen hebben voor de score van de persoon die minder bijgedragen heeft.
 
 Hoewel het project in groep wordt uitgevoerd, wordt van elke student verwacht dat hij een significante en aantoonbare bijdrage levert aan het eindresultaat.
 
@@ -112,8 +112,6 @@ De Pull Request moet voldoende informatie bevatten om de uitgevoerde werkzaamhed
 - hoe de functionaliteit getest werd.
 
 De individuele bijdrage van elke student moet aantoonbaar zijn aan de hand van de commits, feature branches en Pull Requests. Wanneer onvoldoende kan worden aangetoond welke bijdrage een student heeft geleverd, kan dit een negatieve invloed hebben op de evaluatie.
-
-Werkt de samenwerking niet goed, dan kan je dit altijd via mail melden aan de lector. We kunnen in dat geval eventueel beslissen om jullie apart te evalueren. Het spreekt voor zich dat slechts één persoon verder kan gaan met het bestaande idee, de andere persoon moet dan een nieuw idee uitwerken.
 
 Na de deadline bekijken we de activiteit in de repository en kunnen we zien wie wat en hoeveel heeft bijgedragen.
 
@@ -165,7 +163,7 @@ Naast het dossier dien je ook een demo van jouw applicatie op te nemen en te del
 
 ## 7. Mondeling examen
 
-Tijdens het mondeling examen beantwoordt elke student twee vragen over de gerealiseerde applicatie. Daarbij wordt geëvalueerd in welke mate de student de behandelde theoretische concepten begrijpt en kan toepassen. De student toont aan dat hij de gebruikte technieken, ontwerpkeuzes en implementaties in de code kan verklaren en verantwoorden.
+Tijdens het mondeling examen beantwoordt elke student vragen over de gerealiseerde applicatie. Daarbij wordt geëvalueerd in welke mate de student de behandelde theoretische concepten begrijpt en kan toepassen. De student toont aan dat hij/zij de gebruikte technieken, ontwerpkeuzes en implementaties in de code kan verklaren en verantwoorden.
 
 ## 8. Voorbeelden van extra's
 
