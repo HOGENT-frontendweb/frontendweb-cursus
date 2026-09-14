@@ -3,6 +3,7 @@
 - [0. Algemene info](./0-intro/situering.md)
 - [0. Software](./0-intro/software.md)
 - [0. Examenopdracht](./0-intro/examenopdracht.md)
+- [0. AI statement](./0-intro/ai_statement.md)
 - [1. React basics](./1-react_basics/index.md)
 - [2. React state management](./2-react_state/index.md)
 - [3. React Router](./3-react_router/index.md)

@@ -2,15 +2,15 @@
 
 ## 1. De opdracht
 
-Gedurende het semester maak je een webapplicatie bestaande uit een front-end gedeelte in React en, indien je het olod Web Services ook volgt, een bijhorende back-end in NodeJS. Indien je het olod Web Services niet volgt, zie [sectie 7](#7-indien-je-het-olod-web-services-niet-volgt).
+Gedurende het semester maak je samen met een medestudent een webapplicatie bestaande uit een front-end gedeelte in React en, indien je het olod Web Services ook volgt, een bijhorende back-end in NodeJS. Indien je het olod Web Services niet volgt, zie [sectie 9](#9-indien-je-het-olod-web-services-niet-volgt).
 
 Je bent volledig vrij om te kiezen welke applicatie je ontwikkelt, maar het is wel belangrijk dat het een dynamische webapplicatie betreft. Het equivalent van iets wat met statische HTML kan bekomen worden is onvoldoende. Indien je twijfelt over jouw idee, mag je tijdens de les altijd overleggen met je lector of achteraf via een GitHub issue op jouw repository.
 
 ?> Er wordt enkel feedback gegeven op ideeën tijdens semester 1. Indien je een idee hebt dat je graag wil bespreken, doe dit dan tijdig.
 
-Voor de examenopdracht mag je optioneel per 2 samenwerken. Zie [sectie 8](#8-groepswerk-optioneel) voor meer informatie.
+De examenopdrachtwordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 4](#4-groepswerk) voor meer informatie.
 
-Alle code moet in een GitHub classroom repository terecht komen (zie Chamilo voor een link naar de classroom). Enkel de `main` branch van deze repository zal geëvalueerd worden. Er wordt automatisch een template van de `README.md` aangemaakt als je de opdracht accepteert, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development.
+Alle code moet in een GitHub classroom repository terecht komen (zie Orion voor een link naar de classroom). Enkel de `main` branch van deze repository zal geëvalueerd worden. Er wordt automatisch een template van de `README.md` aangemaakt als je de opdracht accepteert, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development. Check zeker onze [appendix over Git & GitHub](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index.md) als je hiermee nog niet vertrouwd bent.
 
 Het is belangrijk dat de applicatie significant verschilt van de voorbeeldapplicatie die tijdens de les gemaakt wordt.
 
@@ -24,16 +24,14 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 
 Deze criteria zijn:
 
-- Het dossier is volledig en tijdig ingediend (zie [sectie 4](#4-dossier-vereisten) voor de vereisten)
-- Er werden voldoende (kleine) commits gemaakt
-  - Als je per 2 werkt, moeten we een aantal pull requests met feedback zien
-- De demo duurt niet langer dan 15 minuten (incl. Front-end Web Development indien van toepassing)
+- Het dossier is volledig en tijdig ingediend (zie [sectie 5](#5-dossier-vereisten) voor de vereisten)
+- Elke student heeft minstens twee feature branches waarin een volledige feature werd uitgewerkt. Voor elke feature branch werd minstens één pull request aangemaakt. De student voert meerdere kleine, betekenisvolle commits uit tijdens de ontwikkeling van de feature. Op elke pull request werd inhoudelijke feedback gegeven door de medestudent(zie [sectie 4](#4-groepswerk) en [sectie Feature Branch workflow](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index?id=feature-branch-workflow)).
 - De applicatie is gemaakt in React
 - De applicatie draait online
 - De applicatie start zonder problemen op a.d.h.v. de instructies in de README en gebruikt hiervoor Docker.
 - De applicatie wijkt voldoende af van de voorbeeldapplicatie
 - node_modules, .env, productiecredentials... werden niet gepushed op GitHub
-- Er is een extra technologie gebruikt (zie [sectie 6](#6-voorbeelden-van-extras) voor voorbeelden)
+- Er is een extra technologie gebruikt (zie [sectie 8](#8-voorbeelden-van-extras) voor voorbeelden)
 - Er werden een aantal niet-triviale en werkende e2e-testen gemaakt (naast de testen voor de user).
 - De applicatie is voldoende complex
 
@@ -76,32 +74,51 @@ Deze criteria zijn:
 
 ### Demo
 
-- de student toont een werkende React applicatie
-- de student overloopt de projectstructuur - indien van toepassing
-- de applicatie is responsive en heeft een degelijke stijl
-- de student toont de implementatie/werking van de extra technologie
-- alle testen slagen
-- de student toont een stukje code waar die fier op is
+- de student toont een werkende en responsive React applicatie
+- de student kan het project probleemloos starten
+- de student toont aan dat alle testen slagen
 
-## 4. Dossier vereisten
+### Mondeling examen
+
+- de student kan de vragen van de lector gedetailleerd beantwoorden a.d.h.v. de geschreven code, en toont zo aan dat hij/zij de behandelde theoretische concepten begrijpt en kan toepassen
+- de student kan de gemaakte design keuzes verdedigen
+
+## 4. Groepswerk
+
+Voor de examenopdracht werk je in groepen van twee.
+In Orion schrijf je in bij een groep van twee. Indien je geen groep kan vinden, schrijf je je in bij de groep 'Single'. De lector zal dan een groep samenstellen. **deadline voor het samenstellen van groepen is het einde van week 2 (vrijdag 2 oktober 2026, 23u59)**
+
+Je maakt per groep één repository aan in GitHub Classroom en werkt samen aan dezelfde codebase. Volg de instructies op Orion voor het aanmaken van de repository.
+
+Om de individuele bijdrage te kunnen beoordelen, wordt gewerkt volgens de Feature Branch Workflow. Elke feature wordt door één student ontwikkeld in een afzonderlijke feature branch en via een Pull Request (PR) geïntegreerd in de main-branch.
+
+De Pull Request moet voldoende informatie bevatten om de uitgevoerde werkzaamheden te kunnen beoordelen. Hieruit moet duidelijk blijken:
+
+- welke functionaliteit werd ontwikkeld;
+- welke onderdelen door de student werden geïmplementeerd;
+- welke technische keuzes werden gemaakt;
+- hoe de functionaliteit werd getest.
+
+Hoewel het project in groep wordt uitgevoerd, wordt van elke student verwacht dat die een substantiële en aantoonbare individuele bijdrage levert aan het eindresultaat. Deze bijdrage moet zichtbaar zijn in de commits, feature branches, Pull Requests en gegeven feedback op Pull Requests van medestudenten.
+
+Na de deadline wordt de activiteit in de repository geanalyseerd. Daarbij wordt onder meer gekeken naar het aantal en de kwaliteit van de commits, het gebruik van feature branches, de inhoud van de Pull Requests en de bijdrage aan het reviewproces. Wanneer onvoldoende kan worden aangetoond welke bijdrage een student heeft geleverd, kan dit leiden tot een lagere individuele score.
+
+## 5. Dossier vereisten
 
 Zorg dat de `dossier.md` van je repository aangevuld is, alle vereisten staan in het document.
 
 In dit document staan lijnen die starten met een >, dit zijn instructies. Verwijder deze lijnen voor je het dossier indient!
 
-Dien enkel een pdf in op Chamilo, er zijn genoeg plugins voor VS Code om Markdown naar pdf om te zetten, zoals bv. <https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf>.
+Dien enkel een pdf in op Orion, er zijn genoeg plugins voor VS Code om Markdown naar pdf om te zetten, zoals bv. <https://marketplace.visualstudio.com/items?itemName=yzane.markdown-pdf>.
 
 !> Gebruik een degelijke opmaak in Markdown voor de README en het dossier! Zie [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) voor meer uitleg.
 
-## 5. Demo vereisten
+## 6. Demo vereisten
 
-Naast het dossier dien je ook een demo van jouw applicatie op te nemen en te delen via Panopto met jouw lector(en). Deze demo moet voldoen aan de volgende vereisten:
+Tijdens het mondeling examen dien je te starten met een demo van jouw applicatie. Jullie verdelen zelf wie wat demonstreert, maar zorg ervoor dat beide personen evenveel aan bod komen. Deze demo moet voldoen aan de volgende vereisten:
 
 - De demo mag maximaal 15 minuten duren (inclusief Web Services, indien van toepassing)
 - De webcam moet aanstaan tijdens de demo zodat je gezicht zichtbaar is
-- Je deelt de demo via Panopto met jouw lector(en) - zorg ervoor dat de toegangsrechten correct ingesteld zijn
-- Dit is geen commerciële presentatie, maar een technische demo gericht op de implementatie
-- De demo moet opgenomen zijn vóór de deadline
 - De demo moet minstens de volgende onderdelen bevatten/tonen:
   - **Context van de applicatie**: leg uit wat de applicatie doet, wat het doel is en waarom je dit onderwerp gekozen hebt
   - **Projectstructuur overlopen (optioneel)**:
@@ -123,13 +140,21 @@ Naast het dossier dien je ook een demo van jouw applicatie op te nemen en te del
     - Doe dit voor beide olods (Front-end Web Development en Web Services indien van toepassing)
   - **Testen demonstreren**:
     - Laat alle testen lopen via de command line
-    - Toon dat ze succesvol slagen
+    - Toon dat ze succesvol slagen en toon het coverage report
   - **Code showcase**:
     - Toon een stukje code waar je bijzonder fier op bent
     - Leg uit waarom je dit goed vindt en wat het doet
     - Dit geldt voor beide olods (Front-end Web Development en Web Services indien van toepassing)
 
-## 6. Voorbeelden van extra's
+## 7. Mondelinge verdediging
+
+Tijdens de mondelinge verdediging (10 minuten per student per applicatie) wordt nagegaan in welke mate de student inzicht heeft in de gerealiseerde applicatie en de behandelde leerinhouden. De student moet a.d.h.v. de geschreven code de gebruikte technieken, ontwerpkeuzes en implementaties kunnen verklaren en verantwoorden, de onderliggende theoretische concepten correct kunnen toelichten en kunnen aantonen hoe deze in de applicatie werden toegepast. Daarnaast moet de student kunnen aangeven hoe gevraagde wijzigingen of uitbreidingen aan de applicatie gerealiseerd kunnen worden.
+
+De mondelinge verdediging dient tevens als validatie van de beoordeling op basis van de code-rubrics. De student moet kunnen aantonen, toelichten en verantwoorden hoe de criteria uit deze rubrics werden toegepast binnen de gerealiseerde applicatie en moet de gemaakte keuzes kunnen motiveren aan de hand van de ingediende code.
+
+De vragen kunnen betrekking hebben op de code, de architectuur, de gebruikte technologieën, de behandelde theoretische concepten, de toegepaste best practices, de criteria uit de rubrics en de algemene werking van de applicatie..
+
+## 8. Voorbeelden van extra's
 
 Je vindt misschien wel een interessante extra technologie in de [Node.js Toolbox](https://nodejstoolbox.com/). Een aantal veelgebruikte extra's zijn:
 
@@ -145,7 +170,7 @@ Je vindt misschien wel een interessante extra technologie in de [Node.js Toolbox
 
 Bij het toevoegen van een extra technologie is het belangrijk dat deze ook echt gebruikt wordt in de applicatie. Een package toevoegen die je niet gebruikt, is ook niet-ontvankelijk. Houd ook rekening met de best practices die we in de les gezien hebben bij het implementeren van de extra technologie.
 
-## 7. Indien je het olod Web Services niet volgt
+## 9. Indien je het olod Web Services niet volgt
 
 Je gebruikt een bestaande (vrij te kiezen) API op het web en bouwt daarvoor een React front-end. Hier vind je een lijst met publieke API’s: <https://github.com/public-apis/public-apis>, maar er zijn er nog veel meer natuurlijk.
 
@@ -158,33 +183,22 @@ Een aantal aandachtspunten:
 
 !> Bespreek dit best even met je lector als je in deze situatie zit en (g)een idee hebt.
 
-## 8. Groepswerk (optioneel)
-
-In het geval je voor de examenopdracht per 2 wil samenwerken, kan dit. Je maakt in dat geval één repository aan in de GitHub classroom en werkt samen aan dezelfde codebase. Volg de instructies op Chamilo voor het aanmaken van een repository.
-
-Jullie worden samen geëvalueerd en krijgen (normaal) dezelfde score. Zorg ervoor dat jullie beiden voldoende commits maken zodat duidelijk is dat jullie beiden aan het project gewerkt hebben. Indien niet iedereen voldoende bijgedragen heeft, kan dit gevolgen hebben voor de score van de persoon die minder bijgedragen heeft.
-
-Maak gebruik van branches en pull requests om samen te werken aan de codebase. Dit helpt om de bijdragen van elke teamgenoot duidelijk te maken en simuleert een professionele werkomgeving.
-
-Werkt de samenwerking niet goed, dan kan je dit altijd via mail melden aan de lector. We kunnen in dat geval eventueel beslissen om jullie apart te evalueren. Het spreekt voor zich dat slechts één persoon verder kan gaan met het bestaande idee, de andere persoon moet dan een nieuw idee uitwerken.
-
-Na de deadline bekijken we de activiteit in de repository en kunnen we zien wie wat en hoeveel heeft bijgedragen.
-
-Voor de demo neem je best samen een video op. Jullie verdelen zelf wie wat demonstreert, maar zorg ervoor dat beide personen evenveel aan bod komen in de video.
-
-## 9. Evaluatie
+## 10. Evaluatie
 
 Je wordt beoordeeld op basis van een portfolio dat je samenstelt gedurende het semester. Dit portfolio bestaat uit:
 
 - De code van je applicatie
   - Moet te vinden zijn in de GitHub classroom repository op de `main` branch
 - Het ingevulde dossier, als pdf ingediend op Chamilo
-- Een demo van je applicatie via een Panopto-opname
+- Het mondeling examen met de demo van je applicatie en de mondelinge verdediging
 
 Zorg ervoor dat jouw applicatie aan alle ontvankelijkheidscriteria voldoet op het moment van de deadline. Indien dit niet het geval is, krijg je een score 'AFWEZIG'.
 
-**De deadline voor het portfolio is het einde van week 13 (vrijdag 19 december 2025, 23u59).**
+**De deadline voor het portfolio is het einde van week 13 (vrijdag 18 december 2026, 23u59).**
+**Zorg ervoor dat je voor het einde van week 2 (vrijdag 2 oktober 2026, 23u59) ingeschreven bent in een groep op Orion.**
 
 Alle code zal voor de start van het volgend academiejaar verwijderd worden uit de GitHub classroom. Als je je applicatie wenst te behouden, zorg dan dat je deze tijdig naar een privé repository pusht.
 
 Veel succes!
+
+<!-- TODO: Andreas, sectie ook toevoegen aan webservices-->

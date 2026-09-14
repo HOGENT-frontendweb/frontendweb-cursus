@@ -1,3 +1,9 @@
+# TypeScript
+
+Binnen Frontend Web Development zullen we werken met TypeScript. TypeScript is een superset van JavaScript die statische types toevoegt aan de taal. Dit betekent dat je variabelen, functies en objecten kunt annoteren met types, waardoor je fouten kunt opsporen tijdens het ontwikkelen in plaats van tijdens runtime. TypeScript biedt ook geavanceerde functies zoals interfaces, generics en decorateurs, die helpen bij het schrijven van robuuste en onderhoudbare code. TypeScript wordt vaak gebruikt in combinatie met Node.js en frameworks zoals NestJS, omdat het de ontwikkelaar een betere tooling en foutopsporing biedt.
+
+In deze cursus zullen we geleidelijk aan TypeScript features introduceren, maar het is aan te raden om zelf ook wat tijd te investeren in het leren van TypeScript. Er zijn veel online bronnen beschikbaar, zoals de officiële [TypeScript-documentatie](https://www.typescriptlang.org/docs/) en interactieve tutorials zoals [TypeScript for Beginners](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html). Daarnaast hebben we ook een [appendix over TypeScript](https://HOGENT-frontendweb.github.io/webservices-cursus/#/./appendices/1-typescript/index.md) in de cursus webservices, waar je het absolute minimum aan TypeScript-kennis kan terugvinden die je nodig hebt voor deze cursus.
+
 # React basics
 
 Neem volgende HTML-code als voorbeeld:
@@ -92,6 +98,7 @@ Volgende opties dien je te selecteren:
 
 - select a framework: react
 - select a variant: TypeScript + React Compiler
+- Which linter to use : ESLint
 - install with pnpm and start now: No
 
 Dit commando maakt een map `budget` met alle bestanden voor deze React-applicatie. We gaan doorheen deze cursus een budgetapplicatie ontwikkelen. In deze applicatie kan je transacties op bepaalde plaatsen bijhouden om zo je budget te beheren. We bouwen steeds verder op deze startapplicatie.
@@ -203,6 +210,14 @@ Wanneer je `pnpm install` uitvoert, gebeurt dit stap voor stap:
   - De pnpm store vind je meestal in je home-directory. Gebruik `pnpm store path` om het pad te vinden.
 - Maakt een strikte `node_modules`-structuur. Elke dependency krijgt enkel toegang tot de packages die ze expliciet in de `package.json` heeft staan.
 
+### .gitignore
+
+Voor we verder gaan, maken we nog een `.gitignore` bestand aan. Dit bestand zorgt ervoor dat bepaalde bestanden/mappen niet naar GitHub gepusht worden. Dit is bv. handig voor de `node_modules` map, die we niet willen pushen omdat deze heel groot is en we deze niet nodig hebben om de applicatie te laten werken. Je kan nl. de dependencies eenvoudig opnieuw installeren d.m.v. `pnpm install`.
+
+Download de `.gitignore` van <https://github.com/github/gitignore/blob/main/Node.gitignore> en plaats deze in de root van je project. Het is belangrijk dat je het bestand exact de naam `.gitignore` heeft.
+
+Kijk gerust eens welke bestanden er allemaal genegeerd worden. Je kan dit bestand ook aanpassen naar eigen wens, maar dit is een vrij complete voor een Node.js project.
+
 ### src
 
 Start de applicatie met het commando
@@ -213,7 +228,9 @@ pnpm dev
 
 De `src` map bevat een aantal tsx-bestanden (`main.tsx`, `App.tsx`, ...) en wat CSS, e.d. `vite` zet dit om naar (door de browser begrijpbare) JavaScript. Dit gebeurt automatisch als een van de bronbestanden wijzigt.
 
-Probeer maar iets aan te passen in de `App.tsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
+Je kan nu surfen naar de site. Deze staat meestal op [http://localhost:5173/](http://localhost:5173/). Je kan dit ook zien in de console van je terminal.
+
+Probeer maar de inhoud van de h1-tag aan te passen in de `src/App.tsx`. Je zal zien dat de browser automatisch herlaadt met de nieuwe inhoud (uiteraard als je geen compilatiefouten veroorzaakt).
 
 ?> **Best practice**: het is beter om bestanden met TSX de extensie `.tsx` te geven, dit brengt o.a. betere IntelliSense met zich mee (in bv. VS Code).
 
@@ -234,7 +251,13 @@ Als je meer wil weten over de configuratie, gebruik dan de [ESLint documentatie]
 
 Je kan de linting starten met het commando `pnpm lint`. Deze print vervolgens alle fouten en waarschuwingen in de console. Als je aan dit commando `--fix` toevoegt, zal ESLint proberen om de fouten automatisch op te lossen.
 
-We overlopen dit bestand en breiden het alvast uit met een paar stijlregels:
+We overlopen dit bestand en breiden het alvast uit met een paar stijlregels om conflicten met Prettier te vermijden en om de nieuwste JavaScript features te kunnen gebruiken.
+
+Installeer eerst de volgende package in development mode (deze is enkel nodig tijdens development, niet in productie):
+
+```bash
+pnpm add -D eslint-config-prettier
+```
 
 ```js
 import js from '@eslint/js';
@@ -302,6 +325,48 @@ export default defineConfig({
   plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
 });
 ```
+
+## De budget app
+
+In de olods Front-end Web Development en Web Services maken we een budgetapplicatie. Deze applicatie bestaat uit een front-end en back-end. De front-end is een Single Page Application (SPA) in React, de back-end is een REST API in Node.js m.b.v. NestJS. In deze les beginnen we met het bouwen van de REST API.
+
+Met deze budgetapplicatie kan de gebruiker uitgaven bijhouden als transacties. Transacties worden gekoppeld aan plaatsen, zodat de gebruiker zijn uitgaven kan opvolgen en zijn budget beter kan beheren.
+
+De applicatie die we gaan maken bevat volgende pagina's:
+
+<!-- tabs:start -->
+
+### **Login pagina**
+
+Op deze pagina meldt de gebruiker zich aan.
+
+![Signin pagina](./images/signin.png)
+
+### **Transaction pagina**
+
+Deze pagina geeft een overzicht van alle transacties van alle gebruikers. Later toont deze enkel de transacties van de ingelogde gebruiker.
+
+![Transactions pagina](./images/transactions.png)
+
+### **Places pagina**
+
+Deze pagina toont een overzicht van alle plaatsen waar je transacties kan doen. De aangemelde gebruiker kan hier ook zijn favoriete plaatsen bekijken en aanduiden.
+
+![Places pagina](./images/places.png)
+
+### **Add/edit transaction pagina**
+
+Deze pagina laat toe om een nieuwe transactie toe te voegen of een bestaande aan te passen.
+
+![Add/edit transaction pagina](./images/add-transaction.png)
+
+### **Place detail pagina**
+
+De laatste pagina laat toe om een plaats te bekijken samen met de transacties van deze plaats. Laat toont deze pagina enkel de transacties van de aangemelde gebruiker op deze plaats.
+
+![Place detail pagina](./images/place-detail.png)
+
+<!-- tabs:end -->
 
 ## Transaction
 
@@ -391,11 +456,15 @@ Later, als we een back-end hebben, kunnen we dan makkelijk 'echte' data ophalen 
 
 ### Mock data
 
-Maak een map `api` met een bestand `mock_data.ts` aan in de `src` map. Later vervangen we deze mock data door API calls.
+We definieren een lijst van transacties. Later gaan we deze data ophalen via een REST API. Voorlopig steken we de data in een apart bestand.
 
 #### Types definiëren
 
 Aangezien we met TypeScript werken, definiëren we eerst de types van onze data in een apart bestand. Zo kunnen we deze hergebruiken in verschillende delen van onze applicatie.
+
+Om deze interfaces te bepalen, vertrekken we van de gegevens die de budgetapplicatie nodig heeft. Een `User` stelt de gebruiker voor en heeft daarom een `id` en een `name`. Een `Place` stelt een plaats voor waar een transactie plaatsvindt en bevat naast een `id` en een `name` ook een `rating`. Een `Transaction` beschrijft de verrichting zelf met een `id`, `date` en `amount`. Omdat elke transactie door een gebruiker op een bepaalde plaats wordt uitgevoerd, bevat `Transaction` ook een `user` van het type `User` en een `place` van het type `Place`.
+
+Maak een bestand `types.ts` aan in de `src` map en definieer de types:
 
 ```ts
 // src/types.ts
@@ -420,14 +489,23 @@ export interface Transaction {
 ```
 
 Interfaces bestaan enkel tijdens development. Ze worden niet mee omgezet naar JavaScript, maar helpen de TypeScript compiler om fouten te detecteren.
+De transactie bevat een `date` als string. We kunnen dit later omzetten naar een `Date` object, maar we krijgen de data uit een REST API en dan is het JSON formaat. JSON kent geen `Date` type, dus de datum wordt altijd als string verstuurd.
 
 #### Mock data met types
 
-We importeren de types in onze mock data en gebruiken ze om de structuur van de data te typeren. Een transactie bevat een id, bedrag, datum, een gebruiker en een plaats van uitgave.
+Maak een map `api` met een bestand `mock_data.ts` aan in de `src` map. Later vervangen we deze mock data door API calls.
+
+#### Vraag aan Copilot
+
+> Kan je mock-data genereren met een lijst van transacties, gedefinieerd volgens de interface `Transaction`? Maak hiervoor een constante `TRANSACTION_DATA` aan met twee transacties. Merk op dat `date` in `Transaction` een datum in ISO-stringformaat is.
+
+AI is uitermate geschikt voor dergelijke repetitieve taken, zoals het genereren van mock-data volgens een bestaande interface. Controleer wel altijd of de gegenereerde code aan de verwachtingen en de types van de applicatie voldoet.
+
+Iedereen zal in de praktijk andere gebruikers, plaatsen en transacties hebben. Om de voorbeelden in deze cursus reproduceerbaar te houden, werken we hieronder met de volgende voorbeelddata.
 
 ```ts
 // src/api/mock_data.ts
-import type { Transaction } from '../types';
+import type { Transaction } from '../types';// 👈1
 
 const TRANSACTION_DATA: Transaction[] = [
   {
@@ -458,10 +536,14 @@ const TRANSACTION_DATA: Transaction[] = [
       name: 'Thomas Aelbrecht',
     },
   },
-];
+];// 👈2
 
-export default TRANSACTION_DATA;
+export default TRANSACTION_DATA;// 👈3
 ```
+
+1. We importeren de types in onze mock data en gebruiken ze om de structuur van de data te typeren.
+2. We maken een constante `TRANSACTION_DATA` aan met een lijst van transacties.
+3. We exporteren de constante zodat we deze in andere bestanden kunnen importeren.
 
 ### React props
 
@@ -489,13 +571,14 @@ export default function Transaction() {
 
 `{user}` zorgt ervoor dat de waarde van de variable `user` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken (zoals `if`, `for`). De uitvoer van deze code zal gerenderd worden in de HTML.
 
-> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
+<!-- TODO: Andreas -->
+> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina of vraag het aan AI. AI is ook uitermate geschikt om documentatie op te zoeken en moeilijke concepten te verduidelijken. Controleer de informatie wel steeds in de officiële documentatie.
 
 Deze component is nog steeds niet herbruikbaar. De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
 
 #### Stap 2: Props
 
-Een functionele component kan parameters hebben, deze worden `props` genoemd. Props zijn de manier waarop we data van de ene component naar de andere kunnen doorgeven.
+Een component kan data ontvangen van zijn oudercomponent. Die data noemen we **props** (properties). React geeft de props door als één object. In onderstaand voorbeeld destructureren we dat object meteen in de properties `user`, `amount` en `place`.
 
 ```jsx
 // 👇 1
@@ -514,8 +597,8 @@ export default function Transaction({ user, amount, place }: TransactionProps) {
 }
 ```
 
-1. In TypeScript definiëren we een interface `TransactionProps` die de structuur van de props beschrijft.
-2. Vervolgens voegen we de `props` parameter toe aan de functie en destructuren deze om de individuele properties te verkrijgen. Zo werken we type-safe met de props en kunnen we deze gebruiken in onze component.
+1. In TypeScript definiëren we een interface `TransactionProps` die de structuur van het props-object beschrijft. De namen en types van de properties worden hier vastgelegd.
+2. Vervolgens voegen we het props-object toe als parameter van de functie en destructureren we dit meteen om de individuele properties te verkrijgen. Zo werken we type-safe met de props en kunnen we ze gebruiken in onze component.
 3. Verwijder de constanten met de hard gecodeerde data. Deze data zal nu via props binnenkomen.
 
 #### Stap 3: Waar komen props vandaan?
@@ -542,7 +625,7 @@ export default App;
 
 1. Maak drie variabelen `user`, `amount`, `place`.
 2. Geef deze door aan de `Transaction` component. Dit doet je op dezelfde manier als bij HTML: je voegt simpelweg attributen toe op een bepaalde tag. De waarde rechts (`user={user}`) is JavaScript.
-   De naam links (`user`) is de propnaam.
+  De naam links (`user`) is de propnaam. Die moet overeenkomen met de property in de interface `TransactionProps`.
 
 #### Stap 4: mock data gebruiken
 
@@ -571,15 +654,17 @@ export default App;
 ```
 
 1. Importeer de constante `TRANSACTION_DATA`.
-2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen. Geef de juiste data door aan de `Transaction` component. We moeten de `Transaction` component nog aanpassen zodat deze de juiste types van props verwacht.
+2. Laat ons beginnen met gewoon het eerste element van de array eens te tonen. Geef de juiste data door aan de `Transaction` component.
 
 #### Stap 5: transaction component aanpassen
+
+De `Transaction` component verwacht momenteel nog drie eenvoudige waarden: een gebruikersnaam, een bedrag en een plaatsnaam. We passen de component aan zodat ze de volledige `user`- en `place`-objecten uit onze `Transaction`-interface als props kan ontvangen.
 
 ```jsx
 // src/components/transactions/Transaction.tsx
 import type { Transaction as TransactionType } from '../../types'; // 👈 1
 
-interface TransactionProps extends Omit<TransactionType, 'id' | 'date'> {} // 👈 2
+type TransactionProps = Omit<TransactionType, 'id' | 'date'>; // 👈 2
 
 export default function Transaction({ user, place, amount }: TransactionProps) {
   // 👇 3
@@ -591,8 +676,10 @@ export default function Transaction({ user, place, amount }: TransactionProps) {
 }
 ```
 
+<!-- TODO: Andreas kunnen we hier AI gebruiken om het juiste type voor TransactionProps te genereren? -->
+
 1. Importeer de `Transaction` interface. We geven een alias aan deze interface omdat we al een component `Transaction` hebben, zo vermijden we naamconflicten.
-2. De `TransactionProps` lijkt op `TransactionType` interface maar zonder de properties `id` en `date`.
+2. `Omit<TransactionType, 'id' | 'date'>` maakt een nieuw type op basis van `TransactionType`, maar zonder de properties `id` en `date`. Omdat `Omit` een samengesteld type teruggeeft, definiëren we `TransactionProps` met `type` in plaats van met `interface`.
 3. Pas de weergave aan zodat we de naam van de gebruiker en de plaats zien.
 
 #### Stap 6: meerdere transacties weergeven
@@ -668,16 +755,16 @@ Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
 
 ## CSS in React
 
-In dit project maken we gebruik van [shadcn](https://ui.shadcn.com). shadcn is geen klassieke component library zoals bijvoorbeeld [Material UI](https://mui.com/material-ui/) of [Bootstrap](https://react-bootstrap.netlify.app/). Bij klassieke libraries installeer je een package en gebruik je kant-en-klare componenten. Hierdoor heb je minder controle over de code.
+In dit project maken we gebruik van [shadcn](https://ui.shadcn.com). shadcn is geen klassieke component library zoals bijvoorbeeld [Material UI](https://mui.com/material-ui/) of [React Bootstrap](https://react-bootstrap.netlify.app/). Bij klassieke libraries installeer je een package en gebruik je kant-en-klare componenten. Hierdoor heb je minder controle over de code.
 
-shadcn daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten zijn opgebouwd op basis van [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) voor toegankelijkheid en [Tailwind CSS](https://tailwindcss.com/) voor styling, wat ervoor zorgt dat ze zowel flexibel als consistent zijn.
+`shadcn` daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten gebruiken [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) om  de onderliggende werking van een component, zoals reageren op klikken, toetsenbordbediening en toegankelijkheid te verzorgen. De visuele opmaak gebeurt met [Tailwind CSS](https://tailwindcss.com/), waardoor je de componenten eenvoudig kan aanpassen en toch dezelfde stijlafspraken in de hele applicatie kan gebruiken.
 
-Tailwind CSS is een utility-first CSS framework. In plaats van zelf telkens nieuwe CSS-klassen te schrijven, kunnen we met Tailwind gebruikmaken van kant-en-klare klassen.
-TODO: Andreas: meer motiveren waarom we shadcn gebruiken. De voordelen
-TODO: Andreas : bekijkt om eerst tailwind te gebruiken en dan de overstap naar shadcn
+`Tailwind CSS` is, net als Bootstrap, een CSS-framework met vooraf gedefinieerde CSS-klassen. Bootstrap biedt vaak grotere componenten aan met een vaste opbouw, zoals `btn btn-primary` voor een knop. Tailwind CSS werkt vooral met kleine **utility classes**. Elke klasse stelt meestal één CSS-regel of een kleine groep CSS-regels voor. Je combineert deze klassen rechtstreeks op het HTML- of TSX-element om zelf het uiterlijk te bepalen. Je hoeft dus niet voor elk element eerst een eigen CSS-klasse te schrijven.
+
+In het volgende voorbeeld betekent `p-4` dat er padding wordt toegevoegd en `bg-blue-500` dat de achtergrond blauw wordt. De exacte betekenis van deze klassen vind je in de [Tailwind CSS-documentatie](https://tailwindcss.com/docs).
 
 ```jsx
-<button className='flex p-4 bg-blue-500'>Klik mij</button>
+<button className='p-4 bg-blue-500'>Klik mij</button>
 ```
 
 Tailwind CSS lijkt op een framework als Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of tsx kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
@@ -752,20 +839,19 @@ Pas `vite.config.ts` aan: voeg `tailwindcss` toe aan de plugins en zorg ervoor d
 import { defineConfig } from 'vite';
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
-import path from 'path'; // 👈
 import tailwindcss from '@tailwindcss/vite'; // 👈
 
 // <https://vite.dev/config/>
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     babel({ presets: [reactCompilerPreset()] }),
+    tailwindcss(), // 👈
   ],
   // 👇
   resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+   alias: {
+      '@': `${import.meta.dirname}/src`,
     },
   },
 });
@@ -773,14 +859,16 @@ export default defineConfig({
 
 #### Stap 6 - Installeer shadcn
 
-Je kan eerst visueel samenstellen hoe je project eruit moet zien. shadcn heeft benoemde visuele stijlen geïntroduceerd die het uiterlijk van componenten veranderen, zoals de borderradius, opvulling, afstand, ... In plaats van CSS-variabelen één voor één aan te passen, kies je een stijl en elke component neemt die stijl over. Meer op <https://www.shadcnblocks.com/blog/shadcn-component-styles-vega-nova-maia-lyra-mira>.
+Voor shadcn kan je vooraf een visuele stijl kiezen. Zo'n stijl bepaalt bijvoorbeeld hoe rond de hoeken zijn, hoeveel ruimte componenten krijgen en welke kleuren gebruikt worden. Je hoeft die CSS-instellingen dus niet allemaal zelf één voor één te configureren. Zodra je een stijl kiest, gebruiken de shadcn-componenten in je project dezelfde basisinstellingen.
 
-De stijlvariant kies je op [shadcn/create](https://ui.shadcn.com/create) in volgende stappen:
+Je kiest de stijlvariant op [shadcn/create](https://ui.shadcn.com/create) als volgt:
 
 - In het menu kies je de stijl. Pas eventueel wat kleuren aan. Klik vervolgens op 'Get code'.
 - Kies het tabblad 'New Project'.
 - Kies 'Vite' en de component library 'Base UI' (Meer op <https://shadcnstudio.com/blog/radix-ui-vs-shadcn-ui>) en klik op 'Copy Command'.
 - Voeg shadcn/ui nu toe aan je project. Je kan de preset achteraf nog veranderen, dan kies je voor het tabblad 'Existing Project'. We kozen de defaults.
+
+De gegenereerde opdracht bevat de gekozen stijl en voegt shadcn toe aan je Vite-project, kopieer de opdracht uit de website en voer ze uit in de terminal van je project.
 
 ```bash
 pnpm dlx shadcn@latest init --preset b0  --base base --template vite
@@ -792,17 +880,7 @@ Onderstaande wordt aangepast in je project:
 - In de `package.json` worden een aantal dependencies toegevoegd, zoals `@base-ui/react` en `lucide-react` packages.
 - Ook wordt `src/index.css` aangepast zodat dit het design-systeem voor je hele app bevat. Alle kleuren van je app worden gedefinieerd in [OKLCH formaat](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl), wat een modern kleurformaat is dat zorgt voor consistente kleuren op verschillende schermen en apparaten. Je kan deze kleuren gebruiken in je eigen CSS of Tailwind klassen.
 
-#### Stap 7 - Componenten toevoegen
-
-Je kan nu componenten toevoegen aan je project met de CLI tool van shadcn. Om een `Button` component toe te voegen:
-
-```bash
-pnpm dlx shadcn@latest add button
-```
-
-De broncode van de component wordt nu toegevoegd aan je project in de folder `./src/components/ui`. Je kan deze component vervolgens importeren en gebruiken in je eigen componenten. Je kan de code van de component volledig aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later.
-
-#### Stap 8 - Linting uitschakelen voor shadcn code
+#### Stap 7 - Linting uitschakelen voor shadcn code
 
 Pas de linting aan zodat de code van shadcn niet gelint wordt. Voeg hiervoor de volgende regel toe aan de array in `eslint.config.js`:
 
@@ -812,10 +890,11 @@ globalIgnores(['dist', 'src/components/ui/**']),
 
 ### Tailwind CSS-klassen gebruiken voor styling
 
-- Pas de `title` van de app aan in `index.html`
+- Pas de `title` van de app aan in `index.html`, nl. `Budget App`.
 
 - Pas de `App` component aan.
 
+  Voeg Tailwind CSS-klassen toe aan de `div` zodat de achtergrond wit is en de tekst donkergrijs.
   Voeg een `h1` tag toe en maak gebruik van Tailwind CSS-klassen om de tekst groter en vetter te maken, te centreren en er een marge onder toe te voegen.
 
   De bijhorende `App.css` kan je dan ook verwijderen. We gebruiken de styling van Tailwind CSS. Als je zelf toch iets wil aanpassen, kan je dit in het bestand `index.css` doen of voeg je een CSS-bestand toe aan de component zelf.
@@ -828,8 +907,8 @@ globalIgnores(['dist', 'src/components/ui/**']),
 
   function App() {
     return (
-      <div>
-        {/* 👇 */}
+      {/* 👇 */}
+      <div className='bg-white text-gray-900'>
         <h1 className='text-2xl font-bold text-center mb-4'>
           Mijn Budget App
         </h1>
@@ -857,17 +936,50 @@ globalIgnores(['dist', 'src/components/ui/**']),
     amount,
   }: TransactionProps) {
     return (
-      <div className='bg-blue-800 text-blue-100 border-blue-900 border rounded-lg text-center m-2'>
-        {/* 👆 1*/}
+      <div className='text-center m-2'>
+        {/* 👆 */}
         {user.name} gaf €{amount} uit bij {place.name}
       </div>
     );
   }
   ```
 
-- Definieer de background en tekstkleur, centreer de tekst, voorzie de tekst van een border.
+- Centreer de tekst, en geef een marge.
 
-### `style` attribuut
+### Componenten toevoegen
+
+Je kan nu componenten toevoegen aan je project met de CLI tool van shadcn. Om een `Separator` component toe te voegen:
+
+```bash
+pnpm dlx shadcn@latest add separator
+```
+
+De broncode van de component wordt nu toegevoegd aan je project in de folder `./src/components/ui`. Je kan deze component vervolgens importeren en gebruiken in je eigen componenten. Je kan de code van de component volledig aanpassen, maar het is beter om de broncode te kopiëren en je eigen custom component te maken zodat updates geen probleem vormen later.
+
+We voegen een seperator toe na elke tranasactie in Transaction.tsx:
+
+```jsx
+import type { Transaction as TransactionType } from '../../types';
+import { Separator } from '@/components/ui/separator';//👈 1
+
+type TransactionProps = Omit<TransactionType, 'id' | 'date'>;
+
+export default function Transaction({ user, place, amount }: TransactionProps) {
+  return (
+    <>     {/* 👈 2*/}
+      <div className='text-center m-2'>
+        {user.name} gaf €{amount} uit bij {place.name}
+      </div>
+      <Separator /> {/* 👈 1*/}
+    </>); {/* 👈 2*/ }
+
+}
+```
+
+1. Voeg de seperator toe na de transactie.
+2. Omdat we nu twee elementen renderen, moeten we deze in een gedeelde bovenliggende parent plaatsen. We gebruiken hier een lege wrapper `<>...</>` zodat er geen extra div in de DOM wordt toegevoegd.
+
+### het style attribuut
 
 Ook het `style` attribuut kan je binnen een tsx-bestand gebruiken. Hiervoor gebruik je een inline JavaScript object. Vandaar de `{{}}` in onderstaand voorbeeld:
 
@@ -904,7 +1016,7 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les1-opl TODO:
+> git checkout -b les1-opl c869bcc
 > pnpm install
 > pnpm dev
 > ```
@@ -983,6 +1095,8 @@ end note
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>.
 
+  <!-- TODO: ANs vermelden -->
+
 ## Mogelijke extra's voor de examenopdracht
 
 - UI Component library gebruiken, bv.
@@ -996,6 +1110,7 @@ end note
   - [Emotion](https://emotion.sh/)
   - [JSS](https://cssinjs.org/)
   - ...
+   <!-- TODO: Alternatief Biome ???->
 
 ## Must read/watch
 

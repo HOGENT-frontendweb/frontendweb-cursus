@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8 5d642b4
+> git checkout -b les8 8e34a
 > pnpm install
 > pnpm dev
 > ```
@@ -37,7 +37,7 @@ Alvorens we kunnen inloggen, moeten we onze API calls definiëren. Dit doen we i
 ```js
 // src/api/index.ts
 export const post = async <T, U>(url: string, { arg }: { arg: T }): Promise<U> => {
-  const { data } = await axios.post(`${baseUrl}/${url}, arg);
+   const { data } = await axios.post(`${baseUrl}/${url}`, arg);
   return data;
 };
 ```
@@ -51,7 +51,7 @@ Vervolgens maken we een `AuthProvider` aan. Deze provider zal de aangemelde gebr
 We maken gebruik van een context om alles omtrent authenticatie en autorisatie bij te houden. Maak een bestand `src/contexts/auth/Auth.context.tsx` aan met volgende inhoud:
 
 ```tsx
-// src/contexts/Auth.context.tsx
+// src/contexts/authAuth.context.tsx
 import {
   createContext, // 👈 1
   useState, // 👈 4
@@ -221,7 +221,7 @@ Als we de app opstarten, krijgen we een `HTTP 401` want de server verwacht een t
 
 Vervolgens gaan we een instantie van axios configureren voor het gebruik van een Bearer token. We passen hiervoor `src/api/index.ts` aan:
 
-```tsx
+```ts
 // src/api/index.ts
 import axiosRoot from 'axios'; // 👈 1
 import { JWT_TOKEN_KEY } from '@/contexts/auth'; // 👈 3
@@ -276,7 +276,7 @@ Om te kunnen aanmelden hebben we een `Login` component op de URL `/login` nodig.
 
 Voeg de `Login` component toe in `src/pages/Login.tsx`:
 
-```tsx
+```jsx
 // src/pages/Login.tsx
 import { useForm, FormProvider } from 'react-hook-form';
 import * as z from 'zod';
@@ -300,17 +300,8 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: 'thomas.aelbrecht@hogent.be',
-      password: '12345678',
-    },
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema)
   });
 
   return (
@@ -487,8 +478,8 @@ Hiervoor dienen we de `AuthProvider` eerst aan te passen. We moeten weten wannee
 Pas de interface aan in `src/contexts/auth/index.ts`. Voeg deze 2 props toe aan de `AuthContextType` interface:
 
 ```ts
-    isAuthed: Boolean(token),
-    ready: !userLoading,
+    isAuthed: boolean,
+    ready: boolean,
 ```
 
 en pas dan de AuthProvider aan in `src/contexts/auth/Auth.context.tsx`:
@@ -571,10 +562,6 @@ const router = createBrowserRouter([
       {
         path: '/login',
         element: <Login />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
       },
       {
         path: '/transactions',
@@ -698,9 +685,6 @@ const AuthButtons = () => {
       <Link to="/login" className={cn(buttonVariants({ size: 'sm' }))}>
         Login
       </Link>
-      <Link to="/register" className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }))}>
-        Register
-      </Link>
     </>
   );
 };
@@ -799,7 +783,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8-opl b333700
+> git checkout -b les8-opl 384cb21
 > pnpm install
 > pnpm dev
 > ```

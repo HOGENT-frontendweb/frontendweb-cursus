@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9 b333700
+> git checkout -b les9 384cb21
 > pnpm install
 > pnpm dev
 > ```
@@ -18,6 +18,7 @@
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > pnpm install
+> docker compose up -d
 > pnpm db:migrate
 > pnpm db:seed
 > pnpm start:dev
@@ -136,7 +137,7 @@ mkdir -p playwright/.auth
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9-opl 1e5986a
+> git checkout -b les9-opl 60d13d0
 > pnpm install
 > pnpm dev
 > ```
