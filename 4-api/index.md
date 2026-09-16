@@ -22,9 +22,9 @@
 > pnpm start:dev
 > ```
 >
-> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie. We gaan er in dit hoofdstuk van uit dat de API draait op poort 9000 (`PORT`).Maak ook een database `budget` aan in MySQL.
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie. We gaan er in dit hoofdstuk van uit dat de API draait op poort 3000 (`PORT`).Maak ook een database `budget` aan in MySQL.
 
-In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:9000/api/](http://localhost:9000/api/).
+In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:3000/api/](http://localhost:3000/api/).
 
 Voor de communicatie met de API, m.a.w. het versturen van HTTP requests, kan je gebruik maken van de [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch) of van HTTP client libraries die je kan vinden op bv. <https://www.npmjs.com>.
 
@@ -162,12 +162,12 @@ Er zijn een aantal opmerkingen om rekening mee te houden bij het gebruik van `us
 
 ## GET /api/transactions (useEffect)
 
-Maak een bestand `transactions.ts` aan in de map `api`. Hierin plaatsen we alle requests naar de API [http://localhost:9000/api/transactions](http://localhost:9000/api/transactions):
+Maak een bestand `transactions.ts` aan in de map `api`. Hierin plaatsen we alle requests naar de API [http://localhost:3000/api/transactions](http://localhost:3000/api/transactions):
 
 ```ts
 import axios, { type AxiosResponse } from 'axios'; // 👈 1
 
-const baseUrl = 'http://localhost:9000/api/transactions'; // 👈 2
+const baseUrl = 'http://localhost:3000/api/transactions'; // 👈 2
 
 // 👇 3
 export const getAll = async (): Promise<AxiosResponse> => {
@@ -234,7 +234,7 @@ De transactions API voor `getAll` wordt dus:
 import axios from 'axios';
 import type { Transaction } from '../types'; // 👈 2
 
-const baseUrl = 'http://localhost:9000/api/transactions';
+const baseUrl = 'http://localhost:3000/api/transactions';
 
 export const getAll = async (): Promise<Transaction[]> => {
   // 👈 2
@@ -497,7 +497,7 @@ Pas het bestand aan als volgt:
 // src/api/index.ts
 import axios from 'axios';
 
-const baseUrl = 'http://localhost:9000/api'; // 👈 1
+const baseUrl = 'http://localhost:3000/api'; // 👈 1
 
 // 👇 2 en 3
 export async function getAll<T>(url: string): Promise<T> {
@@ -1392,7 +1392,7 @@ De omgevingsvariabelen worden toegevoegd aan de code _at build time_. Aangezien 
 Voeg een `.env` file toe in de root folder met de environment settings. Hierin definiëren we de url naar de API:
 
 ```dotenv
-VITE_API_URL='http://localhost:9000/api'
+VITE_API_URL='http://localhost:3000/api'
 ```
 
 In de code van `api/index.ts` vervang je `baseUrl` door
