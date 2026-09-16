@@ -1,4 +1,4 @@
-# Front-end Web Development Opdracht 2025 - 2026
+# Front-end Web Development Opdracht 2026 - 2027
 
 ## 1. De opdracht
 
@@ -8,13 +8,13 @@ Je bent volledig vrij om te kiezen welke applicatie je ontwikkelt, maar het is w
 
 ?> Er wordt enkel feedback gegeven op ideeën tijdens semester 1. Indien je een idee hebt dat je graag wil bespreken, doe dit dan tijdig.
 
-De examenopdrachtwordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 4](#4-groepswerk) voor meer informatie.
+De examenopdracht wordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 4](#4-groepswerk) voor de deadlines van de registratie  van je team en meer informatie.
 
-Alle code moet in een GitHub classroom repository terecht komen (zie Orion voor een link naar de classroom). Enkel de `main` branch van deze repository zal geëvalueerd worden. Er wordt automatisch een template van de `README.md` aangemaakt als je de opdracht accepteert, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development. Check zeker onze [appendix over Git & GitHub](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index.md) als je hiermee nog niet vertrouwd bent.
+Alle code moet in een private GitHub repository terecht komen die je deelt met alle lectoren (zie [Sectie 11](#11-github)). Enkel de `main` branch van deze repository zal geëvalueerd worden. Voor de aanmaak van de repository vertrek je van een template. De template bevat een `README.md` bestand, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development. Check zeker onze [appendix over Git & GitHub](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index.md) als je hiermee nog niet vertrouwd bent.
 
 Het is belangrijk dat de applicatie significant verschilt van de voorbeeldapplicatie die tijdens de les gemaakt wordt.
 
-Daarnaast verwachten we dat je een dossier met uitleg over je app indient op Chamilo. Een template voor dit dossier (`dossier.md`) vind je ook in jouw repository en dien je te gebruiken. **Je dient het dossier in als pdf!**
+Daarnaast verwachten we dat je een dossier met uitleg over je app indient op Orion. Een template voor dit dossier (`dossier.md`) vind je ook in jouw repository en dien je te gebruiken. **Je dient het dossier in als pdf!**
 
 ## 2. Ontvankelijkheidscriteria
 
@@ -24,8 +24,10 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 
 Deze criteria zijn:
 
-- Het dossier is volledig en tijdig ingediend (zie [sectie 5](#5-dossier-vereisten) voor de vereisten)
-- Elke student heeft minstens twee feature branches waarin een volledige feature werd uitgewerkt. Voor elke feature branch werd minstens één pull request aangemaakt. De student voert meerdere kleine, betekenisvolle commits uit tijdens de ontwikkeling van de feature. Op elke pull request werd inhoudelijke feedback gegeven door de medestudent(zie [sectie 4](#4-groepswerk) en [sectie Feature Branch workflow](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index?id=feature-branch-workflow)).
+- Je bent ingeschreven in een groep op Orion (deadline: einde week 2, vrijdag 2 oktober 2026, 23u59)(zie [sectie 4](#4-groepswerk) voor de vereisten)
+- Je hebt de ANS opdracht gemaakt (deadline: einde week 3, vrijdag 9 oktober 2026, 23u59)(zie [sectie 4](#4-groepswerk) voor de vereisten)
+- Het dossier is volledig en tijdig ingediend  (deadline: einde week 13, vrijdag 18 december 2026, 23u59)(zie [sectie 5](#5-dossier-vereisten) voor de vereisten)
+- Elke student heeft minstens twee feature branches waarin een volledige feature werd uitgewerkt. Voor elke feature branch werd minstens één pull request aangemaakt. De student voert minstens 10 kleine, betekenisvolle commits uit tijdens de ontwikkeling van de feature. Op elke pull request werd inhoudelijke feedback gegeven door de medestudent(zie [sectie 4](#4-groepswerk) en [sectie Feature Branch workflow](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index?id=feature-branch-workflow)).
 - De applicatie is gemaakt in React
 - De applicatie draait online
 - De applicatie start zonder problemen op a.d.h.v. de instructies in de README en gebruikt hiervoor Docker.
@@ -86,13 +88,39 @@ Deze criteria zijn:
 ## 4. Groepswerk
 
 Voor de examenopdracht werk je in groepen van twee.
-In Orion schrijf je in bij een groep van twee. Indien je geen groep kan vinden, schrijf je je in bij de groep 'Single'. De lector zal dan een groep samenstellen. **deadline voor het samenstellen van groepen is het einde van week 2 (vrijdag 2 oktober 2026, 23u59)**
 
-Je maakt per groep één repository aan in GitHub Classroom en werkt samen aan dezelfde codebase. Volg de instructies op Orion voor het aanmaken van de repository.
+### groep inschrijving
 
-Om de individuele bijdrage te kunnen beoordelen, wordt gewerkt volgens de Feature Branch Workflow. Elke feature wordt door één student ontwikkeld in een afzonderlijke feature branch en via een Pull Request (PR) geïntegreerd in de main-branch.
+Schrijf je in Orion in het vak Frontendweb development in voor een groep van twee studenten. Indien je nog geen partner hebt gevonden, schrijf je dan in bij de groep 'Op zoek naar medestudent'. De lector zal na afloop van de inschrijvingsperiode de studenten uit deze groep samenbrengen tot projectgroepen van twee.
 
-De Pull Request moet voldoende informatie bevatten om de uitgevoerde werkzaamheden te kunnen beoordelen. Hieruit moet duidelijk blijken:
+De deadline voor het vormen van groepen is **vrijdag 2 oktober 2026 om 23.59 uur (einde van week 2)**.
+
+!> Studenten die na deze deadline niet zijn ingeschreven in een groep, krijgen voor de score AFWEZIG voor het examen.
+
+### ANS-opdracht
+
+Zodra je bent ingeschreven in een groep, dienen beide groepsleden de ANS-opdracht in te vullen en in te dienen.
+
+In deze opdracht vermeld je:
+
+- het groepsnummer (zoals vermeld in Orion);
+- de namen van beide groepsleden;
+- de URL van de GitHub-repository die je hebt aangemaakt op basis van de aangeboden template (zie [sectie 11](#11-repository-aanmaken));
+- de publieke SSH-sleutel (niet de private sleutel) (zie [sectie 12](#12-ssh-sleutel-aanmaken)).
+
+Beide studenten moeten de ANS-opdracht afzonderlijk indienen.
+
+De deadline voor deze opdracht is **vrijdag 9 oktober 2026 om 23.59 uur (einde van week 3)**.
+
+!>Het niet indienen van de ANS-opdracht wordt beschouwd als niet deelnemen aan dit onderdeel en leidt tot de score AFWEZIG voor het examen.
+
+### Repository en individuele bijdrage
+
+Je maakt per groep één repository aan(zie [sectie 11](#11-repository-aanmaken)) en werkt samen aan dezelfde codebase. Volg de instructies in [Sectie 2](#2-ontvankelijkheidscriteria) om de repository correct aan te maken. De repository wordt gedeeld met beide studenten en de lectoren. De repository is privé, maar de lectoren hebben toegang tot de code.
+
+Om de individuele bijdrage te kunnen beoordelen, wordt gewerkt volgens de Feature Branch Workflow. Elke feature wordt door één student ontwikkeld in een afzonderlijke feature branch en via een Pull Request (PR) geïntegreerd in de main-branch. De student die de feature ontwikkelt, maakt minstens 10 kleine commits en is verantwoordelijk voor het maken van de PR en het beantwoorden van eventuele vragen van de medestudent. De medestudent is verantwoordelijk voor het reviewen van de PR en het geven van inhoudelijke feedback. De medestudent mag ook suggesties doen voor verbeteringen, maar mag geen code toevoegen aan de feature branch van de andere student.
+
+De Pull Request moet voldoende informatie bevatten om de uitgevoerde werkzaamheden te kunnen beoordelen. Hieruit moet duidelijk blijven:
 
 - welke functionaliteit werd ontwikkeld;
 - welke onderdelen door de student werden geïmplementeerd;
@@ -185,20 +213,44 @@ Een aantal aandachtspunten:
 
 ## 10. Evaluatie
 
+**Voorwaarde: de ANS opdracht is ingediend op het einde van week 3 (vrijdag 9 oktober 2026, 23u59).**
+
 Je wordt beoordeeld op basis van een portfolio dat je samenstelt gedurende het semester. Dit portfolio bestaat uit:
 
 - De code van je applicatie
   - Moet te vinden zijn in de GitHub classroom repository op de `main` branch
-- Het ingevulde dossier, als pdf ingediend op Chamilo
+- Het ingevulde dossier, als pdf ingediend op Orion
 - Het mondeling examen met de demo van je applicatie en de mondelinge verdediging
 
 Zorg ervoor dat jouw applicatie aan alle ontvankelijkheidscriteria voldoet op het moment van de deadline. Indien dit niet het geval is, krijg je een score 'AFWEZIG'.
 
 **De deadline voor het portfolio is het einde van week 13 (vrijdag 18 december 2026, 23u59).**
-**Zorg ervoor dat je voor het einde van week 2 (vrijdag 2 oktober 2026, 23u59) ingeschreven bent in een groep op Orion.**
-
-Alle code zal voor de start van het volgend academiejaar verwijderd worden uit de GitHub classroom. Als je je applicatie wenst te behouden, zorg dan dat je deze tijdig naar een privé repository pusht.
 
 Veel succes!
+
+## 11. Aanmaken van de repository
+
+- Via de GitHub website, navigeer naar [de template-repository op GitHub](https://github.com/HOGENT-frontendweb/frontendweb-webservices-project-template-2627)
+- Klik rechtsboven op de groene knop Use this template en kies Create a new repository.
+- Selecteer de Owner (jouw account).
+- Geef je nieuwe repository een Repository name : groepsnummer-frontendweb-webservices-2627.
+- Kies voor een Private repository.
+- Klik op Create repository from template. GitHub maakt nu een exacte kopie voor je aan zonder de commit-geschiedenis van de template.
+- Voeg je medestudent toe als Collaborator aan de repository. Ga hiervoor naar Settings > Collaborators > Add people. Je medestudent krijgt een uitnodiging via e-mail en moet deze accepteren.
+- Voeg ook de lectoren toe als Collaborators aan de repository met read rechten. Ga hiervoor naar Settings > Collaborators > Add people. De lectoren krijgen een uitnodiging via e-mail en moeten deze accepteren. Voeg de volgende lectoren toe:
+  - Andreas De Smet: @dreeki
+  - Karine Samyn: @ksa607
+  - Pieter Vander Vennet: @pietervdvn
+
+## 12. Aanmaken van de SSH-sleutel
+
+Eén student maakt een SSH-sleutel aan en deelt het bestand met de andere student.
+
+- Open je terminal of command line.
+- Voer het commando `ssh-keygen -t ed25519` in.
+- Volg de instructies om de sleutel te genereren.
+- Kopieer de publieke sleutel (meestal in `~/.ssh/id_ed25519.pub`).
+
+De publieke sleutel deel je mee in de ANS opdracht. De lectoren gebruiken deze sleutel om een VPS (Virtual Private Server) aan te maken op een VIC-server en je toegang te geven tot deze server. Je kan dan je applicatie op deze server publiceren.
 
 <!-- TODO: Andreas, sectie ook toevoegen aan webservices-->
