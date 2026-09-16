@@ -25,7 +25,6 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 Deze criteria zijn:
 
 - Je bent ingeschreven in een groep op Orion (deadline: einde week 2, vrijdag 2 oktober 2026, 23u59)(zie [sectie 4](#4-groepswerk) voor de vereisten)
-- Je hebt de ANS opdracht gemaakt (deadline: einde week 3, vrijdag 9 oktober 2026, 23u59)(zie [sectie 4](#4-groepswerk) voor de vereisten)
 - Het dossier is volledig en tijdig ingediend  (deadline: einde week 13, vrijdag 18 december 2026, 23u59)(zie [sectie 5](#5-dossier-vereisten) voor de vereisten)
 - Elke student heeft minstens twee feature branches waarin een volledige feature werd uitgewerkt. Voor elke feature branch werd minstens één pull request aangemaakt. De student voert minstens 10 kleine, betekenisvolle commits uit tijdens de ontwikkeling van de feature. Op elke pull request werd inhoudelijke feedback gegeven door de medestudent(zie [sectie 4](#4-groepswerk) en [sectie Feature Branch workflow](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index?id=feature-branch-workflow)).
 - De applicatie is gemaakt in React
@@ -99,20 +98,18 @@ De deadline voor het vormen van groepen is **vrijdag 2 oktober 2026 om 23.59 uur
 
 ### ANS-opdracht
 
-Zodra je bent ingeschreven in een groep, dienen beide groepsleden de ANS-opdracht in te vullen en in te dienen.
+Zodra je bent ingeschreven in een groep, dienen beide groepsleden de ANS-opdracht in te vullen en in te dienen. Ga hiervoor naar [ANS](https://ans.app/), log in met je studenten account en vul de opdracht 'Inschrijven voor examenopdracht'in.
 
 In deze opdracht vermeld je:
 
 - het groepsnummer (zoals vermeld in Orion);
-- de namen van beide groepsleden;
+- je naam en voornaam
 - de URL van de GitHub-repository die je hebt aangemaakt op basis van de aangeboden template (zie [sectie 11](#11-repository-aanmaken));
-- de publieke SSH-sleutel (niet de private sleutel) (zie [sectie 12](#12-ssh-sleutel-aanmaken)).
+- je publieke SSH-sleutel (niet de private sleutel) (zie [sectie 12](#12-ssh-sleutel-aanmaken)).
 
 Beide studenten moeten de ANS-opdracht afzonderlijk indienen.
 
-De deadline voor deze opdracht is **vrijdag 9 oktober 2026 om 23.59 uur (einde van week 3)**.
-
-!>Het niet indienen van de ANS-opdracht wordt beschouwd als niet deelnemen aan dit onderdeel en leidt tot de score AFWEZIG voor het examen.
+De deadline voor deze opdracht is **vrijdag 9 oktober 2026 om 23.59 uur (einde van week 3)**. Deze gegevens hebben we nodig voor het aanmaken van de VPS op het VIC en je toegang tot deze server te geven. Indien je de ANS-opdracht niet indient, dien je zelf [contact op te nemen met het VIC](https://vichogent.be/nl/hosting) en sta je zelf in voor de correcte aanmaak van de VPS.
 
 ### Repository en individuele bijdrage
 
@@ -176,7 +173,7 @@ Tijdens het mondeling examen dien je te starten met een demo van jouw applicatie
 
 ## 7. Mondelinge verdediging
 
-Tijdens de mondelinge verdediging (10 minuten per student per applicatie) wordt nagegaan in welke mate de student inzicht heeft in de gerealiseerde applicatie en de behandelde leerinhouden. De student moet a.d.h.v. de geschreven code de gebruikte technieken, ontwerpkeuzes en implementaties kunnen verklaren en verantwoorden, de onderliggende theoretische concepten correct kunnen toelichten en kunnen aantonen hoe deze in de applicatie werden toegepast. Daarnaast moet de student kunnen aangeven hoe gevraagde wijzigingen of uitbreidingen aan de applicatie gerealiseerd kunnen worden.
+Tijdens de mondelinge verdediging (15 minuten per applicatie) wordt per student nagegaan in welke mate de student inzicht heeft in de gerealiseerde applicatie en de behandelde leerinhouden. De student moet a.d.h.v. de geschreven code de gebruikte technieken, ontwerpkeuzes en implementaties kunnen verklaren en verantwoorden, de onderliggende theoretische concepten correct kunnen toelichten en kunnen aantonen hoe deze in de applicatie werden toegepast. Daarnaast moet de student kunnen aangeven hoe gevraagde wijzigingen of uitbreidingen aan de applicatie gerealiseerd kunnen worden.
 
 De mondelinge verdediging dient tevens als validatie van de beoordeling op basis van de code-rubrics. De student moet kunnen aantonen, toelichten en verantwoorden hoe de criteria uit deze rubrics werden toegepast binnen de gerealiseerde applicatie en moet de gemaakte keuzes kunnen motiveren aan de hand van de ingediende code.
 
@@ -213,8 +210,6 @@ Een aantal aandachtspunten:
 
 ## 10. Evaluatie
 
-**Voorwaarde: de ANS opdracht is ingediend op het einde van week 3 (vrijdag 9 oktober 2026, 23u59).**
-
 Je wordt beoordeeld op basis van een portfolio dat je samenstelt gedurende het semester. Dit portfolio bestaat uit:
 
 - De code van je applicatie
@@ -242,17 +237,17 @@ Veel succes!
 - Voeg ook de lectoren toe als Collaborators aan de repository met read rechten. Ga hiervoor naar Settings > Collaborators > Add people. De lectoren krijgen een uitnodiging via e-mail en moeten deze accepteren. Voeg de volgende lectoren toe:
   - Andreas De Smet: @dreeki
   - Karine Samyn: @ksa607
-  - Pieter Vander Vennet: @pietervdvn
+  - Pieter Vander Vennet: @pietervdvn (enkel indien je ook het olod Web Services volgt)
 
 ## 12. Aanmaken van de SSH-sleutel
 
-Eén student maakt een SSH-sleutel aan en deelt het bestand met de andere student.
+Elke student maakt een SSH-sleutel aan.
 
 - Open je terminal of command line.
 - Voer het commando `ssh-keygen -t ed25519` in.
-- Volg de instructies om de sleutel te genereren.
-- Kopieer de publieke sleutel (meestal in `~/.ssh/id_ed25519.pub`).
+- Volg de instructies om de sleutel te genereren. Je zal een naam voor de sleutel moeten opgeven en een passphrase (wachtwoord) instellen. Je kan de standaardnaam gebruiken (`id_ed25519`) en een passphrase instellen of leeg laten.
+- De sleutel wordt gegenereerd in de map `~/.ssh/` met de naam `id_ed25519` (private) en `id_ed25519.pub` (public).
 
-De publieke sleutel deel je mee in de ANS opdracht. De lectoren gebruiken deze sleutel om een VPS (Virtual Private Server) aan te maken op een VIC-server en je toegang te geven tot deze server. Je kan dan je applicatie op deze server publiceren.
+De publieke sleutel deel je mee in de ANS opdracht. De lectoren gebruiken deze sleutel om je toegang te geven toteen VPS (Virtual Private Server) op het VIC. De private sleutel blijft privé en mag je niet delen. Je gebruikt deze private sleutel om in te loggen op het VIC.
 
 <!-- TODO: Andreas, sectie ook toevoegen aan webservices-->
