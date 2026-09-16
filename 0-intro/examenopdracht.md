@@ -226,6 +226,8 @@ Zorg ervoor dat jouw applicatie aan alle ontvankelijkheidscriteria voldoet op he
 
 **De deadline voor het portfolio is het einde van week 13 (vrijdag 18 december 2026, 23u59).**
 
+In de **2e zit** mag je gewoon verder werken aan je huidig project, de opdracht wijzigt niet. De deadline is 22 augustus 2027, 23u59.
+
 Veel succes!
 
 ## 11. Aanmaken van de repository
