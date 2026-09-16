@@ -250,4 +250,10 @@ Elke student maakt een SSH-sleutel aan.
 
 De publieke sleutel deel je mee in de ANS opdracht. De lectoren gebruiken deze sleutel om je toegang te geven toteen VPS (Virtual Private Server) op het VIC. De private sleutel blijft privé en mag je niet delen. Je gebruikt deze private sleutel om in te loggen op het VIC.
 
+Een voorbeeld van een publieke sleutel is als volgt:
+
+```
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHAA6JxFA0rcaXAEFJKf8ifSCvjzTnn2qsYuLEI0GVqN karine.samyn@hogent.be
+```
+
 <!-- TODO: Andreas, sectie ook toevoegen aan webservices-->
