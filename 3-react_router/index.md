@@ -10,6 +10,16 @@
 > pnpm dev
 > ```
 
+## Leerdoelen
+
+- de student kan React Router installeren en configureren met BrowserRouter;
+- de student kan routes definiëren en verschillende pagina’s tonen binnen een React-applicatie;
+- de student kan navigeren tussen pagina’s met links, actieve links en programmatische navigatie;
+- de student kan geneste routes, layoutcomponenten, redirects en URL-parameters gebruiken;
+- de student kan routing toepassen voor dynamische pagina’s, tabs en detailpagina’s.
+
+## Inleiding
+
 Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door Vite gegenereerde scripts en stylesheets geïnjecteerd.
 
 Wanneer een client een React-applicatie opent (a.k.a. naar de URL ervan surft), wordt die ene `index.html` gedownload en gebeuren alle andere acties client-side. Het probleem is dat deze `index.html` enkel gedownload wordt indien we naar de `/` navigeren. Er zijn verder geen statische of server-side gegenereerde pagina's. Bijgevolg kunnen we enkel naar `/` navigeren, de browser downloadt vervolgens standaard `index.html`.
@@ -1263,7 +1273,10 @@ Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog
 
 Denk voor je eigen applicatie na over de navigatie en implementeer deze met React Router.
 
-<!-- TODO: ANS toevoegen -->
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 4 API**.
+
 ## Mogelijke extra's voor de examenopdracht
 
 - Gebruik de nieuwe [loader](https://reactrouter.com/start/data/data-loading) en [action](https://reactrouter.com/start/data/actions) attributen van de `Route` component van `react-router` om de data op te halen.

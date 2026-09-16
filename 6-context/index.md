@@ -26,6 +26,17 @@
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie.
 
+## Leerdoelen
+
+- De student kan uitleggen waarvoor de React Context API wordt gebruikt.
+- De student kan een context aanmaken en gegevens beschikbaar maken via een Provider.
+- De student kan custom hooks schrijven om context eenvoudig te consumeren.
+- De student kan contextgegevens consumeren in componenten.
+- De student kent de anti-patterns en kan deze toepassen in de context van een React-applicatie.
+- De student kan de FormProvider van react-hook-form gebruiken om formulierdata te beheren in een context gebruiken
+
+## Inleiding
+
 We creëren geneste componenten om de UI te bouwen. De state plaatsen we in de root component en wordt via props doorgegeven aan de kinderen. Dit kan echter heel complex worden als je sommige props tot diep in de boom dient door te geven of als heel wat componenten dezelfde props nodig hebben.
 
 De **Context API** laat toe om data globaal bij te houden en door te geven aan child components, zonder dat we via props de data tot in deze kinderen moeten doorgeven. Dus Context API is een alternatief voor het doorgeven van props.
@@ -812,4 +823,6 @@ export default function LabelInput({...}) {
 Controleer je eigen project op anti-patterns, duplicate code en refactor.
 Denk na over global state in je project. Indien van toepassing, maak hiervoor een Context aan.
 
-<!--TODO:ANS-->
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 6 Context**.

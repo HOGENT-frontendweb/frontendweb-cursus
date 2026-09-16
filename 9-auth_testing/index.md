@@ -26,6 +26,12 @@
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
 
+## Leerdoelen
+
+- De student kan E2E-tests aanpassen aan een applicatie waarvoor authenticatie vereist is.
+
+## Inleiding
+
 Momenteel moet je voor elke pagina in onze budgetapplicatie aangemeld zijn (behalve de `/login` en `/logout`). Onze testen gaan er nog steeds van uit dat je niet aangemeld moet zijn en dus zullen deze één voor één falen.
 
 ## Authenticatie

@@ -26,6 +26,15 @@
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
 
+## Leerdoelen
+
+- De student kan een loginfunctionaliteit implementeren met een API.
+- De student kan authenticatiegegevens beheren met een context en provider.
+- De student kan tokens opslaan en meesturen met API-aanvragen.
+- De student kan routes en functionaliteiten afschermen voor niet-geauthenticeerde gebruikers.
+
+## Inleiding
+
 In dit hoofdstuk voegen we authenticatie en autorisatie toe aan onze applicatie. We maken hiervoor gebruik van JSON Web Tokens (JWT). We zullen de gebruiker toelaten om zich aan te melden en uit te loggen, maar ook te registreren. We zullen ook bepaalde routes afschermen voor niet-aangemelde gebruikers.
 
 ?> De code die je in de olods Front-end Web Development en Web Services opbouwt, werd in een bachelorproef door een student gecontroleerd op gebied van security. Een aantal zaken werden reeds in de applicatie aangepast. Voel je vrij om deze bachelorproef te lezen als inspiratie voor eigen projecten: <br /><br />Vermeersch, J. (2024). Cybersecuritymaatregelen in de opleidingsonderdelen over webapplicatieontwikkeling aan Hogeschool Gent: een analyse en integratie van aanbevelingen in de voorbeeldapplicaties. Gent: s.n. Geraadpleegd op 3 november 2024, via <https://catalogus.hogent.be/catalog/hog01:003132172>.
@@ -789,6 +798,10 @@ Een gebruiker dient zich te kunnen registreren op de site.
 > ```
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
+
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 8 Authenticatie en authorisatie**.
 
 ## Mogelijke extra's voor de examenopdracht
 

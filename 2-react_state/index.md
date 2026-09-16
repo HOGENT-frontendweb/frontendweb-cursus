@@ -12,6 +12,13 @@
 
 <!--TODO: Andreas  -->
 > Tip: In dit hoofdstuk komen er veel nieuwe concepten aan bod. Je kan AI gebruiken om concepten uit te leggen en voorbeelden te genereren. Controleer de informatie wel steeds in de officiële documentatie.
+>
+## Leerdoelen
+
+- de student kent het verschil  tussen props en state en kan bepalen wanneer je welke gebruikt;
+- de student kan state beheren en aanpassen met de useState-hook;
+- de student kan event handlers gebruiken om te reageren op gebruikersinteracties;
+- de student kan controlled components, inverse data flow  toepassen;
 
 ## Props en state
 
@@ -1576,7 +1583,9 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/SnakeEyes>.
 
-  <!-- TODO:Ans -->
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 2 React State**.
 
 ## Mogelijke extra's voor de examenopdracht
 

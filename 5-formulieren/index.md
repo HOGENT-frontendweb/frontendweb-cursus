@@ -28,6 +28,13 @@
 
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.
 
+## Leerdoelen
+
+- De student kan formulieren opbouwen en verwerken in een React-applicatie.
+- De student kan react-hook-form gebruiken om formulierdata te beheren.
+- De student kan formulieren typeren en valideren met een schema.
+- De student kan formulierdata versturen naar een API met POST en PUT.
+
 ## Routing
 
 We maken een component voor het toevoegen en wijzigen van een transactie en voorzien de nodige routes.
@@ -1269,7 +1276,9 @@ Zeldzaam, en enkel op basis van een **gemeten** probleem (React DevTools Profile
 - de compiler bailout't op de component en je krijgt de oorzaak niet weggewerkt;
 - een externe library-component die de compiler niet raakt.
 
-<!-- TODO: ANS-->
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 5 Formulieren**.
 
 ## Mogelijke extra's voor de examenopdracht
 

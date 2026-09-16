@@ -1,10 +1,20 @@
-# TypeScript
+
+# React Basics
+
+## Leerdoelen
+
+- De student kan uitleggen wat React is en hoe React-componenten worden gerenderd.
+- De student kan een React-applicatie opzetten met Vite, TypeScript en pnpm en de functie van de bestanden en mappen uitleggen.
+- De student kan herbruikbare React-componenten maken, combineren en van gegevens voorzien via props.
+- De student kan gebruik maken van shadcn/ui-componenten in een React-applicatie.
+
+## TypeScript
 
 Binnen Frontend Web Development zullen we werken met TypeScript. TypeScript is een superset van JavaScript die statische types toevoegt aan de taal. Dit betekent dat je variabelen, functies en objecten kunt annoteren met types, waardoor je fouten kunt opsporen tijdens het ontwikkelen in plaats van tijdens runtime. TypeScript biedt ook geavanceerde functies zoals interfaces, generics en decorateurs, die helpen bij het schrijven van robuuste en onderhoudbare code. TypeScript wordt vaak gebruikt in combinatie met Node.js en frameworks zoals NestJS, omdat het de ontwikkelaar een betere tooling en foutopsporing biedt.
 
 In deze cursus zullen we geleidelijk aan TypeScript features introduceren, maar het is aan te raden om zelf ook wat tijd te investeren in het leren van TypeScript. Er zijn veel online bronnen beschikbaar, zoals de officiële [TypeScript-documentatie](https://www.typescriptlang.org/docs/) en interactieve tutorials zoals [TypeScript for Beginners](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html). Daarnaast hebben we ook een [appendix over TypeScript](https://HOGENT-frontendweb.github.io/webservices-cursus/#/./appendices/1-typescript/index.md) in de cursus webservices, waar je het absolute minimum aan TypeScript-kennis kan terugvinden die je nodig hebt voor deze cursus.
 
-# React basics
+## React basics - inleiding
 
 Neem volgende HTML-code als voorbeeld:
 
@@ -159,7 +169,7 @@ De `package.json` kan enkele properties bevatten:
 - `license`: de licentie van de applicatie
 - `private`: of de applicatie publiek is of niet, npm zal bv. niet toelaten om een private package te publiceren
 - `dependencies`: de packages waarvan deze applicatie gebruik maakt
-- `devDependencies`: packages enkel nodig in development (en dus niet in productie)
+- `devDependencies`: packages enkel nodig in development(coderen, testen, linten, debuggen) en build time(de applicatie omzetten naar een deploybare versie) en dus niet in productie
 - `scripts`: laten toe om een soort van shortcuts te maken voor scripts (bv. de applicatie starten, testen, builden voor productie, etc.)
 - `packageManager`: dit bevat de geïnstalleerde versie van pnpm, inclusief een specifieke integriteitscontrole (sha512-hash). Dit zorgt ervoor dat iedereen die met dit project werkt, dezelfde versie van pnpm gebruikt, wat consistentie en betrouwbaarheid bevordert bij het installeren van dependencies.
 
@@ -1095,7 +1105,10 @@ end note
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>.
 
-  <!-- TODO: ANs vermelden -->
+## ANS
+
+Je kan je kennis testen in ANS door 10 multiple choice vragen te beantwoorden. De oefeningen zijn niet verplicht, maar het is wel een goede manier om je kennis te testen en bij te leren.
+Meer in ANS, cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 1 React Basics**.
 
 ## Mogelijke extra's voor de examenopdracht
 

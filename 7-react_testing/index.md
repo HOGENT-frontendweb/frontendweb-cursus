@@ -26,6 +26,16 @@
 >
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#web-services-budget) voor meer informatie.
 
+## Leerdoelen
+
+- De student kan het belang van geautomatiseerde tests voor React-applicaties uitleggen.
+- De student kan UI-testen schrijven met Playwright.
+- De student kan testen uitvoeren in een browser.
+- De student kan API-aanroepen mocken en tests betrouwbaar en reproduceerbaar maken met fixtures
+- De student kan testresultaten analyseren en interpreteren.
+
+## Inleiding
+
 Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Playwright](https://playwright.dev/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten (m.b.v. [Vitest](https://vitest.dev/)), maar deze testen vallen buiten de scope van deze cursus.
 
 <!--TODO: @Andreas : AI voor de testen toevoegen. Kan je iets aanvangen metPlaywright CLI en Playwright MCP???-->
@@ -832,7 +842,9 @@ pnpm test:ui       # interactieve UI mode
 
 Voeg tests toe aan je eigen project. Test minstens één component of pagina (normale scenarios en edge cases), test een Add functionaliteit, maak in minstens 1 test gebruik van fixtures. Zorg dat je testen geen blijvende wijzigingen veroorzaken in de database.
 
-<!--TODO:ANS-->
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 7 Testen**.
 
 ## Mogelijke extra's voor de examenopdracht
 
