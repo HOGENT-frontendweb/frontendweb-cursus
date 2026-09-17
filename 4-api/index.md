@@ -1170,7 +1170,8 @@ const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
 
 ### Oefening: Refactor de paginatie. Maak een aparte component
 
-<!-- TODO: Andreas: AI voor de refactoring, maar is wel een complex stukje met heel wat denkwerk vooraf-->
+?> Hier gaan we bewust geen AI gebruiken, deze refactor-oefening bevat achterliggend teveel belangrijke kennis die we willen verwerven.
+
 De paginatielogica staat nu volledig in `TransactionList`, wat de component groot en moeilijk leesbaar maakt. Een goede refactor is om de paginatiecontrols (de knoppen en de rijen-selector) te verplaatsen naar een aparte `Pagination`-component.
 
 Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component verhuizen. Die waarden maken deel uit van de SWR-sleutel in `TransactionList` — als ze wijzigen, moet SWR een nieuw request uitsturen. De **state blijft dus in de parent**. De `Pagination`-component krijgt die waarden via props en geeft wijzigingen terug via callback-props (`onPageChange`, `onPageSizeChange`). Dit is het patroon van een **controlled component**: de child toont en reageert op data, maar de parent beslist wat er mee gebeurt.

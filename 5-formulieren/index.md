@@ -327,7 +327,6 @@ pnpm dlx shadcn@latest add field input
 ```
 
 Voeg inputvelden toe voor user ID en amount.
-<!-- TODO: Andreas: AI voor het toevoegen van de inputvelden -->
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -727,8 +726,8 @@ Maak gebruik van de [DatePicker component](https://ui.shadcn.com/docs/components
 ```bash
 pnpm dlx shadcn@latest add field popover calendar
 ```
-<!-- TODO:Andreas: AI voor het toevoegen van de datepicker, laten vragen wat ze stap per stap moeten doen? -->
-En voeg toe aan het formulier.
+
+En voeg toe aan het formulier. Probeer hiervoor AI te gebruiken voor het opstellen van een stappenplan over hoe je dit best aanpakt.
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx

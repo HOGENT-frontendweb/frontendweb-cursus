@@ -115,7 +115,6 @@ We voorzien volgende basisroutes in de voorbeeldapplicatie
 Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL of route plaatsen we in de `pages` map. Maak een map `pages` met daarin een `transactions` map en een `places` map. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan. We kiezen voor een submap daar er later nog extra pagina's zullen toegevoegd worden die gerelateerd zijn aan de `places` en `transactions`.
 
 Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om de About zelf te vullen met tekst, maken we gebruik van AI.
-<!-- TODO: Andreas -->
 > Maak een About component aan in de pages/about folder. De component gebruikt dezelfde styling als PlacesList en bevat naast de titel About, 1 paragraaf met uitleg over de site en gepaste styling. De tekst kan je genereren met ChatGPT of een andere AI tool. De tekst moet in het Engels zijn.
 
 Maak de `About` page aan in de map `src/pages/about`. We maken gebruik van een submap 'about' omdat deze pagina geneste routes zal bevatten die we later zullen implementeren.
@@ -810,7 +809,6 @@ import { NavLink, Link, useLocation } from 'react-router';
 
 We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavMenu` te maken met een optionele `vertical` prop. Voeg de code toe in `Navbar.tsx`.
 
-<!-- TODO: Andreas -->
 Tip: Vraag aan AI om de code van de navigatiebalk op te schonen. Vergelijk de oplossing met onderstaande code.
 
 ```jsx
@@ -1140,7 +1138,6 @@ const [activeTab, setActiveTab] = useState("services")
 
 Hier is `activeTab` dus de bron van waarheid: `value` bepaalt welke tab zichtbaar is en `onValueChange` ontvangt de gekozen tab.
 
-<!-- TODO: Andreas -->
 Tip: je kan ook aan AI vragen om controlled tabs uit te leggen en een voorbeeld te geven.
 
 ### Stap 3: Actieve tab afleiden uit de routing
@@ -1237,11 +1234,11 @@ import './index.css';
 ```
 
 Verwijder de className attributen van de h1-tags in alle page componenten.
-<!-- TODO: Andreas -->
 Merk op dergelijke repititieve taken kan je ook aan AI vragen. Bijvoorbeeld: "Verwijder de className attributen van alle h1-tags in de src/pages folder en subfolders."
 
-<!-- TODO: Andreas: AI stelt iets anders voor die ook werkt -->
 Je krijgt mogelijk de editorwaarschuwing `Unknown at rule @apply.` Dat betekent niet dat je code fout is: VS Code herkent @apply niet standaard als een Tailwind CSS-directive.
+
+!> Mogelijk geeft AI een oplossing die niet overeenkomt met bovenstaande code, maar die wel werkt. Stel je hier de kritische vraag: wat is nu de betere oplossing? Vraag hier wederom telkens naar bronnen en controleer waarom hij voor een oplossing kiest.
 
 Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog niet is gebeurd. Blijft de waarschuwing bestaan, vraag AI naar een oplossing voor deze waarschuwing. Controleer of dit overeenkomt met onderstaande oplossing.
 

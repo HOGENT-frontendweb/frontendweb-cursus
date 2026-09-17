@@ -38,11 +38,11 @@
 
 Vite komt standaard niet met een test framework, dat geeft ons de vrijheid om zelf te kiezen. Wij kiezen hier voor UI testen m.b.v. [Playwright](https://playwright.dev/). Naast UI testen kan je bv. ook unit testen schrijven voor de componenten (m.b.v. [Vitest](https://vitest.dev/)), maar deze testen vallen buiten de scope van deze cursus.
 
-<!--TODO: @Andreas : AI voor de testen toevoegen. Kan je iets aanvangen metPlaywright CLI en Playwright MCP???-->
-
 ## Playwright
 
 [Playwright](https://playwright.dev/) is een end-to-end testframework van Microsoft dat testen uitvoert in een echte browser (Chromium, Firefox of WebKit). In tegenstelling tot oudere tools werkt Playwright niet via een WebDriver maar rechtstreeks via het browserprotocol, wat het sneller en betrouwbaarder maakt. Playwright ondersteunt automatisch wachten op elementen, netwerk-interceptie en het draaien van testen in meerdere browsers tegelijk.
+
+Probeer bij het toepassen van Playwright AI te gebruiken voor het bevragen van documentatie. Hiervoor kan je vragen stellen over het gebruik van Playwright en best practices bij het toepassen.
 
 Om met Playwright aan de slag te gaan, installeer je het als dev dependency en installeer je de browsers:
 
@@ -380,7 +380,12 @@ We passen de `TableRow` component in `Transaction` aan, zodat we kunnen berekene
 <TableRow data-testid="transaction">
 ```
 
-Voeg nu een nieuw bestand `tests/addTransaction.spec.ts` toe:
+Voeg nu een nieuw bestand `tests/addTransaction.spec.ts` toe. We willen een test maken waarbij: 
+1. We eerst kijken hoeveel transactions er reeds bestaan
+2. We een nieuwe transactie toevoegen
+3. We controleren of deze mooi toegevoegd is in de lijst.
+
+Probeer dit eens via AI te laten maken. Vergeet zeker niet om eerst te committen, zodat je steeds terug kan moest AI teveel wijzigingen gemaakt hebben. Zo kan je bovendien ook de gegenereerde code reviewen:
 
 ```ts
 // tests/addTransaction.spec.ts
@@ -508,7 +513,7 @@ Stappenplan
 4. Controleer of de foutboodschap verschijnt. Voeg indien nodig een `data-testid` toe aan de foutboodschap.
 5. Extra: test ook het geval waarbij het veld leeg blijft.
 
-Bekijk de [Playwright assertions documentatie](https://playwright.dev/docs/test-assertions) voor inspiratie.
+Bekijk de [Playwright assertions documentatie](https://playwright.dev/docs/test-assertions) voor inspiratie (of bevraag via AI).
 
 - Oplossing +
 

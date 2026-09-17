@@ -505,7 +505,7 @@ De transactie bevat een `date` als string. We kunnen dit later omzetten naar een
 
 Maak een map `api` met een bestand `mock_data.ts` aan in de `src` map. Later vervangen we deze mock data door API calls.
 
-#### Vraag aan Copilot
+#### Vraag aan AI
 
 > Kan je mock-data genereren met een lijst van transacties, gedefinieerd volgens de interface `Transaction`? Maak hiervoor een constante `TRANSACTION_DATA` aan met twee transacties. Merk op dat `date` in `Transaction` een datum in ISO-stringformaat is.
 
@@ -581,8 +581,7 @@ export default function Transaction() {
 
 `{user}` zorgt ervoor dat de waarde van de variable `user` gerenderd wordt. Met `{ }` kan je eender welke expressie in JavaScript uitvoeren in de HTML, je kan hier geen statements gebruiken (zoals `if`, `for`). De uitvoer van deze code zal gerenderd worden in de HTML.
 
-<!-- TODO: Andreas -->
-> Geen idee wat het verschil is tussen een statement of expression? Check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina of vraag het aan AI. AI is ook uitermate geschikt om documentatie op te zoeken en moeilijke concepten te verduidelijken. Controleer de informatie wel steeds in de officiële documentatie.
+> Geen idee wat het verschil is tussen een statement of expression? Vraag het aan AI, AI is ook uitermate geschikt om documentatie op te zoeken en moeilijke concepten te verduidelijken. Vraag wel steeds naar bronnen, zodat je de informatie wel steeds in de officiële documentatie kan controleren. Is het nog niet duidelijk, check dan eens de [Must read/watch](#must-readwatch) onderaan deze pagina.
 
 Deze component is nog steeds niet herbruikbaar. De data zal natuurlijk van een andere component moeten komen, nu hebben we nog steeds hard gecodeerde informatie. We passen dus aan:
 
@@ -670,6 +669,8 @@ export default App;
 
 De `Transaction` component verwacht momenteel nog drie eenvoudige waarden: een gebruikersnaam, een bedrag en een plaatsnaam. We passen de component aan zodat ze de volledige `user`- en `place`-objecten uit onze `Transaction`-interface als props kan ontvangen.
 
+Vraag AI om het juiste type voor `TransactionProps` te genereren. Maakt die net als onderstaande snippet gebruik van `Omit`? Indien wel, vraag hem eens waarom hij hiervoor kiest. Indien niet, vraag hem eens waarom hij er niet voor kiest, geef zeker als nuance mee dat dat wel je voorkeur geniet.
+
 ```jsx
 // src/components/transactions/Transaction.tsx
 import type { Transaction as TransactionType } from '../../types'; // 👈 1
@@ -685,8 +686,6 @@ export default function Transaction({ user, place, amount }: TransactionProps) {
   );
 }
 ```
-
-<!-- TODO: Andreas kunnen we hier AI gebruiken om het juiste type voor TransactionProps te genereren? -->
 
 1. Importeer de `Transaction` interface. We geven een alias aan deze interface omdat we al een component `Transaction` hebben, zo vermijden we naamconflicten.
 2. `Omit<TransactionType, 'id' | 'date'>` maakt een nieuw type op basis van `TransactionType`, maar zonder de properties `id` en `date`. Omdat `Omit` een samengesteld type teruggeeft, definiëren we `TransactionProps` met `type` in plaats van met `interface`.

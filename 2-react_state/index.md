@@ -10,8 +10,7 @@
 > pnpm dev
 > ```
 
-<!--TODO: Andreas  -->
-> Tip: In dit hoofdstuk komen er veel nieuwe concepten aan bod. Je kan AI gebruiken om concepten uit te leggen en voorbeelden te genereren. Controleer de informatie wel steeds in de officiële documentatie.
+> Tip: In dit hoofdstuk komen er veel nieuwe concepten aan bod. Je kan AI gebruiken om concepten uit te leggen en voorbeelden te genereren. Vraag steeds naar referenties zodat je de informatie steeds kan controleren in de officiële documentatie.
 >
 ## Leerdoelen
 
