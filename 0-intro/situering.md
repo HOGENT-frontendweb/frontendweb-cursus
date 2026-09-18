@@ -23,7 +23,7 @@ De Orion-cursus voor dit olod zal weinig bevatten. Hierin komen enkel de belangr
 
 ### Deadline
 
-> Week 13: vrijdag 18 december 2025 om 23u59
+> Week 13: vrijdag 18 december 2026 om 23u59
 
 Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
