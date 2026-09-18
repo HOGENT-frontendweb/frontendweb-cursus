@@ -18,11 +18,12 @@ Programmeren leer je enkel door het te doen, niet door onze cursus te lezen. Je 
 
 Voor dit olod is er een [examenopdracht](0-intro/examenopdracht.md). Kort gezegd moet je een React-applicatie maken tegen week 13. De voorwaarden van deze app en de examenvorm staan duidelijk in de opdracht. De bijbehorende back-end maak je, indien van toepassing, in het olod Web Services.
 
-De Chamilo-cursus voor dit olod zal weinig bevatten. Hierin komen enkel de belangrijke aankondigingen, een link naar deze cursus en een uploadmodule voor de examenopdracht. Op de Chamilo-cursus zal je ook een link naar de GitHub-classroom zien. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
+<!-- TODO: github classroom vervangen door ??? -->
+De Orion-cursus voor dit olod zal weinig bevatten. Hierin komen enkel de belangrijke aankondigingen, een link naar deze cursus en een uploadmodule voor de examenopdracht. Op de Orion-cursus zal je ook een link naar de GitHub-classroom zien. Zonder repository in deze classroom kunnen wij niet aan je code en kan je hierop dus niet geëvalueerd worden.
 
 ### Deadline
 
-> Week 13: vrijdag 19 december 2025 om 23u59
+> Week 13: vrijdag 18 december 2026 om 23u59
 
 Je weet de deadline, plan je werk goed in! Wacht niet tot de laatste paar weken om te starten, dan zal je gegarandeerd in tijdsnood komen. Tijdens de lessen is ook voldoende tijd om aan de applicatie te werken, maak hier gebruik van!
 
@@ -46,21 +47,23 @@ Er is een voorbeeldapplicatie (stap per stap opgebouwd, zoals in de cursus): <ht
 
 De bijhorende back-end is te vinden op: <https://github.com/HOGENT-frontendweb/webservices-budget>.
 
+<!-- TODO: nog iets vermelden van ANS -->
+
 > Suggesties voor verbeteringen of aanpassingen van schrijffouten zijn altijd welkom! Maak hiervoor een issue of pull request op de GitHub-repository van de cursus: <https://github.com/HOGENT-frontendweb/frontendweb-cursus>.
 
 ## Planning
 
 <!-- TODO: planning updaten -->
 
-Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen.
+Deze planning is een richtlijn en kan nog wijzigen in functie van verlofdagen. In deze cursus zullen we geleidelijk aan TypeScript features introduceren, maar het is aan te raden om zelf ook wat tijd te investeren in het leren van TypeScript.
 
 | Week    | Inhoud                                        |
 | ------- | --------------------------------------------- |
 | week 1  | Inleiding, React Basics                       |
-| week 2  | useState en useMemo                           |
+| week 2  | React state                                   |
 | week 3  | React router                                  |
 | week 4  | Data ophalen van een back-end, useEffect      |
-| week 5  | Formulieren, memo en useCallback              |
+| week 5  | Formulieren                                   |
 | week 6  | Context API                                   |
 | week 7  | Testen                                        |
 | week 8  | (geen nieuwe theorie, aan de opdracht werken) |
@@ -91,29 +94,3 @@ Als dat niets oplevert, kan je op twee manieren hulp krijgen:
 - Om elke student evenveel te kunnen helpen, mag je maximaal 3 issues openen
 
 **Belangrijk:** Technische vragen via e-mail worden niet beantwoord. Gebruik altijd de bovenstaande kanalen voor de beste en snelste hulp.
-
-## Mag ik AI gebruiken?
-
-?> Voor dit olod hanteren we level 3 van de [AI Assessment Scale](https://arxiv.org/pdf/2412.09029). Probeer wel eerst zelf een oplossing te vinden m.b.v. traditionele bronnen alvorens AI tools te gebruiken, zie bv. <https://www.vaia.be/nl/blog/hoe-vervuilend-is-ai>.
-
-**Wat mag je met AI tools:**
-
-- Code genereren en laten uitleggen
-- Documentatie schrijven (dossier, README)
-- Testdata genereren
-- Concepten laten uitleggen die je niet begrijpt
-- Brainstormen over ideeën voor je project
-- Debugging hulp en foutboodschappen laten uitleggen
-
-**Belangrijke voorwaarden:**
-
-- Je moet alle gegenereerde code grondig begrijpen
-- Je bent volledig verantwoordelijk voor de kwaliteit en correctheid
-- Je moet de code kunnen uitleggen tijdens de demo (bv. je extra technologie)
-- Je mag niet blindelings code kopiëren zonder te begrijpen wat het doet
-
-**Tijdens de evaluatie:**
-
-- Je moet kunnen uitleggen hoe je code werkt
-- Je moet kunnen aantonen dat je de gebruikte technologieën begrijpt
-- AI-hulp vermelden in je dossier wordt gewaardeerd maar is niet verplicht
