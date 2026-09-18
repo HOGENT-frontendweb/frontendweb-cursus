@@ -1067,7 +1067,7 @@ Experimenteer al een beetje met componenten, props, etc. en commit je wijziginge
 
 > 💡 Tip: begin **_niet_** met het maken van een login- of registratiecomponent. Dat is niet belangrijk en kopieert iedereen toch van onze voorbeeldoplossing, steek er in het begin dus je tijd niet in. Het is niet zoveel werk om deze componenten in een latere fase toe te voegen.
 
-## Oefening 2 - To do app
+<!-- ## Oefening 2 - To do app
 
 Creëer zelf een simpele to do app zoals in onderstaande screenshot. Gebruik een `TodoItem` component en render deze meerdere malen op basis van de data uit een lijst.
 
@@ -1095,12 +1095,12 @@ note left of TodoItemProps::done
 end note
 @enduml
 ```
-
+-->
 <!-- markdownlint-disable-next-line -->
-
+<!--
 - Oplossing +
 
-  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>.
+  Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>. -->
 
 ## ANS
 

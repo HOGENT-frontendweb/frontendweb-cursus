@@ -1548,12 +1548,13 @@ Verwijder de README.md in je frontend map - de README.md in de root is voldoende
 
 Probeer de challenges op [https://react.dev/learn/keeping-components-pure](https://react.dev/learn/keeping-components-pure).
 
+<!--
 ## Oefening 7 - To do app
 
 Zorg ervoor dat de checkbox in de To do app (zie oefening 2 van vorige les) aan en uit gevinkt kan worden.
-
+-->
 <!-- markdownlint-disable-next-line -->
-
+<!--
 - Oplossing +
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/frontendweb-ch1-solution>. Ga naar de branch `oplossingLes2`
@@ -1575,13 +1576,13 @@ Dit zijn alle mogelijke uitkomsten van het spel:
 ![SnakeEyes mogelijke uitkomsten](./images/SnakeEyes.png ':size=80%')
 
 Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je ontwerpt en hoe je deze implementeert.
-
+-->
 <!-- markdownlint-disable-next-line -->
-
+<!--
 - Oplossing +
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/SnakeEyes>.
-
+-->
 ## ANS
 
 Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 2 React State**.
