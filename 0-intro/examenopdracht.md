@@ -106,7 +106,7 @@ In deze opdracht vermeld je:
 - het groepsnummer (zoals vermeld in Orion);
 - je naam en voornaam
 - de URL van de GitHub-repository die je hebt aangemaakt op basis van de aangeboden template (zie [sectie 10](#10-aanmaken-van-de-repository));
-- je publieke SSH-sleutel (niet de private sleutel) (zie [sectie 11](#11-ssh-sleutel-aanmaken)).
+- je publieke SSH-sleutel (niet de private sleutel) (zie [sectie 11](#11-aanmaken-van-de-ssh-sleutel)).
 
 Beide studenten moeten de ANS-opdracht afzonderlijk indienen.
 

@@ -808,7 +808,3 @@ Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web De
 - Gebruik van een externe authenticatieprovider (bv. [Auth0](https://auth0.com/), [Userfront](https://userfront.com/)...)
 - Voeg een wachtwoordsterkte-indicator toe
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
-
-```
-
-```

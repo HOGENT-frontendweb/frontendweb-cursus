@@ -380,7 +380,8 @@ We passen de `TableRow` component in `Transaction` aan, zodat we kunnen berekene
 <TableRow data-testid="transaction">
 ```
 
-Voeg nu een nieuw bestand `tests/addTransaction.spec.ts` toe. We willen een test maken waarbij: 
+Voeg nu een nieuw bestand `tests/addTransaction.spec.ts` toe. We willen een test maken waarbij:
+
 1. We eerst kijken hoeveel transactions er reeds bestaan
 2. We een nieuwe transactie toevoegen
 3. We controleren of deze mooi toegevoegd is in de lijst.
