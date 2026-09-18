@@ -5,10 +5,20 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 f67787f
+> git checkout -b les3 58ab2f6
 > pnpm install
 > pnpm dev
 > ```
+
+## Leerdoelen
+
+- de student kan React Router installeren en configureren met BrowserRouter;
+- de student kan routes definiëren en verschillende pagina’s tonen binnen een React-applicatie;
+- de student kan navigeren tussen pagina’s met links, actieve links en programmatische navigatie;
+- de student kan geneste routes, layoutcomponenten, redirects en URL-parameters gebruiken;
+- de student kan routing toepassen voor dynamische pagina’s, tabs en detailpagina’s.
+
+## Inleiding
 
 Zoals je al weet, maken we met React een Single Page Application (SPA). Daardoor bestaat onze applicatie uit slechts één `index.html`. In deze HTML-pagina worden alle door Vite gegenereerde scripts en stylesheets geïnjecteerd.
 
@@ -18,9 +28,9 @@ Daarnaast is React een library en geen framework, zoals bv. Angular dat wel is. 
 
 ## React Router
 
-React Router wordt aangeboden via de npm repository en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om react routes op een eenvoudige manier te definiëren.
+React Router wordt aangeboden via de npm registry en biedt routing aan voor zowel React als React Native. React Router komt in 3 modes. We kiezen voor de 'data' mode ([meer info hier](https://reactrouter.com/start/modes)). Deze mode biedt de mogelijkheid om React routes op een eenvoudige manier te definiëren, en biedt daarnaast ook nog extra features zoals data loading, error handling, etc. We zullen in deze cursus enkel gebruik maken van de basisfeatures van React Router, maar we raden aan om zeker eens te kijken naar de extra features die deze mode te bieden heeft.
 
-Installeer React Router [Zie de documentatie.](https://reactrouter.com/start/data/installation)
+Installeer React Router ([zie documentatie](https://reactrouter.com/start/data/installation)).
 
 ```bash
 pnpm add react-router
@@ -45,7 +55,7 @@ De [`BrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-rout
 
 Een probleem hierbij is dat browsers standaard refreshen wanneer de URL na de `/` wijzigt. In dit geval zal `react-router` dit probleem opvangen en voorkomen.
 
-Het voordeel met dit soort routers is dat je webapplicatie werkt zoals een _old-school website_, met alle features die een URL te bieden heeft.
+Het voordeel van dit soort routers is dat je webapplicatie werkt zoals een _old-school website_, met alle features die een URL te bieden heeft.
 
 ### HashRouter
 
@@ -57,30 +67,29 @@ Dit heeft als voordeel dat de browser by default niet zal refreshen. Het nadeel 
 
 `HashRouter` wordt typisch weinig gebruikt, we raden aan om `BrowserRouter` te gebruiken. Let hierbij op dat je de routers uit de data API kiest, dus via de functies [`createBrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) en [`createHashRouter`](https://reactrouter.com/en/main/routers/create-hash-router) en niet via de gelijknamige componenten.
 
-Naast deze twee types zijn er nog andere beschikbaar, [lees meer in de documentatie](https://reactrouter.com/6.26.0/routers/picking-a-router).
+Naast deze twee types zijn er nog andere beschikbaar, [lees meer in de documentatie](https://reactrouter.com/start/modes).
 
 ### In de voorbeeldapplicatie
 
-De voorbeeldapplicatie zal gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerste route. We doen dit in `main.jsx`, het startpunt van de app:
+De voorbeeldapplicatie zal gebruik maken van een `BrowserRouter`. We dienen eerst een router toe te voegen aan de app. We voegen hiervoor een [Browser Router](https://reactrouter.com/en/main/routers/create-browser-router) toe en configureren onze eerste route. We doen dit in `main.tsx`, het startpunt van de app:
 
 ```jsx
-// src/main.jsx
+// src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
 import './index.css';
-import { createBrowserRouter } from 'react-router';// 👈
-import { RouterProvider } from 'react-router/dom'; // 👈
+import App from './App.tsx';
+import { RouterProvider, createBrowserRouter } from 'react-router'; // 👈
 
 // 👇
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: App,
+    element: <App />,
   },
 ]);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
     {/* 👈 */}
@@ -88,101 +97,107 @@ createRoot(document.getElementById('root')).render(
 );
 ```
 
-[createBrowserRouter](https://reactrouter.com/api/data-routers/createBrowserRouter#createbrowserrouter) creëert een `DataRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [RouteObject](https://reactrouter.com/start/data/route-object) objecten mee. Deze koppelen een URL (`path`) aan een component (`Component`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/api/data-routers/RouterProvider#routerprovider).
+[createBrowserRouter](https://reactrouter.com/api/data-routers/createBrowserRouter#createbrowserrouter) creëert een `DataRouter` die zal functioneren als een `BrowserRouter`. De `BrowserRouter` gebruikt de DOM History API om een URL aan te passen en beheert de history stack. We geven een array met [RouteObject](https://reactrouter.com/start/data/route-object) objecten mee. Deze koppelen een URL (`path`) aan een component (`element`). De `router` moeten we doorgeven aan de [RouterProvider](https://reactrouter.com/api/data-routers/RouterProvider#routerprovider).
 
 In dit voorbeeld configureren we een enkele route die de `App` component toont wanneer de URL `/` is. We zullen later meer routes toevoegen.
 
-Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`, deze moet dus de root-component zijn van de applicatie.
+Alle routes van de applicatie moeten doorgegeven worden aan de `RouterProvider`. Deze moet dus de root-component zijn van de applicatie.
 
 ## Routes definiëren
 
-We voorzien volgende basis routes in de voorbeeldapplicatie
+We voorzien volgende basisroutes in de voorbeeldapplicatie
 
-- `/`: de home page (`App.jsx`) met links naar de andere pagina's (later voegen we een navigatiebalk toe)
+- `/`: de home page (`App.tsx`) met links naar de andere pagina's (later voegen we een navigatiebalk toe)
 - `/transactions`: een lijst van transacties
 - `/places`: een lijst van places
 - `/about`: over ons pagina
 
-Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie plaatsen we in de `pages` map. Maak een map `pages` aan met daarin de mappen `places` en `transactions`. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan. Voeg een titel toe aan de PlacesList component.
+Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL of route plaatsen we in de `pages` map. Maak een map `pages` met daarin een `transactions` map en een `places` map. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan. We kiezen voor een submap daar er later nog extra pagina's zullen toegevoegd worden die gerelateerd zijn aan de `places` en `transactions`.
 
-Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om deze zelf te vullen met tekst, gaan we gebruik maken van `@faker-js/faker`.
+Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om de About zelf te vullen met tekst, maken we gebruik van AI.
+> Maak een About component aan in de pages/about folder. De component gebruikt dezelfde styling als PlacesList en bevat naast de titel About, 1 paragraaf met uitleg over de site en gepaste styling. De tekst kan je genereren met ChatGPT of een andere AI tool. De tekst moet in het Engels zijn.
 
-Installeer dit package:
-
-```bash
-pnpm add @faker-js/faker
-```
-
-Maak de `About` page aan:
+Maak de `About` page aan in de map `src/pages/about`. We maken gebruik van een submap 'about' omdat deze pagina geneste routes zal bevatten die we later zullen implementeren.
 
 ```jsx
-// src/pages/about/About.jsx
-import { faker } from '@faker-js/faker';
-
-const About = () => (
-  <div>
-    <h1 className="text-4xl mb-4">Over ons</h1>
-    <div>
-      <p className="mb-4">{faker.lorem.paragraph(10)}</p>
-      <p>{faker.lorem.paragraph(10)}</p>
-    </div>
-  </div>
-);
+// src/pages/about/About.tsx
+const About = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>About</h1>
+      <p className="text-muted-foreground leading-relaxed max-w-2xl">
+        This website gives you a clear and friendly way to keep track of your
+        budget. Browse your transactions, explore your favorite places, and
+        manage your financial overview in one simple space designed to make
+        everyday budgeting feel more organized.
+      </p>
+    </>
+  );
+};
 
 export default About;
 ```
 
-Maak de `NotFound` page aan
+Maak de `NotFound` page aan. Installeer eerst de `Alert` component van shadcn:
 
-```jsx
-// src/pages/NotFound.jsx
-const NotFound = () => {
-  return (
-    <div>
-      <h1 className="text-4xl mb-4">Pagina niet gevonden</h1>
-      <p>Er is geen pagina op deze url, probeer iets anders.</p>
-    </div>
-  );
-};
-
-export default NotFound;
+```bash
+pnpm dlx shadcn@latest add alert
 ```
 
-Nu we de nodige pagina's hebben, hoeven we enkel nog de routes te configureren. Hiervoor gaan we naar de `main.jsx` en voegen de extra routes toe.
+En voeg dan onderstaande component toe:
 
 ```jsx
-// src/main.jsx
+// src/pages/NotFound.tsx
+import { Alert, AlertDescription } from '@/components/ui/alert';
+
+export default function NotFound() {
+  return (
+    <>
+      <h1 className='text-3xl font-semibold mb-4'>Not found</h1>
+      <Alert variant='destructive'>
+        <AlertDescription>
+          There is no page at this url. Try something else.
+        </AlertDescription>
+      </Alert>
+    </>
+  );
+}
+```
+
+Nu we de nodige pagina's hebben, hoeven we enkel nog de routes te configureren. Hiervoor gaan we naar de `main.tsx` en voegen de extra routes toe.
+
+```jsx
+// src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
-import { createBrowserRouter } from 'react-router';
-import { RouterProvider } from 'react-router/dom';
-import TransactionList from './pages/transactions/TransactionsList.jsx'; // 👈 1
-import PlacesList from './pages/places/PlacesList.jsx'; // 👈 1
-import NotFound from './pages/NotFound.jsx'; // 👈 1
-import About from './pages/about/About.jsx'; // 👈 1
+import './index.css';
+import App from './App.tsx';
+import { RouterProvider, createBrowserRouter } from 'react-router';
+import TransactionList from './pages/transactionsTransactionList'; // 👈 1
+import PlacesList from './pages/places/PlacesList'; // 👈 1
+import About from './pages/about/About'; // 👈 1
+import NotFound from './pages/NotFound'; // 👈 1
 
-// 👇
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: App,
+    element: <App />,
   },
-  { path: 'transactions', Component: TransactionList }, // 👈 2
-  { path: 'places', Component: PlacesList }, // 👈 2
-  { path: 'about', Component: About }, // 👈 2
-  { path: '*', Component: NotFound }, // 👈 3
+  { path: '/transactions', element: <TransactionList /> }, // 👈 2
+  { path: '/places', element: <PlacesList /> }, // 👈 2
+  { path: '/about', element: <About /> }, // 👈 2
+  { path: '*', element: <NotFound /> }, // 👈 3
 ]);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
 );
 ```
 
-1. Importeer de gewenste componenten (Merk op dat we de extensie `.jsx` expliciet moeten meegeven bij de imports van de componenten in de `pages` map. Dit is een eigenaardigheid van Vite).
-2. Vul de array met route objecten aan, één voor elke route. We geven telkens de component die getoond moet worden mee aan de optie `Component`. Wanneer de URL in de browser wijzigt, zal de `RouterProvider` doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van het `RouteObject`.
+1. Importeer de gewenste componenten.
+2. Vul de array met route objecten aan, één voor elke route. We geven telkens de component die getoond moet worden mee aan de optie `element`. Wanneer de URL in de browser wijzigt, zal de `RouterProvider` doorheen zijn routes zoeken naar een geschikte match. Een route definiëren we door gebruik te maken van het `RouteObject`. We geven een absoluut pad mee aan de `path` optie, dit pad begint altijd met een `/`.
 3. Dit zorgt ervoor dat de `NotFound` component getoond wordt indien de gebruiker op een URL uitkomt die niet bestaat. **Test dit zelf eens uit!**
    - Deze route hoeft niet als laatste staan. Waarom? React Router zoekt de meest exacte match en `*` is veel te algemeen.
 
@@ -195,23 +210,32 @@ Uit de route voor de `NotFound` component blijkt dat je ook reguliere expressies
 Om te navigeren tussen pagina's kunnen we gebruik maken van de `Link` component. Pas de `App` component als volgt aan:
 
 ```jsx
-// src/App.jsx
-import { Link } from 'react-router';
+// src/App.tsx
+import { Link } from 'react-router'; //👈
 
 function App() {
   return (
-    <div className="mx-4">
-      <h1 className="text-4xl mb-4">Welkom!</h1>
-      <p>Kies één van de volgende links:</p>
+    <div className='bg-white text-gray-900 m-3'>
+      <h1 className='text-2xl font-bold text-center mb-4'>My Budget App</h1>
+      <p>Choose one of the following links:</p>
       <ul>
         <li>
-          <Link to='/transactions' className="text-blue-600 underline">Transacties</Link> {/* 👈 */}
+          {/* 👇 */}
+          <Link to='/transactions' className='text-blue-600 underline'>
+            Transactions
+          </Link>
         </li>
         <li>
-          <Link to='/places' className="text-blue-600 underline">Plaatsen</Link> {/* 👈 */}
+          {/* 👇 */}
+          <Link to='/places' className='text-blue-600 underline'>
+            Places
+          </Link>
         </li>
         <li>
-          <Link to='/about' className="text-blue-600 underline">Over ons</Link> {/* 👈 */}
+          {/* 👇 */}
+          <Link to='/about' className='text-blue-600 underline'>
+            About us
+          </Link>
         </li>
       </ul>
     </div>
@@ -228,20 +252,25 @@ Je geeft de URL waarnaar genavigeerd moet worden mee aan de `to` prop. Achter de
 Om eigenschappen over de huidige route op te vragen bestaat de hook `useLocation`. Pas de `NotFound` component aan:
 
 ```jsx
-// src/pages/NotFound.jsx
+// src/pages/NotFound.tsx
 import { useLocation } from 'react-router'; // 👈
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
-const NotFound = () => {
+export default function NotFound() {
   const { pathname } = useLocation(); // 👈
 
   return (
-    <div>
-      <h1 className="text-4xl mb-4">Pagina niet gevonden</h1>
-      <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p> {/* 👈 */}
-    </div>
+    <>
+      <h1 className='text-3xl font-semibold mb-4'>Not found</h1>
+      <Alert variant='destructive'>
+        {/* 👇 */}
+        <AlertDescription>
+          There is nothing at {pathname}, try something else.
+        </AlertDescription>
+      </Alert>
+    </>
   );
-};
-export default NotFound;
+}
 ```
 
 Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
@@ -253,126 +282,155 @@ Deze hook retourneert nog diverse keys, **lees hierover volgende documentatie:**
 
 ## Routes nesten
 
-Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We voegen enkele links toe aan onze `About` component:
+Je kan [geneste routes](https://reactrouter.com/start/data/routing#nested-routes) creëren om complexe UI-structuren te ondersteunen, waarbij een component subcomponenten heeft die worden weergegeven op basis van de URL. We willen nog drie extra routes die starten met `/about`: `/about/services`, `/about/history` en `/about/location`. We passen de about page aan zodat de actieve tab uit de link gehaald kan worden.
 
 ```jsx
-// src/pages/about/About.jsx
-import { faker } from '@faker-js/faker';
-import { Link } from 'react-router';// 👈
+// src/pages/about/About.tsx
+import { Link } from 'react-router';
 
-const About = () => (
-  <div>
-    <h1 className="text-4xl mb-4">Over ons</h1>
-    <div>
-      <p className="mb-4">{faker.lorem.paragraph(10)}</p>
-      <p>{faker.lorem.paragraph(10)}</p>
-    </div>
-    <ul  className="p-4 mb-4">
-      <li>
-        <Link to='/about/services' className="text-blue-600 underline">Onze diensten</Link> {/* 👈 */}
-      </li>
-      <li>
-        <Link to='/about/history' className="text-blue-600 underline">Geschiedenis</Link> {/* 👈 */}
-      </li>
-      <li>
-        <Link to='/about/location' className="text-blue-600 underline">Locatie</Link> {/* 👈 */}
-      </li>
-    </ul>
-  </div>
-);
+const About = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>About</h1>
+      <p className="text-muted-foreground leading-relaxed max-w-2xl">
+        This website gives you a clear and friendly way to keep track of your
+        budget. Browse your transactions, explore your favorite places, and
+        manage your financial overview in one simple space designed to make
+        everyday budgeting feel more organized.
+      </p>
+      <ul className='p-4 mb-4'>
+        <li>
+          {/* 👇 */}
+          <Link to='/about/services' className='text-blue-600 underline'>
+            Services
+          </Link>
+        </li>
+        <li>
+          {/* 👇 */}
+          <Link to='/about/history' className='text-blue-600 underline'>
+            History
+          </Link>
+        </li>
+        <li>
+          {/* 👇 */}
+          <Link to='/about/location' className='text-blue-600 underline'>
+            Location
+          </Link>
+        </li>
+      </ul>
+    </>
+  );
+}
 
 export default About;
 ```
 
-En we voegen deze pagina's toe aan `About.jsx`.
+En we voegen deze pagina's toe aan `About.tsx`.
 
 ```jsx
-export const Services = () => (
-  <div>
-    <h1 className="text-4xl mb-4">Onze diensten</h1>
-    <p>{faker.lorem.paragraph(10)}</p>
-  </div>
-);
+export const Services = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Services</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+        posuere erat a ante venenatis dapibus posuere velit aliquet.
+      </p>
+    </>
+  );
+};
 
-export const History = () => (
-  <div>
-    <h1 className="text-4xl mb-4">Geschiedenis</h1>
-    <p>{faker.lorem.paragraph(10)}</p>
-  </div>
-);
+export const History = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>History</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
+        consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed
+        consectetur.
+      </p>
+    </>
+  );
+};
 
-export const Location = () => (
-  <div>
-    <h1 className="text-4xl mb-4">Locatie</h1>
-    <p>{faker.lorem.paragraph(10)}</p>
-  </div>
-);
+export const Location = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Location</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed odio
+        dui. Maecenas faucibus mollis interdum. Nullam id dolor id nibh
+        ultricies vehicula ut id elit.
+      </p>
+    </>
+  );
+};
 ```
 
 Daarna passen we de definitie van `/about` aan, de drie nieuwe routes dienen als kind van de `/about` route te worden aangemaakt (vergeet de nodige imports niet):
 
 ```jsx
-// src/main.jsx
+// src/main.tsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App.jsx';
-import { createBrowserRouter } from 'react-router';
-import { RouterProvider } from 'react-router/dom';
-import TransactionList from './pages/transactions/TransactionList';
-import PlacesList from './pages/places/PlacesList';
-import NotFound from './pages/NotFound';
-import About, { Services, History, Location } from './pages/about/About.jsx'; // 👈
+import './index.css';
+import App from './App.tsx';
+import { RouterProvider, createBrowserRouter } from 'react-router';
+import TransactionList from './pages/transactionsTransactionList.tsx';
+import PlacesList from './pages/places/PlacesList.tsx';
+import NotFound from './pages/NotFound.tsx';
+import About, { Services, History, Location } from './pages/about/About.tsx'; // 👈
 
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: App,
+    element: <App />,
   },
-  { path: 'transactions', Component: TransactionList },
-  { path: 'places', Component: PlacesList },
+  { path: '/transactions', element: <TransactionList /> },
+  { path: '/places', element: <PlacesList /> },
   {
-    path: 'about',
-    Component: About,
+    path: '/about',
+    element: <About />,
     children: [
       {
         path: 'services',
-        Component: Services,
+        element: <Services />,
       },
       {
         path: 'history',
-        Component: History,
+        element: <History />,
       },
       {
         path: 'location',
-        Component: Location,
+        element: <Location />,
       },
     ], // 👆
   },
-  { path: '*', Component: NotFound },
+  { path: '*', element: <NotFound /> },
 ]);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <RouterProvider router={router} />
   </StrictMode>,
 );
 ```
 
-Nu willen we de subroutes `/about/services`, `/about/history` en `/about/location` tonen op de `About` component. Met andere woorden `About` moet altijd getoond worden met `Onze diensten`, `Geschiedenis` of `Locatie` onderaan deze component. Hiervoor bestaat de `Outlet` component van React Router ([bekijk de documentatie](https://reactrouter.com/en/main/components/outlet)).
+Nu willen we de subroutes `/about/services`, `/about/history` en `/about/location` tonen op de `About` component. Met andere woorden `About` moet altijd getoond worden met `Services`, `History` of `Location` onderaan deze component. Hiervoor bestaat de `Outlet` component van React Router ([bekijk de documentatie](https://reactrouter.com/en/main/components/outlet)). We werken hier met relatieve routes, dit betekent dat we geen `/` moeten toevoegen aan het begin van het pad van de subroutes. React Router zal automatisch de URL van de ouder-route (`/about`) combineren met het pad van de subroute (`services`, `history` of `location`) om zo de volledige URL te vormen.
 
 Voeg onderaan de `About` component de `Outlet` toe:
 
 ```jsx
-// src/about/About.jsx
+// src/pages/about/About.tsx
 import { Outlet, Link } from 'react-router'; // 👈
 
 // ...
 
 const About = () => (
-  <div>
+  <>
     {/* ... */}
     <Outlet /> {/* 👈 */}
-  </div>
+  </>
 );
 
 // ...
@@ -380,7 +438,7 @@ const About = () => (
 
 ## Redirects
 
-Stel we willen dat gebruikers die naar `/services` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.jsx`:
+Stel we willen dat gebruikers die naar `/services` navigeren naar `/about/services` doorgestuurd worden. Daarvoor voeg je volgende route toe aan de `main.tsx`:
 
 ```jsx
 import { Navigate } from 'react-router';
@@ -389,10 +447,10 @@ import { Navigate } from 'react-router';
 const router = createBrowserRouter([
   // ...
   {
-    path: 'services',
+    path: '/services',
     element: <Navigate to='/about/services' replace />,
   },
-  { path: '*', Component: NotFound },
+  { path: '*', element: <NotFound /> },
 ]);
 
 // ...
@@ -400,33 +458,50 @@ const router = createBrowserRouter([
 
 Deze route rendert de `Navigate` component wanneer de gebruiker naar `/services` navigeert. Deze component is onderdeel van React Router en zal naar de URL in de `to` prop navigeren. De `replace` prop zorgt ervoor dat de URL `/services` vervangen wordt en bijgevolg verwijderd wordt uit de geschiedenis. Daarom kunnen we dus niet meer terugkeren naar `/services`, gebruikmakend van de terugknop van de browser.
 
-## URL parameters
-
-In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. De URL `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam aanklikbaar te zijn zodat we naar de detail van een plaats kunnen navigeren.
-
-Maak een component `PlaceDetail.jsx` aan in de folder `/src/pages/places`.
-
-Definieer de nieuwe route in `main.jsx`:
+Als we naar de `/about` pagina navigeren, zal de `About` component getoond worden. Omdat er geen subroute opgegeven is, zal de `Outlet` component niets tonen. Wanneer we naar `/about/services` navigeren, zal de `Services` component getoond worden in de `Outlet` van de `About` component. We willen nu dat gebruikers die naar `/about` navigeren automatisch doorgestuurd worden naar `/about/services`. Hiervoor voegen we een extra route toe die `/about` matcht en de `Navigate` component rendert:
 
 ```jsx
-import PlaceDetail from './pages/places/PlaceDetail.jsx';
-//...
-{
-  path: 'places',
+{ path: '/about',
+  element: <About />,
   children: [
     {
       index: true,
-      Component: PlacesList,
+      element: <Navigate to='/about/services' replace />,
+    },
+    // ...
+  ],
+}
+```
+
+Deze route heeft de `index` optie meegegeven. Dit betekent dat deze route getoond wordt wanneer er geen subroute opgegeven is, dus wanneer we naar `/about` navigeren. De `Navigate` component zal ons dan automatisch doorsturen naar `/about/services`.
+
+## URL parameters
+
+In sommige gevallen wil je ook stukken in de URL kunnen invullen met bv. een id van een entiteit. De URL `/places/:id` geeft de details van één place weer. Hiervoor dient elke plaatsnaam aanklikbaar te zijn zodat we naar de details van een plaats kunnen navigeren.
+
+Maak een component `PlaceDetail.tsx` aan in de folder `/src/pages/places`. We plaatsen deze component in de `places` map omdat deze component een child is van de `PlacesList` component.
+
+Definieer de nieuwe route in `main.tsx`:
+
+```jsx
+import PlaceDetail from './pages/places/PlaceDetail.tsx';
+// ...
+{
+  path: '/places',
+  children: [
+    {
+      index: true,
+      element: <PlacesList />,
     },
     {
       path: ':id',
-      Component: PlaceDetail,
+      element: <PlaceDetail />,
     },
   ],
 }
 ```
 
-De eerste route is een index-route die enkel getoond wordt op `/places`. Bij de eerste route valt op dat we een `index` optie meegeven. Zonder deze optie kunnen we niet navigeren naar `/`, wat de zogenaamde index-pagina is. Per definitie deelt een route met `index` hetzelfde pad als zijn ouder-route. De tweede route zal getoond worden wanneer een id (eigenlijk eender welke string) opgegeven wordt na `/places`, bv. `/places/1` maar ook `/places/foo`.
+De eerste route is een index-route die enkel getoond wordt op `/places`. Bij de eerste route valt op dat we een `index` optie meegeven. Zonder deze optie kunnen we niet navigeren naar `/places`, wat de zogenaamde index-pagina is voor deze route. Per definitie deelt een route met `index` hetzelfde pad als zijn ouder-route. De tweede route zal getoond worden wanneer een id (eigenlijk eender welke string) opgegeven wordt na `/places`, bv. `/places/1` maar ook `/places/foo`.
 
 Om dit id op te halen uit de URL maken we gebruik van de `useParams` hook. Deze hook retourneert een object van key/value pairs met alle URL parameters met hun waarde uit de huidige URL. Deze hook zal een nieuw object retourneren telkens wanneer een URL parameter wijzigt.
 
@@ -437,11 +512,11 @@ Stel we hebben volgende routes gedefinieerd:
 ```jsx
 {
   path: '/places/:id',
-  Component: PlaceDetail
+  element: <PlaceDetail />,
 },
 {
   path: '/posts/:year/:month',
-  Component: Posts
+  element: <Posts />,
 }
 ```
 
@@ -469,37 +544,40 @@ Wanneer we navigeren naar `/posts/2021/1`, dan zal de `Posts` component getoond 
 We moeten nog enkel de `PlaceDetail` component implementeren zodat we de details van een place kunnen tonen (later halen we ook de bijhorende transacties op).
 
 ```jsx
-// src/pages/places/PlaceDetail.jsx
+// src/pages/places/PlaceDetail.tsx
 import { useParams } from 'react-router';
 import { PLACE_DATA } from '../../api/mock_data';
 
 const PlaceDetail = () => {
-  const { id } = useParams();
-  const idAsNumber = Number(id);
+  const { id } = useParams<{ id: string }>();// 👈 1
+  const idAsNumber = Number(id);// 👈 1
 
-  const place = PLACE_DATA.find((p) => p.id === idAsNumber);
+  const place = PLACE_DATA.find((p) => p.id === idAsNumber);// 👈 2
 
+  // 👇 3
   if (!place) {
     return (
-      <div>
-        <h1 className="text-4xl mb-4">Plaats niet gevonden</h1>
-        <p>Er is geen plaats met id {id}.</p>
-      </div>
+      <>
+        <h1 className='text-2xl font-semibold mb-6'>Place not found</h1>
+        <p>No place was found with id {id}.</p>
+      </>
     );
   }
 
   return (
-    <div>
-      <h1 className="text-4xl mb-4">{place.name}</h1>
-      <p>Hier komen de transacties van {place.name}</p>
-    </div>
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Place {place.name}</h1>
+      <p>Transactions for {place.name} will appear here.</p>
+    </>
   );
 };
 
 export default PlaceDetail;
 ```
 
-Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`. Daarna zoekt het een plaats met het opgegeven id. Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
+1. Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`.
+2. Daarna zoekt deze een plaats met het opgegeven id.
+3.Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
 
 ### Oefening 1 - Navigeren naar een place
 
@@ -512,295 +590,331 @@ Pas hiervoor de code in de component `Place` aan.
   We moeten enkel de naam van de place omvormen naar een link. Dit doen we met de `Link` component van React Router.
 
   ```jsx
-  // src/components/places/Place.jsx
+  // src/components/places/Place.tsx
   import { Link } from 'react-router';
-  //...
-  <h5 className="text-xl font-medium mb-2">
-    <Link className="text-blue-600 underline" to={`/places/${id}`}>{name}</Link>
-  </h5>
-  //...
+  // ...
+  <CardTitle className='text-base'>
+    <Link to={`/places/${id}`} className='hover:underline'>
+      {name}
+    </Link>
+  </CardTitle>;
+  // ...
   ```
 
 ## De Layout component
 
-Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk wordt getoond op elke pagina. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/pages` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de onderliggende routes.
+Nu willen we een navigatiebalk toevoegen aan de website (we houden het heel eenvoudig). Deze navigatiebalk wordt getoond op elke pagina. Om globale layout voor de app toe te voegen maak je een `Layout` component aan in de `src/components` map. Deze bevat de navigatiebalk en de `Outlet` component voor de weergave van de onderliggende routes.
 
 ```jsx
-// src/pages/Layout.jsx
+// src/components/Layout.tsx
 import { Outlet } from 'react-router';
-import Navbar from '../components/Navbar';
+import Navbar from './Navbar';
 
 export default function Layout() {
   return (
-    <div className='container-xl'>
+    <div className='min-h-screen bg-background text-foreground'>
       <Navbar />
-      <div className='p-4'>
+      <main className='container mx-auto px-4 py-6 max-w-5xl'>
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 }
 ```
 
+We kiezen voor een maximale breedte rond 1024px. Dit houdt tabellen, formulieren en tekst goed leesbaar op brede schermen.
+
 ### De navbar
 
-De `Navbar` component voorziet in het menu. We maken een responsive menu.
+De `Navbar` component voorziet in het menu. We maken een responsive menu gebruikmakend van de [NavigationMenu](https://ui.shadcn.com/docs/components/radix/navigation-menu) van shadcn.
 
 ```jsx
-// src/components/Navbar.jsx
+// src/components/Navbar.tsx
 import { Link } from 'react-router';
 import { useState } from 'react';
-import { BsFillPiggyBankFill } from 'react-icons/bs';
+import { PiggyBankIcon, Menu, X } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu';
+
+const links = [
+  { to: '/transactions', label: 'Transactions' },
+  { to: '/places', label: 'Places' },
+  { to: '/about', label: 'About' },
+];
 
 export default function Navbar() {
-
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);// 👈1
-
-  const toggleNavbar = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-  };// 👈1
+  const [isOpen, setIsOpen] = useState(false); // 👈1
 
   return (
-    <>
-      <nav className="relative px-4 py-4 flex justify-between items-center bg-gray-200">
+    <header className='sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur'>
+      <div className='container mx-auto flex h-14 max-w-5xl items-center px-4'>
+        <Link
+          to='/transactions'
+          className='flex items-center gap-2 font-semibold text-primary mr-6'
+        >
+          <PiggyBankIcon className='size-5' />
+          Budget
+        </Link>
 
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center text-blue-600 hover:text-blue-800">
-            <BsFillPiggyBankFill size={28} className="text-blue-600" />
-            <span className="font-semibold text-lg pl-2">Budget</span>
-          </Link>
+        {/* Desktop nav */}
+        <div className='hidden md:flex flex-1'>
+          <NavigationMenu>
+            <NavigationMenuList>
+              {links.map(({ to, label }) => (
+                <NavigationMenuItem key={to}>
+                  <NavigationMenuLink render={<Link to={to} />}>
+                    {label}
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
-        <div className="lg:hidden">
-          <button className="flex items-center text-blue-600 p-3" onClick={toggleNavbar}>{/* 👈1 */}
-            <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <title>Mobile menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-            </svg>
-          </button>
-        </div>
-        <ul className="hidden absolute top-1/2 left-1/2
-        transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
-          <li><Link className='text-gray-400' to='/transactions'>
-            Transactions
-          </Link></li>
-          <li><Link className='text-gray-400' to='/places'>
-            Places
-          </Link></li>
-          <li><Link className='text-gray-400' to='/about'>
-            About us
-          </Link></li>
-        </ul>
-      </nav>
-      <div className={`relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>{/* 👈 */}
-        <div className="fixed inset-0 bg-gray-800 opacity-25"></div>
-        <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
-        max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
-          <div className="flex items-center mb-8">
-            <Link to="/" className="mr-auto flex items-center space-x-2 text-blue-600 hover:text-blue-800">
-              <BsFillPiggyBankFill size={28} className="text-blue-600" />
-              <span className="font-semibold text-lg">Budget</span>
-            </Link>
-            <button onClick={toggleNavbar}>
-              <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
-                xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-          <div>
-            <ul>
-              <li className="mb-1">
-                <Link className="block p-4 text-sm font-semibold
-                text-gray-400 rounded" to="/transactions">Transactions</Link>
-              </li>
-              <li className="mb-1">
-                <Link className="block p-4 text-sm font-semibold
-                text-gray-400 rounded" to="/places">Places</Link>
-              </li>
-              <li className="mb-1">
-                <Link className="block p-4 text-sm font-semibold
-                text-gray-400 rounded" to="/about">About us</Link>
-              </li>
-            </ul>
-          </div>
-        </nav>
+
+        {/* Mobile toggle */}
+        <button
+          className='ml-auto md:hidden'
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label='Toggle menu'
+        >
+          {/* 👇 1 */}
+          {isOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
+        </button>
       </div>
-    </>
+
+      {/* Mobile menu */}
+      {isOpen && (
+        <div className='border-t md:hidden bg-background'>
+          <div className='container mx-auto px-4 py-4 max-w-5xl'>
+            <NavigationMenu>
+              <NavigationMenuList className='flex-col items-start'>
+                {links.map(({ to, label }) => (
+                  <NavigationMenuItem key={to}>
+                    <NavigationMenuLink render={<Link to={to} />}>
+                      {label}
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ))}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
 ```
 
-1. We maken een state variabele `isNavbarOpen` aan om bij te houden of de navigatiebalk open of dicht is. De `toggleNavbar` functie keert deze waarde om. We gebruiken deze waarde om de navigatiebalk te tonen of te verbergen.
+1. We maken een state variabele `isOpen` aan om bij te houden of de navigatiebalk open of dicht is. Het klikken op de Mobile toggle button keert deze waarde om. We gebruiken deze waarde om de navigatiebalk te tonen of te verbergen.
+2. NavigationMenuLink rendert een `<a>` tag.
+
+   ```jsx
+   <NavigationMenuLink href={to}>{label}</NavigationMenuLink>
+   ```
+
+   Maar het nadeel is dat href de browser gebruikt voor navigatie — dus de volledige pagina herlaadt in plaats van React Router's client-side navigatie. In een SPA verlies je daarmee de snelheid en de bewaarde staat (scrollpositie, etc.). De `render` prop is de juiste oplossing als je client-side navigatie wil behouden. De `render` vervangt het onderliggende `<a>` element van `NavigationMenuLink` door een `Link`, zodat er maar één `<a>` in de DOM staat.
 
 ### Integratie van de Layout component
 
-Pas `main.jsx` aan, alle paden zijn nu kinderen van de `Layout` component en verwijder de `App`component
+Pas `main.tsx` aan. Alle paden zijn nu kinderen van de `Layout` component. Verwijder de `App` component.
 
 ```jsx
-// src/main.jsx
-import Layout from './pages/Layout.jsx';// 👈
-//...
+// src/main.tsx
+import Layout from './components/Layout.tsx'; // 👈
+// ...
 const router = createBrowserRouter([
   {
-    Component: Layout, // 👈
+    element: <Layout />, // 👈
     // 👇
     children: [
       {
         path: '/',
         element: <Navigate replace to='/transactions' />,
       },
-      { path: 'transactions', Component: TransactionList },
+      { path: '/transactions', element: <TransactionList /> },
       {
         path: '/places',
         children: [
           {
             index: true,
-            Component: PlacesList,
+            element: <PlacesList />,
           },
           {
             path: ':id',
-            Component: PlaceDetail,
+            element: <PlaceDetail />,
           },
         ],
       },
       {
-        path: 'about',
-        Component: About,
+        path: '/about',
+        element: <About />,
         children: [
           {
+            index: true,
+            element: <Navigate to='/about/services' replace />,
+          },
+          {
             path: 'services',
-            Component: Services,
+            element: <Services />,
           },
           {
             path: 'history',
-            Component: History,
+            element: <History />,
           },
           {
             path: 'location',
-            Component: Location,
+            element: <Location />,
           },
-        ], // 👆
+        ],
       },
       {
-        path: 'services',
+        path: '/services',
         element: <Navigate to='/about/services' replace />,
       },
-      { path: '*', Component: NotFound },
+      { path: '*', element: <NotFound /> },
     ],
-  }]);
-//...
+  },
+]);
+// ...
 ```
 
-In `main.jsx` kan je nu de `App` component verwijderen.
+In `main.tsx` kan je nu de `App` component verwijderen.
 
 ### Aanduiden van de actieve link in de navigatie
 
-Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` zet automatisch `aria-current="page"` op de actieve link. Tailwind's `aria-[current=page]:text-blue-800` selector pakt deze status op.
+Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` zet automatisch `aria-current="page"` op de actieve link.
 
 ```jsx
-// src/components/Navbar.jsx
+// src/components/Navbar.tsx
+import { NavLink, Link, useLocation } from 'react-router';
+// ...
+ const { pathname } = useLocation();
 //...
-<NavLink className="text-gray-400 aria-[current=page]:text-blue-800"
-  to="/transactions">Transactions</NavLink>
-//...
+<NavigationMenuLink
+  render={<NavLink to={to} />}
+  active={pathname === to || pathname.startsWith(to + '/')}
+>
+  {label}
+</NavigationMenuLink>
+// ...
 ```
 
-### Refactoring NavBar
+`NavigationMenuLink` geeft de actieve staat aan via het `data-active` attribuut dat de component zelf stijlt (`data-active:bg-muted/50`).
 
-We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavItem` te maken voor de links:
+### Refactoring Navbar
 
-```jsx
-// src/components/NavBar.jsx
-const NavItem = ({ to, children, options}) => {
-  return (
-    <li className="mb-1">
-      <NavLink className={`text-gray-400 rounded  aria-[current=page]:text-blue-800 ${options}`}
-        to={to}>{children}</NavLink>
-    </li>
-  );
-};
-```
+We kunnen de code van de navigatiebalk nog wat opschonen door een aparte component `NavMenu` te maken met een optionele `vertical` prop. Voeg de code toe in `Navbar.tsx`.
 
-Voor het logo maken we ook een aparte component `Logo` aan:
+Tip: Vraag aan AI om de code van de navigatiebalk op te schonen. Vergelijk de oplossing met onderstaande code.
 
 ```jsx
-// src/components/Navbar.jsx
-const Logo = () => {
+// src/components/Navbar.tsx
+function NavMenu({ vertical = false }: { vertical?: boolean }) {
+  const { pathname } = useLocation();
   return (
-    <Link to="/" className="mr-auto flex items-center space-x-2 text-blue-600 hover:text-blue-800">
-      <BsFillPiggyBankFill size={28} className="text-blue-600" />
-      <span className="font-semibold text-lg">Budget</span>
-    </Link>
-  );
-};
-```
-
-Pas  de `Navbar` component aan:
-
-```jsx
-// src/components/Navbar.jsx
-//...
-export default function Navbar() {
-
-  const [isNavbarOpen, setIsNavbarOpen] = useState(false);
-
-  const toggleNavbar = () => {
-    setIsNavbarOpen(!isNavbarOpen);
-  };
-
-  return (
-    <>
-      <nav className="relative px-4 py-4 flex justify-between items-center bg-gray-200">
-
-        <div className="flex items-center">
-          <Logo />{/* 👈 */}
-        </div>
-
-        <div className="lg:hidden">
-          <button className="flex items-center text-blue-600 p-3" onClick={toggleNavbar}>
-            <svg className="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <title>Mobile menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-            </svg>
-          </button>
-        </div>
-        <ul className="hidden absolute top-1/2 left-1/2
-        transform -translate-y-1/2 -translate-x-1/2 lg:flex lg:mx-auto lg:items-center lg:w-auto lg:space-x-6">
-          <NavItem to="/transactions">Transactions</NavItem>{/* 👈 */}
-          <NavItem to="/places">Places</NavItem>{/* 👈 */}
-          <NavItem to="/about">About</NavItem>{/* 👈 */}
-        </ul>
-      </nav>
-      <div className={`relative z-50 ${isNavbarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-gray-800 opacity-25"></div>
-        <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6
-        max-w-sm py-6 px-6 bg-white border-r overflow-y-auto space-between">
-          <div className="flex items-center mb-8">
-            <Logo/>{/* 👈 */}
-            <button onClick={toggleNavbar} >
-              <svg className="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500"
-                xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
-            </button>
-          </div>
-          <div>
-            <ul>
-              <NavItem to="/transactions" options="block p-4 text-sm font-semibold">Transactions</NavItem>{/* 👈 */}
-              <NavItem to="/places" options="block p-4 text-sm font-semibold">Places</NavItem>{/* 👈 */}
-              <NavItem to="/about" options="block p-4 text-sm font-semibold">About</NavItem>{/* 👈 */}
-            </ul>
-          </div>
-        </nav>
-      </div>
-    </>
+    <NavigationMenu>
+      <NavigationMenuList
+        className={vertical ? 'flex-col items-start' : undefined}
+      >
+        {links.map(({ to, label }) => (
+          <NavigationMenuItem key={to}>
+            <NavigationMenuLink
+              render={<NavLink to={to} />}
+              active={pathname === to || pathname.startsWith(to + '/')}
+            >
+              {label}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
   );
 }
-//...
+```
+
+Pas de `Navbar` component aan:
+
+```jsx
+// src/components/Navbar.tsx
+import { Link, NavLink, useLocation } from 'react-router';
+import { useState } from 'react';
+import { PiggyBankIcon, Menu, X } from 'lucide-react';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu';
+
+const links = [
+  { to: '/transactions', label: 'Transactions' },
+  { to: '/places', label: 'Places' },
+  { to: '/about', label: 'About' },
+];
+
+function NavMenu({ vertical = false }: { vertical?: boolean }) {
+  const { pathname } = useLocation();
+  return (
+    <NavigationMenu>
+      <NavigationMenuList
+        className={vertical ? 'flex-col items-start' : undefined}
+      >
+        {links.map(({ to, label }) => (
+          <NavigationMenuItem key={to}>
+            <NavigationMenuLink
+              render={<NavLink to={to} />}
+              active={pathname === to || pathname.startsWith(to + '/')}
+            >
+              {label}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  );
+}
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
+      <div className="container mx-auto flex h-14 max-w-5xl items-center px-4">
+        <Link
+          to="/transactions"
+          className="flex items-center gap-2 font-semibold text-primary mr-6"
+        >
+          <PiggyBankIcon className="size-5" />
+          Budget
+        </Link>
+
+        <div className="hidden md:flex flex-1">
+          <NavMenu /> {/* 👈 */}
+        </div>
+
+        <button
+          className="ml-auto md:hidden"
+          onClick={() => setIsOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+        >
+          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="border-t md:hidden bg-background">
+          <div className="container mx-auto px-4 py-4 max-w-5xl">
+            <NavMenu vertical />  {/* 👈 */}
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
 ```
 
 ## Scroll restoration
@@ -808,17 +922,17 @@ export default function Navbar() {
 Bij routing in SPA's wordt de scroll-positie niet automatisch hersteld naar linksboven in de browser. Indien gewenst, moet je hier zelf voor zorgen. Maak hiervoor gebruik van de `ScrollRestoration` component. Elke keer als de URL wijzigt, vraagt deze de browser om naar boven te scrollen. Pas hiervoor de `Layout` component aan.
 
 ```jsx
-// src/pages/Layout.jsx
+// src/components/Layout.tsx
 import { Outlet, ScrollRestoration } from 'react-router'; // 👈
-import Navbar from '../components/Navbar';
+import Navbar from './Navbar';
 
 export default function Layout() {
   return (
-    <div className='container-xl'>
+    <div className='min-h-screen bg-background text-foreground'>
       <Navbar />
-      <div className='p-4'>
+      <main className='container mx-auto px-4 py-6 max-w-5xl'>
         <Outlet />
-      </div>
+      </main>
       <ScrollRestoration /> {/* 👈 */}
     </div>
   );
@@ -827,17 +941,19 @@ export default function Layout() {
 
 ## Navigeren vanuit code
 
-Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug met o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/6.26.0/hooks/use-navigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
+Soms wil je navigeren vanuit code, daarvoor bestaat de `useNavigate` hook. Deze hook geeft een functie terug. Deze functie verwacht o.a. de URL waarnaar genavigeerd wordt als parameter. Meer informatie staat uiteraard in de [useNavigate documentatie](https://reactrouter.com/api/hooks/useNavigate). Je kan bijvoorbeeld ook vragen om de huidige URL te vervangen zodat deze verdwijnt uit de "terugkeer-geschiedenis" van de browser.
 
-Als voorbeeld gaan we onderaan de NotFound pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `NotFound.jsx`:
+Als voorbeeld gaan we onderaan de NotFound pagina een knop zetten waarmee we terug naar de home-pagina kunnen. Dit doen we door volgende code toe te voegen aan `NotFound.tsx`:
 
 ```jsx
-// src/pages/NotFound.jsx
+// src/pages/NotFound.tsx
 import { useLocation, useNavigate } from 'react-router'; // 👈
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button'; // 👈
 
-const NotFound = () => {
-  const navigate = useNavigate(); // 👈
+export default function NotFound() {
   const { pathname } = useLocation();
+  const navigate = useNavigate(); // 👈
 
   // 👇
   const handleGoHome = () => {
@@ -845,67 +961,320 @@ const NotFound = () => {
   };
 
   return (
-    <div>
-      <h1>Pagina niet gevonden</h1>
-      <p>Er is geen pagina met als url {pathname}, probeer iets anders.</p>
-      {/* 👇 */}
-      <button className='py-2 px-2.5 rounded-md text-blue-600
-      border border-blue-600 mt-4' onClick={handleGoHome}>Go home!</button>
-    </div>
+    <>
+      <h1 className='text-3xl font-semibold mb-4'>Not found</h1>
+      <Alert variant='destructive'>
+        <AlertDescription>
+          {/* 👇 */}
+          There is nothing at {pathname}, <br />
+          <Button
+            variant='link'
+            onClick={handleGoHome}
+            className='text-destructive hover:text-destructive pl-0'
+          >
+            go back home
+          </Button>
+        </AlertDescription>
+      </Alert>
+    </>
   );
-};
-
-export default NotFound;
+}
 ```
 
 Hiermee maken we een knop met een `onClick` handler. Deze functie zal via React Router terug naar de home-pagina navigeren en de huidige URL hierdoor vervangen.
 
-Hetzelfde kan je bekomen met de Link tag, attribuut `replace` plaats je op true.
+Hetzelfde kan je bekomen met de Link tag, attribuut `replace` zet je op true.
 
 ```jsx
-<Link to='/' replace className='py-2 px-2.5 rounded-md text-blue-600 border border-blue-600 mt-4'>
-  Go home!
-</Link>
+import { Link } from 'react-router';
+// ...
+<Link to='/' replace className='underline hover:no-underline'>
+  go back home
+</Link>;
 ```
 
 ?> Het is aangeraden om zoveel mogelijk gebruik te maken van de `Link` component. Dit zorgt ervoor dat de gebruiker meer controle heeft over links, zoals het openen in een nieuw tabblad.
 
+## Tabs in shadcn: controlled vs uncontrolled
+
+Neem de [Tabs component documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Tabs heeft altijd een actieve waarde, bijvoorbeeld `'services'`. In `defaultValue` geef je de beginwaarde op. Daarna onthoudt de `Tabs` component zelf welke tab de gebruiker selecteert (de actieve tab). Dit noemen we een **uncontrolled component**.
+
+```jsx
+<Tabs defaultValue='services' />
+```
+
+ Voor meer controle (bv. synchroniseren met state, routing, filters…) moet je overschakelen naar een **controlled component**. Dit betekent dat je zelf de actieve tab in state zal beheren en dat dit niet langer door de Tabs component zelf gebeurt.
+
+### Stap 1: Tabs component toevoegen aan de About page
+
+Neem de [documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Maak een nieuwe pagina `AboutTabs.tsx` aan en verwijs in `main.tsx` naar deze component.
+
+```jsx
+// src/pages/about/AboutTabs.tsx
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Briefcase, Clock, MapPin } from 'lucide-react';
+
+const About = () => {
+  return (
+    <div className='space-y-8'>
+      <h1 className='text-2xl font-semibold mb-6'>About</h1>
+      <div>
+        <p className='text-muted-foreground leading-relaxed'>
+          This website gives you a clear and friendly way to keep track of your
+          budget. Browse your transactions, explore your favorite places, and
+          manage your financial overview in one simple space designed to make
+          everyday budgeting feel more organized.
+        </p>
+      </div>
+      <Tabs defaultValue='services'>
+        <TabsList variant='line'>
+          <TabsTrigger value='services' className='gap-1.5'>
+            <Briefcase className='h-4 w-4' />
+            Our Services
+          </TabsTrigger>
+          <TabsTrigger value='history' className='gap-1.5'>
+            <Clock className='h-4 w-4' />
+            History
+          </TabsTrigger>
+          <TabsTrigger value='location' className='gap-1.5'>
+            <MapPin className='h-4 w-4' />
+            Location
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value='services'>
+          <Services />
+        </TabsContent>
+        <TabsContent value='history'>
+          <History />
+        </TabsContent>
+        <TabsContent value='location'>
+          <Location />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+export default About;
+
+export const Services = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Services</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+        posuere erat a ante venenatis dapibus posuere velit aliquet.
+      </p>
+    </>
+  );
+};
+
+export const History = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>History</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
+        consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed
+        consectetur.
+      </p>
+    </>
+  );
+};
+
+export const Location = () => {
+  return (
+    <>
+      <h1 className='text-2xl font-semibold mb-6'>Location</h1>
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sed odio
+        dui. Maecenas faucibus mollis interdum. Nullam id dolor id nibh
+        ultricies vehicula ut id elit.
+      </p>
+    </>
+  );
+};
+```
+
+De tabs beheren hier zelf hun state. Dit is **uncontrolled gedrag**. Maar wat als:
+
+- je via URL `/about/history` binnenkomt?
+- je de tab wil syncen met routing?
+
+We moeten overschakelen naar een **controlled component** waar we zelf de state beheren.
+
+### Stap 2: API Documentatie doornemen
+
+shadcn is geen volledige component library, maar een gestylede wrapper rond primitives. Het gedrag (logica, state, events) komt van de libraries `Base UI / Radix UI`. shadcn voegt vooral styling en structuur toe.
+
+De shadcn docs tonen meestal enkel een basisgebruik, voor de Tabs is dit met de prop `defaultValue`. De component beheert **zelf de state**.
+
+Maar dat is slechts een deel van de mogelijkheden. Wil je de actieve tab ook buiten de component gebruiken, bijvoorbeeld om ze te koppelen aan filters of de URL, dan maak je de tabs **controlled**.
+
+Onderaan de shadcn documentatie vind je: "See the Basic Tabs documentation". Daar word je doorgestuurd naar:
+
+- [Base UI](https://base-ui.com/react/components/tabs)
+- of [Radix UI](https://www.radix-ui.com/primitives/docs/components/tabs#api-reference).
+
+⚠️ Let op: kies bovenaan expliciet voor de `Base UI` tab, want dit is de library die wij gebruiken in de voorbeeldapplicatie.
+
+Wil je begrijpen hoe iets werkt of welke props beschikbaar zijn, dan moet je naar de onderliggende API kijken. Daar vinden we extra props:
+
+- `defaultValue`: startwaarde (uncontrolled)
+- `value`: huidig actieve tab (controlled)
+- `onValueChange`: callback bij wijziging
+
+Controlled gedrag werkt als volgt:
+
+Jouw component bewaart de actieve waarde en geeft ze door via `value`. Wanneer de gebruiker een andere tab kiest, roept Tabs `onValueChange` op zodat jij die waarde kunt bijwerken.
+
+```jsx
+// 1. State aanmaken voor actieve tab
+const [activeTab, setActiveTab] = useState("services")
+
+// 2. Tabs component controlled maken door de waarde en onValueChange te koppelen aan state
+<Tabs value={activeTab} onValueChange={setActiveTab} />
+```
+
+Hier is `activeTab` dus de bron van waarheid: `value` bepaalt welke tab zichtbaar is en `onValueChange` ontvangt de gekozen tab.
+
+Tip: je kan ook aan AI vragen om controlled tabs uit te leggen en een voorbeeld te geven.
+
+### Stap 3: Actieve tab afleiden uit de routing
+
+We hoeven de actieve tab niet in state te bewaren. We kunnen de actieve tab afleiden uit de URL.
+
+In deze stap bepaalt de URL de tab die getoond zal worden.
+
+1. Haal het path op en extraheer het segment.
+2. Definieer een constante TABS. Door `as const` ziet TypeScript dit als `readonly ['services', 'history', 'location']` (exact deze 3 waarden) en niet als een `string[]`.
+3. Dit creëert een type dat slechts 3 waarden kan zijn `type TabValue = 'services' | 'history' | 'location'`
+4. Valideer de waarde en zorg voor een fallback.
+5. Reageer op de tabwissel. De tabs veranderen niet zelf. We veranderen de URL en de UI volgt
+6. Maak de tabs controlled
+7. De content wordt bepaald door React Router
+
+```jsx
+// src/pages/about/AboutTabs.tsx
+import { Outlet, useLocation, useNavigate } from 'react-router'; // 👈 1, 5, 7
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Briefcase, Clock, MapPin } from 'lucide-react';
+
+const TABS = ['services', 'history', 'location'] as const; // 👈 2
+type TabValue = (typeof TABS)[number]; // 👈 3
+
+const About = () => {
+  const navigate = useNavigate(); // 👈 5
+  const { pathname } = useLocation(); // 👈 1
+
+  const segment = pathname.split('/').pop() as TabValue; // 👈 1
+  const activeTab: TabValue = TABS.includes(segment) ? segment : 'services'; // 👈 4
+
+  // 👇 5
+  const handleTabChange = (val: TabValue) => {
+    navigate(`/about/${val}`);
+  };
+
+  return (
+    <div className='space-y-8'>
+      <h1 className='text-2xl font-semibold mb-6'>About</h1>
+      <div>
+        <p className='text-muted-foreground leading-relaxed'>
+          This website gives you a clear and friendly way to keep track of your
+          budget. Browse your transactions, explore your favorite places, and
+          manage your financial overview in one simple space designed to make
+          everyday budgeting feel more organized.
+        </p>
+      </div>
+      {/* 👇 6 */}
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <TabsList variant='line'>
+          <TabsTrigger value='services' className='gap-1.5'>
+            <Briefcase className='h-4 w-4' />
+            Our Services
+          </TabsTrigger>
+          <TabsTrigger value='history' className='gap-1.5'>
+            <Clock className='h-4 w-4' />
+            History
+          </TabsTrigger>
+          <TabsTrigger value='location' className='gap-1.5'>
+            <MapPin className='h-4 w-4' />
+            Location
+          </TabsTrigger>
+        </TabsList>
+        <Outlet /> {/* 👈 7 */}
+      </Tabs>
+    </div>
+  );
+};
+
+export default About;
+
+// ...
+```
+
 ## Custom styles
 
-Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css`:
+Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css` door deze toe te voegen aan Tailwinds basislaag :
 
 ```css
 @layer base {
   h1 {
-    font-size: var(--text-4xl);
-    margin-bottom: 4px;
+    @apply text-2xl font-semibold mb-6;
   }
 }
 ```
 
-Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen.
+Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een Tailwind CSS directive.
 
-Zorg ervoor dat je in `main.jsx` refereert naar de CSS:
+Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
 
 ```jsx
 import './index.css';
 ```
+
+Verwijder de className attributen van de h1-tags in alle page componenten.
+Merk op dergelijke repititieve taken kan je ook aan AI vragen. Bijvoorbeeld: "Verwijder de className attributen van alle h1-tags in de src/pages folder en subfolders."
+
+Je krijgt mogelijk de editorwaarschuwing `Unknown at rule @apply.` Dat betekent niet dat je code fout is: VS Code herkent @apply niet standaard als een Tailwind CSS-directive.
+
+!> Mogelijk geeft AI een oplossing die niet overeenkomt met bovenstaande code, maar die wel werkt. Stel je hier de kritische vraag: wat is nu de betere oplossing? Vraag hier wederom telkens naar bronnen en controleer waarom hij voor een oplossing kiest.
+
+Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog niet is gebeurd. Blijft de waarschuwing bestaan, vraag AI naar een oplossing voor deze waarschuwing. Controleer of dit overeenkomt met onderstaande oplossing.
+
+- Oplossing +
+
+  Maak een `settings.json` bestand aanmaken in de `.vscode` map van je project met volgende inhoud:
+
+  ```json
+  {
+  "files.associations": {
+    "*.css": "tailwindcss"
+  }
+  }
+  ```
+
+  Herlaad dan de editor (`Ctrl+Shift+P`, Kies `Developer: Reload Window`). De waarschuwing verdwijnt.
 
 > **Oplossing voorbeeldapplicatie**
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl 5a31e56
+> git checkout -b les3-opl 31d488a
 > pnpm install
 > pnpm dev
 > ```
 
 ## Oefening 2 - Je eigen project
 
-Denk voor je eigen applicatie na over de navigatie en implementeer.
+Denk voor je eigen applicatie na over de navigatie en implementeer deze met React Router.
+
+## ANS
+
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 4 API**.
 
 ## Mogelijke extra's voor de examenopdracht
 
-- Gebruik de nieuwe [loader](https://reactrouter.com/en/main/route/loader) en [action](https://reactrouter.com/en/main/route/action) props van de `Route` component van `react-router` om de data op te halen.
+- Gebruik de nieuwe [loader](https://reactrouter.com/start/data/data-loading) en [action](https://reactrouter.com/start/data/actions) attributen van de `Route` component van `react-router` om de data op te halen.
   - Dit is een vrij kleine extra, dus zorg ervoor dat je nog een andere extra toevoegt.
