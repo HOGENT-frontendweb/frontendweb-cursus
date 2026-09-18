@@ -415,7 +415,7 @@ In `App.tsx` staat de code voor de standaard startpagina: het Vite- en React-log
 
 TSX is strenger dan HTML. Je moet tags zoals `<img />` sluiten. Een component kan ook niet meerdere tsx-tags retourneren. Je moet ze in een gedeelde bovenliggende parent plaatsen, zoals een `<div>...</div>` of een lege `<>...</>` wrapper.
 
-Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak [shadcn](https://ui.shadcn.com/) toe.
+Verwijder alle code uit deze component en vervang dit door de `Transaction` component. We maken ook geen gebruik meer van het CSS bestand. Verder in dit hoofdstuk voegen we voor de opmaak [shadcn](https://ui.shadcn.com) toe.
 
 ```jsx
 // src/App.tsx
@@ -775,8 +775,6 @@ In het volgende voorbeeld betekent `p-4` dat er padding wordt toegevoegd en `bg-
 ```jsx
 <button className='p-4 bg-blue-500'>Klik mij</button>
 ```
-
-Tailwind CSS lijkt op een framework als Bootstrap, omdat ook hier gewerkt wordt met voorgedefinieerde klassen die je direct in je HTML of tsx kan gebruiken. Het grote verschil is dat Tailwind bij de build enkel de klassen overhoudt die je effectief in je project gebruikt. Dat maakt de uiteindelijke CSS veel kleiner en efficiënter dan bij Bootstrap, waar standaard alle stijlen worden meegeleverd, ook al gebruik je ze niet allemaal.
 
 ### shadcn toevoegen
 
