@@ -768,7 +768,7 @@ Als je nu de browser ververst, zou de foutmelding verdwenen moeten zijn.
 
 In dit project maken we gebruik van [shadcn](https://ui.shadcn.com). shadcn is geen klassieke component library zoals bijvoorbeeld [Material UI](https://mui.com/material-ui/) of [React Bootstrap](https://react-bootstrap.netlify.app/). Bij klassieke libraries installeer je een package en gebruik je kant-en-klare componenten. Hierdoor heb je minder controle over de code.
 
-`shadcn` daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten gebruiken [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) om  de onderliggende werking van een component, zoals reageren op klikken, toetsenbordbediening en toegankelijkheid te verzorgen. De visuele opmaak gebeurt met [Tailwind CSS](https://tailwindcss.com/), waardoor je de componenten eenvoudig kan aanpassen en toch dezelfde stijlafspraken in de hele applicatie kan gebruiken.
+`shadcn` daarentegen kopieert de componenten rechtstreeks in je eigen project. Dat gebeurt via een CLI-tool. Dit betekent concreet dat als je bv. een Button component wenst te gebruiken, de component rechtstreeks aan je eigen project wordt toegevoegd, waardoor je ze volledig zelf kan aanpassen en beheren. De componenten gebruiken [Base UI](https://base-ui.com/react/overview/quick-start) of [Radix UI](https://www.radix-ui.com/primitives/docs/overview/introduction) om  de onderliggende werking van een component, zoals reageren op klikken, toetsenbordbediening en toegankelijkheid te verzorgen. Dit zijn unstyled components. De visuele opmaak gebeurt met [Tailwind CSS](https://tailwindcss.com/), waardoor je de componenten eenvoudig kan aanpassen en toch dezelfde stijlafspraken in de hele applicatie kan gebruiken.
 
 `Tailwind CSS` is, net als Bootstrap, een CSS-framework met vooraf gedefinieerde CSS-klassen. Bootstrap biedt vaak grotere componenten aan met een vaste opbouw, zoals `btn btn-primary` voor een knop. Tailwind CSS werkt vooral met kleine **utility classes**. Elke klasse stelt meestal één CSS-regel of een kleine groep CSS-regels voor. Je combineert deze klassen rechtstreeks op het HTML- of TSX-element om zelf het uiterlijk te bepalen. Je hoeft dus niet voor elk element eerst een eigen CSS-klasse te schrijven.
 
@@ -1032,9 +1032,9 @@ Start de applicatie en de debugger. Plaats een willekeurig breakpoint, bv. op de
 
 ## Oefening 1 - Je eigen project
 
-Maak een nieuwe GitHub repository aan via de GitHub classroom link in de introductie van de Chamilo-cursus. Bij de aanmaak van de repo dien je een teamnaam op te geven. Werk je alleen, gebruik dan je volledige naam als teamnaam (FamilienaamVoornaam). Werk je met twee, dan neem je beide familienamen samen (Familienaam1Familienaam2).
+Maak een nieuwe GitHub repository aan via de GitHub template in de introductie. Bij de aanmaak van de repo dien je je groepsnummer op te geven.
 
-Clone jouw Git repository uit de GitHub classroom:
+Clone jouw Git repository naar je lokale machine:
 
 ```bash
 git clone <JOUW_GIT_REPOSITORY_URL>
