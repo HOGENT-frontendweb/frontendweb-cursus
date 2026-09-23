@@ -269,6 +269,8 @@ Installeer eerst de volgende package in development mode (deze is enkel nodig ti
 pnpm add -D eslint-config-prettier
 ```
 
+En pas dan het `eslint.config.js` bestand aan:
+
 ```js
 import js from '@eslint/js';
 import globals from 'globals';
@@ -507,7 +509,7 @@ Maak een map `api` met een bestand `mock_data.ts` aan in de `src` map. Later ver
 
 #### Vraag aan AI
 
-> Kan je mock-data genereren met een lijst van transacties, gedefinieerd volgens de interface `Transaction`? Maak hiervoor een constante `TRANSACTION_DATA` aan met twee transacties. Merk op dat `date` in `Transaction` een datum in ISO-stringformaat is.
+> Kan je mock-data genereren met een lijst van transacties, gedefinieerd volgens de interface `Transaction`? Maak hiervoor een constante `TRANSACTION_DATA` aan met twee transacties. Merk op dat `date` in `Transaction` een ISO 8601-datum in UTC is.
 
 AI is uitermate geschikt voor dergelijke repetitieve taken, zoals het genereren van mock-data volgens een bestaande interface. Controleer wel altijd of de gegenereerde code aan de verwachtingen en de types van de applicatie voldoet.
 

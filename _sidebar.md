@@ -14,3 +14,6 @@
 - [8. Authenticatie & autorisatie](./8-auth/index.md)
 - [9. E2E testen met authenticatie](./9-auth_testing/index.md)
 - [10. CI/CD](./10-cicd/index.md)
+- [Appendices](/appendices/index.md)
+  - [TypeScript](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/1-typescript/index)
+  - [Git & GitHub](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index)
