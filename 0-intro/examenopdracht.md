@@ -8,7 +8,7 @@ Je bent volledig vrij om te kiezen welke applicatie je ontwikkelt, maar het is w
 
 ?> Er wordt enkel feedback gegeven op ideeën tijdens semester 1. Indien je een idee hebt dat je graag wil bespreken, doe dit dan tijdig.
 
-De examenopdracht wordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 4](#4-groepswerk) voor de deadlines van de registratie  van je team en meer informatie.
+De examenopdracht wordt uitgevoerd in teams van twee. Beide teamleden dragen bij aan alle onderdelen van de applicatie en zijn verantwoordelijk voor het volledige eindresultaat. Zie [sectie 4](#4-groepswerk) voor de deadlines van de registratie van je team en meer informatie.
 
 Alle code moet in een private GitHub repository terecht komen die je deelt met alle lectoren (zie [Sectie 10](#10-aanmaken-van-de-repository)). Enkel de `main` branch van deze repository zal geëvalueerd worden. Voor de aanmaak van de repository vertrek je van een template. De template bevat een `README.md` bestand, vul deze correct in. Je gebruikt dezelfde repository voor zowel Web Services als Front-end Web Development. Check zeker onze [appendix over Git & GitHub](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index.md) als je hiermee nog niet vertrouwd bent.
 
@@ -24,7 +24,7 @@ Alvorens we jouw project evalueren, controleren we of het voldoet aan een aantal
 
 Deze criteria zijn:
 
-- Het dossier is volledig en tijdig ingediend  (deadline: einde week 13, vrijdag 18 december 2026, 23u59)(zie [sectie 5](#5-dossier-vereisten) voor de vereisten)
+- Het dossier is volledig en tijdig ingediend (deadline: einde week 13, vrijdag 18 december 2026, 23u59)(zie [sectie 5](#5-dossier-vereisten) voor de vereisten)
 - Je werkt in groep van 2. Elke student heeft minstens twee feature branches waarin een volledige feature werd uitgewerkt. Voor elke feature branch werd minstens één pull request aangemaakt. De student voert minstens 10 kleine, betekenisvolle commits uit tijdens de ontwikkeling van de feature. Op elke pull request werd inhoudelijke feedback gegeven door de medestudent(zie [sectie 4](#4-groepswerk) en [sectie Feature Branch workflow](https://hogent-frontendweb.github.io/webservices-cursus/#/appendices/2-github/index?id=feature-branch-workflow)).
 - De applicatie is gemaakt in React
 - De applicatie draait online op vichogent
@@ -259,7 +259,7 @@ Veel succes!
 - Kies voor een `Private` repository.
 - Klik op `Create repository from template`. GitHub maakt nu een exacte kopie voor je aan zonder de commit-geschiedenis van de template.
 - Voeg je medestudent toe als Collaborator aan de repository. Ga hiervoor naar Settings > Collaborators > Add people. Je medestudent krijgt een uitnodiging via e-mail en moet deze accepteren.
-- Voeg ook de lectoren toe als Collaborators aan de repository met read rechten. Ga hiervoor naar Settings > Collaborators > Add people. De lectoren krijgen een uitnodiging via e-mail en moeten deze accepteren. Voeg de volgende lectoren toe:
+- Voeg ook de lectoren toe als Collaborators aan de repository met write rechten. Ga hiervoor naar Settings > Collaborators > Add people. De lectoren krijgen een uitnodiging via e-mail en moeten deze accepteren. Voeg de volgende lectoren toe:
   - Andreas De Witte: @dreeki
   - Karine Samyn: @ksa607
   - Pieter Vander Vennet: @pietervdvn (enkel indien je ook het olod Web Services volgt)
