@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 58ab2f6
+> git checkout -b les3 be621c7
 > pnpm install
 > pnpm dev
 > ```
@@ -115,6 +115,7 @@ We voorzien volgende basisroutes in de voorbeeldapplicatie
 Alvorens we routes kunnen definiëren, voeren we een kleine refactoring uit. De verschillende pagina's in onze applicatie die direct verbonden zijn aan een URL of route plaatsen we in de `pages` map. Maak een map `pages` met daarin een `transactions` map en een `places` map. Verplaats de componenten `PlacesList` en `TransactionList` naar de juiste map. Pas eventueel de paden in de component aan. We kiezen voor een submap daar er later nog extra pagina's zullen toegevoegd worden die gerelateerd zijn aan de `places` en `transactions`.
 
 Voeg ook een `About` en `NotFound` pagina toe. Omdat we te lui zijn om de About zelf te vullen met tekst, maken we gebruik van AI.
+
 > Maak een About component aan in de pages/about folder. De component gebruikt dezelfde styling als PlacesList en bevat naast de titel About, 1 paragraaf met uitleg over de site en gepaste styling. De tekst kan je genereren met ChatGPT of een andere AI tool. De tekst moet in het Engels zijn.
 
 Maak de `About` page aan in de map `src/pages/about`. We maken gebruik van een submap 'about' omdat deze pagina geneste routes zal bevatten die we later zullen implementeren.
@@ -125,7 +126,7 @@ const About = () => {
   return (
     <>
       <h1 className='text-2xl font-semibold mb-6'>About</h1>
-      <p className="text-muted-foreground leading-relaxed max-w-2xl">
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
         This website gives you a clear and friendly way to keep track of your
         budget. Browse your transactions, explore your favorite places, and
         manage your financial overview in one simple space designed to make
@@ -292,7 +293,7 @@ const About = () => {
   return (
     <>
       <h1 className='text-2xl font-semibold mb-6'>About</h1>
-      <p className="text-muted-foreground leading-relaxed max-w-2xl">
+      <p className='text-muted-foreground leading-relaxed max-w-2xl'>
         This website gives you a clear and friendly way to keep track of your
         budget. Browse your transactions, explore your favorite places, and
         manage your financial overview in one simple space designed to make
@@ -320,7 +321,7 @@ const About = () => {
       </ul>
     </>
   );
-}
+};
 
 export default About;
 ```
@@ -333,8 +334,8 @@ export const Services = () => {
     <>
       <h1 className='text-2xl font-semibold mb-6'>Services</h1>
       <p className='text-muted-foreground leading-relaxed max-w-2xl'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-        posuere erat a ante venenatis dapibus posuere velit aliquet.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+        erat a ante venenatis dapibus posuere velit aliquet.
       </p>
     </>
   );
@@ -577,7 +578,7 @@ export default PlaceDetail;
 
 1. Deze component zal eerst het id uit de URL ophalen en omvormen naar een `number`.
 2. Daarna zoekt deze een plaats met het opgegeven id.
-3.Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
+   3.Indien deze plaats niet bestaat, zal een gepaste boodschap getoond worden. In het andere geval wordt de informatie van deze plaats getoond.
 
 ### Oefening 1 - Navigeren naar een place
 
@@ -792,14 +793,14 @@ Maak hiervoor gebruik van de `NavLink` component uit `react-router`. `NavLink` z
 // src/components/Navbar.tsx
 import { NavLink, Link, useLocation } from 'react-router';
 // ...
- const { pathname } = useLocation();
+const { pathname } = useLocation();
 //...
 <NavigationMenuLink
   render={<NavLink to={to} />}
   active={pathname === to || pathname.startsWith(to + '/')}
 >
   {label}
-</NavigationMenuLink>
+</NavigationMenuLink>;
 // ...
 ```
 
@@ -1003,7 +1004,7 @@ Neem de [Tabs component documentatie](https://ui.shadcn.com/docs/components/base
 <Tabs defaultValue='services' />
 ```
 
- Voor meer controle (bv. synchroniseren met state, routing, filters…) moet je overschakelen naar een **controlled component**. Dit betekent dat je zelf de actieve tab in state zal beheren en dat dit niet langer door de Tabs component zelf gebeurt.
+Voor meer controle (bv. synchroniseren met state, routing, filters…) moet je overschakelen naar een **controlled component**. Dit betekent dat je zelf de actieve tab in state zal beheren en dat dit niet langer door de Tabs component zelf gebeurt.
 
 ### Stap 1: Tabs component toevoegen aan de About page
 
@@ -1062,8 +1063,8 @@ export const Services = () => {
     <>
       <h1 className='text-2xl font-semibold mb-6'>Services</h1>
       <p className='text-muted-foreground leading-relaxed max-w-2xl'>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-        posuere erat a ante venenatis dapibus posuere velit aliquet.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+        erat a ante venenatis dapibus posuere velit aliquet.
       </p>
     </>
   );
@@ -1248,9 +1249,9 @@ Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog
 
   ```json
   {
-  "files.associations": {
-    "*.css": "tailwindcss"
-  }
+    "files.associations": {
+      "*.css": "tailwindcss"
+    }
   }
   ```
 
