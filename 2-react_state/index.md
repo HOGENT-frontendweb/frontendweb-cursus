@@ -9,15 +9,17 @@
 > pnpm install
 > pnpm dev
 > ```
+
 <!--  -->
+
 > Tip: In dit hoofdstuk komen er veel nieuwe concepten aan bod. Je kan AI gebruiken om concepten uit te leggen en voorbeelden te genereren. Vraag steeds naar referenties zodat je de informatie steeds kan controleren in de officiële documentatie.
->
+
 ## Leerdoelen
 
-- de student kent het verschil  tussen props en state en kan bepalen wanneer je welke gebruikt;
+- de student kent het verschil tussen props en state en kan bepalen wanneer je welke gebruikt;
 - de student kan state beheren en aanpassen met de useState-hook;
 - de student kan event handlers gebruiken om te reageren op gebruikersinteracties;
-- de student kan controlled components, inverse data flow  toepassen;
+- de student kan controlled components, inverse data flow toepassen;
 
 ## Props en state
 
@@ -1475,6 +1477,8 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 
 ## Verbeteren van de performantie
 
+?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.js` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/index.md#viteconfigjs).
+
 Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools, zie de logging 'filtering...'), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
 
 In een React-applicatie worden componenten heel vaak gerenderd. De performantie kan je verbeteren door het voorkomen van onnodige renders en het verminderen van de tijd die een render in beslag neemt.
@@ -1492,8 +1496,6 @@ React biedt een paar vormen van memoization:
 Het is wel belangrijk om in je achterhoofd te houden dat je niet zomaar overal memoization kan toepassen. Het is een vorm van optimalisatie en je weet wat Donald Knuth hierover zei:
 
 > Premature optimization is the root of all evil - Donald Knuth
-
-?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.js` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/index.md#viteconfigjs).
 
 ### useMemo hook
 
@@ -1583,6 +1585,7 @@ Implementeer Snake Eyes in een React applicatie. Kies zelf welke componenten je 
 
   Een voorbeeldoplossing (maar er zijn er uiteraard heel veel mogelijk) is te vinden op <https://github.com/HOGENT-frontendweb/SnakeEyes>.
 -->
+
 ## ANS
 
 Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 2 React State**.

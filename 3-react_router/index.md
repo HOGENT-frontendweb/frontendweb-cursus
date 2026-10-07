@@ -1273,7 +1273,7 @@ Denk voor je eigen applicatie na over de navigatie en implementeer deze met Reac
 
 ## ANS
 
-Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 4 API**.
+Je kan je kennis testen in ANS: cursus **OON-PBATIN-207458-2627 Front-end Web Development (TI) 26/27**, toets **Hoofdstuk 3 React Router**.
 
 ## Mogelijke extra's voor de examenopdracht
 
