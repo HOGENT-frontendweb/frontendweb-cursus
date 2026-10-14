@@ -754,6 +754,8 @@ export default function Layout() {
 }
 ```
 
+De toasts verschijnen default `bottom-right'. A.d.h.v. de `position` prop kan je dit aanpassen naar `top-right`, ....
+
   en pas de `TransactionList` component aan:
 
 ```jsx
