@@ -996,7 +996,50 @@ import { Link } from 'react-router';
 
 ?> Het is aangeraden om zoveel mogelijk gebruik te maken van de `Link` component. Dit zorgt ervoor dat de gebruiker meer controle heeft over links, zoals het openen in een nieuw tabblad.
 
-## Tabs in shadcn: controlled vs uncontrolled
+## Custom styles
+
+Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css` door deze toe te voegen aan Tailwinds basislaag :
+
+```css
+@layer base {
+  h1 {
+    @apply text-2xl font-semibold mb-6;
+  }
+}
+```
+
+Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een Tailwind CSS directive.
+
+Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
+
+```jsx
+import './index.css';
+```
+
+Verwijder de className attributen van de h1-tags in alle page componenten.
+Merk op dergelijke repititieve taken kan je ook aan AI vragen. Bijvoorbeeld: "Verwijder de className attributen van alle h1-tags in de src/pages folder en subfolders."
+
+Je krijgt mogelijk de editorwaarschuwing `Unknown at rule @apply.` Dat betekent niet dat je code fout is: VS Code herkent @apply niet standaard als een Tailwind CSS-directive.
+
+!> Mogelijk geeft AI een oplossing die niet overeenkomt met bovenstaande code, maar die wel werkt. Stel je hier de kritische vraag: wat is nu de betere oplossing? Vraag hier wederom telkens naar bronnen en controleer waarom hij voor een oplossing kiest.
+
+Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog niet is gebeurd. Blijft de waarschuwing bestaan, vraag AI naar een oplossing voor deze waarschuwing. Controleer of dit overeenkomt met onderstaande oplossing.
+
+- Oplossing +
+
+  Maak een `settings.json` bestand aanmaken in de `.vscode` map van je project met volgende inhoud:
+
+  ```json
+  {
+    "files.associations": {
+      "*.css": "tailwindcss"
+    }
+  }
+  ```
+
+  Herlaad dan de editor (`Ctrl+Shift+P`, Kies `Developer: Reload Window`). De waarschuwing verdwijnt.
+
+## Appendix: Tabs in shadcn: controlled vs uncontrolled
 
 Neem de [Tabs component documentatie](https://ui.shadcn.com/docs/components/base/tabs) door. Tabs heeft altijd een actieve waarde, bijvoorbeeld `'services'`. In `defaultValue` geef je de beginwaarde op. Daarna onthoudt de `Tabs` component zelf welke tab de gebruiker selecteert (de actieve tab). Dit noemen we een **uncontrolled component**.
 
@@ -1213,49 +1256,6 @@ export default About;
 
 // ...
 ```
-
-## Custom styles
-
-Bij elke h1-tag dienen we dezelfde styling toe te passen. Je kan custom styles definiëren in de `index.css` door deze toe te voegen aan Tailwinds basislaag :
-
-```css
-@layer base {
-  h1 {
-    @apply text-2xl font-semibold mb-6;
-  }
-}
-```
-
-Hierdoor zal elke `h1` tag automatisch de juiste styling krijgen. `@apply` is een Tailwind CSS directive.
-
-Zorg ervoor dat je in `main.tsx` refereert naar de CSS:
-
-```jsx
-import './index.css';
-```
-
-Verwijder de className attributen van de h1-tags in alle page componenten.
-Merk op dergelijke repititieve taken kan je ook aan AI vragen. Bijvoorbeeld: "Verwijder de className attributen van alle h1-tags in de src/pages folder en subfolders."
-
-Je krijgt mogelijk de editorwaarschuwing `Unknown at rule @apply.` Dat betekent niet dat je code fout is: VS Code herkent @apply niet standaard als een Tailwind CSS-directive.
-
-!> Mogelijk geeft AI een oplossing die niet overeenkomt met bovenstaande code, maar die wel werkt. Stel je hier de kritische vraag: wat is nu de betere oplossing? Vraag hier wederom telkens naar bronnen en controleer waarom hij voor een oplossing kiest.
-
-Installeer de extensie `Tailwind CSS IntelliSense van Tailwind Labs` als dit nog niet is gebeurd. Blijft de waarschuwing bestaan, vraag AI naar een oplossing voor deze waarschuwing. Controleer of dit overeenkomt met onderstaande oplossing.
-
-- Oplossing +
-
-  Maak een `settings.json` bestand aanmaken in de `.vscode` map van je project met volgende inhoud:
-
-  ```json
-  {
-    "files.associations": {
-      "*.css": "tailwindcss"
-    }
-  }
-  ```
-
-  Herlaad dan de editor (`Ctrl+Shift+P`, Kies `Developer: Reload Window`). De waarschuwing verdwijnt.
 
 > **Oplossing voorbeeldapplicatie**
 >

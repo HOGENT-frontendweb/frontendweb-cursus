@@ -10,19 +10,29 @@
 > pnpm dev
 > ```
 >
-> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig. Maak een database `budget` aan. Zie instructies in de [cursus Web Services](https://hogent-frontendweb.github.io/webservices-cursus/#/4-datalaag/deel1?id=mysql-databank):
+> Vanaf dit hoofdstuk heb je de bijbehorende backend nodig.
+> Clone de repo
 >
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/webservices-budget.git
 > cd webservices-budget
 > git checkout -b les5 03ffd29
 > pnpm install
+>```
+>
+> Maak een database `budget` aan via Docker. Zie instructies in de [cursus Web Services](https://hogent-frontendweb.github.io/webservices-cursus/#/3-datalaag_places/index?id=mysql-databank). Pas eventueel ook de poort mapping in `docker-compose.yml` aan.
+>
+> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie.
+>
+> Migreer de database en seed met mock data. Start de API in development mode:
+>
+> ```bash
 > pnpm db:migrate
 > pnpm db:seed
 > pnpm start:dev
 > ```
 >
-> Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie. We gaan er in dit hoofdstuk van uit dat de API draait op poort 3000 (`PORT`).Maak ook een database `budget` aan in MySQL.
+> We gaan er in dit hoofdstuk van uit dat de API draait op poort 3000 (`PORT`).
 
 In dit hoofdstuk vervangen we de mock data door HTTP requests naar de REST API. Op ons lokaal toestel draait deze API op [http://localhost:3000/api/](http://localhost:3000/api/).
 
@@ -253,7 +263,7 @@ De `TransactionList` component wordt daardoor:
 // ...
 
 export default function TransactionList() {
-  const [transactions, setTransactions] = useState([]); // 👈 1
+  const [transactions, setTransactions] = useState<TransactionType[]>([]); // 👈 1
   const [text, setText] = useState('');
   const [search, setSearch] = useState('');
 
@@ -268,6 +278,9 @@ export default function TransactionList() {
     fetchTransactions();
   }, []);
 
+   const filteredTransactions = transactions.filter((t: TransactionType) => t.place.name.toLowerCase().includes(search.toLowerCase()));// 👈 4
+
+
   // ...
 }
 ```
@@ -277,6 +290,7 @@ export default function TransactionList() {
 3. Pas de state aan nadat je de lijst terugkrijgt van de API.
    - Een effect met een `setState` is vaak de trigger van een oneindige lus. Dit is niet het geval hier, omdat de `useEffect` enkel bij de initiële render wordt uitgevoerd. De state wordt enkel aangepast bij de initiële render.
    - `setState` gebruiken in een `useEffect` zou een belletje moeten doen rinkelen om te zoeken naar een betere oplossing!
+4. Pas de filtering van de transacties aan zodat die gebruik maakt van de state variabele `transactions` in plaats van de mock data.
 
 Start de applicatie en bekijk het resultaat.
 
@@ -291,9 +305,7 @@ Omdat we de laadindicator in meerdere componenten nodig hebben, maken we hiervoo
 export default function Loader() {
   return (
     <div
-      className='flex flex-col items-center justify-center py-8'
-      data-testid='loader'
-    >
+      className='flex flex-col items-center justify-center py-8'>
       <div className='h-8 w-8 animate-spin rounded-full border-4 border-muted border-t-primary' />
     </div>
   );
@@ -715,11 +727,34 @@ export default TransactionsTable;
 
 Nu zijn we klaar om de transactie effectief te verwijderen, we passen de `TransactionList` component aan. Het probleem van de `useSWR` hook is dat die meteen het request uitvoert als de component rendert. We willen dit pas doen als de gebruiker op de verwijderknop klikt. Daarom maken we gebruik van de `mutate` functie die we van `swr` krijgen. Deze functie zal de data in de cache aanpassen en de component opnieuw renderen.
 
-Voor het weergeven van een toast bij het verwijderen van een transactie, installeren we de `sonner` component van shadcn (een externe package).
+Voor het weergeven van een toast bij het verwijderen van een transactie, installeren we de `sonner` component van shadcn.
 
   ```bash
-  pnpm dlx shadcn@latest add https://www.shadcn.io/r/radix/sonner.json
+  pnpm dlx shadcn@latest add sonner
   ```
+
+Voeg 1 keer de `<Toaster />` component toe in de `Layout` component, zodat we toasts kunnen weergeven in de hele applicatie:
+
+```jsx
+// src/app/layout.tsx
+import { Outlet } from 'react-router';
+import Navbar from './Navbar';
+import { Toaster } from './ui/sonner';
+
+export default function Layout() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <Navbar />
+      <main className="container mx-auto px-4 py-6 max-w-5xl">
+        <Outlet />
+      </main>
+      <Toaster />
+    </div>
+  );
+}
+```
+
+  en pas de `TransactionList` component aan:
 
 ```jsx
 // src/pages/transactions/TransactionList.tsx
@@ -951,7 +986,43 @@ In `handleDeleteTransaction` gebeurt het volgende:
 2. Daarna roepen we `mutate()` aan — dit triggert een nieuw request naar de API zodat de lijst automatisch ververst wordt zonder dat de gebruiker de pagina moet herladen. De methode `mutate` destructureren we uit de returnwaarde van `useSWR`.
 3. Tot slot toont een toast-melding dat de transactie verwijderd is.
 
-## Pagineren door de transacties
+## Het .env bestand
+
+Je kan omgevingsvariabelen definiëren in het `.env` bestand. De omgevingsvariabelen moeten beginnen met `VITE_`, alle andere variabelen behalve `NODE_ENV` worden genegeerd. Als je omgevingsvariabelen wijzigt, moet je de applicatie _niet_ opnieuw starten. Vite zal de wijzigingen automatisch detecteren en het nodige doen.
+
+De omgevingsvariabelen zijn beschikbaar via het object `import.meta.env`. Een omgevingsvariabele met de naam `VITE_NOT_SECRET_CODE` wordt in de code `import.meta.env.VITE_NOT_SECRET_CODE`.
+
+Er is ook een ingebouwde omgevingsvariabele met de naam `NODE_ENV`. Wanneer je `pnpm dev` uitvoert, is `NODE_ENV` altijd gelijk aan `development`.
+
+De omgevingsvariabelen worden toegevoegd aan de code _at build time_. Aangezien Vite een statische HTML/CSS/JS-bundel produceert, kan het deze onmogelijk tijdens runtime lezen. Daarom staan de waarden letterlijk in de code, plaats hier dus geen API keys en andere geheime sleutels in.
+
+Voeg een `.env` file toe in de root folder met de environment settings. Hierin definiëren we de url naar de API:
+
+```dotenv
+VITE_API_URL='http://localhost:3000/api'
+```
+
+In de code van `api/index.ts` vervang je `baseUrl` door
+
+```js
+const baseUrl = import.meta.env.VITE_API_URL;
+```
+
+Over environment variables in React & Vite vind je meer op <https://vitejs.dev/guide/env-and-mode.html>.
+
+## Oefening 3 - README
+
+Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt moet worden alvorens de applicatie gestart kan worden. Voeg ook een voorbeeld voor het `.env` bestand toe.
+
+## Oefening 4 - PlacesList via API
+
+Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.tsx` die de lijst van `Places` weergeeft. `PlacesList.tsx` communiceert met de API en geeft de data door via props aan `PlacesCards.tsx`. Merk op : alle methodes worden nu asynchroon uitgevoerd via de API, dus de signatuur van de methodes die via props wordt doorgegeven zal moeten worden aangepast. Ook voor het opslaan van de rating zal een API call moeten gebeuren en dient een Place object te worden meegestuurd. De onRate functie zal dus een `Place` object ontvangen in plaats van enkel de `id` en de `rating`.
+
+> `PlacesCards.tsx`:  .sort() muteert de array in-place. places zal nu uit de SWR-cache komen, dus je muteert tijdens render gedeelde state. Dat is een schending van de Rules of React ([pure functions](https://react.dev/learn/keeping-components-pure)). Los het op met een kopie: toSorted
+
+Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. Maak hiervoor gebruik van de `TransactionTable` component. De transacties worden opgehaald via de API.
+
+## Appendix: Pagineren door de transacties
 
 Naast de zoekterm geven we nu ook de `page` en `pageSize` mee in de URL als een **querystring**. Bijvoorbeeld:
 
@@ -1379,42 +1450,6 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
 
   - **`totalPages`** wordt berekend in de parent: `Math.ceil(data.total / pageSize)`. Deze waarde wordt doorgegeven aan de `Pagination`-component.
   - **`onPageChange={setPage}`** en **`onPageSizeChange={setPageSize}`** — de state-setters worden rechtstreeks als callback doorgegeven. Wanneer de `Pagination`-component `onPageChange(2)` aanroept, roept die eigenlijk `setPage(2)` aan in de parent.
-
-## Het .env bestand
-
-Je kan omgevingsvariabelen definiëren in het `.env` bestand. De omgevingsvariabelen moeten beginnen met `VITE_`, alle andere variabelen behalve `NODE_ENV` worden genegeerd. Als je omgevingsvariabelen wijzigt, moet je de applicatie _niet_ opnieuw starten. Vite zal de wijzigingen automatisch detecteren en het nodige doen.
-
-De omgevingsvariabelen zijn beschikbaar via het object `import.meta.env`. Een omgevingsvariabele met de naam `VITE_NOT_SECRET_CODE` wordt in de code `import.meta.env.VITE_NOT_SECRET_CODE`.
-
-Er is ook een ingebouwde omgevingsvariabele met de naam `NODE_ENV`. Wanneer je `pnpm dev` uitvoert, is `NODE_ENV` altijd gelijk aan `development`.
-
-De omgevingsvariabelen worden toegevoegd aan de code _at build time_. Aangezien Vite een statische HTML/CSS/JS-bundel produceert, kan het deze onmogelijk tijdens runtime lezen. Daarom staan de waarden letterlijk in de code, plaats hier dus geen API keys en andere geheime sleutels in.
-
-Voeg een `.env` file toe in de root folder met de environment settings. Hierin definiëren we de url naar de API:
-
-```dotenv
-VITE_API_URL='http://localhost:3000/api'
-```
-
-In de code van `api/index.ts` vervang je `baseUrl` door
-
-```js
-const baseUrl = import.meta.env.VITE_API_URL;
-```
-
-Over environment variables in React & Vite vind je meer op <https://vitejs.dev/guide/env-and-mode.html>.
-
-## Oefening 3 - README
-
-Pas `README.md` aan zodat de gebruiker weet dat er een `.env` bestand aangemaakt moet worden alvorens de applicatie gestart kan worden. Voeg ook een voorbeeld voor het `.env` bestand toe.
-
-## Oefening 4 - PlacesList via API
-
-Pas nu ook `PlacesList` aan zodat dit werkt met onze REST API voor het ophalen, verwijderen van de places en het aanpassen van de rating. Voorzie in de `src/components/places` folder de component `PlacesCards.tsx` die de lijst van `Places` weergeeft. `PlacesList.tsx` communiceert met de API en geeft de data door via props aan `PlacesCards.tsx`. Merk op : alle methodes worden nu asynchroon uitgevoerd via de API, dus de signatuur van de methodes die via props wordt doorgegeven zal moeten worden aangepast. Ook voor het opslaan van de rating zal een API call moeten gebeuren en dient een Place object te worden meegestuurd. De onRate functie zal dus een `Place` object ontvangen in plaats van enkel de `id` en de `rating`.
-
-> `PlacesCards.tsx`:  .sort() muteert de array in-place. places zal nu uit de SWR-cache komen, dus je muteert tijdens render gedeelde state. Dat is een schending van de Rules of React ([pure functions](https://react.dev/learn/keeping-components-pure)). Los het op met een kopie: toSorted
-
-Pas ook `PlaceDetail` aan. Geef de transacties van de betreffende plaats weer. Maak hiervoor gebruik van de `TransactionTable` component. De transacties worden opgehaald via de API.
 
 > **Oplossing voorbeeldapplicatie**
 >

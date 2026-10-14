@@ -24,6 +24,7 @@
 > pnpm start:dev
 > ```
 >
+> Maak een database `budget` aan via Docker. Zie instructies in de [cursus Web Services](https://hogent-frontendweb.github.io/webservices-cursus/#/3-datalaag_places/index?id=mysql-databank).
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/webservices-budget?tab=readme-ov-file#webservices-budget) voor meer informatie.
 
 In dit hoofdstuk maken we een component aan voor het toevoegen en wijzigen van een transactie. We bekijken ook hoe we de performantie verder kunnen verbeteren.

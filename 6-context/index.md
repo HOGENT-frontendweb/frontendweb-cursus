@@ -816,6 +816,7 @@ export default function LabelInput({...}) {
 > pnpm dev
 > ```
 >
+> Maak een database `budget` aan via Docker. Zie instructies in de [cursus Web Services](https://hogent-frontendweb.github.io/webservices-cursus/#/3-datalaag_places/index?id=mysql-databank).
 > Vergeet geen `.env` aan te maken! Bekijk de [README](https://github.com/HOGENT-frontendweb/frontendweb-budget?tab=readme-ov-file#budgetapp) voor meer informatie.
 
 ### Oefening 4 - Je eigen project
