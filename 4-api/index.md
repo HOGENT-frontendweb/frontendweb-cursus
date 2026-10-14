@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4 31d488a
+> git checkout -b les4 385b5ff
 > pnpm install
 > pnpm dev
 > ```
@@ -1456,7 +1456,7 @@ Maar let op: `page` en `pageSize` kunnen niet zomaar naar de child component ver
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les4-opl 8cd2a63
+> git checkout -b les4-opl 923c22b
 > pnpm install
 > pnpm dev
 > ```

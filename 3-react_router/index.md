@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3 be621c7
+> git checkout -b les3 64a300e
 > pnpm install
 > pnpm dev
 > ```
@@ -1262,7 +1262,7 @@ export default About;
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les3-opl 31d488a
+> git checkout -b les3-opl 385b5ff
 > pnpm install
 > pnpm dev
 > ```

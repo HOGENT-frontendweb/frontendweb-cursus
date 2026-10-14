@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9 384cb21
+> git checkout -b les9 790c996
 > pnpm install
 > pnpm dev
 > ```
@@ -143,7 +143,7 @@ mkdir -p playwright/.auth
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les9-opl 60d13d0
+> git checkout -b les9-opl 813e165
 > pnpm install
 > pnpm dev
 > ```

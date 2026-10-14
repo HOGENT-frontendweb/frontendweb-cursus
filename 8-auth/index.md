@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8 8e34a
+> git checkout -b les8 61de7d6
 > pnpm install
 > pnpm dev
 > ```
@@ -792,7 +792,7 @@ Een gebruiker dient zich te kunnen registreren op de site.
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8-opl 384cb21
+> git checkout -b les8-opl 790c996
 > pnpm install
 > pnpm dev
 > ```

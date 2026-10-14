@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7 1f9c109
+> git checkout -b les7 d478b69
 > pnpm install
 > pnpm dev
 > ```
@@ -837,7 +837,7 @@ pnpm test:ui       # interactieve UI mode
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les7-opl 548e34a
+> git checkout -b les7-opl 61de7d6
 > pnpm install
 > pnpm dev
 > ```

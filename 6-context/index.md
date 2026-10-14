@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6 0e39109
+> git checkout -b les6 68cc5df
 > pnpm install
 > pnpm dev
 > ```
@@ -811,7 +811,7 @@ export default function LabelInput({...}) {
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les6-opl 1f9c109
+> git checkout -b les6-opl d478b69
 > pnpm install
 > pnpm dev
 > ```

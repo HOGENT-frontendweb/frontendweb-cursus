@@ -5,7 +5,7 @@
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les5 8cd2a63
+> git checkout -b les5 923c22b
 > pnpm install
 > pnpm dev
 > ```
@@ -1091,7 +1091,7 @@ Pas ook de titel `Add transaction` aan in de `AddOrEditTransaction` component.
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les5-opl 0e39109
+> git checkout -b les5-opl 68cc5df
 > pnpm install
 > pnpm dev
 > ```
