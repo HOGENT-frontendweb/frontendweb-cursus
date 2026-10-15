@@ -915,6 +915,8 @@ Elke keer dat `search` verandert, verandert de URL-sleutel en doet `useSWR` auto
 <TransactionsTable transactions={data} onDelete={handleDeleteTransaction} />
 ```
 
+Momenteel worden bij de eerste render alle transacties opgehaald omdat search initieel leeg is. Daardoor kan de filtering perfect in de frontend gebeuren. Indien je echter met paginatie(zie verder) werkt of pas data ophaalt nadat de gebruiker zoekcriteria heeft ingegeven, is het aangewezen om de zoekfunctionaliteit in de backend te voorzien.
+
 ### Stap 2 — Wanneer wordt er gezocht?
 
 In de vorige versie zocht de gebruiker door op de "Search" knop te klikken. We willen nu ook zoeken wanneer de gebruiker op **Enter** drukt of het zoekveld **leegmaakt**. Daarvoor vervangen we de knop door twee event handlers:
@@ -987,6 +989,7 @@ In `handleDeleteTransaction` gebeurt het volgende:
 1. De transactie wordt verwijderd via `deleteTransaction(id)`.
 2. Daarna roepen we `mutate()` aan — dit triggert een nieuw request naar de API zodat de lijst automatisch ververst wordt zonder dat de gebruiker de pagina moet herladen. De methode `mutate` destructureren we uit de returnwaarde van `useSWR`.
 3. Tot slot toont een toast-melding dat de transactie verwijderd is.
+
 
 ## Het .env bestand
 
