@@ -123,10 +123,10 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en
   //..
   ```
 
-`cn(buttonVariants())` zorgt ervoor dat de `<Link>` er visueel uit ziet als een knop.
+  `cn(buttonVariants())` zorgt ervoor dat de `<Link>` er visueel uit ziet als een knop.
 
-- `buttonVariants()`: genereert de Tailwind CSS-klassen voor de standaard knopstijl (achtergrondkleur, padding, border-radius…)
-- `cn(...)`: combineert die klassen samen (en filtert eventuele conflicten weg)
+- `buttonVariants()`: genereert de Tailwind CSS-klassen voor de standaard knopstijl (achtergrondkleur, padding, border-radius…).  Meer op [https://ui.shadcn.com/docs/components/aria/button#as-link](https://ui.shadcn.com/docs/components/aria/button#as-link)
+- `cn(...)`: combineert die klassen samen (en filtert eventuele conflicten weg). meer op [https://github.com/shadcn-ui/cn](https://github.com/shadcn-ui/cn)
 - `className={...}`: past die klassen toe op de `<Link>`
 
 In `Transaction.tsx` voeg je onderstaande code toe:
@@ -236,7 +236,7 @@ Voeg deze packages toe aan het project:
 pnpm add react-hook-form zod @hookform/resolvers
 ```
 
-Neem eerst de [documentatie over React-hook-form en shadcn](https://ui.shadcn.com/docs/forms/react-hook-form) door.
+Neem eerst de [documentatie over React-hook-form](https://react-hook-form.com/get-started), [React-hook-form en controlled inputs](https://react-hook-form.com/get-started#IntegratingControlledInputs) en [React-hook-form en shadcn](https://ui.shadcn.com/docs/forms/react-hook-form) door.
 
 We beginnen met een eenvoudig formulier met 2 inputvelden `userId` en het `bedrag`. Later voegen we ook een selectlijst en datepicker toe.
 
@@ -511,7 +511,7 @@ In een applicatie kan je niet alleen werken met server-side validatie. In dat ge
 
 React-hook-form ondersteunt ook schema-validatie met Yup, zod, Superstruct & Joi. De validatie is afgestemd op de HTML-standaard voor formuliervalidatie. We maken gebruik van [zod](https://zod.dev/).
 
-Neem eerst de [documentatie](https://zod.dev/basics) door.
+Neem eerst de [documentatie](https://zod.dev/basics) en [defining schemas](https://zod.dev/api) door.
 
 ```jsx
 // src/components/transactions/TransactionForm.tsx
@@ -620,12 +620,12 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
    - `userId` — moet een getal zijn (minimaal 1), verplicht.
    - `amount` — het bedrag, met twee extra checks via `.refine()`: Mag geen `NaN` zijn (niet-getal) — dit is een extra veiligheidscheck bovenop `z.number()` en mag niet 0 zijn
      De `{ error: '...' }` en `{ message: '...' }` opties bepalen de foutmeldingen die de gebruiker te zien krijgt als de validatie faalt.
-2. React-hook-form ondersteunt verschillende `validatiemodi`.
-   - `onChange`: Bij elke wijziging wordt een validatie geactiveerd.
-   - `onBlur`: Validatie wordt geactiveerd bij het verlaten van het scherm.
-   - `onSubmit`: Validatie wordt geactiveerd bij het verzenden (standaard).
-   - `onTouched`: De validatie wordt geactiveerd bij de eerste keer dat het scherm de focus verliest, en vervolgens bij elke wijziging.
-   - `all`: Validatie wordt geactiveerd bij het verlaten van het scherm en bij wijzigingen.
+2. React-hook-form ondersteunt verschillende `validatiemodi`. Validatie wordt getriggerd bij:
+   - `onChange`: Bij elke wijziging.
+   - `onBlur`: Wanneer een veld de focus verliest.
+   - `onSubmit`: Pas bij het verzenden van het formulier (default).
+   - `onTouched`: Eerst bij de eerste blur, daarna bij elke wijziging
+   - `all`: Zowel bij blur als bij change.
 3. De Controller geeft nu ook de `fieldState` door. Dit is de validatiestatus van 1 specifiek veld.
    - `fieldState.invalid`: true als het veld niet voldoet aan de zod-validatieregels
    - `fieldState.error`: het foutobject met de foutmelding (bv. { message: 'User is required' })
@@ -856,6 +856,8 @@ export default function TransactionForm({places = []) {
 
 const { trigger: saveTransaction, error: saveError } = useSWRMutation('transactions', save);// 👈 2
 
+const { isValid } = form.formState;// 👈 3
+
 const onSubmit = async (values: TransactionFormValues) => {
       if (!isValid) return;
       await saveTransaction(
@@ -867,7 +869,7 @@ const onSubmit = async (values: TransactionFormValues) => {
           onSuccess: () => form.reset()
         },
       );
-    };
+    };// 👈 3
 // ...
    return (
     <>
@@ -988,7 +990,7 @@ export default function AddOrEditTransaction() {
 2. Extraheer de id uit de URL.
 3. Maak gebruik van `useSWR` om de aan te passen transactie op te halen. Indien geen id parameter werd meegegeven wordt `null` meegegeven.
 4. Geef de aan te passen transactie door aan `TransactionForm`.
-5. Zorg voor foutafhandeling en laadindicator.
+5. Zorg voor foutafhandeling en laadindicator. Gebruik || om booleans te combineren en ?? om een standaardwaarde te kiezen wanneer iets ontbreekt.
 
 In het `TransactionForm` voorzien we de prop `transaction` met standaardwaarde `EMPTY_TRANSACTION`, zo werkt het aanmaken van een nieuwe transactie ook en passen we de code verder aan.
 
