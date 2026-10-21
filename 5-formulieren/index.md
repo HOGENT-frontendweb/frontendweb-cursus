@@ -125,9 +125,9 @@ Voorzie een knop "Add Transaction" naast de zoekbalk in `TransactionList.tsx` en
 
   `cn(buttonVariants())` zorgt ervoor dat de `<Link>` er visueel uit ziet als een knop.
 
-- `buttonVariants()`: genereert de Tailwind CSS-klassen voor de standaard knopstijl (achtergrondkleur, padding, border-radius…).  Meer op [https://ui.shadcn.com/docs/components/aria/button#as-link](https://ui.shadcn.com/docs/components/aria/button#as-link)
-- `cn(...)`: combineert die klassen samen (en filtert eventuele conflicten weg). meer op [https://github.com/shadcn-ui/cn](https://github.com/shadcn-ui/cn)
-- `className={...}`: past die klassen toe op de `<Link>`
+  - `buttonVariants()`: genereert de Tailwind CSS-klassen voor de standaard knopstijl (achtergrondkleur, padding, border-radius…).  Meer op [https://ui.shadcn.com/docs/components/aria/button#as-link](https://ui.shadcn.com/docs/components/aria/button#as-link)
+  - `cn(...)`: combineert die klassen samen (en filtert eventuele conflicten weg). meer op [https://github.com/shadcn-ui/cn](https://github.com/shadcn-ui/cn)
+  - `className={...}`: past die klassen toe op de `<Link>`
 
 In `Transaction.tsx` voeg je onderstaande code toe:
 
@@ -402,11 +402,12 @@ React-hook-form houdt de state bij voor elke control. [Controller](https://react
 - `form.control` is het "brein" van het formulier, het bevat alle waarden en validatieregels.
 - `name` is de naam van het overeenkomstig form object.
 - Het `render` prop is een functie die je component rendert en een `field` object doorgeeft aan je component. Dit bevat volgende props:
-  - `field.value`: de huidige waarde uit de form state
-  - `field.onChange`: update de form state bij een wijziging
+  - `field.value`: de huidige waarde van het veld in de form state
+  - `field.onChange`: zet een nieuwe waarde in de form state.
   - `field.name`: de naam van het veld
-  - `field.ref`: verbindt het element met react-hook-form voor focus bij errors
-  - `field.onBlur`: geeft door dat het veld 'touched' is. Zo kan de validatie getriggerd worden afhankelijk van de modus
+  - `field.ref`: laat react-hook-form de input focussen, bijvoorbeeld bij een validatiefout
+  - `field.onBlur`: markeert het veld als "touched" en start validatie als je mode: 'onBlur' gebruikt
+  - `field.disabled`: of het veld disabled is
 - `{...field}` spreidt alle field props uit op de input voor synchronisatie met de formulierstate. Dit komt overeen met:
 
   ```jsx
@@ -632,7 +633,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
    - `fieldState.isDirty`: true als de gebruiker de waarde heeft gewijzigd t.o.v. de defaultValue
    - `fieldState.isTouched`: true als de gebruiker het veld heeft gefocust en er terug uit is gegaan
 4. Voeg de `data-invalid` prop toe aan het `<Field />` component voor de styling. De CSS in `field.tsx` reageert hierop met `group-data-[invalid=true]:text-destructive` — het label en de rand worden rood.
-5. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.
+5. Geef de foutmeldingen weer onder het veld met behulp van `<FieldError />`.  De `errors`-prop verwacht een array, en fieldState.error is één los object.
 6. Voeg `isValid` toe aan de form state. Dit is true als alle velden geldig zijn. In de `onSubmit` functie checken we dit nogmaals. Als er validatiefouten zijn, wordt de functie niet uitgevoerd.
 
 ### Stap 6. Select voor plaatsen
@@ -713,7 +714,7 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
 
 1. Voeg een `placeId` veld toe aan het `formSchema` (verplicht getal, minimaal 1).
 2. Voeg `placeId` toe aan de `defaultValues` in `useForm`.
-3. Voeg een `<Controller>` toe voor `placeId` met een [Select component](https://ui.shadcn.com/docs/components/radix/select). De Select component verwacht een lijst van het type `{value: number;label: string;}[]`, zie `placesSelectItems`. `SelectTrigger` is de zichtbare knop. `SelectContent` is het uitklapmenu en bevat de items.
+3. Voeg een `<Controller>` toe voor `placeId` met een [Select component](https://ui.shadcn.com/docs/components/radix/select). De Select component beheert de gekozen waarde en verwacht een lijst van het type `{value: number;label: string;}[]`, zie `placesSelectItems`. `SelectTrigger` is de zichtbare knop. `SelectValue` toont wat er gekozen is. `SelectContent` is het uitklapmenu en bevat de items.
 4. De places prop bevat de beschikbare plaatsen. Zet ze om naar het formaat { value: number; label: string }[] dat de Select verwacht.
 5. `<select>`:
    - `value` toont de waarde bijgehouden in react-hook-form. `field.value || null`: Base UI toont de placeholder "Place" als de value null is. (Indien 0 toont Base UI de waarde 0).
@@ -800,7 +801,6 @@ export default function TransactionForm({ places = [] }: TransactionFormProps) {
         </Field>
       )}
     />
-  ));
 ```
 
 1. Voeg een `date` veld toe aan het `formSchema` (verplicht, moet een Date-object zijn, en mag niet in de toekomst liggen).
