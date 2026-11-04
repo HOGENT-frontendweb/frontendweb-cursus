@@ -754,7 +754,7 @@ export default function Layout() {
 }
 ```
 
-De toasts verschijnen default `bottom-right'. A.d.h.v. de `position` prop kan je dit aanpassen naar `top-right`, ....
+De toasts verschijnen default `bottom-right`. A.d.h.v. de `position` prop kan je dit aanpassen naar `top-right`, ....
 
   en pas de `TransactionList` component aan:
 
@@ -989,7 +989,6 @@ In `handleDeleteTransaction` gebeurt het volgende:
 1. De transactie wordt verwijderd via `deleteTransaction(id)`.
 2. Daarna roepen we `mutate()` aan — dit triggert een nieuw request naar de API zodat de lijst automatisch ververst wordt zonder dat de gebruiker de pagina moet herladen. De methode `mutate` destructureren we uit de returnwaarde van `useSWR`.
 3. Tot slot toont een toast-melding dat de transactie verwijderd is.
-
 
 ## Het .env bestand
 
