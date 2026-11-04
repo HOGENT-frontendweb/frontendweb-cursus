@@ -107,8 +107,8 @@ Voeg de testcommando's toe aan `package.json`:
 }
 ```
 
-- `pnpm test` voert alle testen uit in de terminal.
-- `pnpm test:ui` opent de **Playwright UI mode**: een interactieve browser-interface waarin je testen stap voor stap kan volgen, inspecteren en debuggen. ALs je wil kan je ook de [Playwright VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) installeren. Meer info op [https://playwright.dev/docs/getting-started-vscode](https://playwright.dev/docs/getting-started-vscode)
+- `pnpm test` voert alle testen uit in de terminal, met headless browser.
+- `pnpm test:ui` opent de **Playwright UI mode**: een interactieve browser-interface waarin je testen stap voor stap kan volgen, inspecteren en debuggen. Als je wil kan je ook de [Playwright VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright) installeren. Meer info op [https://playwright.dev/docs/getting-started-vscode](https://playwright.dev/docs/getting-started-vscode)
 
 Bekijk het bestand `example.spec.ts` en voer de testen uit. Bekijk de documentatie: [Running and debugging tests](https://playwright.dev/docs/running-tests) en [UI Mode](https://playwright.dev/docs/test-ui-mode)
 
@@ -183,7 +183,7 @@ Onze testen zullen vaak een gelijkaardig stramien hebben: een URL bezoeken, inte
 
 In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon checken of er 'een' `h1` aanwezig is zal niet volstaan. Als er meerdere inputs, buttons, etc. zijn, moeten we zeker zijn dat we met de juiste elementen interageren.
 
-Playwright voorziet in een aantal **locators**. Hieronder vind je de meest gebruikte.
+Playwright biedt krachtige **locators** om elementen te vinden. Deze ondersteunen automatisch wachten (auto-waiting) en opnieuw proberen (retrying). Hieronder vind je de meest gebruikte.
 
 ### getByTestId: via `data-testid` attribuut
 
@@ -236,7 +236,7 @@ page.getByPlaceholder('Search by place…').fill('Ir');
 
 Gebruikt voor inputvelden met een `placeholder` attribuut. Praktisch als er geen `data-testid` is, maar minder robuust.
 
-Meer over [locators](https://playwright.dev/docs/locators)
+Meer over [locators](https://playwright.dev/docs/locators).Best practice: gebruik eerst `getByRole`, daarna `getByText`, en dan  `getByTestId`. Tip: gebruik de [pick locator](https://playwright.dev/docs/test-ui-mode#pick-locator) in Playwright UI mode om de juiste locator te vinden.
 
 ## Add and remove transaction test
 
@@ -398,6 +398,9 @@ test('should add a transaction', async ({ page }) => {
   await page.getByRole('table').waitFor({ state: 'visible' });
 
   // 👇2
+  await page.getByRole('combobox', { name: 'Rows per page' }).click();
+  await page.getByRole('option', { name: '50' }).click();
+  await page.getByRole('table').waitFor({ state: 'visible' });
   const transactions = page.getByTestId('transaction');
   const countBefore = await transactions.count();
 
@@ -436,6 +439,9 @@ test('should add a transaction', async ({ page }) => {
     .getByRole('button', { name: 'Add transaction' })
     .click({ timeout: 2000 });
   await page.waitForURL('/transactions');
+  await page.getByRole('combobox', { name: 'Rows per page' }).click();
+  await page.getByRole('option', { name: '50' }).click();
+  await page.getByRole('table').waitFor({ state: 'visible' });
 
   // 👇9
   await expect(transactions).toHaveCount(countBefore + 1);
@@ -445,13 +451,13 @@ test('should add a transaction', async ({ page }) => {
 ```
 
 1. Navigeer eerst naar `/transactions` en wacht tot de tabel zichtbaar is.
-2. Tel daarna het huidig aantal rijen op — zo zijn we niet afhankelijk van een vast getal en werkt de test ook na een database-reset.
+2. We verhogen eerst de page-size van de transacties tabel naar 50, zodat we meer transacties tegelijk kunnen zien en kunnen kijken of na de toevoeging een rij aan de tabel is toegevoegd. Tel daarna het huidig aantal rijen op — zo zijn we niet afhankelijk van een vast getal en werkt de test ook na een database-reset.
 3. Navigeer naar het toevoegformulier en wacht met `waitFor({ state: 'visible' })` tot de heading geladen is. Dit is een expliciete wacht voor situaties waar Playwright het element nog net niet kan onderscheppen bij de navigatie.
 4. **Datumkiezer**: de shadcn `DatePicker` is geen standaard `<input type="date">`. We klikken de trigger open met `getByTestId('date-picker-trigger')`, selecteren de datum via `getByTestId(dateStr)`, en sluiten de picker daarna met `Escape`.
 5. **Plaatsselectie**: de shadcn `Select` wordt opengeklikt via zijn ARIA-rol `combobox`. De opties zijn zichtbaar als items met de rol `option`. We wachten tot de eerste optie zichtbaar is en klikken erop.
 6. **Bedrag**: `fill('200')` vult het veld in. `blur()` verlaat het veld, wat de `onBlur`-validatie van React Hook Form triggert
 7. **UserId**: `fill('1')` vult het veld in. `blur()` verlaat het veld, wat de `onBlur`-validatie van React Hook Form triggert
-8. Klik de submit-knop op basis van zijn zichtbare tekst met `getByRole('button', { name: 'Add transaction' })`. `waitForURL('/transactions')` wacht tot de navigatie naar de overzichtspagina volledig afgerond is.
+8. Klik de submit-knop op basis van zijn zichtbare tekst met `getByRole('button', { name: 'Add transaction' })`. `waitForURL('/transactions')` wacht tot de navigatie naar de overzichtspagina volledig afgerond is. Pas page-size aan en wacht tot de tabel zichtbaar is.
 9. Controleer of er één transactie meer is dan vóór de test (`countBefore + 1`). De nieuwste transactie staat bovenaan (`transactions.first()`), dus we checken of die de naam `Thomas` en het ingevulde bedrag bevat.
 
 > Merk op: In een e2e test zijn we niet beperkt tot één enkele assertion. Veel interacties vereisen meerdere stappen en zullen de toestandverandering op meer dan één manier verifiëren.
@@ -480,6 +486,9 @@ test('should remove the transaction', async ({ page }) => {
   await page.goto('/transactions'); // 👈2
   await page.getByRole('table').waitFor({ state: 'visible' }); // 👈2
 
+  await page.getByRole('combobox', { name: 'Rows per page' }).click();// 👈3
+  await page.getByRole('option', { name: '50' }).click();// 👈3
+  await page.getByRole('table').waitFor({ state: 'visible' });// 👈3
   const transactions = page.getByTestId('transaction'); // 👈3
   const countBefore = await transactions.count(); // 👈3
 
@@ -494,7 +503,7 @@ test('should remove the transaction', async ({ page }) => {
 
 1. **`test.describe.configure({ mode: 'serial' })`**: de testen in dit bestand draaien na elkaar (niet parallel). Dat is nodig omdat de eerste test een transactie toevoegt en de tweede die daarna verwijdert — bij parallel uitvoering zou de volgorde niet gegarandeerd zijn.
 2. Navigeer naar `/transactions` en wacht tot de tabel zichtbaar is.
-3. Tel het huidig aantal rijen
+3. Tel het huidig aantal rijen, maar verhoog eerst de page-size
 4. Zoek binnen de eerste rij (`transactions.first()`) de verwijder-knop op via zijn ARIA-rol en naam (`getByRole('button', { name: 'Delete transaction' })`). Omdat de nieuwst toegevoegde transactie bovenaan staat, is dit steeds de transactie die de vorige test toevoegde.
 5. Controleer of het aantal rijen daarna met één gedaald is (`countBefore - 1`).
 
