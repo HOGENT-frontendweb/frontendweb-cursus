@@ -89,10 +89,10 @@ We gaan een component ontwerpen die een lijst van plaatsen zal tonen. Elke plaat
 
 ![Places overview](./images/places.png ':size=100%')
 
-We voegen een beetje mock data voor de plaatsen toe aan `mock_data.js` in de `api` folder:
+We voegen een beetje mock data voor de plaatsen toe aan `mock_data.ts` in de `api` folder:
 
 ```javascript
-// src/api/mock_data.js
+// src/api/mock_data.ts
 import type { Transaction, Place } from '../types';// 👈 1
 
 // TRANSACTION_DATA blijft ongewijzigd
@@ -1477,7 +1477,7 @@ Klik op settings (naast de zoekbalk) en vink `highlight updates when components 
 
 ## Verbeteren van de performantie
 
-?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.js` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/index.md#viteconfigjs).
+?> **Enkel ter info — niet toepassen bij gebruik van de React Compiler**: De technieken in dit onderdeel (`useMemo`, `useCallback`, `memo`) zijn enkel ter informatie. Als je gebruik maakt van de React Compiler (zoals geconfigureerd in de `vite.config.ts` van dit project), dan voegt de compiler automatisch memoization toe waar nodig en hoef je deze niet zelf te schrijven. Meer uitleg over de React Compiler vind je in het hoofdstuk [React basics](../1-react_basics/index.md#viteconfigjs).
 
 Bij elk ingegeven karakter in het zoekveld wordt de state aangepast, wordt de component opnieuw gerenderd, en wordt de filterfunctie uitgevoerd (bekijk de console in de developer tools, zie de logging 'filtering...'), hoewel de output ongewijzigd blijft tot we op de knop klikken en effectief zoeken.
 
