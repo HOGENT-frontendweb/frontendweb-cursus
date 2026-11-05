@@ -185,24 +185,6 @@ In beide gevallen moeten we elementen van de DOM kunnen identificeren. Gewoon ch
 
 Playwright biedt krachtige **locators** om elementen te vinden. Deze ondersteunen automatisch wachten (auto-waiting) en opnieuw proberen (retrying). Hieronder vind je de meest gebruikte.
 
-### getByTestId: via `data-testid` attribuut
-
-Je voegt zelf een `data-testid` toe aan het HTML-element:
-
-```html
-<button type="submit" disabled="{isSubmitting}" data-testid="submit">
-  {transaction?.id ? 'Save transaction' : 'Add transaction'}
-</button>
-```
-
-Playwright heeft hiervoor een ingebouwde methode:
-
-```ts
-page.getByTestId('submit').click();
-```
-
-Je bent 100% zeker welk element je vindt. Als iemand de tekst of het CSS aanpast, breekt de test niet. De [`data-testid`](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) maakt ook duidelijk dat het element door een test gebruikt wordt.
-
 ### getByRole: via ARIA-rol en naam
 
 Gebruikt voor elementen die een semantische rol hebben, zoals knoppen, koppen en formuliervelden. Merk op dat veel HTML-elementen zoals `<button>` een impliciet gedefinieerde rol hebben die herkend wordt door de role locator.
@@ -227,6 +209,24 @@ page.getByText('Budget');
 Handig voor een snelle check of bepaalde tekst zichtbaar is op de pagina. Minder precies dan `getByTestId`: als de tekst verandert, breekt de test.
 
 Gebruik `getByText` voor niet-interactieve inhoud (`div`, `span`, paragrafen). Voor knoppen, links, inputs en dergelijke gebruik je bij voorkeur `getByRole`, `getByLabel` of `getByPlaceholder`, omdat die dichter aanleunen bij hoe gebruikers en assistieve technologie de pagina ervaren.
+
+### getByTestId: via `data-testid` attribuut
+
+Je voegt zelf een `data-testid` toe aan het HTML-element:
+
+```html
+<button type="submit" disabled="{isSubmitting}" data-testid="submit">
+  {transaction?.id ? 'Save transaction' : 'Add transaction'}
+</button>
+```
+
+Playwright heeft hiervoor een ingebouwde methode:
+
+```ts
+page.getByTestId('submit').click();
+```
+
+Je bent 100% zeker welk element je vindt. Als iemand de tekst of het CSS aanpast, breekt de test niet. De [`data-testid`](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes) maakt ook duidelijk dat het element door een test gebruikt wordt.
 
 ### getByPlaceholder: via placeholder-tekst
 
@@ -461,6 +461,18 @@ test('should add a transaction', async ({ page }) => {
 9. Controleer of er één transactie meer is dan vóór de test (`countBefore + 1`). De nieuwste transactie staat bovenaan (`transactions.first()`), dus we checken of die de naam `Thomas` en het ingevulde bedrag bevat.
 
 > Merk op: In een e2e test zijn we niet beperkt tot één enkele assertion. Veel interacties vereisen meerdere stappen en zullen de toestandverandering op meer dan één manier verifiëren.
+
+Opmerking: de test zal waarschijnlijk falen op de telling van het aantal rijen na het toevoegen. Na navigate('/transactions') toont SWR eerst de gecachte (oude) data en wil daarna op de achtergrond opnieuw ophalen. Maar SWR heeft een `dedupingInterval` van standaard 2 seconden: elke nieuwe request voor dezelfde key binnen 2 seconden na de vorige wordt overgeslagen. (Als we zelf de data invullen dan duurt het langer dan 2 seconden, maar bij een e2e test is dat veel sneller.) Oplossing: voer een mutate uit in onSuccess in `TransactionForm.tsx`.
+
+```tsx
+// src/components/transactions/TransactionForm.tsx
+onSuccess: async () => {
+  await mutate(
+    (key) => typeof key === 'string' && key.startsWith('transactions?page='),
+  );
+  navigate('/transactions');
+},
+```
 
 ### Auto-wachten
 
