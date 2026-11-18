@@ -192,8 +192,6 @@ export const useAuth = (): AuthContextType => {
    - `token`: de JWT-string, of `null` als de gebruiker niet ingelogd is.
    - `user`: het gebruikersobject van het type `AuthUser`, of `undefined` als er nog geen gebruiker opgehaald is.
    - `error` / `loading`: de fout- en laadtoestand van de actieve authenticatieoperatie.
-   - `isAuthed`: `true` als er een geldige token aanwezig is — handig om snel te controleren of de gebruiker ingelogd is.
-   - `ready`: `true` zodra de initiële check (bv. token uit `localStorage` laden en valideren) afgerond is. Voorkomt dat de UI kort een "niet ingelogd"-staat toont terwijl de token nog geladen wordt.
    - `login` / `logout` / `register`: de acties die consumers kunnen aanroepen om de authenticatiestatus te wijzigen.
 3. `JWT_TOKEN_KEY` is een constante voor de sleutelnaam in `localStorage`.
 4. `AuthContext` wordt aangemaakt met `undefined` als standaardwaarde en het type `AuthContextType | undefined`. Dit dwingt consumers via de `useAuth` hook te gaan — wie de context buiten een `AuthProvider` gebruikt krijgt een duidelijke fout.
@@ -503,10 +501,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const value = {
     token,
     user,
-    error: loginError || userError || registerError,
-    loading: loginLoading || userLoading || registerLoading,
-    isAuthed: Boolean(token),
-    ready: !userLoading,
+    error: loginError || userError ,
+    loading: loginLoading || userLoading,
+    isAuthed: Boolean(token),// 👈 1
+    ready: !userLoading,// 👈 2
     login,
     logout,
   };
@@ -514,6 +512,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // ...
 };
 ```
+
+1. `isAuthed`: `true` als er een geldige token aanwezig is — handig om snel te controleren of de gebruiker ingelogd is.
+2. `ready`: `true` als de gebruiker gedownload is, false als hij nog wordt opgehaald
 
 Nu kunnen we de `PrivateRoute` component aanmaken. Maak een bestand `src/components/PrivateRoute.tsx` aan met volgende inhoud:
 
@@ -667,7 +668,7 @@ export default function Login() {
 }
 ```
 
-Haal de querystring op en kijk of de key `redirect` voorkomt en navigeer naar de startpagina of naar de waarde van de `redirect` query parameter.
+Haal de querystring op en kijk of de key `redirect` voorkomt en navigeer naar de startpagina of naar de waarde van de `redirect` query parameter. De controle op `!redirect.startsWith('//')` is een veiligheidsmaatregel om te voorkomen dat de gebruiker naar een externe site wordt doorgestuurd. `redirect=//evil.com` interpreteert de browser als `https://evil.com`.
 
 ## NavBar: afwerking
 
@@ -717,6 +718,10 @@ const AuthButtons = () => {
 ```
 
 1. Maak een component `AuthButtons`. Controleer of er een gebruiker ingelogd is, en toon afhankelijk van de waarde andere knoppen.
+
+   - `buttonVariants({ variant: 'outline', size: 'sm' })`: komt uit de button.tsx. Genereert CSS classes op basis van variant en size.
+   - `cn(...)`: Utility functie die classes combineert en duplicaten verwijdert. Resultaat is een string met Tailwind classes.
+
 2. Voeg de `AuthButtons` component toe aan de navbar.
 
 We dienen nog een `Logout` component aan te maken. Maak een nieuw bestand `src/pages/Logout.tsx` met volgende inhoud:
@@ -770,17 +775,14 @@ Een gebruiker dient zich te kunnen registreren op de site.
 1. Pas hiervoor `Auth.context.tsx` aan.
    - Maak gebruik van `useSWRMutation` om een gebruiker te registreren.
    - Voorzie een methode `register`. Stel het `token` in als de gebruiker geregistreerd is.
-   - Voeg de `register` functie toe aan de context.
+   - Voeg de `register` functie, toe aan de context en pas `error` en `loading` aan.
 2. Maak een `Register` component op de URL `/register`.
    - Deze component bevat een formulier met 4 velden:
      - `name`
      - `email`
      - `password`
      - `confirmPassword`
-   - Alle velden zijn verplicht én de waarde van het `confirmPassword` veld moet gelijk zijn aan de waarde van het `password` veld.
-     - Gebruik hiervoor de `validate` functie van `register`: <https://react-hook-form.com/docs/useform/register>.
-     - Je moet hiervoor de `validationRules` binnen de component zetten, gebruik een `useMemo` om dit object te maken.
-     - Om een waarde van een veld op te vragen gebruik je `getValues`.
+   - Alle velden zijn verplicht én de waarde van het `confirmPassword` veld moet gelijk zijn aan de waarde van het `password` veld. Gebruik hiervoor de `refine` functie van `zod`: <https://v3.zod.dev/?id=refine>. `path` kan gebruikt worden om de foutmelding te koppelen aan het `confirmPassword` veld.
    - Als de gebruiker is geregistreerd, moet deze pagina de gebruiker doorsturen naar de `/` route.
    - Voeg de route naar de register pagina toe aan `src/main.tsx`.
    - Pas ook de `NavBar` component aan. Voorzie naast de login ook een register link.
@@ -792,7 +794,6 @@ Een gebruiker dient zich te kunnen registreren op de site.
 > ```bash
 > git clone https://github.com/HOGENT-frontendweb/frontendweb-budget.git
 > cd frontendweb-budget
-> git checkout -b les8-opl 790c996
 > pnpm install
 > pnpm dev
 > ```
