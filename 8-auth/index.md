@@ -670,6 +670,10 @@ export default function Login() {
 
 Haal de querystring op en kijk of de key `redirect` voorkomt en navigeer naar de startpagina of naar de waarde van de `redirect` query parameter. De controle op `!redirect.startsWith('//')` is een veiligheidsmaatregel om te voorkomen dat de gebruiker naar een externe site wordt doorgestuurd. `redirect=//evil.com` interpreteert de browser als `https://evil.com`.
 
+### De authenticatie flow
+
+![Flow van het aanmelden](./images/aanmeldenflow.png ':size=70%')
+
 ## NavBar: afwerking
 
 Als laatste voegen we nog een login- en logout-knop toe aan onze navbar. Deze knoppen mogen ook niet altijd getoond worden. Pas hiervoor `src/components/Navbar.tsx` aan als volgt:
